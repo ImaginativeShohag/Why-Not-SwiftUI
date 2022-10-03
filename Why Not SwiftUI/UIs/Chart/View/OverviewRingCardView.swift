@@ -24,9 +24,13 @@ struct OverviewRingCardView: View {
             HStack {
                 ZStack {
                     Text("90%")
-                    
-                    RingChart(rings: audits.map { $0.ring })
-                        .frame(width: 250, height: 250)
+
+                    RingChart(
+                        rings: audits.map { $0.ring },
+                        ringWidth: 10,
+                        ringGap: 3
+                    )
+                    .frame(width: 250, height: 250)
                 }
                 .frame(width: 270, height: 270)
                 .padding(.top, 16)
@@ -38,7 +42,7 @@ struct OverviewRingCardView: View {
                     Text("•")
                         .fontStyle(size: 20)
                         .foregroundColor(audit.ring.color)
-                    
+
                     Text("\(audit.name)")
 
                     Spacer()

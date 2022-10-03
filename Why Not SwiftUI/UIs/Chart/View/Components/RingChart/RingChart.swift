@@ -6,8 +6,14 @@ import SwiftUI
 
 struct RingChart: View {
     let rings: [RingChartRing]
-    let lineWidth: CGFloat = 10
-    let lineGap: CGFloat = 6
+    let ringWidth: CGFloat
+    let ringGap: CGFloat
+
+    init(rings: [RingChartRing], ringWidth: CGFloat = 10, ringGap: CGFloat = 6) {
+        self.rings = rings
+        self.ringWidth = ringWidth
+        self.ringGap = ringGap
+    }
 
     var body: some View {
         ZStack {
@@ -15,8 +21,8 @@ struct RingChart: View {
                 RingChartRingView(
                     ring: rings[index],
                     index: index,
-                    lineWidth: lineWidth,
-                    lineGap: lineGap
+                    ringWidth: ringWidth,
+                    ringGap: ringGap
                 )
             }
         }
@@ -26,22 +32,25 @@ struct RingChart: View {
 private struct RingChartRingView: View {
     var ring: RingChartRing
     var index: Int
-    let lineWidth: CGFloat
-    let lineGap: CGFloat
+    let ringWidth: CGFloat
+    let ringGap: CGFloat
 
     @State private var showRing: Bool = false
 
     var body: some View {
         ZStack {
             Circle()
-                .stroke(.gray.opacity(0.3), lineWidth: lineWidth)
+                .stroke(.gray.opacity(0.3), lineWidth: ringWidth)
 
             Circle()
                 .trim(from: 0, to: showRing ? ring.progress / 100 : 0)
-                .stroke(ring.color, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
+                .stroke(
+                    ring.color,
+                    style: StrokeStyle(lineWidth: ringWidth, lineCap: .round, lineJoin: .round)
+                )
                 .rotationEffect(.init(degrees: -90))
         }
-        .padding(CGFloat(index) * (lineWidth + lineGap))
+        .padding(CGFloat(index) * (ringWidth + ringGap))
         .onAppear {
             // show after initial animation finished
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
@@ -61,7 +70,8 @@ struct RingChart_Previews: PreviewProvider {
         RingChart(rings: [
             RingChartRing(progress: 72, color: Color.green),
             RingChartRing(progress: 36, color: Color.red),
-            RingChartRing(progress: 91, color: Color.purple),
+            RingChartRing(progress: 45, color: Color.blue),
+            RingChartRing(progress: 85, color: Color.purple),
         ])
         .frame(width: 150, height: 150)
     }
