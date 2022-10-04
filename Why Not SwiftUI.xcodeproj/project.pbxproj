@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		458E623C28EC6D75005A4E54 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623B28EC6D75005A4E54 /* MainScreen.swift */; };
+		458E623E28EC706B005A4E54 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623D28EC706B005A4E54 /* Screen.swift */; };
 		459837D228EB361D00AB5433 /* KeyPathExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D128EB361D00AB5433 /* KeyPathExample.swift */; };
 		459837D628EB4B7100AB5433 /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D528EB4B7100AB5433 /* Fruit.swift */; };
 		459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */; };
@@ -17,7 +19,6 @@
 		459CA63328E70F5600FC6F42 /* RingChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA63228E70F5600FC6F42 /* RingChart.swift */; };
 		459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA63928E76EAA00FC6F42 /* RingChartRing.swift */; };
 		45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */; };
-		45BE891528A05F73008DF51F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BE891428A05F73008DF51F /* ContentView.swift */; };
 		45BE891728A05F76008DF51F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BE891628A05F76008DF51F /* Assets.xcassets */; };
 		45BE891A28A05F76008DF51F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BE891928A05F76008DF51F /* Preview Assets.xcassets */; };
 		45BE892228A063A5008DF51F /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 45BE892128A063A5008DF51F /* CombineMoya */; };
@@ -26,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		458E623B28EC6D75005A4E54 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		458E623D28EC706B005A4E54 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		459837D128EB361D00AB5433 /* KeyPathExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathExample.swift; sourceTree = "<group>"; };
 		459837D528EB4B7100AB5433 /* Fruit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fruit.swift; sourceTree = "<group>"; };
 		459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVideoCapturerExampleScreen.swift; sourceTree = "<group>"; };
@@ -38,7 +41,6 @@
 		459CA63928E76EAA00FC6F42 /* RingChartRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingChartRing.swift; sourceTree = "<group>"; };
 		45BE890F28A05F73008DF51F /* Why Not SwiftUI!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Why Not SwiftUI!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Why_Not_SwiftUIApp.swift; sourceTree = "<group>"; };
-		45BE891428A05F73008DF51F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		45BE891628A05F76008DF51F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45BE891928A05F76008DF51F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		45BE892428A06D24008DF51F /* GoRestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoRestAPI.swift; sourceTree = "<group>"; };
@@ -57,6 +59,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		458E623A28EC6CD8005A4E54 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				458E623B28EC6D75005A4E54 /* MainScreen.swift */,
+				45BE892628A06FF8008DF51F /* MainViewModel.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		459837D028EB35A300AB5433 /* KeyPath */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				459837D528EB4B7100AB5433 /* Fruit.swift */,
+				458E623D28EC706B005A4E54 /* Screen.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -119,9 +131,10 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
-				459837D328EB45A800AB5433 /* VideoRecordAndUpload */,
-				459837D028EB35A300AB5433 /* KeyPath */,
 				459CA62228E6FA7B00FC6F42 /* Chart */,
+				459837D028EB35A300AB5433 /* KeyPath */,
+				458E623A28EC6CD8005A4E54 /* Main */,
+				459837D328EB45A800AB5433 /* VideoRecordAndUpload */,
 			);
 			path = UIs;
 			sourceTree = "<group>";
@@ -201,9 +214,7 @@
 				459CA62828E703EC00FC6F42 /* UIs */,
 				45BE892328A06CEC008DF51F /* Network */,
 				45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */,
-				45BE891428A05F73008DF51F /* ContentView.swift */,
 				45BE891828A05F76008DF51F /* Preview Content */,
-				45BE892628A06FF8008DF51F /* MainViewModel.swift */,
 			);
 			path = "Why Not SwiftUI";
 			sourceTree = "<group>";
@@ -301,13 +312,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				459837DB28EB5C3D00AB5433 /* ImageVideoCapturer.swift in Sources */,
-				45BE891528A05F73008DF51F /* ContentView.swift in Sources */,
 				45BE892528A06D24008DF51F /* GoRestAPI.swift in Sources */,
 				459CA62728E702D400FC6F42 /* FitnessRingCardView.swift in Sources */,
 				459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */,
 				45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */,
 				459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */,
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,
+				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
+				458E623C28EC6D75005A4E54 /* MainScreen.swift in Sources */,
 				459837D228EB361D00AB5433 /* KeyPathExample.swift in Sources */,
 				459CA63028E70F2700FC6F42 /* OverviewRingCardView.swift in Sources */,
 				459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */,
