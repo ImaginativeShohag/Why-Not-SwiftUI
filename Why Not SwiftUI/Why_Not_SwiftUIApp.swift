@@ -11,7 +11,9 @@ import SwiftUI
 struct Why_Not_SwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
-            MainScreen()
+            //MainScreen()
+            
+            ImageVideoCapturerExampleScreen()
         }
     }
 }
