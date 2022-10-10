@@ -4,10 +4,13 @@
 
 import SwiftUI
 
-/// Help:
-/// - https://www.hackingwithswift.com/example-code/language/what-are-keypaths
-/// - https://www.swiftbysundell.com/articles/the-power-of-key-paths-in-swift/
-/// - https://sarunw.com/posts/what-is-keypath-in-swift/
+// MARK: - Example#001: `KeyPath`
+
+// Help:
+// - https://www.hackingwithswift.com/example-code/language/what-are-keypaths
+// - https://www.swiftbysundell.com/articles/the-power-of-key-paths-in-swift/
+// - https://sarunw.com/posts/what-is-keypath-in-swift/
+
 struct KeyPathExampleScreen: View {
     let allFruits = Fruit.items
     let justFruitNames: [String] = Fruit.items.map(\.name)

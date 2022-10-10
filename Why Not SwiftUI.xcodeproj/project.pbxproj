@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45726D1128F44E66003DF76A /* #003 required keyword.swift */; };
+		45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45799F2D28F0041F00F53467 /* #002 some vs any keyword.swift */; };
 		458E623C28EC6D75005A4E54 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623B28EC6D75005A4E54 /* MainScreen.swift */; };
 		458E623E28EC706B005A4E54 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623D28EC706B005A4E54 /* Screen.swift */; };
-		459837D228EB361D00AB5433 /* KeyPathExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D128EB361D00AB5433 /* KeyPathExample.swift */; };
+		459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D128EB361D00AB5433 /* #001 KeyPath class.swift */; };
 		459837D628EB4B7100AB5433 /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D528EB4B7100AB5433 /* Fruit.swift */; };
 		459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */; };
 		459837DB28EB5C3D00AB5433 /* ImageVideoCapturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837DA28EB5C3D00AB5433 /* ImageVideoCapturer.swift */; };
@@ -27,9 +29,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		45726D1128F44E66003DF76A /* #003 required keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#003 required keyword.swift"; sourceTree = "<group>"; };
+		45799F2D28F0041F00F53467 /* #002 some vs any keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#002 some vs any keyword.swift"; sourceTree = "<group>"; };
 		458E623B28EC6D75005A4E54 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		458E623D28EC706B005A4E54 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
-		459837D128EB361D00AB5433 /* KeyPathExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathExample.swift; sourceTree = "<group>"; };
+		459837D128EB361D00AB5433 /* #001 KeyPath class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#001 KeyPath class.swift"; sourceTree = "<group>"; };
 		459837D528EB4B7100AB5433 /* Fruit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fruit.swift; sourceTree = "<group>"; };
 		459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVideoCapturerExampleScreen.swift; sourceTree = "<group>"; };
 		459837DA28EB5C3D00AB5433 /* ImageVideoCapturer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVideoCapturer.swift; sourceTree = "<group>"; };
@@ -59,6 +63,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		45799F2F28F01AD900F53467 /* CodeExample */ = {
+			isa = PBXGroup;
+			children = (
+				459837D128EB361D00AB5433 /* #001 KeyPath class.swift */,
+				45799F2D28F0041F00F53467 /* #002 some vs any keyword.swift */,
+				45726D1128F44E66003DF76A /* #003 required keyword.swift */,
+			);
+			path = CodeExample;
+			sourceTree = "<group>";
+		};
 		458E623A28EC6CD8005A4E54 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -66,14 +80,6 @@
 				45BE892628A06FF8008DF51F /* MainViewModel.swift */,
 			);
 			path = Main;
-			sourceTree = "<group>";
-		};
-		459837D028EB35A300AB5433 /* KeyPath */ = {
-			isa = PBXGroup;
-			children = (
-				459837D128EB361D00AB5433 /* KeyPathExample.swift */,
-			);
-			path = KeyPath;
 			sourceTree = "<group>";
 		};
 		459837D328EB45A800AB5433 /* VideoRecordAndUpload */ = {
@@ -132,7 +138,6 @@
 			isa = PBXGroup;
 			children = (
 				459CA62228E6FA7B00FC6F42 /* Chart */,
-				459837D028EB35A300AB5433 /* KeyPath */,
 				458E623A28EC6CD8005A4E54 /* Main */,
 				459837D328EB45A800AB5433 /* VideoRecordAndUpload */,
 			);
@@ -207,13 +212,14 @@
 		45BE891128A05F73008DF51F /* Why Not SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				459837DC28EB614700AB5433 /* Why-Not-SwiftUI-Info.plist */,
+				45799F2F28F01AD900F53467 /* CodeExample */,
 				459837D428EB4B5F00AB5433 /* Model */,
 				459CA62C28E70E4500FC6F42 /* Resources */,
 				459CA62928E7040700FC6F42 /* Utils */,
 				459CA62828E703EC00FC6F42 /* UIs */,
 				45BE892328A06CEC008DF51F /* Network */,
 				45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */,
+				459837DC28EB614700AB5433 /* Why-Not-SwiftUI-Info.plist */,
 				45BE891828A05F76008DF51F /* Preview Content */,
 			);
 			path = "Why Not SwiftUI";
@@ -318,9 +324,11 @@
 				45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */,
 				459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */,
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,
+				45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */,
+				45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */,
 				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
 				458E623C28EC6D75005A4E54 /* MainScreen.swift in Sources */,
-				459837D228EB361D00AB5433 /* KeyPathExample.swift in Sources */,
+				459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */,
 				459CA63028E70F2700FC6F42 /* OverviewRingCardView.swift in Sources */,
 				459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */,
 				45BE892728A06FF8008DF51F /* MainViewModel.swift in Sources */,
