@@ -10,7 +10,7 @@ import CombineMoya
 import Foundation
 import UIKit
 
-class MainViewModel: ObservableObject {
+class HomeViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     let isJailBroken = UIDevice.current.isJailBroken

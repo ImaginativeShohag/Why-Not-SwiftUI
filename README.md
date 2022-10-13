@@ -1,7 +1,6 @@
-Why Not SwiftUI!
-----------------
+# Why Not SwiftUI!
 
-The repo is for samples of Swift, SwiftUI and iOS.
+A collection of Swift, SwiftUI and iOS goodies.
 
 ## TODO
 

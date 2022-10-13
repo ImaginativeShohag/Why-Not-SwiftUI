@@ -1,35 +1,24 @@
 //
-//  Copyright © 2022 Md. Mahmudul Hasan Shohag. All rights reserved.
+//  Copyright © 2022 Apple Inc. All rights reserved.
 //
 
 import SwiftUI
 
 struct MainScreen: View {
-    @StateObject private var mainVM = MainViewModel()
+    @State private var showSplash = true
 
     var body: some View {
-        NavigationView {
-            List {
-                HStack {
-                    Text("Jailbroken Status")
-                    Spacer()
-                    Text(mainVM.isJailBroken ? "Broken" : "Not Broken")
-                        .foregroundColor(mainVM.isJailBroken ? Color.red : Color.green)
-                }
-
-                ForEach(Screen.screens) { screen in
-                    NavigationLink {
-                        screen.destination
-                            .navigationTitle(screen.name)
-                    } label: {
-                        Text(screen.name)
-                    }
-                }
+        ZStack {
+            if showSplash {
+                SplashScreen()
+            } else {
+                HomeScreen()
             }
-            .navigationTitle("Why Not SwiftUI!")
         }
         .onAppear {
-            mainVM.getPosts()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                showSplash = false
+            }
         }
     }
 }
