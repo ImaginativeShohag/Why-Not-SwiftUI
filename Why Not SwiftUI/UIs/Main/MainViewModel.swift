@@ -8,19 +8,20 @@
 import Combine
 import CombineMoya
 import Foundation
+import UIKit
 
 class MainViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
+    let isJailBroken = UIDevice.current.isJailBroken
+    
     func getPosts() {
-        print("1111111")
-        
         goRestProvider.requestPublisher(.posts, callbackQueue: DispatchQueue.main)
-            .print("6666666")
+            .print("network calling...")
             .sink(receiveCompletion: { completion in
                 guard case let .failure(error) = completion else { return }
                 
-                print("22222: \(error)")
+                print("error: \(error)")
             }, receiveValue: { response in
                 let data = response.data
                 let statusCode = response.statusCode
@@ -28,7 +29,7 @@ class MainViewModel: ObservableObject {
                 
                 let str = String(decoding: data, as: UTF8.self)
                 
-                print("333333: \(str)")
+                print("result: \(str)")
             })
             .store(in: &cancellables)
     }

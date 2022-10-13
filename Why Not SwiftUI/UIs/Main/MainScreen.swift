@@ -10,6 +10,13 @@ struct MainScreen: View {
     var body: some View {
         NavigationView {
             List {
+                HStack {
+                    Text("Jailbroken Status")
+                    Spacer()
+                    Text(mainVM.isJailBroken ? "Broken" : "Not Broken")
+                        .foregroundColor(mainVM.isJailBroken ? Color.red : Color.green)
+                }
+
                 ForEach(Screen.screens) { screen in
                     NavigationLink {
                         screen.destination

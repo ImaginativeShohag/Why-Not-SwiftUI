@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */; };
 		45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45726D1128F44E66003DF76A /* #003 required keyword.swift */; };
 		45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45799F2D28F0041F00F53467 /* #002 some vs any keyword.swift */; };
 		458E623C28EC6D75005A4E54 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623B28EC6D75005A4E54 /* MainScreen.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+JailBroken.swift"; sourceTree = "<group>"; };
 		45726D1128F44E66003DF76A /* #003 required keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#003 required keyword.swift"; sourceTree = "<group>"; };
 		45799F2D28F0041F00F53467 /* #002 some vs any keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#002 some vs any keyword.swift"; sourceTree = "<group>"; };
 		458E623B28EC6D75005A4E54 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
@@ -63,6 +65,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4568D1A028F8233D00FFDC5E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		45799F2F28F01AD900F53467 /* CodeExample */ = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +157,7 @@
 		459CA62928E7040700FC6F42 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				4568D1A028F8233D00FFDC5E /* Extensions */,
 				459CA62A28E70E2B00FC6F42 /* Typography.swift */,
 			);
 			path = Utils;
@@ -327,6 +338,7 @@
 				45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */,
 				45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */,
 				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
+				4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */,
 				458E623C28EC6D75005A4E54 /* MainScreen.swift in Sources */,
 				459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */,
 				459CA63028E70F2700FC6F42 /* OverviewRingCardView.swift in Sources */,
