@@ -27,6 +27,8 @@
 		459CA63028E70F2700FC6F42 /* OverviewRingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA62F28E70F2700FC6F42 /* OverviewRingCardView.swift */; };
 		459CA63328E70F5600FC6F42 /* RingChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA63228E70F5600FC6F42 /* RingChart.swift */; };
 		459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA63928E76EAA00FC6F42 /* RingChartRing.swift */; };
+		45ACAF5028F9F61B00C5467F /* CustomSideBarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ACAF4F28F9F61B00C5467F /* CustomSideBarScreen.swift */; };
+		45ACAF5228F9F68600C5467F /* CustomSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ACAF5128F9F68600C5467F /* CustomSideBar.swift */; };
 		45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */; };
 		45BE891728A05F76008DF51F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BE891628A05F76008DF51F /* Assets.xcassets */; };
 		45BE891A28A05F76008DF51F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BE891928A05F76008DF51F /* Preview Assets.xcassets */; };
@@ -57,6 +59,8 @@
 		459CA62F28E70F2700FC6F42 /* OverviewRingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewRingCardView.swift; sourceTree = "<group>"; };
 		459CA63228E70F5600FC6F42 /* RingChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingChart.swift; sourceTree = "<group>"; };
 		459CA63928E76EAA00FC6F42 /* RingChartRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingChartRing.swift; sourceTree = "<group>"; };
+		45ACAF4F28F9F61B00C5467F /* CustomSideBarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSideBarScreen.swift; sourceTree = "<group>"; };
+		45ACAF5128F9F68600C5467F /* CustomSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSideBar.swift; sourceTree = "<group>"; };
 		45BE890F28A05F73008DF51F /* Why Not SwiftUI!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Why Not SwiftUI!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Why_Not_SwiftUIApp.swift; sourceTree = "<group>"; };
 		45BE891628A05F76008DF51F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 			children = (
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
 				459CA62228E6FA7B00FC6F42 /* Chart */,
+				45ACAF4E28F9F60000C5467F /* CustomSideBar */,
 				458E623A28EC6CD8005A4E54 /* Home */,
 				4568D1AA28F8972700FFDC5E /* Main */,
 				4568D1A628F8950D00FFDC5E /* Splash */,
@@ -244,6 +249,15 @@
 				459CA63928E76EAA00FC6F42 /* RingChartRing.swift */,
 			);
 			path = RingChart;
+			sourceTree = "<group>";
+		};
+		45ACAF4E28F9F60000C5467F /* CustomSideBar */ = {
+			isa = PBXGroup;
+			children = (
+				45ACAF4F28F9F61B00C5467F /* CustomSideBarScreen.swift */,
+				45ACAF5128F9F68600C5467F /* CustomSideBar.swift */,
+			);
+			path = CustomSideBar;
 			sourceTree = "<group>";
 		};
 		45BE890628A05F73008DF51F = {
@@ -376,11 +390,13 @@
 				459CA62728E702D400FC6F42 /* FitnessRingCardView.swift in Sources */,
 				459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */,
 				45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */,
+				45ACAF5228F9F68600C5467F /* CustomSideBar.swift in Sources */,
 				459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */,
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,
 				4568D1AE28F898E700FFDC5E /* BottomNavIOSScreen.swift in Sources */,
 				45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */,
 				45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */,
+				45ACAF5028F9F61B00C5467F /* CustomSideBarScreen.swift in Sources */,
 				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
 				4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */,
 				4568D1AC28F8975D00FFDC5E /* MainScreen.swift in Sources */,
