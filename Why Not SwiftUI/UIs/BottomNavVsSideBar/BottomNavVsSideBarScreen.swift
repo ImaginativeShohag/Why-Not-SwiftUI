@@ -1,17 +1,33 @@
 //
-//  Copyright © 2022 Apple Inc. All rights reserved.
+//  Copyright © 2022 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
 import SwiftUI
 
 struct BottomNavVsSideBarScreen: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            ZStack {
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    BottomNavIOSScreen()
+                } else {
+                    SideBarIPadScreen()
+                }
+            }
+            .navigationTitle("")
+            .statusBarHidden(true)
+            .navigationBarBackButtonHidden(true)
+        }
+        .navigationViewStyle(.stack)
     }
 }
 
 struct BottomNavVsSideBarScreen_Previews: PreviewProvider {
     static var previews: some View {
         BottomNavVsSideBarScreen()
+            .previewDevice("iPhone 14 Pro Max")
+
+        BottomNavVsSideBarScreen()
+            .previewDevice("iPad Pro (12.9-inch) (5th generation)")
     }
 }

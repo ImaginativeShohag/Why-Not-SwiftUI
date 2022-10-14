@@ -11,6 +11,9 @@
 		4568D1A528F8950600FFDC5E /* BottomNavVsSideBarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */; };
 		4568D1A828F8951A00FFDC5E /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A728F8951A00FFDC5E /* SplashScreen.swift */; };
 		4568D1AC28F8975D00FFDC5E /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1AB28F8975D00FFDC5E /* MainScreen.swift */; };
+		4568D1AE28F898E700FFDC5E /* BottomNavIOSScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1AD28F898E700FFDC5E /* BottomNavIOSScreen.swift */; };
+		4568D1B028F8990D00FFDC5E /* SideBarIPadScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1AF28F8990D00FFDC5E /* SideBarIPadScreen.swift */; };
+		4568D1B228F8992C00FFDC5E /* ColorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1B128F8992C00FFDC5E /* ColorScreen.swift */; };
 		45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45726D1128F44E66003DF76A /* #003 required keyword.swift */; };
 		45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45799F2D28F0041F00F53467 /* #002 some vs any keyword.swift */; };
 		458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623B28EC6D75005A4E54 /* HomeScreen.swift */; };
@@ -37,6 +40,9 @@
 		4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavVsSideBarScreen.swift; sourceTree = "<group>"; };
 		4568D1A728F8951A00FFDC5E /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		4568D1AB28F8975D00FFDC5E /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		4568D1AD28F898E700FFDC5E /* BottomNavIOSScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavIOSScreen.swift; sourceTree = "<group>"; };
+		4568D1AF28F8990D00FFDC5E /* SideBarIPadScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarIPadScreen.swift; sourceTree = "<group>"; };
+		4568D1B128F8992C00FFDC5E /* ColorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScreen.swift; sourceTree = "<group>"; };
 		45726D1128F44E66003DF76A /* #003 required keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#003 required keyword.swift"; sourceTree = "<group>"; };
 		45799F2D28F0041F00F53467 /* #002 some vs any keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#002 some vs any keyword.swift"; sourceTree = "<group>"; };
 		458E623B28EC6D75005A4E54 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
@@ -83,6 +89,9 @@
 			isa = PBXGroup;
 			children = (
 				4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */,
+				4568D1AD28F898E700FFDC5E /* BottomNavIOSScreen.swift */,
+				4568D1AF28F8990D00FFDC5E /* SideBarIPadScreen.swift */,
+				4568D1B128F8992C00FFDC5E /* ColorScreen.swift */,
 			);
 			path = BottomNavVsSideBar;
 			sourceTree = "<group>";
@@ -177,11 +186,11 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
-				4568D1AA28F8972700FFDC5E /* Main */,
-				4568D1A628F8950D00FFDC5E /* Splash */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
 				459CA62228E6FA7B00FC6F42 /* Chart */,
 				458E623A28EC6CD8005A4E54 /* Home */,
+				4568D1AA28F8972700FFDC5E /* Main */,
+				4568D1A628F8950D00FFDC5E /* Splash */,
 				459837D328EB45A800AB5433 /* VideoRecordAndUpload */,
 			);
 			path = UIs;
@@ -369,6 +378,7 @@
 				45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */,
 				459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */,
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,
+				4568D1AE28F898E700FFDC5E /* BottomNavIOSScreen.swift in Sources */,
 				45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */,
 				45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */,
 				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
@@ -377,7 +387,9 @@
 				458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */,
 				459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */,
 				459CA63028E70F2700FC6F42 /* OverviewRingCardView.swift in Sources */,
+				4568D1B228F8992C00FFDC5E /* ColorScreen.swift in Sources */,
 				4568D1A828F8951A00FFDC5E /* SplashScreen.swift in Sources */,
+				4568D1B028F8990D00FFDC5E /* SideBarIPadScreen.swift in Sources */,
 				459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */,
 				45BE892728A06FF8008DF51F /* HomeViewModel.swift in Sources */,
 				459CA63328E70F5600FC6F42 /* RingChart.swift in Sources */,

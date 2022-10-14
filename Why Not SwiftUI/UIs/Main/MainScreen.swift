@@ -1,11 +1,11 @@
 //
-//  Copyright © 2022 Apple Inc. All rights reserved.
+//  Copyright © 2022 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
 import SwiftUI
 
 struct MainScreen: View {
-    @State private var showSplash = true
+    @State private var showSplash = false
 
     var body: some View {
         ZStack {
@@ -26,5 +26,9 @@ struct MainScreen: View {
 struct MainScreen_Previews: PreviewProvider {
     static var previews: some View {
         MainScreen()
+            .previewDevice("iPhone 14 Pro Max")
+        
+        MainScreen()
+            .previewDevice("iPad Pro (12.9-inch) (5th generation)")
     }
 }

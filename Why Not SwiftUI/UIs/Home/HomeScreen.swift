@@ -28,6 +28,7 @@ struct HomeScreen: View {
             }
             .navigationTitle("Why Not SwiftUI!")
         }
+        .navigationViewStyle(.stack)
         .onAppear {
             mainVM.getPosts()
         }
