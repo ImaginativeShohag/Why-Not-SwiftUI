@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct MainScreen: View {
-    @State private var showSplash = false
+    @State private var showSplash = false // TODO: un-false this.
 
     var body: some View {
         ZStack {
