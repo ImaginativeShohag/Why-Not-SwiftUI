@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct SideBarIPadScreen: View {
-    @Environment(\.dismiss) private var dismiss
+    let onDismissClicked: ()->Void
     
     @State var selection = 1
 
@@ -57,29 +57,40 @@ struct SideBarIPadScreen: View {
 
             // MARK: Details
 
-            switch selection {
-                case 1:
-                    ColorScreen(color: .red)
-                        .navigationTitle("Red")
-                        .edgesIgnoringSafeArea(.top)
-
-                case 2:
-                    ColorScreen(color: .green)
-                        .navigationTitle("Green")
-                        .edgesIgnoringSafeArea(.top)
-
-                case 3:
-                    ColorScreen(color: .blue)
-                        .navigationTitle("Blue")
-                        .edgesIgnoringSafeArea(.top)
-
-                default:
-                    ColorScreen(color: .purple)
-                        .navigationTitle("Purple")
-                        .edgesIgnoringSafeArea(.top)
+            ZStack {
+                switch selection {
+                    case 1:
+                        ColorScreen(color: .red)
+                            .navigationTitle("Red")
+                            .edgesIgnoringSafeArea(.top)
+                        
+                    case 2:
+                        ColorScreen(color: .green)
+                            .navigationTitle("Green")
+                            .edgesIgnoringSafeArea(.top)
+                        
+                    case 3:
+                        ColorScreen(color: .blue)
+                            .navigationTitle("Blue")
+                            .edgesIgnoringSafeArea(.top)
+                        
+                    default:
+                        ColorScreen(color: .purple)
+                            .navigationTitle("Purple")
+                            .edgesIgnoringSafeArea(.top)
+                }
+            }
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        onDismissClicked()
+                    } label: {
+                        Text("Back")
+                    }
+                }
             }
         }
-        .accentColor(.yellow)
+        .accentColor(.white)
     }
 }
 
@@ -122,10 +133,10 @@ extension UISplitViewController {
 
 struct SideBarIPadScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SideBarIPadScreen()
+        SideBarIPadScreen() {}
             .previewDevice("iPad Pro (12.9-inch) (5th generation)")
 
-        SideBarIPadScreen()
+        SideBarIPadScreen() {}
             .previewInterfaceOrientation(.landscapeLeft)
             .previewDevice("iPad Pro (12.9-inch) (5th generation)")
     }

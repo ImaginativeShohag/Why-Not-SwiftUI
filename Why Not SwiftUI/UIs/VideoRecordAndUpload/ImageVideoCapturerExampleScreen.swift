@@ -36,6 +36,7 @@ struct ImageVideoCapturerExampleScreen: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 

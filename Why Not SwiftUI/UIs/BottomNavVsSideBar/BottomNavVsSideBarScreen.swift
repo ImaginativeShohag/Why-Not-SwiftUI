@@ -5,20 +5,24 @@
 import SwiftUI
 
 struct BottomNavVsSideBarScreen: View {
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         NavigationView {
             ZStack {
                 if UIDevice.current.userInterfaceIdiom == .phone {
-                    BottomNavIOSScreen()
+                    BottomNavIOSScreen() {
+                        dismiss()
+                    }
                 } else {
-                    SideBarIPadScreen()
+                    SideBarIPadScreen() {
+                        dismiss()
+                    }
                 }
             }
-            .navigationTitle("")
-            .statusBarHidden(true)
-            .navigationBarBackButtonHidden(true)
         }
         .navigationViewStyle(.stack)
+        .navigationBarBackButtonHidden()
     }
 }
 
@@ -28,6 +32,6 @@ struct BottomNavVsSideBarScreen_Previews: PreviewProvider {
             .previewDevice("iPhone 14 Pro Max")
 
         BottomNavVsSideBarScreen()
-            .previewDevice("iPad Pro (12.9-inch) (5th generation)")
+            .previewDevice("iPad Pro (11-inch) (3rd generation)")
     }
 }

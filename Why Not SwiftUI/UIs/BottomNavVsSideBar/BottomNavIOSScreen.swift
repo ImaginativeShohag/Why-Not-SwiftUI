@@ -5,43 +5,58 @@
 import SwiftUI
 
 struct BottomNavIOSScreen: View {
+    let onDismissClicked: ()->Void
+    
     @State private var selectedTab: Int = 1
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            ColorScreen(color: .red)
-                .edgesIgnoringSafeArea(.top)
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text("Red")
+        NavigationView {
+            TabView(selection: $selectedTab) {
+                ColorScreen(color: .red)
+                    .edgesIgnoringSafeArea(.top)
+                    .tabItem {
+                        Image(systemName: "house.fill")
+                        Text("Red")
+                    }
+                    .tag(1)
+                
+                ColorScreen(color: .green)
+                    .edgesIgnoringSafeArea(.top)
+                    .tabItem {
+                        Image(systemName: "calendar")
+                        Text("Green")
+                    }
+                    .tag(2)
+                
+                ColorScreen(color: .blue)
+                    .edgesIgnoringSafeArea(.top)
+                    .tabItem {
+                        Image(systemName: "magnifyingglass")
+                        Text("Blue")
+                    }
+                    .tag(3)
+                
+                ColorScreen(color: .purple)
+                    .edgesIgnoringSafeArea(.top)
+                    .tabItem {
+                        Image(systemName: "bell.fill")
+                        Text("Purple")
+                    }
+                    .tag(4)
+            }
+            .accentColor(getColor())
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        onDismissClicked()
+                    } label: {
+                        Text("Back")
+                            .foregroundColor(.white)
+                    }
                 }
-                .tag(1)
-
-            ColorScreen(color: .green)
-                .edgesIgnoringSafeArea(.top)
-                .tabItem {
-                    Image(systemName: "calendar")
-                    Text("Green")
-                }
-                .tag(2)
-
-            ColorScreen(color: .blue)
-                .edgesIgnoringSafeArea(.top)
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Blue")
-                }
-                .tag(3)
-
-            ColorScreen(color: .purple)
-                .edgesIgnoringSafeArea(.top)
-                .tabItem {
-                    Image(systemName: "bell.fill")
-                    Text("Purple")
-                }
-                .tag(4)
+            }
         }
-        .accentColor(getColor())
+        .navigationViewStyle(.stack)
     }
 
     private func getColor() -> Color {
@@ -60,6 +75,7 @@ struct BottomNavIOSScreen: View {
 
 struct BottomNavIOSScreen_Previews: PreviewProvider {
     static var previews: some View {
-        BottomNavIOSScreen()
+        BottomNavIOSScreen() {}
+            .previewDevice("iPhone 14 Pro Max")
     }
 }
