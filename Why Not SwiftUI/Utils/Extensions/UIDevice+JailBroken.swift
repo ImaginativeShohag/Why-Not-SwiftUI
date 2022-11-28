@@ -7,6 +7,15 @@ import UIKit
 
 /// This file contains a comprehensive checks to find out if the device is jail-broken.
 ///
+/// Note: Must add the following to you plist file:
+///
+/// ```
+/// <key>LSApplicationQueriesSchemes</key>
+/// <array>
+///     <string>cydia</string>
+/// </array>
+/// ```
+///
 /// Reference source:
 /// - https://github.com/thii/DTTJailbreakDetection (Used by https://gonative.io/docs/jailbreak-root-detection)
 /// - https://github.com/SachinSabat/CheckJailBreakDevice

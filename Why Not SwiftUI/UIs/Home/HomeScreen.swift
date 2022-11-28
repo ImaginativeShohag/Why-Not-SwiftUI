@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    @StateObject private var mainVM = HomeViewModel()
+    @StateObject private var viewModel = HomeViewModel()
 
     var body: some View {
         NavigationView {
@@ -13,14 +13,23 @@ struct HomeScreen: View {
                 HStack {
                     Text("Jailbroken Status")
                     Spacer()
-                    Text(mainVM.isJailBroken ? "Broken" : "Not Broken")
-                        .foregroundColor(mainVM.isJailBroken ? Color.red : Color.green)
+                    Text(viewModel.isJailBroken ? "Broken" : "Not Broken")
+                        .foregroundColor(viewModel.isJailBroken ? Color.red : Color.green)
                 }
+
+                Button {
+                    fatalError("Hello, Crashed!")
+                } label: {
+                    Text("Crash App 💥")
+                }
+                .foregroundColor(Color.theme.black)
 
                 ForEach(Screen.screens) { screen in
                     NavigationLink {
                         screen.destination
-                            //.navigationTitle(screen.name)
+                            .if(screen.showTitle, transform: { view in
+                                view.navigationTitle(screen.name)
+                            })
                     } label: {
                         Text(screen.name)
                     }
@@ -30,7 +39,7 @@ struct HomeScreen: View {
         }
         .navigationViewStyle(.stack)
         .onAppear {
-            mainVM.getPosts()
+            //viewModel.getPosts()
         }
     }
 }
@@ -39,7 +48,7 @@ struct HomeScreen_Previews: PreviewProvider {
     static var previews: some View {
         MainScreen()
             .previewDevice("iPhone 14 Pro Max")
-        
+
         MainScreen()
             .previewDevice("iPad Pro (11-inch) (3rd generation)")
     }

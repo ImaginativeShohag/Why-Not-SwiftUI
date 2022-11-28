@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct Why_Not_SwiftUIApp: App {
+    private let trackingService = TrackingService.shared
+
     var body: some Scene {
         WindowGroup {
             MainScreen()
