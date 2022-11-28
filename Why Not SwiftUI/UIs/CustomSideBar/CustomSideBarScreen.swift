@@ -4,6 +4,8 @@
 
 import SwiftUI
 
+// TODO: Sidebar content should have safe area padding.
+
 struct CustomSideBarScreen: View {
     @State private var showSideBar: Bool = true
 
