@@ -1,0 +1,9 @@
+{
+    "Simulator Target Bundle": "org.imaginativeworld.Why-Not-SwiftUI",
+    "aps": {
+        "alert": {
+            "title": "Notification title",
+            "body": "Notification body"
+        }
+    }
+}

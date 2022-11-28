@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,6 +20,7 @@
 		457B0ADA28FB70340019ED01 /* MenuModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B0AD928FB70340019ED01 /* MenuModels.swift */; };
 		457B0ADC28FB70730019ED01 /* MenuRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B0ADB28FB70730019ED01 /* MenuRow.swift */; };
 		457B0ADE28FB73DB0019ED01 /* ExtUIApplicatin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B0ADD28FB73DB0019ED01 /* ExtUIApplicatin.swift */; };
+		457E6037293536FD005595B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457E6036293536FD005595B7 /* AppDelegate.swift */; };
 		458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623B28EC6D75005A4E54 /* HomeScreen.swift */; };
 		458E623E28EC706B005A4E54 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623D28EC706B005A4E54 /* Screen.swift */; };
 		459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D128EB361D00AB5433 /* #001 KeyPath class.swift */; };
@@ -61,6 +62,8 @@
 		457B0AD928FB70340019ED01 /* MenuModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuModels.swift; sourceTree = "<group>"; };
 		457B0ADB28FB70730019ED01 /* MenuRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuRow.swift; sourceTree = "<group>"; };
 		457B0ADD28FB73DB0019ED01 /* ExtUIApplicatin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtUIApplicatin.swift; sourceTree = "<group>"; };
+		457E603529353453005595B7 /* example_payload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = example_payload.apns; sourceTree = "<group>"; };
+		457E6036293536FD005595B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		458E623B28EC6D75005A4E54 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		458E623D28EC706B005A4E54 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		459837D128EB361D00AB5433 /* #001 KeyPath class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#001 KeyPath class.swift"; sourceTree = "<group>"; };
@@ -148,6 +151,22 @@
 				45726D1128F44E66003DF76A /* #003 required keyword.swift */,
 			);
 			path = CodeExample;
+			sourceTree = "<group>";
+		};
+		457E6033293533F8005595B7 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				457E6034293533FF005595B7 /* PushNotification */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		457E6034293533FF005595B7 /* PushNotification */ = {
+			isa = PBXGroup;
+			children = (
+				457E603529353453005595B7 /* example_payload.apns */,
+			);
+			path = PushNotification;
 			sourceTree = "<group>";
 		};
 		458E623A28EC6CD8005A4E54 /* Home */ = {
@@ -317,6 +336,7 @@
 		45BE891128A05F73008DF51F /* Why Not SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				457E6033293533F8005595B7 /* Mock */,
 				45799F2F28F01AD900F53467 /* CodeExample */,
 				459837D428EB4B5F00AB5433 /* Model */,
 				459CA62C28E70E4500FC6F42 /* Resources */,
@@ -324,6 +344,7 @@
 				459CA62828E703EC00FC6F42 /* UIs */,
 				45BE892328A06CEC008DF51F /* Network */,
 				45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */,
+				457E6036293536FD005595B7 /* AppDelegate.swift */,
 				459837DC28EB614700AB5433 /* Why-Not-SwiftUI-Info.plist */,
 				45BE891828A05F76008DF51F /* Preview Content */,
 			);
@@ -385,7 +406,7 @@
 				};
 			};
 			buildConfigurationList = 45BE890A28A05F73008DF51F /* Build configuration list for PBXProject "Why Not SwiftUI" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -440,6 +461,7 @@
 				4568D1AE28F898E700FFDC5E /* BottomNavIOSScreen.swift in Sources */,
 				45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */,
 				45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */,
+				457E6037293536FD005595B7 /* AppDelegate.swift in Sources */,
 				45ACAF5028F9F61B00C5467F /* CustomSideBarScreen.swift in Sources */,
 				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
 				4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */,
