@@ -20,6 +20,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
         let deviceToken = deviceToken.reduce("") { $0 + String(format: "%02X", $1) }
         // Call API and send the deviceToken from here.
+        print("device token: \(deviceToken)")
     }
 
     private func registerForPushNotifications() {
@@ -33,17 +34,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             }
         }
     }
-
-//    private func getNotificationSettings() {
-//        UNUserNotificationCenter.current().getNotificationSettings { settings in
-//
-//            guard settings.authorizationStatus == .authorized else { return }
-//
-//            DispatchQueue.main.async {
-//                UIApplication.shared.registerForRemoteNotifications()
-//            }
-//        }
-//    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
