@@ -12,7 +12,7 @@ struct HomeScreen: View {
             List {
                 // MARK: Custom Menu
                 HStack {
-                    Text("Jailbroken Status")
+                    Text(NSLocalizedString("jailbroken-status", comment: "Jailbroken Status"))
                     Spacer()
                     Text(viewModel.isJailBroken ? "Broken" : "Not Broken")
                         .foregroundColor(viewModel.isJailBroken ? Color.red : Color.green)
