@@ -51,13 +51,22 @@ final class TrackingService: NSObject {
 
 extension TrackingService: MXMetricManagerSubscriber {
     func didReceive(_ payloads: [MXDiagnosticPayload]) {
-        logger.log("processPayload: Size: MXDiagnosticPayload: \(payloads.count)")
+//        guard let currentAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+//            return
+//        }
         
-        processPayload(payloads)
-    }
-    
-    func didReceive(_ payloads: [MXMetricPayload]) {
-        logger.log("processPayload: Size: MXMetricPayload: \(payloads.count)")
+        var crashs = [String]()
+        
+        for item in payloads {
+            guard let crashDiagnostics = item.crashDiagnostics else { continue }
+            
+            for crashItem in crashDiagnostics {
+                crashs.append(String(decoding: crashItem.jsonRepresentation(), as: UTF8.self))
+            }
+        }
+        
+        DiagnosticDataSaver.shared.crashData = crashs
+        DiagnosticDataSaver.shared.savedTime = Date().timeIntervalSince1970
     }
 }
 
@@ -89,17 +98,14 @@ final class DiagnosticDataSaver {
     
     var crashData: [String]? {
         get {
-            guard let json = UserDefaults.standard.data(forKey: UserDefaultsKey.crashData) else {
-                print("111111")
+            guard let json = UserDefaults.standard.string(forKey: UserDefaultsKey.crashData), let jsonData = json.data(using: .utf8) else {
                 return []
             }
             
             let decoder = JSONDecoder()
-            if let decoded = try? decoder.decode([String].self, from: json) as [String] {
-                print("222222")
+            if let decoded = try? decoder.decode([String].self, from: jsonData) as [String] {
                 return decoded
             } else {
-                print("333333")
                 return []
             }
         } set(value) {
@@ -111,10 +117,9 @@ final class DiagnosticDataSaver {
             
             let encoder = JSONEncoder()
             if let encoded = try? encoder.encode(value) {
-                print("55555")
+                print("66666")
                 UserDefaults.standard.set(encoded, forKey: UserDefaultsKey.crashData)
             } else {
-                print("66666")
                 UserDefaults.standard.removeObject(forKey: UserDefaultsKey.crashData)
             }
             

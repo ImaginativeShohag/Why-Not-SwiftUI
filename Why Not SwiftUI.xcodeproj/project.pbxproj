@@ -559,6 +559,7 @@
 				45B2D05C29031202006A631E /* ExtUIGestureRecognizerDelegate.swift in Sources */,
 				459EC10E290067B00019C555 /* MetricKitScreen.swift in Sources */,
 				456174AC2935C6370078B997 /* NotificationUtils.swift in Sources */,
+				459EC10E290067B00019C555 /* MetricKitScreen.swift in Sources */,
 				4568D1A528F8950600FFDC5E /* BottomNavVsSideBarScreen.swift in Sources */,
 				459EC11029007BF90019C555 /* View+ConditionalModifier.swift in Sources */,
 				459837DB28EB5C3D00AB5433 /* ImageVideoCapturer.swift in Sources */,

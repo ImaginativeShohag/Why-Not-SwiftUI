@@ -11,7 +11,6 @@ extension Color {
 struct ColorTheme {
     let white = Color("White")
     let black = Color("Black")
-    
     let red500 = Color("Red500")
 }
 
