@@ -31,6 +31,7 @@
 		457E604E29354156005595B7 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457E604A29354156005595B7 /* ImageDownloader.swift */; };
 		458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623B28EC6D75005A4E54 /* HomeScreen.swift */; };
 		458E623E28EC706B005A4E54 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623D28EC706B005A4E54 /* Screen.swift */; };
+		4597D9F42950DBC3004967C7 /* #004 string to hex to string converter in Sources */ = {isa = PBXBuildFile; fileRef = 4597D9F32950DBC3004967C7 /* #004 string to hex to string converter */; };
 		459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D128EB361D00AB5433 /* #001 KeyPath class.swift */; };
 		459837D628EB4B7100AB5433 /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D528EB4B7100AB5433 /* Fruit.swift */; };
 		459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */; };
@@ -106,6 +107,7 @@
 		457E604A29354156005595B7 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		458E623B28EC6D75005A4E54 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		458E623D28EC706B005A4E54 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
+		4597D9F32950DBC3004967C7 /* #004 string to hex to string converter */ = {isa = PBXFileReference; lastKnownFileType = text; path = "#004 string to hex to string converter"; sourceTree = "<group>"; };
 		459837D128EB361D00AB5433 /* #001 KeyPath class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#001 KeyPath class.swift"; sourceTree = "<group>"; };
 		459837D528EB4B7100AB5433 /* Fruit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fruit.swift; sourceTree = "<group>"; };
 		459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVideoCapturerExampleScreen.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				459837D128EB361D00AB5433 /* #001 KeyPath class.swift */,
 				45799F2D28F0041F00F53467 /* #002 some vs any keyword.swift */,
 				45726D1128F44E66003DF76A /* #003 required keyword.swift */,
+				4597D9F32950DBC3004967C7 /* #004 string to hex to string converter */,
 			);
 			path = CodeExample;
 			sourceTree = "<group>";
@@ -592,6 +595,7 @@
 				457E604D29354156005595B7 /* ImageDownloader.swift in Sources */,
 				459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */,
 				45BE892728A06FF8008DF51F /* HomeViewModel.swift in Sources */,
+				4597D9F42950DBC3004967C7 /* #004 string to hex to string converter in Sources */,
 				457E604B29354156005595B7 /* NetworkError.swift in Sources */,
 				457B0ADA28FB70340019ED01 /* MenuModels.swift in Sources */,
 				459CA63328E70F5600FC6F42 /* RingChart.swift in Sources */,
