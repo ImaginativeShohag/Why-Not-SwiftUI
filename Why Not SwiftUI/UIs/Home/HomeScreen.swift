@@ -11,22 +11,25 @@ struct HomeScreen: View {
         NavigationView {
             List {
                 // MARK: Custom Menu
+
                 HStack {
                     Text(NSLocalizedString("jailbroken-status", comment: "Jailbroken Status"))
                     Spacer()
                     Text(viewModel.isJailBroken ? "Broken" : "Not Broken")
-                        .foregroundColor(viewModel.isJailBroken ? Color.red : Color.green)
+                        .foregroundColor(viewModel.isJailBroken ? Color(.systemRed) : Color(.systemGreen))
                 }
-                
+
                 // MARK: Custom Menu
+
                 Button {
                     fatalError("Hello, Crashed!")
                 } label: {
                     Text("Crash App 💥")
                 }
                 .foregroundColor(Color.theme.black)
-                
+
                 // MARK: Custom Menu
+
                 Button {
                     UNUserNotificationCenter.current().sendDummyNotification()
                 } label: {
@@ -35,6 +38,7 @@ struct HomeScreen: View {
                 .foregroundColor(Color.theme.black)
 
                 // MARK: Screens
+
                 ForEach(Screen.screens) { screen in
                     NavigationLink {
                         screen.destination
@@ -50,7 +54,7 @@ struct HomeScreen: View {
         }
         .navigationViewStyle(.stack)
         .onAppear {
-            //viewModel.getPosts()
+            // viewModel.getPosts()
         }
     }
 }
@@ -61,6 +65,6 @@ struct HomeScreen_Previews: PreviewProvider {
             .previewDevice("iPhone 14 Pro Max")
 
         MainScreen()
-            .previewDevice("iPad Pro (11-inch) (3rd generation)")
+            .previewDevice("iPad Pro (11-inch) (4th generation)")
     }
 }
