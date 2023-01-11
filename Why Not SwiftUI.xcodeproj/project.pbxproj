@@ -54,6 +54,9 @@
 		45BE892228A063A5008DF51F /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 45BE892128A063A5008DF51F /* CombineMoya */; };
 		45BE892528A06D24008DF51F /* GoRestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BE892428A06D24008DF51F /* GoRestAPI.swift */; };
 		45BE892728A06FF8008DF51F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BE892628A06FF8008DF51F /* HomeViewModel.swift */; };
+		45F1C98F296F128C00386645 /* CoolToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C98E296F128C00386645 /* CoolToast.swift */; };
+		45F1C991296F129900386645 /* CoolToastScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C990296F129900386645 /* CoolToastScreen.swift */; };
+		45F1C993296F13D000386645 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C992296F13D000386645 /* Color+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,6 +134,9 @@
 		45BE891928A05F76008DF51F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		45BE892428A06D24008DF51F /* GoRestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoRestAPI.swift; sourceTree = "<group>"; };
 		45BE892628A06FF8008DF51F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		45F1C98E296F128C00386645 /* CoolToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoolToast.swift; sourceTree = "<group>"; };
+		45F1C990296F129900386645 /* CoolToastScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoolToastScreen.swift; sourceTree = "<group>"; };
+		45F1C992296F13D000386645 /* Color+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,6 +306,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				45F1C98C296F123400386645 /* CoolToast */,
 				459EC107290055FE0019C555 /* MetricKit */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
 				459CA62228E6FA7B00FC6F42 /* Chart */,
@@ -319,6 +326,7 @@
 				4568D1A028F8233D00FFDC5E /* Extensions */,
 				459CA62A28E70E2B00FC6F42 /* Typography.swift */,
 				456174AB2935C6370078B997 /* NotificationUtils.swift */,
+				45F1C992296F13D000386645 /* Color+.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -439,6 +447,23 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		45F1C98C296F123400386645 /* CoolToast */ = {
+			isa = PBXGroup;
+			children = (
+				45F1C98D296F126900386645 /* Component */,
+				45F1C990296F129900386645 /* CoolToastScreen.swift */,
+			);
+			path = CoolToast;
+			sourceTree = "<group>";
+		};
+		45F1C98D296F126900386645 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				45F1C98E296F128C00386645 /* CoolToast.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -489,7 +514,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1410;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					457E603B29353FE5005595B7 = {
 						CreatedOnToolsVersion = 14.1;
@@ -561,10 +586,10 @@
 				45B2D05C29031202006A631E /* ExtUIGestureRecognizerDelegate.swift in Sources */,
 				459EC10E290067B00019C555 /* MetricKitScreen.swift in Sources */,
 				456174AC2935C6370078B997 /* NotificationUtils.swift in Sources */,
-				459EC10E290067B00019C555 /* MetricKitScreen.swift in Sources */,
 				4568D1A528F8950600FFDC5E /* BottomNavVsSideBarScreen.swift in Sources */,
 				459EC11029007BF90019C555 /* View+ConditionalModifier.swift in Sources */,
 				459837DB28EB5C3D00AB5433 /* ImageVideoCapturer.swift in Sources */,
+				45F1C993296F13D000386645 /* Color+.swift in Sources */,
 				457B0ADC28FB70730019ED01 /* MenuRow.swift in Sources */,
 				45BE892528A06D24008DF51F /* GoRestAPI.swift in Sources */,
 				459CA62728E702D400FC6F42 /* FitnessRingCardView.swift in Sources */,
@@ -572,6 +597,7 @@
 				45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */,
 				459EC10A2900561D0019C555 /* TrackingService.swift in Sources */,
 				45ACAF5228F9F68600C5467F /* CustomSideBar.swift in Sources */,
+				45F1C991296F129900386645 /* CoolToastScreen.swift in Sources */,
 				459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */,
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,
 				4568D1AE28F898E700FFDC5E /* BottomNavIOSScreen.swift in Sources */,
@@ -592,6 +618,7 @@
 				4568D1A828F8951A00FFDC5E /* SplashScreen.swift in Sources */,
 				4568D1B028F8990D00FFDC5E /* SideBarIPadScreen.swift in Sources */,
 				457E604D29354156005595B7 /* ImageDownloader.swift in Sources */,
+				45F1C98F296F128C00386645 /* CoolToast.swift in Sources */,
 				459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */,
 				45BE892728A06FF8008DF51F /* HomeViewModel.swift in Sources */,
 				457E604B29354156005595B7 /* NetworkError.swift in Sources */,
@@ -681,6 +708,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -741,6 +769,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
