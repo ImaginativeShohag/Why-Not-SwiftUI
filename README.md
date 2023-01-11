@@ -6,6 +6,7 @@ A collection of Swift, SwiftUI and iOS goodies.
 
 - MetricKit crash report example
 - Notification
+- CoolToast: An cool Android Toast like implementation for SwiftUI
 
 ## TODO
 
