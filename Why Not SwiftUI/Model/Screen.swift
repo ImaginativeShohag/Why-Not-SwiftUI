@@ -17,5 +17,6 @@ struct Screen: Identifiable {
         Screen(name: "BottomNav vs SideBar", showTitle: false, destination: AnyView(BottomNavVsSideBarScreen())),
         Screen(name: "MetricKit", showTitle: true, destination: AnyView(MetricKitScreen())),
         Screen(name: "Cool Toast", showTitle: true, destination: AnyView(CoolToastScreen())),
+        Screen(name: "Native Alert", showTitle: true, destination: AnyView(NativeAlertScreen())),
     ]
 }

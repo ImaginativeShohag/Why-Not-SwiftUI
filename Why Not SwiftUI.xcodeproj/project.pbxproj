@@ -57,6 +57,8 @@
 		45F1C98F296F128C00386645 /* CoolToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C98E296F128C00386645 /* CoolToast.swift */; };
 		45F1C991296F129900386645 /* CoolToastScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C990296F129900386645 /* CoolToastScreen.swift */; };
 		45F1C993296F13D000386645 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C992296F13D000386645 /* Color+.swift */; };
+		45F1C99A297098C000386645 /* NativeAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C999297098C000386645 /* NativeAlert.swift */; };
+		45F1C99D2970991200386645 /* NativeAlertScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C99C2970991200386645 /* NativeAlertScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +139,8 @@
 		45F1C98E296F128C00386645 /* CoolToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoolToast.swift; sourceTree = "<group>"; };
 		45F1C990296F129900386645 /* CoolToastScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoolToastScreen.swift; sourceTree = "<group>"; };
 		45F1C992296F13D000386645 /* Color+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
+		45F1C999297098C000386645 /* NativeAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAlert.swift; sourceTree = "<group>"; };
+		45F1C99C2970991200386645 /* NativeAlertScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAlertScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -306,6 +310,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				45F1C998297098A700386645 /* NativeAlert */,
 				45F1C98C296F123400386645 /* CoolToast */,
 				459EC107290055FE0019C555 /* MetricKit */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
@@ -464,6 +469,23 @@
 			path = Component;
 			sourceTree = "<group>";
 		};
+		45F1C998297098A700386645 /* NativeAlert */ = {
+			isa = PBXGroup;
+			children = (
+				45F1C99B297098E700386645 /* Component */,
+				45F1C99C2970991200386645 /* NativeAlertScreen.swift */,
+			);
+			path = NativeAlert;
+			sourceTree = "<group>";
+		};
+		45F1C99B297098E700386645 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				45F1C999297098C000386645 /* NativeAlert.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -604,12 +626,14 @@
 				45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */,
 				45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */,
 				457E6037293536FD005595B7 /* AppDelegate.swift in Sources */,
+				45F1C99D2970991200386645 /* NativeAlertScreen.swift in Sources */,
 				45ACAF5028F9F61B00C5467F /* CustomSideBarScreen.swift in Sources */,
 				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
 				4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */,
 				4568D1AC28F8975D00FFDC5E /* MainScreen.swift in Sources */,
 				459EC10C290059620019C555 /* Color.swift in Sources */,
 				459EC112290086640019C555 /* MetircKitViewModel.swift in Sources */,
+				45F1C99A297098C000386645 /* NativeAlert.swift in Sources */,
 				458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */,
 				459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */,
 				459CA63028E70F2700FC6F42 /* OverviewRingCardView.swift in Sources */,
