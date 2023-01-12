@@ -170,36 +170,9 @@ private struct CoolToastView: View {
             Spacer().frame(width: 16)
         }
         .frame(height: 46)
-        .background(Color.systemWhite)
+        .background(Color(.systemBackground))
         .cornerRadius(23)
         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-    }
-}
-
-struct CoolToast_Previews: PreviewProvider {
-    static var previews: some View {
-        CoolToastView(
-            icon: "checkmark.circle.fill",
-            iconColor: .systemGreen,
-            message: "Answer Saved",
-            paddingBottom: 16
-        )
-        .coolToast(
-            isPresented: .constant(true),
-            icon: "light.beacon.max.fill",
-            message: "Please Be Warn!",
-            duration: .infinity,
-            paddingBottom: 32
-        )
-        .coolToast(
-            data: .constant(CoolToastData(
-                icon: "flame",
-                iconColor: .systemRed,
-                message: "Impressive!",
-                duration: .infinity
-            )),
-            paddingBottom: 120
-        )
     }
 }
 
@@ -207,7 +180,7 @@ extension View {
     func coolToast(
         isPresented: Binding<Bool>,
         icon: String,
-        iconColor: Color = .systemGreen,
+        iconColor: Color = Color(.systemGreen),
         message: String,
         duration: TimeInterval = 3.0,
         animation: Animation = .linear(duration: 0.3),
@@ -268,7 +241,7 @@ struct CoolToastData: Equatable {
 
     init(
         icon: String = "",
-        iconColor: Color = .systemGreen,
+        iconColor: Color = Color(.systemGreen),
         message: String = "",
         duration: TimeInterval = 3.0,
         animation: Animation = .linear(duration: 0.3)
@@ -286,6 +259,35 @@ struct CoolToastData: Equatable {
             message: "",
             duration: 0.0,
             animation: .default
+        )
+    }
+}
+
+// MARK: - Previews
+
+struct CoolToast_Previews: PreviewProvider {
+    static var previews: some View {
+        CoolToastView(
+            icon: "checkmark.circle.fill",
+            iconColor: Color(.systemGreen),
+            message: "Answer Saved",
+            paddingBottom: 16
+        )
+        .coolToast(
+            isPresented: .constant(true),
+            icon: "light.beacon.max.fill",
+            message: "Please Be Warn!",
+            duration: .infinity,
+            paddingBottom: 32
+        )
+        .coolToast(
+            data: .constant(CoolToastData(
+                icon: "flame",
+                iconColor: Color(.systemRed),
+                message: "Impressive!",
+                duration: .infinity
+            )),
+            paddingBottom: 120
         )
     }
 }
