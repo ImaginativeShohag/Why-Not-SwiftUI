@@ -18,5 +18,6 @@ struct Screen: Identifiable {
         Screen(name: "MetricKit", showTitle: true, destination: AnyView(MetricKitScreen())),
         Screen(name: "Cool Toast", showTitle: true, destination: AnyView(CoolToastScreen())),
         Screen(name: "Native Alert", showTitle: true, destination: AnyView(NativeAlertScreen())),
+        Screen(name: "Cool Progress", showTitle: true, destination: AnyView(CoolProgressScreen())),
     ]
 }

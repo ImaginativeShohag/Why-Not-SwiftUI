@@ -59,6 +59,9 @@
 		45F1C993296F13D000386645 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C992296F13D000386645 /* Color+.swift */; };
 		45F1C99A297098C000386645 /* NativeAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C999297098C000386645 /* NativeAlert.swift */; };
 		45F1C99D2970991200386645 /* NativeAlertScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C99C2970991200386645 /* NativeAlertScreen.swift */; };
+		45F1C9A129709B9A00386645 /* CoolProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C9A029709B9A00386645 /* CoolProgressView.swift */; };
+		45F1C9A329709BB200386645 /* CoolProgressScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C9A229709BB200386645 /* CoolProgressScreen.swift */; };
+		45F1C9A52970A18E00386645 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C9A42970A18E00386645 /* View+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,6 +144,9 @@
 		45F1C992296F13D000386645 /* Color+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		45F1C999297098C000386645 /* NativeAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeAlert.swift; sourceTree = "<group>"; };
 		45F1C99C2970991200386645 /* NativeAlertScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAlertScreen.swift; sourceTree = "<group>"; };
+		45F1C9A029709B9A00386645 /* CoolProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoolProgressView.swift; sourceTree = "<group>"; };
+		45F1C9A229709BB200386645 /* CoolProgressScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoolProgressScreen.swift; sourceTree = "<group>"; };
+		45F1C9A42970A18E00386645 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -310,6 +316,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				45F1C99E29709B7600386645 /* CoolProgressView */,
 				45F1C998297098A700386645 /* NativeAlert */,
 				45F1C98C296F123400386645 /* CoolToast */,
 				459EC107290055FE0019C555 /* MetricKit */,
@@ -332,6 +339,7 @@
 				459CA62A28E70E2B00FC6F42 /* Typography.swift */,
 				456174AB2935C6370078B997 /* NotificationUtils.swift */,
 				45F1C992296F13D000386645 /* Color+.swift */,
+				45F1C9A42970A18E00386645 /* View+.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -486,6 +494,23 @@
 			path = Component;
 			sourceTree = "<group>";
 		};
+		45F1C99E29709B7600386645 /* CoolProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				45F1C99F29709B8500386645 /* Component */,
+				45F1C9A229709BB200386645 /* CoolProgressScreen.swift */,
+			);
+			path = CoolProgressView;
+			sourceTree = "<group>";
+		};
+		45F1C99F29709B8500386645 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				45F1C9A029709B9A00386645 /* CoolProgressView.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -609,6 +634,7 @@
 				459EC10E290067B00019C555 /* MetricKitScreen.swift in Sources */,
 				456174AC2935C6370078B997 /* NotificationUtils.swift in Sources */,
 				4568D1A528F8950600FFDC5E /* BottomNavVsSideBarScreen.swift in Sources */,
+				45F1C9A52970A18E00386645 /* View+.swift in Sources */,
 				459EC11029007BF90019C555 /* View+ConditionalModifier.swift in Sources */,
 				459837DB28EB5C3D00AB5433 /* ImageVideoCapturer.swift in Sources */,
 				45F1C993296F13D000386645 /* Color+.swift in Sources */,
@@ -623,6 +649,7 @@
 				459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */,
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,
 				4568D1AE28F898E700FFDC5E /* BottomNavIOSScreen.swift in Sources */,
+				45F1C9A129709B9A00386645 /* CoolProgressView.swift in Sources */,
 				45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */,
 				45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */,
 				457E6037293536FD005595B7 /* AppDelegate.swift in Sources */,
@@ -642,6 +669,7 @@
 				4568D1A828F8951A00FFDC5E /* SplashScreen.swift in Sources */,
 				4568D1B028F8990D00FFDC5E /* SideBarIPadScreen.swift in Sources */,
 				457E604D29354156005595B7 /* ImageDownloader.swift in Sources */,
+				45F1C9A329709BB200386645 /* CoolProgressScreen.swift in Sources */,
 				45F1C98F296F128C00386645 /* CoolToast.swift in Sources */,
 				459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */,
 				45BE892728A06FF8008DF51F /* HomeViewModel.swift in Sources */,
