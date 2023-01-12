@@ -50,6 +50,7 @@ struct HomeScreen: View {
                     }
                 }
             }
+            .fontStyle(size: 16)
             .navigationTitle("Why Not SwiftUI!")
         }
         .navigationViewStyle(.stack)

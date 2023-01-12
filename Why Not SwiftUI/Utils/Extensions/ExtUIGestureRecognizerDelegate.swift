@@ -1,8 +1,5 @@
 //
-//  ExtUIGestureRecognizerDelegate.swift
-//  RDDM (iOS)
-//
-//  Created by iOS Developer on 9/19/22.
+//  Copyright © 2022 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
 import Foundation
