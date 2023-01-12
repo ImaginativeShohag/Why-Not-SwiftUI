@@ -1,8 +1,5 @@
 //
-//  MainViewModel.swift
-//  Why Not SwiftUI
-//
-//  Created by Md. Mahmudul Hasan Shohag on 8/8/22.
+//  Copyright © 2022 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
 import Combine

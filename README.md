@@ -4,6 +4,7 @@ A collection of Swift, SwiftUI and iOS goodies.
 
 ## What we have hare!
 
+- Custom Font
 - MetricKit crash report example
 - Notification
 - CoolToast: An cool Android Toast like implementation for SwiftUI
@@ -11,6 +12,5 @@ A collection of Swift, SwiftUI and iOS goodies.
 
 ## TODO
 
-- [ ] Add custom font
 - [ ] Custom Sidebar: Finalize it
 - [ ] Build variant
