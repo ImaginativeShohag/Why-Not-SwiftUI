@@ -176,6 +176,8 @@ private struct CoolToastView: View {
     }
 }
 
+// MARK: - Extensions
+
 extension View {
     func coolToast(
         isPresented: Binding<Bool>,

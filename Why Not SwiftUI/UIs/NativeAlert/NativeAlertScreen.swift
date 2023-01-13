@@ -4,19 +4,54 @@
 
 import SwiftUI
 
+struct NativeAlertScreenAlert: Identifiable {
+    enum AlertType {
+        case create
+        case success
+    }
+
+    let id: AlertType
+}
+
 struct NativeAlertScreen: View {
-    @State var showAlert = false
+    @State var showAlert1 = false
+    @State var alertData: NativeAlertData? = nil
+    @State var alertType: NativeAlertScreenAlert? = nil
 
     var body: some View {
-        ZStack {
+        VStack {
+            Spacer()
+
             Button {
-                showAlert.toggle()
+                showAlert1.toggle()
             } label: {
-                Text("Show Alert")
+                Text("Show Alert 1")
             }
+
+            Button {
+                alertData = NativeAlertData(
+                    title: "Alert 2",
+                    primaryButtonText: "Ok"
+                )
+            } label: {
+                Text("Show Alert 2")
+            }
+
+            Button {
+                alertType = NativeAlertScreenAlert(id: .create)
+            } label: {
+                Text("Show Alert 3: Create")
+            }
+
+            Button {
+                alertType = NativeAlertScreenAlert(id: .success)
+            } label: {
+                Text("Show Alert 3: Success")
+            }
+            Spacer()
         }
         .alert(
-            isPresented: $showAlert,
+            isPresented: $showAlert1,
             title: "Awesome title",
             message: "Awesome message",
             primaryButtonText: "Ok",
@@ -30,6 +65,22 @@ struct NativeAlertScreen: View {
                 //
             }
         )
+        .alert(data: $alertData)
+        .alert(data: $alertType) { item in
+            switch item.id {
+            case .create:
+                return NativeAlertData(
+                    title: "Create?",
+                    primaryButtonText: "Yes",
+                    secondaryButtonText: "No"
+                )
+            case .success:
+                return NativeAlertData(
+                    title: "Success!",
+                    primaryButtonText: "Ok"
+                )
+            }
+        }
     }
 }
 
