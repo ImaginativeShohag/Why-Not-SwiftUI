@@ -56,12 +56,12 @@ struct NativeAlertScreen: View {
             message: "Awesome message",
             primaryButtonText: "Ok",
             primaryButtonTextColor: Color(.systemGreen),
-            primaryHandler: {
+            primaryButtonHandler: {
                 //
             },
             secondaryButtonText: "Cool",
             secondaryButtonTextColor: Color(.systemRed),
-            secondaryHandler: {
+            secondaryButtonHandler: {
                 //
             }
         )

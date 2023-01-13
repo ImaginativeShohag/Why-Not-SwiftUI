@@ -20,10 +20,10 @@ private class NativeAlertController: UIViewController {
         message: String?,
         primaryButtonText: String,
         primaryButtonTextColor: Color,
-        primaryHandler: @escaping ()->Void,
+        primaryButtonHandler: @escaping ()->Void,
         secondaryButtonText: String?,
         secondaryButtonTextColor: Color,
-        secondaryHandler: @escaping ()->Void,
+        secondaryButtonHandler: @escaping ()->Void,
         onDismiss: @escaping ()->Void
     ) {
         self.onDismiss = onDismiss
@@ -38,7 +38,7 @@ private class NativeAlertController: UIViewController {
 
         let primaryAction = UIAlertAction(title: primaryButtonText, style: .default, handler: { _ in
             onDismiss()
-            primaryHandler()
+            primaryButtonHandler()
         })
         primaryAction.setValue(UIColor(primaryButtonTextColor), forKey: "titleTextColor")
         alert.addAction(primaryAction)
@@ -46,7 +46,7 @@ private class NativeAlertController: UIViewController {
         if let secondaryButtonText = secondaryButtonText {
             let secondaryAction = UIAlertAction(title: secondaryButtonText, style: .default, handler: { _ in
                 onDismiss()
-                secondaryHandler()
+                secondaryButtonHandler()
             })
             secondaryAction.setValue(UIColor(secondaryButtonTextColor), forKey: "titleTextColor")
             alert.addAction(secondaryAction)
@@ -78,10 +78,10 @@ private struct NativeAlert: UIViewControllerRepresentable {
     private let message: String?
     private let primaryButtonText: String
     private let primaryButtonTextColor: Color
-    private let primaryHandler: ()->Void
+    private let primaryButtonHandler: ()->Void
     private let secondaryButtonText: String?
     private let secondaryButtonTextColor: Color
-    private let secondaryHandler: ()->Void
+    private let secondaryButtonHandler: ()->Void
 
     init(
         isPresented: Binding<Bool>,
@@ -89,20 +89,20 @@ private struct NativeAlert: UIViewControllerRepresentable {
         message: String?,
         primaryButtonText: String,
         primaryButtonTextColor: Color,
-        primaryHandler: @escaping ()->Void,
+        primaryButtonHandler: @escaping ()->Void,
         secondaryButtonText: String?,
         secondaryButtonTextColor: Color,
-        secondaryHandler: @escaping ()->Void
+        secondaryButtonHandler: @escaping ()->Void
     ) {
         self._isPresented = isPresented
         self.title = title
         self.message = message
         self.primaryButtonText = primaryButtonText
         self.primaryButtonTextColor = primaryButtonTextColor
-        self.primaryHandler = primaryHandler
+        self.primaryButtonHandler = primaryButtonHandler
         self.secondaryButtonText = secondaryButtonText
         self.secondaryButtonTextColor = secondaryButtonTextColor
-        self.secondaryHandler = secondaryHandler
+        self.secondaryButtonHandler = secondaryButtonHandler
     }
 
     func makeUIViewController(context _: Context)->NativeAlertController {
@@ -111,10 +111,10 @@ private struct NativeAlert: UIViewControllerRepresentable {
             message: message,
             primaryButtonText: primaryButtonText,
             primaryButtonTextColor: primaryButtonTextColor,
-            primaryHandler: primaryHandler,
+            primaryButtonHandler: primaryButtonHandler,
             secondaryButtonText: secondaryButtonText,
             secondaryButtonTextColor: secondaryButtonTextColor,
-            secondaryHandler: secondaryHandler,
+            secondaryButtonHandler: secondaryButtonHandler,
             onDismiss: onDismiss
         )
     }
@@ -169,7 +169,7 @@ private class ModernNativeAlertController: UIViewController {
 
         let primaryAction = UIAlertAction(title: data.primaryButtonText, style: .default, handler: { _ in
             self.onDismiss()
-            data.primaryHandler()
+            data.primaryButtonHandler()
         })
         primaryAction.setValue(UIColor(data.primaryButtonTextColor), forKey: "titleTextColor")
         alert.addAction(primaryAction)
@@ -177,7 +177,7 @@ private class ModernNativeAlertController: UIViewController {
         if let secondaryButtonText = data.secondaryButtonText {
             let secondaryAction = UIAlertAction(title: secondaryButtonText, style: .default, handler: { _ in
                 self.onDismiss()
-                data.secondaryHandler()
+                data.secondaryButtonHandler()
             })
             secondaryAction.setValue(UIColor(data.secondaryButtonTextColor), forKey: "titleTextColor")
             alert.addAction(secondaryAction)
@@ -277,10 +277,10 @@ extension View {
         message: String? = nil,
         primaryButtonText: String,
         primaryButtonTextColor: Color = Color(.systemBlue),
-        primaryHandler: @escaping ()->Void = {},
+        primaryButtonHandler: @escaping ()->Void = {},
         secondaryButtonText: String? = nil,
         secondaryButtonTextColor: Color = Color(.systemBlue),
-        secondaryHandler: @escaping ()->Void = {}
+        secondaryButtonHandler: @escaping ()->Void = {}
     )->some View {
         return AnyView(background(NativeAlert(
             isPresented: isPresented,
@@ -288,10 +288,10 @@ extension View {
             message: message,
             primaryButtonText: primaryButtonText,
             primaryButtonTextColor: primaryButtonTextColor,
-            primaryHandler: primaryHandler,
+            primaryButtonHandler: primaryButtonHandler,
             secondaryButtonText: secondaryButtonText,
             secondaryButtonTextColor: secondaryButtonTextColor,
-            secondaryHandler: secondaryHandler
+            secondaryButtonHandler: secondaryButtonHandler
         )))
     }
 
@@ -321,29 +321,29 @@ struct NativeAlertData {
     let message: String?
     let primaryButtonText: String
     let primaryButtonTextColor: Color
-    let primaryHandler: ()->Void
+    let primaryButtonHandler: ()->Void
     let secondaryButtonText: String?
     let secondaryButtonTextColor: Color
-    let secondaryHandler: ()->Void
+    let secondaryButtonHandler: ()->Void
 
     init(
         title: String? = nil,
         message: String? = nil,
         primaryButtonText: String,
         primaryButtonTextColor: Color = Color(.systemBlue),
-        primaryHandler: @escaping ()->Void = {},
+        primaryButtonHandler: @escaping ()->Void = {},
         secondaryButtonText: String? = nil,
         secondaryButtonTextColor: Color = Color(.systemBlue),
-        secondaryHandler: @escaping ()->Void = {}
+        secondaryButtonHandler: @escaping ()->Void = {}
     ) {
         self.title = title
         self.message = message
         self.primaryButtonText = primaryButtonText
         self.primaryButtonTextColor = primaryButtonTextColor
-        self.primaryHandler = primaryHandler
+        self.primaryButtonHandler = primaryButtonHandler
         self.secondaryButtonText = secondaryButtonText
         self.secondaryButtonTextColor = secondaryButtonTextColor
-        self.secondaryHandler = secondaryHandler
+        self.secondaryButtonHandler = secondaryButtonHandler
     }
 }
 
@@ -362,12 +362,12 @@ struct NativeAlert_Previews: PreviewProvider {
             message: "Awesome message",
             primaryButtonText: "Ok",
             primaryButtonTextColor: Color(.systemGreen),
-            primaryHandler: {
+            primaryButtonHandler: {
                 //
             },
             secondaryButtonText: "Cool",
             secondaryButtonTextColor: Color(.systemRed),
-            secondaryHandler: {
+            secondaryButtonHandler: {
                 //
             }
         )
