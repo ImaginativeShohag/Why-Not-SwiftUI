@@ -14,7 +14,7 @@ struct NativeAlertScreenAlert: Identifiable {
 }
 
 struct NativeAlertScreen: View {
-    @State var showAlert1 = false
+    @State var showAlert = true
     @State var alertData: NativeAlertData? = nil
     @State var alertType: NativeAlertScreenAlert? = nil
 
@@ -23,7 +23,7 @@ struct NativeAlertScreen: View {
             Spacer()
 
             Button {
-                showAlert1.toggle()
+                showAlert = true
             } label: {
                 Text("Show Alert 1")
             }
@@ -51,7 +51,7 @@ struct NativeAlertScreen: View {
             Spacer()
         }
         .alert(
-            isPresented: $showAlert1,
+            isPresented: $showAlert,
             title: "Awesome title",
             message: "Awesome message",
             primaryButtonText: "Ok",

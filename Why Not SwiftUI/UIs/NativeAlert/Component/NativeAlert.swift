@@ -8,6 +8,8 @@ import SwiftUI
 // MARK: - General Approach
 
 private class NativeAlertController: UIViewController {
+    var isPresented: Bool = false
+
     private var onDismiss: ()->Void
 
     private let alert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
@@ -16,6 +18,7 @@ private class NativeAlertController: UIViewController {
     required init?(coder _: NSCoder) { fatalError("") }
 
     init(
+        isPresented: Bool,
         title: String?,
         message: String?,
         primaryButtonText: String,
@@ -26,6 +29,7 @@ private class NativeAlertController: UIViewController {
         secondaryButtonHandler: @escaping ()->Void,
         onDismiss: @escaping ()->Void
     ) {
+        self.isPresented = isPresented
         self.onDismiss = onDismiss
 
         if let title = title {
@@ -56,7 +60,7 @@ private class NativeAlertController: UIViewController {
     }
 
     func show() {
-        if !alert.isBeingPresented {
+        if !alert.isBeingPresented, !alert.isBeingDismissed {
             present(alert, animated: true, completion: nil)
         }
     }
@@ -107,6 +111,7 @@ private struct NativeAlert: UIViewControllerRepresentable {
 
     func makeUIViewController(context _: Context)->NativeAlertController {
         return NativeAlertController(
+            isPresented: isPresented,
             title: title,
             message: message,
             primaryButtonText: primaryButtonText,
@@ -120,6 +125,10 @@ private struct NativeAlert: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: NativeAlertController, context _: Context) {
+        if uiViewController.isPresented == isPresented { return }
+
+        uiViewController.isPresented = isPresented
+
         if isPresented {
             uiViewController.show()
         } else {
@@ -136,8 +145,10 @@ private struct NativeAlert: UIViewControllerRepresentable {
 
 // MARK: - Modern Approach
 
-private class ModernNativeAlertController: UIViewController {
+private class NativeAlertModernController: UIViewController {
     private var onDismiss: ()->Void
+
+    var data: NativeAlertData?
 
     private var alert: UIAlertController?
 
@@ -145,6 +156,7 @@ private class ModernNativeAlertController: UIViewController {
     required init?(coder _: NSCoder) { fatalError("") }
 
     init(
+        data _: NativeAlertData?,
         onDismiss: @escaping ()->Void
     ) {
         self.onDismiss = onDismiss
@@ -189,7 +201,7 @@ private class ModernNativeAlertController: UIViewController {
     func show(data: NativeAlertData) {
         if alert == nil || alert?.isBeingPresented == false {
             if let alert = initAlert(data) {
-                present(alert, animated: true, completion: nil)
+                rootController().present(alert, animated: true, completion: nil)
             }
         }
     }
@@ -203,6 +215,16 @@ private class ModernNativeAlertController: UIViewController {
     override func viewWillDisappear(_: Bool) {
         hide()
     }
+
+    private func rootController()->UIViewController {
+        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return .init()
+        }
+        guard let root = screen.windows.first?.rootViewController else {
+            return .init()
+        }
+        return root
+    }
 }
 
 private struct NativeAlertModern: UIViewControllerRepresentable {
@@ -214,13 +236,17 @@ private struct NativeAlertModern: UIViewControllerRepresentable {
         self._data = data
     }
 
-    func makeUIViewController(context _: Context)->ModernNativeAlertController {
-        return ModernNativeAlertController(
+    func makeUIViewController(context _: Context)->NativeAlertModernController {
+        return NativeAlertModernController(
+            data: data,
             onDismiss: onDismiss
         )
     }
 
-    func updateUIViewController(_ uiViewController: ModernNativeAlertController, context _: Context) {
+    func updateUIViewController(_ uiViewController: NativeAlertModernController, context _: Context) {
+        if uiViewController.data?.id == data?.id { return }
+        uiViewController.data = data
+
         if let data = data {
             uiViewController.show(data: data)
         } else {
@@ -232,6 +258,91 @@ private struct NativeAlertModern: UIViewControllerRepresentable {
         DispatchQueue.main.async {
             data = nil
         }
+    }
+}
+
+// MARK: - Callback Approach
+
+private class NativeAlertCallbackController<Item: Identifiable>: UIViewController {
+    private var onDismiss: ()->Void
+
+    var item: Item?
+
+    private var alert: UIAlertController?
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) { fatalError("") }
+
+    init(
+        item: Item?,
+        onDismiss: @escaping ()->Void
+    ) {
+        self.item = item
+        self.onDismiss = onDismiss
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    private func initAlert(_ data: NativeAlertData)->UIAlertController? {
+        alert?.dismiss(animated: true)
+
+        alert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+
+        guard let alert = alert else { return nil }
+
+        if let title = data.title {
+            alert.title = title
+        }
+
+        if let message = data.message {
+            alert.message = message
+        }
+
+        let primaryAction = UIAlertAction(title: data.primaryButtonText, style: .default, handler: { _ in
+            self.onDismiss()
+            data.primaryButtonHandler()
+        })
+        primaryAction.setValue(UIColor(data.primaryButtonTextColor), forKey: "titleTextColor")
+        alert.addAction(primaryAction)
+
+        if let secondaryButtonText = data.secondaryButtonText {
+            let secondaryAction = UIAlertAction(title: secondaryButtonText, style: .default, handler: { _ in
+                self.onDismiss()
+                data.secondaryButtonHandler()
+            })
+            secondaryAction.setValue(UIColor(data.secondaryButtonTextColor), forKey: "titleTextColor")
+            alert.addAction(secondaryAction)
+        }
+
+        return alert
+    }
+
+    func show(data: NativeAlertData) {
+        if alert == nil || alert?.isBeingPresented == false {
+            if let alert = initAlert(data) {
+                rootController().present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+
+    func hide() {
+        alert?.dismiss(animated: true) {
+            self.onDismiss()
+        }
+    }
+
+    override func viewWillDisappear(_: Bool) {
+        hide()
+    }
+
+    private func rootController()->UIViewController {
+        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return .init()
+        }
+        guard let root = screen.windows.first?.rootViewController else {
+            return .init()
+        }
+        return root
     }
 }
 
@@ -247,13 +358,18 @@ private struct NativeAlertCallback<Item: Identifiable>: UIViewControllerRepresen
         self.content = content
     }
 
-    func makeUIViewController(context _: Context)->ModernNativeAlertController {
-        return ModernNativeAlertController(
+    func makeUIViewController(context _: Context)->NativeAlertCallbackController<Item> {
+        return NativeAlertCallbackController<Item>(
+            item: item,
             onDismiss: onDismiss
         )
     }
 
-    func updateUIViewController(_ uiViewController: ModernNativeAlertController, context _: Context) {
+    func updateUIViewController(_ uiViewController: NativeAlertCallbackController<Item>, context _: Context) {
+        if uiViewController.item?.id == item?.id { return }
+
+        uiViewController.item = item
+
         if let item = item {
             uiViewController.show(data: content(item))
         } else {
@@ -316,7 +432,9 @@ extension View {
 
 // MARK: - Models
 
-struct NativeAlertData {
+struct NativeAlertData: Identifiable {
+    let id = UUID()
+
     let title: String?
     let message: String?
     let primaryButtonText: String
@@ -350,12 +468,17 @@ struct NativeAlertData {
 // MARK: - Previews
 
 struct NativeAlert_Previews: PreviewProvider {
-    static var showAlert = false
-
     static var previews: some View {
         ZStack {
             Text("Native Alert")
         }
+//        .alert("Test", isPresented: .constant(true), actions: {
+//            Button {
+//                //
+//            } label: {
+//                Text("Ok")
+//            }
+//        })
         .alert(
             isPresented: .constant(true),
             title: "Awesome title",
