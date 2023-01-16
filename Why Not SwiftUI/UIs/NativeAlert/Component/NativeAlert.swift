@@ -464,35 +464,3 @@ struct NativeAlertData: Identifiable {
         self.secondaryButtonHandler = secondaryButtonHandler
     }
 }
-
-// MARK: - Previews
-
-struct NativeAlert_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Text("Native Alert")
-        }
-//        .alert("Test", isPresented: .constant(true), actions: {
-//            Button {
-//                //
-//            } label: {
-//                Text("Ok")
-//            }
-//        })
-        .alert(
-            isPresented: .constant(true),
-            title: "Awesome title",
-            message: "Awesome message",
-            primaryButtonText: "Ok",
-            primaryButtonTextColor: Color(.systemGreen),
-            primaryButtonHandler: {
-                //
-            },
-            secondaryButtonText: "Cool",
-            secondaryButtonTextColor: Color(.systemRed),
-            secondaryButtonHandler: {
-                //
-            }
-        )
-    }
-}
