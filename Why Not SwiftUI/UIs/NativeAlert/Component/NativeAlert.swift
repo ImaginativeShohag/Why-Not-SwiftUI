@@ -392,10 +392,10 @@ extension View {
         title: String? = nil,
         message: String? = nil,
         primaryButtonText: String,
-        primaryButtonTextColor: Color = Color(.systemBlue),
+        primaryButtonTextColor: Color = Color.accentColor,
         primaryButtonHandler: @escaping ()->Void = {},
         secondaryButtonText: String? = nil,
-        secondaryButtonTextColor: Color = Color(.systemBlue),
+        secondaryButtonTextColor: Color = Color.accentColor,
         secondaryButtonHandler: @escaping ()->Void = {}
     )->some View {
         return AnyView(background(NativeAlert(
@@ -448,10 +448,10 @@ struct NativeAlertData: Identifiable {
         title: String? = nil,
         message: String? = nil,
         primaryButtonText: String,
-        primaryButtonTextColor: Color = Color(.systemBlue),
+        primaryButtonTextColor: Color = Color.accentColor,
         primaryButtonHandler: @escaping ()->Void = {},
         secondaryButtonText: String? = nil,
-        secondaryButtonTextColor: Color = Color(.systemBlue),
+        secondaryButtonTextColor: Color = Color.accentColor,
         secondaryButtonHandler: @escaping ()->Void = {}
     ) {
         self.title = title
