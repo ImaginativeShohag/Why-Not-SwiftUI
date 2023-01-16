@@ -14,7 +14,7 @@ struct NativeAlertScreenAlert: Identifiable {
 }
 
 struct NativeAlertScreen: View {
-    @State var showAlert = true
+    @State var showAlert = false
     @State var alertData: NativeAlertData? = nil
     @State var alertType: NativeAlertScreenAlert? = nil
 
