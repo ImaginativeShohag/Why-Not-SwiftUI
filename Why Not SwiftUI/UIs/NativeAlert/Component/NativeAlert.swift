@@ -201,7 +201,7 @@ private class NativeAlertModernController: UIViewController {
     func show(data: NativeAlertData) {
         if alert == nil || alert?.isBeingPresented == false {
             if let alert = initAlert(data) {
-                rootController().present(alert, animated: true, completion: nil)
+                present(alert, animated: true, completion: nil)
             }
         }
     }
@@ -214,16 +214,6 @@ private class NativeAlertModernController: UIViewController {
 
     override func viewWillDisappear(_: Bool) {
         hide()
-    }
-
-    private func rootController()->UIViewController {
-        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return .init()
-        }
-        guard let root = screen.windows.first?.rootViewController else {
-            return .init()
-        }
-        return root
     }
 }
 
@@ -320,7 +310,7 @@ private class NativeAlertCallbackController<Item: Identifiable>: UIViewControlle
     func show(data: NativeAlertData) {
         if alert == nil || alert?.isBeingPresented == false {
             if let alert = initAlert(data) {
-                rootController().present(alert, animated: true, completion: nil)
+                present(alert, animated: true, completion: nil)
             }
         }
     }
@@ -333,16 +323,6 @@ private class NativeAlertCallbackController<Item: Identifiable>: UIViewControlle
 
     override func viewWillDisappear(_: Bool) {
         hide()
-    }
-
-    private func rootController()->UIViewController {
-        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return .init()
-        }
-        guard let root = screen.windows.first?.rootViewController else {
-            return .init()
-        }
-        return root
     }
 }
 
