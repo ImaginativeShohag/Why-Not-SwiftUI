@@ -13,4 +13,4 @@ A collection of Swift, SwiftUI and iOS goodies.
 ## TODO
 
 - [ ] Custom Sidebar: Finalize it
-- [ ] Build variant
+- [ ] Custom Build variant
