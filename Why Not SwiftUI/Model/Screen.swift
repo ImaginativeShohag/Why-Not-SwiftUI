@@ -19,5 +19,6 @@ struct Screen: Identifiable {
         Screen(name: "Cool Toast", showTitle: true, destination: AnyView(CoolToastScreen())),
         Screen(name: "Native Alert", showTitle: true, destination: AnyView(NativeAlertScreen())),
         Screen(name: "Cool Progress", showTitle: true, destination: AnyView(CoolProgressScreen())),
+        Screen(name: "TextField Validation", showTitle: true, destination: AnyView(TextFieldValidationScreen())),
     ]
 }

@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		450776D5290195AF00C05007 /* example_crash_report.json in Resources */ = {isa = PBXBuildFile; fileRef = 450776D4290195AF00C05007 /* example_crash_report.json */; };
+		454539F22981310500E3D9D0 /* TextFieldValidationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */; };
+		454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */; };
+		45513A9029911C1E00BF0A0D /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A8F29911C1E00BF0A0D /* CustomTextFieldView.swift */; };
+		45513A9229911EEA00BF0A0D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A9129911EEA00BF0A0D /* String+.swift */; };
 		456174AC2935C6370078B997 /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456174AB2935C6370078B997 /* NotificationUtils.swift */; };
 		4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */; };
 		4568D1A528F8950600FFDC5E /* BottomNavVsSideBarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */; };
@@ -99,6 +103,11 @@
 
 /* Begin PBXFileReference section */
 		450776D4290195AF00C05007 /* example_crash_report.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example_crash_report.json; sourceTree = "<group>"; };
+		454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationScreen.swift; sourceTree = "<group>"; };
+		454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationViewModel.swift; sourceTree = "<group>"; };
+		45513A8D29911B4400BF0A0D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		45513A8F29911C1E00BF0A0D /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
+		45513A9129911EEA00BF0A0D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		456174AB2935C6370078B997 /* NotificationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtils.swift; sourceTree = "<group>"; };
 		4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+JailBroken.swift"; sourceTree = "<group>"; };
 		4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavVsSideBarScreen.swift; sourceTree = "<group>"; };
@@ -186,6 +195,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		454539F0298130EE00E3D9D0 /* TextFieldValidation */ = {
+			isa = PBXGroup;
+			children = (
+				45513A8E29911BFE00BF0A0D /* Components */,
+				454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */,
+				454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */,
+			);
+			path = TextFieldValidation;
+			sourceTree = "<group>";
+		};
+		45513A8E29911BFE00BF0A0D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				45513A8F29911C1E00BF0A0D /* CustomTextFieldView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		4568D1A028F8233D00FFDC5E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,6 +221,7 @@
 				4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */,
 				459EC10F29007BF90019C555 /* View+ConditionalModifier.swift */,
 				45B2D05B29031202006A631E /* ExtUIGestureRecognizerDelegate.swift */,
+				45513A9129911EEA00BF0A0D /* String+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -334,6 +362,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				454539F0298130EE00E3D9D0 /* TextFieldValidation */,
 				45F1C99E29709B7600386645 /* CoolProgressView */,
 				45F1C998297098A700386645 /* NativeAlert */,
 				45F1C98C296F123400386645 /* CoolToast */,
@@ -440,6 +469,7 @@
 				4571D622293729B700573547 /* Localizable.strings */,
 				45BE891128A05F73008DF51F /* Why Not SwiftUI */,
 				457E603D29353FE5005595B7 /* NotificationService */,
+				45513A8D29911B4400BF0A0D /* README.md */,
 				45BE891028A05F73008DF51F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -678,6 +708,7 @@
 				45BE892528A06D24008DF51F /* GoRestAPI.swift in Sources */,
 				459CA62728E702D400FC6F42 /* FitnessRingCardView.swift in Sources */,
 				459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */,
+				45513A9229911EEA00BF0A0D /* String+.swift in Sources */,
 				45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */,
 				459EC10A2900561D0019C555 /* TrackingService.swift in Sources */,
 				45ACAF5228F9F68600C5467F /* CustomSideBar.swift in Sources */,
@@ -685,6 +716,7 @@
 				459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */,
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,
 				4568D1AE28F898E700FFDC5E /* BottomNavIOSScreen.swift in Sources */,
+				454539F22981310500E3D9D0 /* TextFieldValidationScreen.swift in Sources */,
 				45F1C9A129709B9A00386645 /* CoolProgressView.swift in Sources */,
 				45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */,
 				45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */,
@@ -698,6 +730,7 @@
 				459EC112290086640019C555 /* MetircKitViewModel.swift in Sources */,
 				45F1C99A297098C000386645 /* NativeAlert.swift in Sources */,
 				458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */,
+				454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */,
 				459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */,
 				459CA63028E70F2700FC6F42 /* OverviewRingCardView.swift in Sources */,
 				457B0ADE28FB73DB0019ED01 /* ExtUIApplicatin.swift in Sources */,
@@ -709,6 +742,7 @@
 				45F1C98F296F128C00386645 /* CoolToast.swift in Sources */,
 				459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */,
 				45BE892728A06FF8008DF51F /* HomeViewModel.swift in Sources */,
+				45513A9029911C1E00BF0A0D /* CustomTextFieldView.swift in Sources */,
 				457E604B29354156005595B7 /* NetworkError.swift in Sources */,
 				457B0ADA28FB70340019ED01 /* MenuModels.swift in Sources */,
 				459CA63328E70F5600FC6F42 /* RingChart.swift in Sources */,
