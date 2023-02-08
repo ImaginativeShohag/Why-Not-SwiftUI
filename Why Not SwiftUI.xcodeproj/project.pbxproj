@@ -12,6 +12,7 @@
 		454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */; };
 		45513A9029911C1E00BF0A0D /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A8F29911C1E00BF0A0D /* CustomTextFieldView.swift */; };
 		45513A9229911EEA00BF0A0D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A9129911EEA00BF0A0D /* String+.swift */; };
+		45513A942993D69800BF0A0D /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A932993D69800BF0A0D /* Array+.swift */; };
 		456174AC2935C6370078B997 /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456174AB2935C6370078B997 /* NotificationUtils.swift */; };
 		4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */; };
 		4568D1A528F8950600FFDC5E /* BottomNavVsSideBarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */; };
@@ -108,6 +109,7 @@
 		45513A8D29911B4400BF0A0D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		45513A8F29911C1E00BF0A0D /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
 		45513A9129911EEA00BF0A0D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		45513A932993D69800BF0A0D /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		456174AB2935C6370078B997 /* NotificationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtils.swift; sourceTree = "<group>"; };
 		4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+JailBroken.swift"; sourceTree = "<group>"; };
 		4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavVsSideBarScreen.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				459EC10F29007BF90019C555 /* View+ConditionalModifier.swift */,
 				45B2D05B29031202006A631E /* ExtUIGestureRecognizerDelegate.swift */,
 				45513A9129911EEA00BF0A0D /* String+.swift */,
+				45513A932993D69800BF0A0D /* Array+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -709,6 +712,7 @@
 				459CA62728E702D400FC6F42 /* FitnessRingCardView.swift in Sources */,
 				459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */,
 				45513A9229911EEA00BF0A0D /* String+.swift in Sources */,
+				45513A942993D69800BF0A0D /* Array+.swift in Sources */,
 				45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */,
 				459EC10A2900561D0019C555 /* TrackingService.swift in Sources */,
 				45ACAF5228F9F68600C5467F /* CustomSideBar.swift in Sources */,

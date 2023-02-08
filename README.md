@@ -19,10 +19,14 @@ A collection of Swift, SwiftUI and iOS goodies.
 
 ## Extensions
 
-### `String`
+### `String` (`String+.swift`)
 
-- md5
-- fileName
-- fileExtension
-- isValidEmail (with Unit Test)
-- isBlank
+- `md5()`
+- `fileName()`
+- `fileExtension()`
+- `isValidEmail()` (with Unit Test)
+- `isBlank()`
+
+### `Array` (`Array+.swift`)
+
+- `commaSeparatedString(emptyValue:)`
