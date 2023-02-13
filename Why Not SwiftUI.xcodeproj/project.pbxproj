@@ -14,6 +14,8 @@
 		45513A9229911EEA00BF0A0D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A9129911EEA00BF0A0D /* String+.swift */; };
 		45513A942993D69800BF0A0D /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A932993D69800BF0A0D /* Array+.swift */; };
 		45513A962993F3BD00BF0A0D /* UIElementPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A952993F3BD00BF0A0D /* UIElementPreview.swift */; };
+		45513A992998F1D500BF0A0D /* TextPreviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A982998F1D500BF0A0D /* TextPreviewScreen.swift */; };
+		45513A9B299A179300BF0A0D /* RobotoSlab-VariableFont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 45513A9A299A179300BF0A0D /* RobotoSlab-VariableFont.ttf */; };
 		456174AC2935C6370078B997 /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456174AB2935C6370078B997 /* NotificationUtils.swift */; };
 		4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */; };
 		4568D1A528F8950600FFDC5E /* BottomNavVsSideBarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */; };
@@ -112,6 +114,8 @@
 		45513A9129911EEA00BF0A0D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		45513A932993D69800BF0A0D /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		45513A952993F3BD00BF0A0D /* UIElementPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementPreview.swift; sourceTree = "<group>"; };
+		45513A982998F1D500BF0A0D /* TextPreviewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPreviewScreen.swift; sourceTree = "<group>"; };
+		45513A9A299A179300BF0A0D /* RobotoSlab-VariableFont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-VariableFont.ttf"; sourceTree = "<group>"; };
 		456174AB2935C6370078B997 /* NotificationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtils.swift; sourceTree = "<group>"; };
 		4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+JailBroken.swift"; sourceTree = "<group>"; };
 		4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavVsSideBarScreen.swift; sourceTree = "<group>"; };
@@ -215,6 +219,14 @@
 				45513A8F29911C1E00BF0A0D /* CustomTextFieldView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		45513A972998F1BD00BF0A0D /* TextPreview */ = {
+			isa = PBXGroup;
+			children = (
+				45513A982998F1D500BF0A0D /* TextPreviewScreen.swift */,
+			);
+			path = TextPreview;
 			sourceTree = "<group>";
 		};
 		4568D1A028F8233D00FFDC5E /* Extensions */ = {
@@ -367,6 +379,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				45513A972998F1BD00BF0A0D /* TextPreview */,
 				454539F0298130EE00E3D9D0 /* TextFieldValidation */,
 				45F1C99E29709B7600386645 /* CoolProgressView */,
 				45F1C998297098A700386645 /* NativeAlert */,
@@ -418,6 +431,7 @@
 				45F1C9AB2970A49D00386645 /* SF-Pro-Rounded-Semibold.otf */,
 				45F1C9AD2970A49D00386645 /* SF-Pro-Rounded-Thin.otf */,
 				45F1C9AE2970A49E00386645 /* SF-Pro-Rounded-Ultralight.otf */,
+				45513A9A299A179300BF0A0D /* RobotoSlab-VariableFont.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -677,6 +691,7 @@
 				45F1C9B72970A49E00386645 /* SF-Pro-Rounded-Ultralight.otf in Resources */,
 				4571D620293729B700573547 /* Localizable.strings in Resources */,
 				45F1C9B12970A49E00386645 /* SF-Pro-Rounded-Light.otf in Resources */,
+				45513A9B299A179300BF0A0D /* RobotoSlab-VariableFont.ttf in Resources */,
 				45F1C9B02970A49E00386645 /* SF-Pro-Rounded-Bold.otf in Resources */,
 				45F1C9B22970A49E00386645 /* SF-Pro-Rounded-Regular.otf in Resources */,
 				45BE891728A05F76008DF51F /* Assets.xcassets in Resources */,
@@ -720,6 +735,7 @@
 				459EC10A2900561D0019C555 /* TrackingService.swift in Sources */,
 				45ACAF5228F9F68600C5467F /* CustomSideBar.swift in Sources */,
 				45F1C991296F129900386645 /* CoolToastScreen.swift in Sources */,
+				45513A992998F1D500BF0A0D /* TextPreviewScreen.swift in Sources */,
 				459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */,
 				45513A962993F3BD00BF0A0D /* UIElementPreview.swift in Sources */,
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,

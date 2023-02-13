@@ -44,6 +44,7 @@ struct HomeScreen: View {
                         screen.destination
                             .if(screen.showTitle, transform: { view in
                                 view.navigationTitle(screen.name)
+                                    .navigationBarTitleDisplayMode(.inline)
                             })
                     } label: {
                         Text(screen.name)
