@@ -5,9 +5,12 @@
 import Foundation
 import UIKit
 
+/// Component Name: `JailBroken Checker`
+/// Version: `1.1.230216`
+
 /// This file contains a comprehensive checks to find out if the device is jail-broken.
 ///
-/// Note: Must add the following to you plist file:
+/// Note: Must add the following to your plist file:
 ///
 /// ```
 /// <key>LSApplicationQueriesSchemes</key>

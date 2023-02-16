@@ -6,7 +6,7 @@ import Foundation
 import SwiftUI
 
 /// Component Name: `NativeAlert`
-/// Version: `1.1.09022023`
+/// Version: `1.1.230216`
 
 // MARK: - Extensions
 
