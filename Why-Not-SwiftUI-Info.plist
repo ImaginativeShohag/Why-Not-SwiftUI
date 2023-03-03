@@ -19,5 +19,9 @@
 		<string>SF-Pro-Rounded-Ultralight.otf</string>
 		<string>RobotoSlab-VariableFont.ttf</string>
 	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>

@@ -26,6 +26,7 @@ SwiftUI modifier for `UIAlertController`. This is created to be able to change t
 
 ## TODO
 
+- [ ] MetricKit crash report example (WIP)
 - [ ] Update `CoolToast` code
 - [ ] Full app custom font
 - [ ] Custom Sidebar: Finalize it

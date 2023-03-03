@@ -38,7 +38,7 @@ final class TrackingService: NSObject {
                 
                 crashes.append(crashJson)
                 
-                //logger.log("processPayload: crashJson: \(crashJson, privacy: .public)")
+                logger.log("processPayload: crashJson: \(crashJson, privacy: .public)")
             }
         }
         
@@ -98,7 +98,7 @@ final class DiagnosticDataSaver {
     
     var crashData: [String]? {
         get {
-            guard let json = UserDefaults.standard.string(forKey: UserDefaultsKey.crashData), let jsonData = json.data(using: .utf8) else {
+            guard let jsonData = UserDefaults.standard.data(forKey: UserDefaultsKey.crashData) else {
                 return []
             }
             
@@ -108,24 +108,48 @@ final class DiagnosticDataSaver {
             } else {
                 return []
             }
-        } set(value) {
-            guard let value = value else {
+        } set(values) {
+            guard let values = values else {
                 UserDefaults.standard.removeObject(forKey: UserDefaultsKey.crashData)
                 UserDefaults.standard.synchronize()
                 return
             }
             
             let encoder = JSONEncoder()
-            if let encoded = try? encoder.encode(value) {
+            if let encoded = try? encoder.encode(values) {
                 print("66666")
                 UserDefaults.standard.set(encoded, forKey: UserDefaultsKey.crashData)
+                
+                // Save file in disk
+                let documentDirectory = getDocumentsDirectory()
+                let crashReportsPath = documentDirectory.appendingPathComponent("crash-reports")
+                
+                if !FileManager.default.fileExists(atPath: crashReportsPath.path) {
+                    do {
+                        try FileManager.default.createDirectory(at: crashReportsPath, withIntermediateDirectories: true)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+                
+                let filePath = crashReportsPath
+                    .appendingPathComponent("\(Date().timeIntervalSince1970)_crash.json", conformingTo: .text)
+                
+                for item in values {
+                    do {
+                        try item.write(to: filePath, atomically: true, encoding: .utf8)
+                    } catch {
+                        print("Error writing crash log: \(error)")
+                    }
+                }
+                // ----
             } else {
                 UserDefaults.standard.removeObject(forKey: UserDefaultsKey.crashData)
             }
             
             UserDefaults.standard.synchronize()
             
-            logger.log("processPayload: save: \(value.first?.count ?? 0)")
+            logger.log("processPayload: save: \(values.first?.count ?? 0)")
         }
     }
     
@@ -142,5 +166,10 @@ final class DiagnosticDataSaver {
             UserDefaults.standard.set(value, forKey: UserDefaultsKey.savedTime)
             UserDefaults.standard.synchronize()
         }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
 }
