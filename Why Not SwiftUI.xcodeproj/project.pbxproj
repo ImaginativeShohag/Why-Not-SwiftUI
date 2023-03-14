@@ -16,6 +16,7 @@
 		45513A962993F3BD00BF0A0D /* UIElementPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A952993F3BD00BF0A0D /* UIElementPreview.swift */; };
 		45513A992998F1D500BF0A0D /* TextPreviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A982998F1D500BF0A0D /* TextPreviewScreen.swift */; };
 		45513A9B299A179300BF0A0D /* RobotoSlab-VariableFont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 45513A9A299A179300BF0A0D /* RobotoSlab-VariableFont.ttf */; };
+		4554D9C829B259F700063323 /* AccessibilityScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4554D9C729B259F700063323 /* AccessibilityScreen.swift */; };
 		456174AC2935C6370078B997 /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456174AB2935C6370078B997 /* NotificationUtils.swift */; };
 		4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */; };
 		4568D1A528F8950600FFDC5E /* BottomNavVsSideBarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */; };
@@ -116,6 +117,7 @@
 		45513A952993F3BD00BF0A0D /* UIElementPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementPreview.swift; sourceTree = "<group>"; };
 		45513A982998F1D500BF0A0D /* TextPreviewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPreviewScreen.swift; sourceTree = "<group>"; };
 		45513A9A299A179300BF0A0D /* RobotoSlab-VariableFont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoSlab-VariableFont.ttf"; sourceTree = "<group>"; };
+		4554D9C729B259F700063323 /* AccessibilityScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityScreen.swift; sourceTree = "<group>"; };
 		456174AB2935C6370078B997 /* NotificationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtils.swift; sourceTree = "<group>"; };
 		4568D1A128F8235700FFDC5E /* UIDevice+JailBroken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+JailBroken.swift"; sourceTree = "<group>"; };
 		4568D1A428F8950600FFDC5E /* BottomNavVsSideBarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavVsSideBarScreen.swift; sourceTree = "<group>"; };
@@ -227,6 +229,14 @@
 				45513A982998F1D500BF0A0D /* TextPreviewScreen.swift */,
 			);
 			path = TextPreview;
+			sourceTree = "<group>";
+		};
+		4554D9C629B256ED00063323 /* Accessibility */ = {
+			isa = PBXGroup;
+			children = (
+				4554D9C729B259F700063323 /* AccessibilityScreen.swift */,
+			);
+			path = Accessibility;
 			sourceTree = "<group>";
 		};
 		4568D1A028F8233D00FFDC5E /* Extensions */ = {
@@ -379,6 +389,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				4554D9C629B256ED00063323 /* Accessibility */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
 				459CA62228E6FA7B00FC6F42 /* Chart */,
 				45F1C99E29709B7600386645 /* CoolProgressView */,
@@ -749,6 +760,7 @@
 				45ACAF5028F9F61B00C5467F /* CustomSideBarScreen.swift in Sources */,
 				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
 				4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */,
+				4554D9C829B259F700063323 /* AccessibilityScreen.swift in Sources */,
 				4568D1AC28F8975D00FFDC5E /* MainScreen.swift in Sources */,
 				459EC10C290059620019C555 /* Color.swift in Sources */,
 				459EC112290086640019C555 /* MetircKitViewModel.swift in Sources */,
