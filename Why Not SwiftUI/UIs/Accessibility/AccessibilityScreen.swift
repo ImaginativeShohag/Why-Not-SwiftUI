@@ -43,7 +43,7 @@ struct AccessibilityScreen: View {
 
     var body: some View {
         ScrollView {
-            VStack {
+            VStack(spacing: 16) {
                 Group {
                     Text("Custom Label Example")
                         .font(.title)
@@ -226,6 +226,8 @@ struct AccessibilityScreen: View {
                     Divider()
                 }
             }
+            .padding()
+            .multilineTextAlignment(.center)
         }
     }
 }
