@@ -24,6 +24,8 @@ SwiftUI modifier for `UIAlertController`. This is created to be able to change t
 
 ### `TextField` validation
 
+### Accessibility Example
+
 ## TODO
 
 - [ ] MetricKit crash report example (WIP)
