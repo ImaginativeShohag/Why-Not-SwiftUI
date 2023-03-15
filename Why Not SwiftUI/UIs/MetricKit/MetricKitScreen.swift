@@ -15,7 +15,7 @@ struct MetricKitScreen: View {
                 Text("Last crashed: \(viewModel.time)")
                 List {
                     ForEach(viewModel.items, id: \.self) { item in
-                        Text("Size: \(item.count)")
+                        Text("Report Size: \(item.count)")
                     }
                 }
             }

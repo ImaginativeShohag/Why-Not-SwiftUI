@@ -5,6 +5,9 @@
 import Foundation
 import SwiftUI
 
+/// Component Name: `NativeAlert`
+/// Version: `1.1.230216`
+
 // MARK: - Extensions
 
 extension UIAlertController {
@@ -58,15 +61,13 @@ extension UIAlertController {
 private class NativeAlertController: UIViewController {
     var isPresented: Bool = false
 
-    private var onDismiss: ()->Void
-
     private let alert: UIAlertController
+    private var onDismiss: ()->Void
 
     @available(*, unavailable)
     required init?(coder _: NSCoder) { fatalError("") }
 
     init(
-        isPresented: Bool,
         title: String?,
         message: String?,
         primaryButtonText: String,
@@ -79,7 +80,6 @@ private class NativeAlertController: UIViewController {
         secondaryButtonHandler: @escaping ()->Void,
         onDismiss: @escaping ()->Void
     ) {
-        self.isPresented = isPresented
         self.onDismiss = onDismiss
 
         self.alert = UIAlertController.createAlert(
@@ -100,14 +100,18 @@ private class NativeAlertController: UIViewController {
     }
 
     func show() {
-        if !alert.isBeingPresented, !alert.isBeingDismissed {
-            present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            if !self.alert.isBeingPresented, !self.alert.isBeingDismissed {
+                self.present(self.alert, animated: true, completion: nil)
+            }
         }
     }
 
     func hide() {
-        alert.dismiss(animated: true) {
-            self.onDismiss()
+        DispatchQueue.main.async {
+            self.alert.dismiss(animated: true) {
+                self.onDismiss()
+            }
         }
     }
 
@@ -157,7 +161,6 @@ private struct NativeAlert: UIViewControllerRepresentable {
 
     func makeUIViewController(context _: Context)->NativeAlertController {
         return NativeAlertController(
-            isPresented: isPresented,
             title: title,
             message: message,
             primaryButtonText: primaryButtonText,
@@ -195,18 +198,14 @@ private struct NativeAlert: UIViewControllerRepresentable {
 
 private class NativeAlertModernController<Item: Identifiable>: UIViewController {
     var item: Item?
-    
-    private var onDismiss: ()->Void
+
     private var alert: UIAlertController?
+    private var onDismiss: ()->Void
 
     @available(*, unavailable)
     required init?(coder _: NSCoder) { fatalError("") }
 
-    init(
-        item: Item?,
-        onDismiss: @escaping ()->Void
-    ) {
-        self.item = item
+    init(onDismiss: @escaping ()->Void) {
         self.onDismiss = onDismiss
 
         super.init(nibName: nil, bundle: nil)
@@ -233,15 +232,19 @@ private class NativeAlertModernController<Item: Identifiable>: UIViewController 
     }
 
     func show(data: NativeAlertData) {
-        if alert == nil || alert?.isBeingPresented == false {
-            let alert = createAlert(data)
-            present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            if self.alert == nil || self.alert?.isBeingPresented == false {
+                let alert = self.createAlert(data)
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
 
     func hide() {
-        alert?.dismiss(animated: true) {
-            self.onDismiss()
+        DispatchQueue.main.async {
+            self.alert?.dismiss(animated: true) {
+                self.onDismiss()
+            }
         }
     }
 
@@ -253,22 +256,19 @@ private class NativeAlertModernController<Item: Identifiable>: UIViewController 
 private struct NativeAlertModern: UIViewControllerRepresentable {
     @Binding private var data: NativeAlertData?
 
-    init(
-        data: Binding<NativeAlertData?>
-    ) {
+    init(data: Binding<NativeAlertData?>) {
         self._data = data
     }
 
     func makeUIViewController(context _: Context)->NativeAlertModernController<NativeAlertData> {
         return NativeAlertModernController(
-            item: data,
             onDismiss: onDismiss
         )
     }
 
     func updateUIViewController(_ uiViewController: NativeAlertModernController<NativeAlertData>, context _: Context) {
         if uiViewController.item?.id == data?.id { return }
-        
+
         uiViewController.item = data
 
         if let data = data {
@@ -301,7 +301,6 @@ private struct NativeAlertCallback<Item: Identifiable>: UIViewControllerRepresen
 
     func makeUIViewController(context _: Context)->NativeAlertModernController<Item> {
         return NativeAlertModernController<Item>(
-            item: item,
             onDismiss: onDismiss
         )
     }
