@@ -85,8 +85,8 @@ struct AccessibilityScreen: View {
                     Text("Ignored Element Example")
                         .font(.title)
 
-                    Text("Ignored Element")
-                        .accessibilityHidden(true)
+Text("Ignored Element")
+    .accessibilityHidden(true)
 
                     Divider()
                 }
@@ -118,8 +118,7 @@ struct AccessibilityScreen: View {
                         Text("1000")
                             .font(.title)
                     }
-                    .accessibilityElement(children: .ignore)
-                    // Or: accessibilityElement()
+                    .accessibilityElement(children: .ignore) // Or: accessibilityElement()
                     .accessibilityLabel("Your score is 1000")
 
                     Divider()
