@@ -85,8 +85,8 @@ struct AccessibilityScreen: View {
                     Text("Ignored Element Example")
                         .font(.title)
 
-Text("Ignored Element")
-    .accessibilityHidden(true)
+                    Text("Ignored Element")
+                        .accessibilityHidden(true)
 
                     Divider()
                 }
