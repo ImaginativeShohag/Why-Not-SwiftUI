@@ -14,17 +14,21 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 
 ### Notification
 
-### `CoolToast`
+### Component: `CoolToast`
 
  An cool Android Toast like implementation for SwiftUI.
 
-### `NativeAlert`
+### Component: `NativeAlert`
 
 SwiftUI modifier for `UIAlertController`. This is created to be able to change the Alert button colors.
 
 ### `TextField` validation
 
 ### Accessibility Example
+
+### Component: `LabelToggle`
+
+A custom Toggle like component with inside label support.
 
 ## TODO
 
@@ -34,6 +38,8 @@ SwiftUI modifier for `UIAlertController`. This is created to be able to change t
 - [ ] Custom Sidebar: Finalize it
 - [ ] Custom Build variant
 - [ ] Add documentation to the extensions
+- [ ] Add best ways to create preview with ViewModel
+- [ ] Add best ways to create preview with fake Model object
 
 ## Extensions
 
