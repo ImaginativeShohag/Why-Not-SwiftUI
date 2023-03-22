@@ -23,5 +23,5 @@ struct Screen: Identifiable {
         Screen(name: "TextField Validation", showTitle: true, destination: AnyView(TextFieldValidationScreen())),
         Screen(name: "Accessibility", showTitle: true, destination: AnyView(AccessibilityScreen())),
         Screen(name: "Label Toggle", showTitle: true, destination: AnyView(LabelToggleScreen())),
-    ]
+    ].sorted(by: \.name)
 }
