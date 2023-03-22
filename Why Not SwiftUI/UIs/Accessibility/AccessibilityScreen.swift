@@ -45,6 +45,12 @@ struct AccessibilityScreen: View {
         ScrollView {
             VStack(spacing: 16) {
                 Group {
+                    Text("First, comment out all the 'accessibility*' modifiers, then navigate the screen using VoiceOver. Then uncomment the modifiers and again navigate this screen using VoiceOver. So you will understand the difference.")
+
+                    Divider()
+                }
+
+                Group {
                     Text("Custom Label Example")
                         .font(.title)
 
@@ -181,11 +187,9 @@ struct AccessibilityScreen: View {
                     .clipShape(Capsule())
 
                     Divider()
-                }
 
-                // MARK: -
+                    // MARK: -
 
-                Group {
                     Text("Accessibility Reduce Motion Example")
                         .font(.title)
 
@@ -208,11 +212,9 @@ struct AccessibilityScreen: View {
                         }
 
                     Divider()
-                }
 
-                // MARK: -
+                    // MARK: -
 
-                Group {
                     Text("Accessibility Reduce Transparency Example")
                         .font(.title)
 

@@ -40,6 +40,7 @@ A custom Toggle like component with inside label support.
 - [ ] Add documentation to the extensions
 - [ ] Add best ways to create preview with ViewModel
 - [ ] Add best ways to create preview with fake Model object
+- [ ] Moya finalize
 
 ## Extensions
 
