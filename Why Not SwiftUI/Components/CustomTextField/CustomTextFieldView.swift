@@ -94,14 +94,15 @@ struct CustomTextFieldView_Previews: PreviewProvider {
             CustomTextFieldView(
                 value: .constant("Mahmudul Hasan Shohag"),
                 placeHolder: "Full Name",
-                keyboardType: .namePhonePad
+                keyboardType: .default
             )
 
             CustomTextFieldView(
                 value: .constant("   "),
                 placeHolder: "Full Name",
-                keyboardType: .phonePad
+                keyboardType: .default
             )
         }
+        .padding()
     }
 }

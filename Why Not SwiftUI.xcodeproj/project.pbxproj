@@ -46,9 +46,9 @@
 		459837D628EB4B7100AB5433 /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D528EB4B7100AB5433 /* Fruit.swift */; };
 		459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */; };
 		459837DB28EB5C3D00AB5433 /* ImageVideoCapturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837DA28EB5C3D00AB5433 /* ImageVideoCapturer.swift */; };
-		459CA62728E702D400FC6F42 /* FitnessRingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA62628E702D400FC6F42 /* FitnessRingCardView.swift */; };
+		459CA62728E702D400FC6F42 /* FitnessRingCardScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA62628E702D400FC6F42 /* FitnessRingCardScreen.swift */; };
 		459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA62A28E70E2B00FC6F42 /* Typography.swift */; };
-		459CA63028E70F2700FC6F42 /* OverviewRingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA62F28E70F2700FC6F42 /* OverviewRingCardView.swift */; };
+		459CA63028E70F2700FC6F42 /* OverviewRingCardScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA62F28E70F2700FC6F42 /* OverviewRingCardScreen.swift */; };
 		459CA63328E70F5600FC6F42 /* RingChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA63228E70F5600FC6F42 /* RingChart.swift */; };
 		459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA63928E76EAA00FC6F42 /* RingChartRing.swift */; };
 		459EC10A2900561D0019C555 /* TrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459EC1092900561D0019C555 /* TrackingService.swift */; };
@@ -152,9 +152,9 @@
 		459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVideoCapturerExampleScreen.swift; sourceTree = "<group>"; };
 		459837DA28EB5C3D00AB5433 /* ImageVideoCapturer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVideoCapturer.swift; sourceTree = "<group>"; };
 		459837DC28EB614700AB5433 /* Why-Not-SwiftUI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Why-Not-SwiftUI-Info.plist"; sourceTree = SOURCE_ROOT; };
-		459CA62628E702D400FC6F42 /* FitnessRingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessRingCardView.swift; sourceTree = "<group>"; };
+		459CA62628E702D400FC6F42 /* FitnessRingCardScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessRingCardScreen.swift; sourceTree = "<group>"; };
 		459CA62A28E70E2B00FC6F42 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
-		459CA62F28E70F2700FC6F42 /* OverviewRingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewRingCardView.swift; sourceTree = "<group>"; };
+		459CA62F28E70F2700FC6F42 /* OverviewRingCardScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewRingCardScreen.swift; sourceTree = "<group>"; };
 		459CA63228E70F5600FC6F42 /* RingChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingChart.swift; sourceTree = "<group>"; };
 		459CA63928E76EAA00FC6F42 /* RingChartRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingChartRing.swift; sourceTree = "<group>"; };
 		459EC1092900561D0019C555 /* TrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingService.swift; sourceTree = "<group>"; };
@@ -212,19 +212,18 @@
 		454539F0298130EE00E3D9D0 /* TextFieldValidation */ = {
 			isa = PBXGroup;
 			children = (
-				45513A8E29911BFE00BF0A0D /* Components */,
 				454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */,
 				454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */,
 			);
 			path = TextFieldValidation;
 			sourceTree = "<group>";
 		};
-		45513A8E29911BFE00BF0A0D /* Components */ = {
+		45513A8E29911BFE00BF0A0D /* CustomTextField */ = {
 			isa = PBXGroup;
 			children = (
 				45513A8F29911C1E00BF0A0D /* CustomTextFieldView.swift */,
 			);
-			path = Components;
+			path = CustomTextField;
 			sourceTree = "<group>";
 		};
 		45513A972998F1BD00BF0A0D /* TextPreview */ = {
@@ -246,18 +245,9 @@
 		4557C0F029C4B05D0030530B /* LabelToggle */ = {
 			isa = PBXGroup;
 			children = (
-				4557C0F129C4B0790030530B /* Components */,
 				4557C0F529C4B0AF0030530B /* LabelToggleScreen.swift */,
 			);
 			path = LabelToggle;
-			sourceTree = "<group>";
-		};
-		4557C0F129C4B0790030530B /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				4557C0F229C4B0900030530B /* LabelToggle */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		4557C0F229C4B0900030530B /* LabelToggle */ = {
@@ -384,19 +374,10 @@
 		459CA62228E6FA7B00FC6F42 /* Chart */ = {
 			isa = PBXGroup;
 			children = (
-				459CA62528E7028F00FC6F42 /* View */,
+				459CA62628E702D400FC6F42 /* FitnessRingCardScreen.swift */,
+				459CA62F28E70F2700FC6F42 /* OverviewRingCardScreen.swift */,
 			);
 			path = Chart;
-			sourceTree = "<group>";
-		};
-		459CA62528E7028F00FC6F42 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				459CA63128E70F4100FC6F42 /* Components */,
-				459CA62628E702D400FC6F42 /* FitnessRingCardView.swift */,
-				459CA62F28E70F2700FC6F42 /* OverviewRingCardView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		459CA62828E703EC00FC6F42 /* UIs */ = {
@@ -469,14 +450,6 @@
 			path = Catalogs;
 			sourceTree = "<group>";
 		};
-		459CA63128E70F4100FC6F42 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				459CA63728E76E6A00FC6F42 /* RingChart */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		459CA63728E76E6A00FC6F42 /* RingChart */ = {
 			isa = PBXGroup;
 			children = (
@@ -536,6 +509,7 @@
 				459837D428EB4B5F00AB5433 /* Model */,
 				459CA62C28E70E4500FC6F42 /* Resources */,
 				459CA62928E7040700FC6F42 /* Utils */,
+				45CD36A829CBA48B00DB24BD /* Components */,
 				459CA62828E703EC00FC6F42 /* UIs */,
 				45BE892328A06CEC008DF51F /* Network */,
 				45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */,
@@ -562,55 +536,65 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		45CD36A829CBA48B00DB24BD /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				45F1C99F29709B8500386645 /* CoolProgress */,
+				45F1C98D296F126900386645 /* CoolToast */,
+				45513A8E29911BFE00BF0A0D /* CustomTextField */,
+				4557C0F229C4B0900030530B /* LabelToggle */,
+				45F1C99B297098E700386645 /* NativeAlert */,
+				459CA63728E76E6A00FC6F42 /* RingChart */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		45F1C98C296F123400386645 /* CoolToast */ = {
 			isa = PBXGroup;
 			children = (
-				45F1C98D296F126900386645 /* Component */,
 				45F1C990296F129900386645 /* CoolToastScreen.swift */,
 			);
 			path = CoolToast;
 			sourceTree = "<group>";
 		};
-		45F1C98D296F126900386645 /* Component */ = {
+		45F1C98D296F126900386645 /* CoolToast */ = {
 			isa = PBXGroup;
 			children = (
 				45F1C98E296F128C00386645 /* CoolToast.swift */,
 			);
-			path = Component;
+			path = CoolToast;
 			sourceTree = "<group>";
 		};
 		45F1C998297098A700386645 /* NativeAlert */ = {
 			isa = PBXGroup;
 			children = (
-				45F1C99B297098E700386645 /* Component */,
 				45F1C99C2970991200386645 /* NativeAlertScreen.swift */,
 			);
 			path = NativeAlert;
 			sourceTree = "<group>";
 		};
-		45F1C99B297098E700386645 /* Component */ = {
+		45F1C99B297098E700386645 /* NativeAlert */ = {
 			isa = PBXGroup;
 			children = (
 				45F1C999297098C000386645 /* NativeAlert.swift */,
 			);
-			path = Component;
+			path = NativeAlert;
 			sourceTree = "<group>";
 		};
 		45F1C99E29709B7600386645 /* CoolProgressView */ = {
 			isa = PBXGroup;
 			children = (
-				45F1C99F29709B8500386645 /* Component */,
 				45F1C9A229709BB200386645 /* CoolProgressScreen.swift */,
 			);
 			path = CoolProgressView;
 			sourceTree = "<group>";
 		};
-		45F1C99F29709B8500386645 /* Component */ = {
+		45F1C99F29709B8500386645 /* CoolProgress */ = {
 			isa = PBXGroup;
 			children = (
 				45F1C9A029709B9A00386645 /* CoolProgressView.swift */,
 			);
-			path = Component;
+			path = CoolProgress;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -753,7 +737,7 @@
 				45F1C993296F13D000386645 /* Color+.swift in Sources */,
 				457B0ADC28FB70730019ED01 /* MenuRow.swift in Sources */,
 				45BE892528A06D24008DF51F /* GoRestAPI.swift in Sources */,
-				459CA62728E702D400FC6F42 /* FitnessRingCardView.swift in Sources */,
+				459CA62728E702D400FC6F42 /* FitnessRingCardScreen.swift in Sources */,
 				4557C0F629C4B0AF0030530B /* LabelToggleScreen.swift in Sources */,
 				459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */,
 				45513A9229911EEA00BF0A0D /* String+.swift in Sources */,
@@ -784,7 +768,7 @@
 				458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */,
 				454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */,
 				459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */,
-				459CA63028E70F2700FC6F42 /* OverviewRingCardView.swift in Sources */,
+				459CA63028E70F2700FC6F42 /* OverviewRingCardScreen.swift in Sources */,
 				457B0ADE28FB73DB0019ED01 /* ExtUIApplicatin.swift in Sources */,
 				4568D1B228F8992C00FFDC5E /* ColorScreen.swift in Sources */,
 				4568D1A828F8951A00FFDC5E /* SplashScreen.swift in Sources */,

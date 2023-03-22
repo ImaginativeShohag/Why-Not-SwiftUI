@@ -12,8 +12,8 @@ struct Screen: Identifiable {
 
     static let screens: [Screen] = [
         Screen(name: "Typography", showTitle: true, destination: AnyView(TextPreviewScreen())),
-        Screen(name: "Overview Ring Chart", showTitle: true, destination: AnyView(OverviewRingCardView())),
-        Screen(name: "Fitness Ring Chart", showTitle: true, destination: AnyView(FitnessRingCardView())),
+        Screen(name: "Ring Chart: Overview", showTitle: true, destination: AnyView(OverviewRingCardScreen())),
+        Screen(name: "Ring Chart: Fitness", showTitle: true, destination: AnyView(FitnessRingCardScreen())),
         Screen(name: "ImageViewCapturer Example", showTitle: true, destination: AnyView(ImageVideoCapturerExampleScreen())),
         Screen(name: "BottomNav vs SideBar", showTitle: false, destination: AnyView(BottomNavVsSideBarScreen())),
         Screen(name: "MetricKit", showTitle: true, destination: AnyView(MetricKitScreen())),
