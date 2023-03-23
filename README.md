@@ -2,6 +2,10 @@
 
 A collection of Swift, SwiftUI and iOS goodies.
 
+Feel free to request features or suggestions for improvements.
+
+[![Developer](https://img.shields.io/badge/Maintainer-ImaginativeShohag-green)](https://github.com/ImaginativeShohag)
+
 ## What we have hare!
 
 ### Jailbroken checker
@@ -29,17 +33,17 @@ A simple example to demonstrate separate views for iPhone and iPad. Users will s
 
 ### Component: `CoolProgress`
 
-<img src="images/cool-progress.gif" width=250>
+<img src="images/cool-progress.gif" width=250/>
 
 ### Component: `CoolToast`
 
 A cool "Android Toast" like implementation for SwiftUI.
 
-<img src="images/cool-toast.gif" width=250>
+<img src="images/cool-toast.gif" width=250/>
 
-### `ImageViewCapturer` Example
+### Component: `ImageViewCapturer`: Media Capture & Select Example
 
-
+Example for capturing image, recording video and selecting media from library.
 
 ### Component: `LabelToggle`
 
@@ -55,12 +59,15 @@ On going...
 
 SwiftUI modifier for `UIAlertController`. This is created to be able to change the Alert button colors.
 
-<img src="images/native-alert.gif" width=250>
+<img src="images/native-alert.gif" width=250/>
 
-### `RingChart`
+### Component: `RingChart`
 
+<img src="images/ring-chart.gif" width=250/>
 
-### `TextField` validation
+### Component: `CustomTextFieldView` with validation example
+
+<img src="images/custom-text-field.gif" width=250/>
 
 ### Typography: Custom Font
 
@@ -72,9 +79,8 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 ## TODO
 
 - [ ] MetricKit crash report example (WIP)
-- [ ] Update `CoolToast` code
 - [ ] Full app custom font
-- [ ] Custom Sidebar: Finalize it
+- [ ] Custom Sidebar: Finalize it (WIP)
 - [ ] Custom Build variant
 - [ ] Add documentation to the extensions
 - [ ] Add best ways to create preview with ViewModel
@@ -94,3 +100,21 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 ### `Array` (`Array+.swift`)
 
 - `commaSeparatedString(emptyValue:)`
+
+## Licence
+
+```
+Copyright 2021 Md. Mahmudul Hasan Shohagm
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

@@ -14,7 +14,7 @@ struct Screen: Identifiable {
         Screen(name: "Typography", showTitle: true, destination: AnyView(TextPreviewScreen())),
         Screen(name: "Ring Chart: Overview", showTitle: true, destination: AnyView(OverviewRingCardScreen())),
         Screen(name: "Ring Chart: Fitness", showTitle: true, destination: AnyView(FitnessRingCardScreen())),
-        Screen(name: "ImageViewCapturer Example", showTitle: true, destination: AnyView(ImageVideoCapturerExampleScreen())),
+        Screen(name: "Media Capture & Select", showTitle: true, destination: AnyView(MediaSelectScreen())),
         Screen(name: "BottomNav vs SideBar", showTitle: false, destination: AnyView(BottomNavVsSideBarScreen())),
         Screen(name: "MetricKit", showTitle: true, destination: AnyView(MetricKitScreen())),
         Screen(name: "Cool Toast", showTitle: true, destination: AnyView(CoolToastScreen())),

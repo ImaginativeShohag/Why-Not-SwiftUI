@@ -44,7 +44,7 @@
 		458E623E28EC706B005A4E54 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623D28EC706B005A4E54 /* Screen.swift */; };
 		459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D128EB361D00AB5433 /* #001 KeyPath class.swift */; };
 		459837D628EB4B7100AB5433 /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D528EB4B7100AB5433 /* Fruit.swift */; };
-		459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */; };
+		459837D928EB5C1400AB5433 /* MediaSelectScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D828EB5C1400AB5433 /* MediaSelectScreen.swift */; };
 		459837DB28EB5C3D00AB5433 /* ImageVideoCapturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837DA28EB5C3D00AB5433 /* ImageVideoCapturer.swift */; };
 		459CA62728E702D400FC6F42 /* FitnessRingCardScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA62628E702D400FC6F42 /* FitnessRingCardScreen.swift */; };
 		459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459CA62A28E70E2B00FC6F42 /* Typography.swift */; };
@@ -65,6 +65,10 @@
 		45BE892228A063A5008DF51F /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 45BE892128A063A5008DF51F /* CombineMoya */; };
 		45BE892528A06D24008DF51F /* GoRestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BE892428A06D24008DF51F /* GoRestAPI.swift */; };
 		45BE892728A06FF8008DF51F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BE892628A06FF8008DF51F /* HomeViewModel.swift */; };
+		45CD36AD29CBC34C00DB24BD /* MediaSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD36AC29CBC34C00DB24BD /* MediaSelectViewModel.swift */; };
+		45CD36B029CBC54400DB24BD /* UIAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD36AF29CBC54400DB24BD /* UIAttachment.swift */; };
+		45CD36B229CBC60700DB24BD /* URL+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD36B129CBC60700DB24BD /* URL+.swift */; };
+		45CD36B429CBD87E00DB24BD /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD36B329CBD87E00DB24BD /* UIImage+.swift */; };
 		45F1C98F296F128C00386645 /* CoolToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C98E296F128C00386645 /* CoolToast.swift */; };
 		45F1C991296F129900386645 /* CoolToastScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C990296F129900386645 /* CoolToastScreen.swift */; };
 		45F1C993296F13D000386645 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1C992296F13D000386645 /* Color+.swift */; };
@@ -149,7 +153,7 @@
 		458E623D28EC706B005A4E54 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		459837D128EB361D00AB5433 /* #001 KeyPath class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "#001 KeyPath class.swift"; sourceTree = "<group>"; };
 		459837D528EB4B7100AB5433 /* Fruit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fruit.swift; sourceTree = "<group>"; };
-		459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVideoCapturerExampleScreen.swift; sourceTree = "<group>"; };
+		459837D828EB5C1400AB5433 /* MediaSelectScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSelectScreen.swift; sourceTree = "<group>"; };
 		459837DA28EB5C3D00AB5433 /* ImageVideoCapturer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVideoCapturer.swift; sourceTree = "<group>"; };
 		459837DC28EB614700AB5433 /* Why-Not-SwiftUI-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Why-Not-SwiftUI-Info.plist"; sourceTree = SOURCE_ROOT; };
 		459CA62628E702D400FC6F42 /* FitnessRingCardScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessRingCardScreen.swift; sourceTree = "<group>"; };
@@ -171,6 +175,10 @@
 		45BE891928A05F76008DF51F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		45BE892428A06D24008DF51F /* GoRestAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoRestAPI.swift; sourceTree = "<group>"; };
 		45BE892628A06FF8008DF51F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		45CD36AC29CBC34C00DB24BD /* MediaSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSelectViewModel.swift; sourceTree = "<group>"; };
+		45CD36AF29CBC54400DB24BD /* UIAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAttachment.swift; sourceTree = "<group>"; };
+		45CD36B129CBC60700DB24BD /* URL+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+.swift"; sourceTree = "<group>"; };
+		45CD36B329CBD87E00DB24BD /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		45F1C98E296F128C00386645 /* CoolToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoolToast.swift; sourceTree = "<group>"; };
 		45F1C990296F129900386645 /* CoolToastScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoolToastScreen.swift; sourceTree = "<group>"; };
 		45F1C992296F13D000386645 /* Color+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
@@ -268,6 +276,8 @@
 				45B2D05B29031202006A631E /* ExtUIGestureRecognizerDelegate.swift */,
 				45513A9129911EEA00BF0A0D /* String+.swift */,
 				45513A932993D69800BF0A0D /* Array+.swift */,
+				45CD36B129CBC60700DB24BD /* URL+.swift */,
+				45CD36B329CBD87E00DB24BD /* UIImage+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -353,13 +363,14 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		459837D328EB45A800AB5433 /* VideoRecordAndUpload */ = {
+		459837D328EB45A800AB5433 /* ImageVideoSelection */ = {
 			isa = PBXGroup;
 			children = (
-				459837D828EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift */,
-				459837DA28EB5C3D00AB5433 /* ImageVideoCapturer.swift */,
+				45CD36AE29CBC53700DB24BD /* Models */,
+				459837D828EB5C1400AB5433 /* MediaSelectScreen.swift */,
+				45CD36AC29CBC34C00DB24BD /* MediaSelectViewModel.swift */,
 			);
-			path = VideoRecordAndUpload;
+			path = ImageVideoSelection;
 			sourceTree = "<group>";
 		};
 		459837D428EB4B5F00AB5433 /* Model */ = {
@@ -397,7 +408,7 @@
 				4568D1A628F8950D00FFDC5E /* Splash */,
 				454539F0298130EE00E3D9D0 /* TextFieldValidation */,
 				45513A972998F1BD00BF0A0D /* TextPreview */,
-				459837D328EB45A800AB5433 /* VideoRecordAndUpload */,
+				459837D328EB45A800AB5433 /* ImageVideoSelection */,
 			);
 			path = UIs;
 			sourceTree = "<group>";
@@ -542,11 +553,28 @@
 				45F1C99F29709B8500386645 /* CoolProgress */,
 				45F1C98D296F126900386645 /* CoolToast */,
 				45513A8E29911BFE00BF0A0D /* CustomTextField */,
+				45CD36A929CBC23100DB24BD /* ImageVideoCapturer */,
 				4557C0F229C4B0900030530B /* LabelToggle */,
 				45F1C99B297098E700386645 /* NativeAlert */,
 				459CA63728E76E6A00FC6F42 /* RingChart */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		45CD36A929CBC23100DB24BD /* ImageVideoCapturer */ = {
+			isa = PBXGroup;
+			children = (
+				459837DA28EB5C3D00AB5433 /* ImageVideoCapturer.swift */,
+			);
+			path = ImageVideoCapturer;
+			sourceTree = "<group>";
+		};
+		45CD36AE29CBC53700DB24BD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				45CD36AF29CBC54400DB24BD /* UIAttachment.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		45F1C98C296F123400386645 /* CoolToast */ = {
@@ -734,12 +762,13 @@
 				459EC11029007BF90019C555 /* View+ConditionalModifier.swift in Sources */,
 				4557C0F429C4B0A20030530B /* LabelToggle.swift in Sources */,
 				459837DB28EB5C3D00AB5433 /* ImageVideoCapturer.swift in Sources */,
+				45CD36AD29CBC34C00DB24BD /* MediaSelectViewModel.swift in Sources */,
 				45F1C993296F13D000386645 /* Color+.swift in Sources */,
 				457B0ADC28FB70730019ED01 /* MenuRow.swift in Sources */,
 				45BE892528A06D24008DF51F /* GoRestAPI.swift in Sources */,
 				459CA62728E702D400FC6F42 /* FitnessRingCardScreen.swift in Sources */,
 				4557C0F629C4B0AF0030530B /* LabelToggleScreen.swift in Sources */,
-				459837D928EB5C1400AB5433 /* ImageVideoCapturerExampleScreen.swift in Sources */,
+				459837D928EB5C1400AB5433 /* MediaSelectScreen.swift in Sources */,
 				45513A9229911EEA00BF0A0D /* String+.swift in Sources */,
 				45513A942993D69800BF0A0D /* Array+.swift in Sources */,
 				45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */,
@@ -760,6 +789,7 @@
 				45ACAF5028F9F61B00C5467F /* CustomSideBarScreen.swift in Sources */,
 				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
 				4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */,
+				45CD36B229CBC60700DB24BD /* URL+.swift in Sources */,
 				4554D9C829B259F700063323 /* AccessibilityScreen.swift in Sources */,
 				4568D1AC28F8975D00FFDC5E /* MainScreen.swift in Sources */,
 				459EC10C290059620019C555 /* Color.swift in Sources */,
@@ -781,6 +811,8 @@
 				45513A9029911C1E00BF0A0D /* CustomTextFieldView.swift in Sources */,
 				457E604B29354156005595B7 /* NetworkError.swift in Sources */,
 				457B0ADA28FB70340019ED01 /* MenuModels.swift in Sources */,
+				45CD36B429CBD87E00DB24BD /* UIImage+.swift in Sources */,
+				45CD36B029CBC54400DB24BD /* UIAttachment.swift in Sources */,
 				459CA63328E70F5600FC6F42 /* RingChart.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

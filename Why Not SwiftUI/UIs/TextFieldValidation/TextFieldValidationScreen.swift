@@ -13,6 +13,9 @@ struct TextFieldValidationScreen: View {
                 value: $viewModel.email,
                 placeHolder: "Email"
             )
+            .autocapitalization(.none)
+            .autocorrectionDisabled()
+            
             if !viewModel.email.isEmpty && !viewModel.isValidEmail {
                 Text("Enter a valid email!")
                     .fontStyle(size: 12)
