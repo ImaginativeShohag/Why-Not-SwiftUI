@@ -5,6 +5,7 @@ A collection of Swift, SwiftUI and iOS goodies.
 Feel free to request features or suggestions for improvements.
 
 [![Developer](https://img.shields.io/badge/Maintainer-ImaginativeShohag-green)](https://github.com/ImaginativeShohag)
+[![Developer](https://img.shields.io/badge/-buy_me_a_coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/ImShohag)
 
 ## What we have hare!
 
@@ -12,17 +13,13 @@ Feel free to request features or suggestions for improvements.
 
 Check for device is jail-broken status.
 
-<p style="text-align:center">
 <img src="images/jailbroken-checker.png" width=250/>
-</p>
 
 ### Notification
 
 Example for showing local notifications.
 
-<p style="text-align:center">
 <img src="images/sample-notification.png" width=250>
-</p>
 
 ### Accessibility Example
 
@@ -37,33 +34,25 @@ A simple example to demonstrate separate views for iPhone and iPad. Users will s
 
 ### Component: `CoolProgress`
 
-<p style="text-align:center">
 <img src="images/cool-progress.gif" width=250/>
-</p>
 
 ### Component: `CoolToast`
 
 A cool "Android Toast" like implementation for SwiftUI.
 
-<p style="text-align:center">
 <img src="images/cool-toast.gif" width=250/>
-</p>
 
 ### Component: `ImageViewCapturer`: Media Capture & Select Example
 
 Example for capturing image, recording video and selecting media from library.
 
-<p style="text-align:center">
 <img src="images/media-capture-select.gif" width=250/>
-</p>
 
 ### Component: `LabelToggle`
 
 A custom Toggle like component with inside label support.
 
-<p style="text-align:center">
 <img src="images/label-toggle.gif" width=250/>
-</p>
 
 ### MetricKit crash report example
 
@@ -73,29 +62,21 @@ On going...
 
 SwiftUI modifier for `UIAlertController`. This is created to be able to change the Alert button colors.
 
-<p style="text-align:center">
 <img src="images/native-alert.gif" width=250/>
-</p>
 
 ### Component: `RingChart`
 
-<p style="text-align:center">
 <img src="images/ring-chart.gif" width=250/>
-</p>
 
 ### Component: `CustomTextFieldView` with validation example
 
-<p style="text-align:center">
 <img src="images/custom-text-field.gif" width=250/>
-</p>
 
 ### Typography: Custom Font
 
 Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/tree/main/Why%20Not%20SwiftUI/Resources/Fonts), add the fonts name to the [plist](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/blob/main/Why-Not-SwiftUI-Info.plist) file. Finally, use [`fontStyle(size:weight:)`](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/blob/main/Why%20Not%20SwiftUI/Utils/Typography.swift) to set fonts.
 
-<p style="text-align:center">
 <img src="images/typography.png" width=250/>
-</p>
 
 ## Others
 
