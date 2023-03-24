@@ -86,6 +86,7 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 - [ ] Add best ways to create preview with ViewModel
 - [ ] Add best ways to create preview with fake Model object
 - [ ] Moya finalize
+- [ ] Home list multi accent color
 
 ## Extensions
 
@@ -99,7 +100,15 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 
 ### `Array` (`Array+.swift`)
 
-- `commaSeparatedString(emptyValue:)`
+- `commaSeparatedString(emptyValue:) -> String` : Combine string array separated by a comma.
+
+### `UIImage` (`UIImage+.swift`)
+
+- `fileSize() -> Int` : The file size in KB.
+
+### `URL` (`URL+.swift`)
+
+- `fileSize() -> Int` : The file size in KB.
 
 ## Licence
 

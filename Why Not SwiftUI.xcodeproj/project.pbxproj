@@ -58,6 +58,7 @@
 		459EC112290086640019C555 /* MetircKitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459EC111290086640019C555 /* MetircKitViewModel.swift */; };
 		45ACAF5028F9F61B00C5467F /* CustomSideBarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ACAF4F28F9F61B00C5467F /* CustomSideBarScreen.swift */; };
 		45ACAF5228F9F68600C5467F /* CustomSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ACAF5128F9F68600C5467F /* CustomSideBar.swift */; };
+		45AD4F1A29CD23400008CC44 /* OverlayLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AD4F1929CD23400008CC44 /* OverlayLoadingView.swift */; };
 		45B2D05C29031202006A631E /* ExtUIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B2D05B29031202006A631E /* ExtUIGestureRecognizerDelegate.swift */; };
 		45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */; };
 		45BE891728A05F76008DF51F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BE891628A05F76008DF51F /* Assets.xcassets */; };
@@ -168,6 +169,7 @@
 		459EC111290086640019C555 /* MetircKitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetircKitViewModel.swift; sourceTree = "<group>"; };
 		45ACAF4F28F9F61B00C5467F /* CustomSideBarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSideBarScreen.swift; sourceTree = "<group>"; };
 		45ACAF5128F9F68600C5467F /* CustomSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSideBar.swift; sourceTree = "<group>"; };
+		45AD4F1929CD23400008CC44 /* OverlayLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayLoadingView.swift; sourceTree = "<group>"; };
 		45B2D05B29031202006A631E /* ExtUIGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtUIGestureRecognizerDelegate.swift; sourceTree = "<group>"; };
 		45BE890F28A05F73008DF51F /* Why Not SwiftUI!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Why Not SwiftUI!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45BE891228A05F73008DF51F /* Why_Not_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Why_Not_SwiftUIApp.swift; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				45AD4F1829CD23300008CC44 /* Shared */,
 				4557C0F029C4B05D0030530B /* LabelToggle */,
 				4554D9C629B256ED00063323 /* Accessibility */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
@@ -490,6 +493,14 @@
 				457B0ADB28FB70730019ED01 /* MenuRow.swift */,
 			);
 			path = CustomSideBar;
+			sourceTree = "<group>";
+		};
+		45AD4F1829CD23300008CC44 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				45AD4F1929CD23400008CC44 /* OverlayLoadingView.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		45BE890628A05F73008DF51F = {
@@ -798,6 +809,7 @@
 				458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */,
 				454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */,
 				459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */,
+				45AD4F1A29CD23400008CC44 /* OverlayLoadingView.swift in Sources */,
 				459CA63028E70F2700FC6F42 /* OverviewRingCardScreen.swift in Sources */,
 				457B0ADE28FB73DB0019ED01 /* ExtUIApplicatin.swift in Sources */,
 				4568D1B228F8992C00FFDC5E /* ColorScreen.swift in Sources */,

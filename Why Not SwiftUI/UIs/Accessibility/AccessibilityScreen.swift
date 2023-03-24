@@ -21,7 +21,7 @@ struct AccessibilityScreen: View {
 
     let pictures = [
         "anastasiya-leskova-3p0nSfa5gi8-unsplash",
-        "assetsthatslap-4HZQGoFbI1Y-unsplash",
+        "leon-rohrwild-XqJyl5FD_90-unsplash",
         "jean-philippe-delberghe-75xPHEQBmvA-unsplash",
         "shubham-dhage-_PmYFVygfak-unsplash"
     ]

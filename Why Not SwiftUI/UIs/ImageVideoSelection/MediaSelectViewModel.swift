@@ -10,6 +10,8 @@ class MediaSelectViewModel: ObservableObject {
     @Published var attachmentItems: [UIAttachment] = []
     @Published var selectedItems: [PhotosPickerItem] = []
 
+    @Published var showLoading: Bool = false
+
     func addAttachment(image: UIImage, videoUrl: URL? = nil) {
         #if DEBUG
 
@@ -27,6 +29,8 @@ class MediaSelectViewModel: ObservableObject {
 
     func addAttachments() {
         guard !selectedItems.isEmpty else { return }
+
+        showLoading = true
 
         Task {
             for item in self.selectedItems {
@@ -49,6 +53,8 @@ class MediaSelectViewModel: ObservableObject {
 
             DispatchQueue.main.async {
                 self.selectedItems.removeAll()
+
+                self.showLoading = false
             }
         }
     }
@@ -66,23 +72,23 @@ extension MediaSelectViewModel {
 
         self.attachmentItems = [
             UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "anastasiya-leskova-3p0nSfa5gi8-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "boliviainteligente-llyebZWmLM0-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "shubham-dhage-_PmYFVygfak-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "anita-austvika-tRMaCsI7RZw-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "leon-rohrwild-XqJyl5FD_90-unsplash")!, videoUrl: nil),
             UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "anastasiya-leskova-3p0nSfa5gi8-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "boliviainteligente-llyebZWmLM0-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "shubham-dhage-_PmYFVygfak-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "anita-austvika-tRMaCsI7RZw-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "leon-rohrwild-XqJyl5FD_90-unsplash")!, videoUrl: nil),
             UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil),
-            UIAttachment(id: UUID().hashValue, image: UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!, videoUrl: nil)
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "anastasiya-leskova-3p0nSfa5gi8-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "boliviainteligente-llyebZWmLM0-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "shubham-dhage-_PmYFVygfak-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "anita-austvika-tRMaCsI7RZw-unsplash")!, videoUrl: nil),
+            UIAttachment(id: UUID().hashValue, image: UIImage(named: "leon-rohrwild-XqJyl5FD_90-unsplash")!, videoUrl: nil)
         ]
     }
 }

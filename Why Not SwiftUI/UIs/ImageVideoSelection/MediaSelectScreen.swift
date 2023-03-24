@@ -7,7 +7,6 @@ import SwiftUI
 
 // TODO: #1 Add icon to the image for showing source/type
 // TODO: #2 Add remove button
-// TODO: #3 Add overlay loading
 
 struct MediaSelectScreen: View {
     @ObservedObject var viewModel = MediaSelectViewModel()
@@ -51,9 +50,12 @@ struct MediaSelectScreen: View {
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color.systemBackground)
-                .shadow(radius: 5)
+                .shadow(color: Color.black.opacity(0.1), radius: 5)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .overlay {
+                OverlayLoadingView(isPresented: $viewModel.showLoading)
+            }
             .confirmationDialog(
                 "Add Attachment",
                 isPresented: $showAttachmentAddDialog
