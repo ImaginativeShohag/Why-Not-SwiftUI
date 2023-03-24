@@ -21,7 +21,7 @@ struct AccessibilityScreen: View {
 
     let pictures = [
         "anastasiya-leskova-3p0nSfa5gi8-unsplash",
-        "assetsthatslap-4HZQGoFbI1Y-unsplash",
+        "leon-rohrwild-XqJyl5FD_90-unsplash",
         "jean-philippe-delberghe-75xPHEQBmvA-unsplash",
         "shubham-dhage-_PmYFVygfak-unsplash"
     ]
@@ -44,6 +44,12 @@ struct AccessibilityScreen: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
+                Group {
+                    Text("First, comment out all the 'accessibility*' modifiers, then navigate the screen using VoiceOver. Then uncomment the modifiers and again navigate this screen using VoiceOver. So you will understand the difference.")
+
+                    Divider()
+                }
+
                 Group {
                     Text("Custom Label Example")
                         .font(.title)
@@ -181,11 +187,9 @@ struct AccessibilityScreen: View {
                     .clipShape(Capsule())
 
                     Divider()
-                }
 
-                // MARK: -
+                    // MARK: -
 
-                Group {
                     Text("Accessibility Reduce Motion Example")
                         .font(.title)
 
@@ -208,11 +212,9 @@ struct AccessibilityScreen: View {
                         }
 
                     Divider()
-                }
 
-                // MARK: -
+                    // MARK: -
 
-                Group {
                     Text("Accessibility Reduce Transparency Example")
                         .font(.title)
 

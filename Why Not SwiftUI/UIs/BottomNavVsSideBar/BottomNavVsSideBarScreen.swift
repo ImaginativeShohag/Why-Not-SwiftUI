@@ -32,6 +32,6 @@ struct BottomNavVsSideBarScreen_Previews: PreviewProvider {
             .previewDevice("iPhone 14 Pro Max")
 
         BottomNavVsSideBarScreen()
-            .previewDevice("iPad Pro (11-inch) (3rd generation)")
+            .previewDevice("iPad Pro (11-inch) (4th generation)")
     }
 }

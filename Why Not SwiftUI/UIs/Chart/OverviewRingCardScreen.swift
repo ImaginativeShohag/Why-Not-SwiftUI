@@ -4,31 +4,26 @@
 
 import SwiftUI
 
-struct OverviewRingCardView: View {
+struct OverviewRingCardScreen: View {
     let audits = [
-        AuditData(name: "FOH", ring: RingChartRing(progress: 72, color: Color.green)),
-        AuditData(name: "Critical System", ring: RingChartRing(progress: 36, color: Color.red)),
-        AuditData(name: "Backstage And Remote", ring: RingChartRing(progress: 91, color: Color.purple)),
-        AuditData(name: "Store Exterior", ring: RingChartRing(progress: 72, color: Color.green)),
-        AuditData(name: "AV System", ring: RingChartRing(progress: 36, color: Color.red)),
-        AuditData(name: "Vertical Transportation", ring: RingChartRing(progress: 91, color: Color.purple)),
-        AuditData(name: "XYZ", ring: RingChartRing(progress: 72, color: Color.green))
+        AuditData(name: "🍎 Apple", ring: RingChartRing(progress: 72, color: Color.red)),
+        AuditData(name: "🍊 Orange", ring: RingChartRing(progress: 36, color: Color.orange)),
+        AuditData(name: "🍌 Banana", ring: RingChartRing(progress: 91, color: Color.yellow)),
+        AuditData(name: "🥭 Mango", ring: RingChartRing(progress: 72, color: Color.green)),
+        AuditData(name: "🍍 Pineapple", ring: RingChartRing(progress: 91, color: Color.teal))
     ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Audit Overview:")
-                .fontStyle(size: 18)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
             HStack {
                 ZStack {
                     Text("90%")
+                        .font(.system(size: 20, weight: .bold))
 
                     RingChart(
                         rings: audits.map { $0.ring },
-                        ringWidth: 10,
-                        ringGap: 3
+                        ringWidth: 12,
+                        ringGap: 4
                     )
                     .frame(width: 250, height: 250)
                 }
@@ -36,6 +31,7 @@ struct OverviewRingCardView: View {
                 .padding(.top, 16)
             }
             .frame(maxWidth: .infinity)
+            .padding(.bottom, 32)
 
             ForEach(audits) { audit in
                 HStack {
@@ -44,12 +40,22 @@ struct OverviewRingCardView: View {
                         .foregroundColor(audit.ring.color)
 
                     Text("\(audit.name)")
+                        .font(.system(size: 16, weight: .medium))
 
                     Spacer()
 
                     Text("\(Int(audit.ring.progress))%")
                         .foregroundColor(audit.ring.color)
+                        .font(.system(size: 16, weight: .bold))
                 }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 4)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(.black.opacity(0.1), lineWidth: 2)
+                }
+                .padding(.vertical, 2)
+                .padding(.horizontal, 32)
             }
 
             Spacer()
@@ -67,6 +73,6 @@ struct AuditData: Identifiable {
 
 struct OverviewRingCardView_Previews: PreviewProvider {
     static var previews: some View {
-        OverviewRingCardView()
+        OverviewRingCardScreen()
     }
 }
