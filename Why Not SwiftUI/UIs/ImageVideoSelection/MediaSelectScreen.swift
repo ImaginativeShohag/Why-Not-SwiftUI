@@ -5,9 +5,6 @@
 import PhotosUI
 import SwiftUI
 
-// TODO: #1 Add icon to the image for showing source/type
-// TODO: #2 Add remove button
-
 struct MediaSelectScreen: View {
     @ObservedObject var viewModel = MediaSelectViewModel()
 
@@ -23,16 +20,12 @@ struct MediaSelectScreen: View {
                     VStack {
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3)) {
                             ForEach(viewModel.attachmentItems) { item in
-                                GeometryReader { geometry in
-                                    Image(uiImage: item.image ?? UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(height: geometry.size.width)
-                                }
-                                .clipped()
-                                .aspectRatio(1, contentMode: .fit)
-                                .background(Color.systemGroupedBackground)
-                                .cornerRadius(16)
+                                ImageItemView(
+                                    item: item,
+                                    onDeleteClicked: {
+                                        viewModel.removeAttachment(item: item)
+                                    }
+                                )
                             }
                         }
                     }
@@ -117,3 +110,62 @@ struct MediaSelectScreen_Previews: PreviewProvider {
 }
 
 #endif
+
+// MARK: - Components
+
+private struct ImageItemView: View {
+    let item: UIAttachment
+    let onDeleteClicked: () -> Void
+
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Image(uiImage: item.image ?? UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: geometry.size.width)
+            }
+        }
+        .clipped()
+        .aspectRatio(1, contentMode: .fit)
+        .background(Color.systemGroupedBackground)
+        .cornerRadius(16)
+        .overlay {
+            ZStack {
+                Button {
+                    onDeleteClicked()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(Color.systemRed)
+                }
+                .background(Color.white)
+                .cornerRadius(24)
+                .padding(4)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+        }
+        .overlay {
+            ZStack {
+                if item.type == .capturedPhoto {
+                    Image(systemName: "camera.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(Color.white)
+                        .padding(8)
+                } else if item.type == .recordedVideo {
+                    Image(systemName: "video.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(Color.white)
+                        .padding(8)
+                } else {
+                    Image(systemName: "photo.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(Color.white)
+                        .padding(8)
+                }
+            }
+            .shadow(radius: 2)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+        }
+    }
+}
