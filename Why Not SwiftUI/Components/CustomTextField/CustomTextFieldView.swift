@@ -4,6 +4,9 @@
 
 import SwiftUI
 
+/// Component Name: `CustomTextFieldView`
+/// Version: `1.0.230327`
+
 struct CustomTextFieldView: View {
     @Binding var value: String
     var placeHolder: String
