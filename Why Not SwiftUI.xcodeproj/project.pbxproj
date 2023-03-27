@@ -396,8 +396,6 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
-				45AD4F1829CD23300008CC44 /* Shared */,
-				4557C0F029C4B05D0030530B /* LabelToggle */,
 				4554D9C629B256ED00063323 /* Accessibility */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
 				459CA62228E6FA7B00FC6F42 /* Chart */,
@@ -405,13 +403,15 @@
 				45F1C98C296F123400386645 /* CoolToast */,
 				45ACAF4E28F9F60000C5467F /* CustomSideBar */,
 				458E623A28EC6CD8005A4E54 /* Home */,
+				459837D328EB45A800AB5433 /* ImageVideoSelection */,
+				4557C0F029C4B05D0030530B /* LabelToggle */,
 				4568D1AA28F8972700FFDC5E /* Main */,
 				459EC107290055FE0019C555 /* MetricKit */,
 				45F1C998297098A700386645 /* NativeAlert */,
+				45AD4F1829CD23300008CC44 /* Shared */,
 				4568D1A628F8950D00FFDC5E /* Splash */,
 				454539F0298130EE00E3D9D0 /* TextFieldValidation */,
 				45513A972998F1BD00BF0A0D /* TextPreview */,
-				459837D328EB45A800AB5433 /* ImageVideoSelection */,
 			);
 			path = UIs;
 			sourceTree = "<group>";
