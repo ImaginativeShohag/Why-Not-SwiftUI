@@ -4,6 +4,9 @@
 
 import SwiftUI
 
+/// Component Name: `CustomTextFieldView`
+/// Version: `1.0.230327`
+
 struct CustomTextFieldView: View {
     @Binding var value: String
     var placeHolder: String
@@ -12,6 +15,7 @@ struct CustomTextFieldView: View {
     @FocusState private var isFocused: Bool
     @State private var showValueField = false
 
+    @Environment(\.isEnabled) private var isEnabled
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -24,30 +28,24 @@ struct CustomTextFieldView: View {
             .focused($isFocused)
             .onSubmit {
                 if value == "" {
-                    withAnimation(.easeOut) {
-                        showValueField = false
-                    }
+                    hideValue()
                 }
             }
             .keyboardType(keyboardType)
             .onChange(of: isFocused) { focused in
                 if focused {
-                    withAnimation(.easeIn) {
-                        showValueField = true
-                    }
+                    showValue()
                 } else {
                     if value == "" {
-                        withAnimation(.easeOut) {
-                            showValueField = false
-                        }
+                        hideValue()
                     }
                 }
             }
             .onChange(of: value) { newValue in
                 if !newValue.isEmpty {
-                    withAnimation(.easeIn) {
-                        showValueField = true
-                    }
+                    showValue()
+                } else if !isFocused {
+                    hideValue()
                 }
             }
             .padding(.top, showValueField ? 17 : 0)
@@ -73,12 +71,24 @@ struct CustomTextFieldView: View {
             }
         })
         .frame(height: 51)
-        .background(Color.secondarySystemGroupedBackground)
+        .background(isEnabled ? Color.secondarySystemGroupedBackground : Color.systemGray5)
         .cornerRadius(8)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.systemGray4, lineWidth: 1)
         )
+    }
+
+    private func showValue() {
+        withAnimation(.easeIn) {
+            showValueField = true
+        }
+    }
+
+    private func hideValue() {
+        withAnimation(.easeOut) {
+            showValueField = false
+        }
     }
 }
 
@@ -92,15 +102,29 @@ struct CustomTextFieldView_Previews: PreviewProvider {
             )
 
             CustomTextFieldView(
-                value: .constant("Mahmudul Hasan Shohag"),
+                value: .constant(""),
                 placeHolder: "Full Name",
                 keyboardType: .default
             )
+            .disabled(true)
+
+            CustomTextFieldView(
+                value: .constant("Mahmudul Hasan Shohag"),
+                placeHolder: "Full Name",
+                keyboardType: .namePhonePad
+            )
+
+            CustomTextFieldView(
+                value: .constant("Mahmudul Hasan Shohag"),
+                placeHolder: "Full Name",
+                keyboardType: .namePhonePad
+            )
+            .disabled(true)
 
             CustomTextFieldView(
                 value: .constant("   "),
                 placeHolder: "Full Name",
-                keyboardType: .default
+                keyboardType: .phonePad
             )
         }
         .padding()
