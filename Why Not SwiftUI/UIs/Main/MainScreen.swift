@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct MainScreen: View {
-    @State private var showSplash = false
+    @State private var showSplash = true
 
     var body: some View {
         ZStack {
@@ -17,7 +17,9 @@ struct MainScreen: View {
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                showSplash = false
+                withAnimation {
+                    showSplash = false
+                }
             }
         }
     }
@@ -27,7 +29,7 @@ struct MainScreen_Previews: PreviewProvider {
     static var previews: some View {
         MainScreen()
             .previewDevice("iPhone 14 Pro Max")
-        
+
         MainScreen()
             .previewDevice("iPad Pro (12.9-inch) (5th generation)")
     }
