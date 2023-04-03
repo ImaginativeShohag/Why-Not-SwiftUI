@@ -8,6 +8,9 @@ import SwiftUI
 /// - Checkout all the blogs under "Accessibility" project from here: https://www.hackingwithswift.com/books/ios-swiftui
 /// - https://www.hackingwithswift.com/books/ios-swiftui/supporting-specific-accessibility-needs-with-swiftui
 
+// TODO: #1: Add example for: .accessibilityAddTraits(isSelected ? .isSelected : [])
+// https://swiftwithmajid.com/2021/09/01/the-power-of-accessibility-representation-view-modifier-in-swiftui/
+
 struct AccessibilityScreen: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.accessibilityReduceMotion) var reduceMotion
