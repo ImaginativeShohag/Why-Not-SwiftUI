@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		450776D5290195AF00C05007 /* example_crash_report.json in Resources */ = {isa = PBXBuildFile; fileRef = 450776D4290195AF00C05007 /* example_crash_report.json */; };
+		452E8F922ABE1AA9002E5A28 /* DynamicTypeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */; };
 		454539F22981310500E3D9D0 /* TextFieldValidationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */; };
 		454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */; };
 		45513A9029911C1E00BF0A0D /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45513A8F29911C1E00BF0A0D /* CustomTextFieldView.swift */; };
@@ -116,6 +117,7 @@
 
 /* Begin PBXFileReference section */
 		450776D4290195AF00C05007 /* example_crash_report.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example_crash_report.json; sourceTree = "<group>"; };
+		452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTypeScreen.swift; sourceTree = "<group>"; };
 		454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationScreen.swift; sourceTree = "<group>"; };
 		454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationViewModel.swift; sourceTree = "<group>"; };
 		45513A8D29911B4400BF0A0D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -221,6 +223,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		452E8F902ABE1A95002E5A28 /* DynamicType */ = {
+			isa = PBXGroup;
+			children = (
+				452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */,
+			);
+			path = DynamicType;
+			sourceTree = "<group>";
+		};
 		454539F0298130EE00E3D9D0 /* TextFieldValidation */ = {
 			isa = PBXGroup;
 			children = (
@@ -399,6 +409,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				452E8F902ABE1A95002E5A28 /* DynamicType */,
 				4554D9C629B256ED00063323 /* Accessibility */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
 				459CA62228E6FA7B00FC6F42 /* Chart */,
@@ -690,6 +701,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1420;
+				ORGANIZATIONNAME = "Md. Mahmudul Hasan Shohag";
 				TargetAttributes = {
 					457E603B29353FE5005595B7 = {
 						CreatedOnToolsVersion = 14.1;
@@ -806,6 +818,7 @@
 				45CD36B229CBC60700DB24BD /* URL+.swift in Sources */,
 				4554D9C829B259F700063323 /* AccessibilityScreen.swift in Sources */,
 				4568D1AC28F8975D00FFDC5E /* MainScreen.swift in Sources */,
+				452E8F922ABE1AA9002E5A28 /* DynamicTypeScreen.swift in Sources */,
 				459EC10C290059620019C555 /* Color.swift in Sources */,
 				459EC112290086640019C555 /* MetircKitViewModel.swift in Sources */,
 				45F1C99A297098C000386645 /* NativeAlert.swift in Sources */,

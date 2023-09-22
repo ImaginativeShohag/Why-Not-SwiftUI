@@ -12,9 +12,6 @@ import SwiftUI
 /// - `AX` = Accessibility
 /// - `VO` = Voice Over
 
-// TODO: #1: Add example for: .accessibilityAddTraits(isSelected ? .isSelected : [])
-// https://swiftwithmajid.com/2021/09/01/the-power-of-accessibility-representation-view-modifier-in-swiftui/
-
 struct AccessibilityScreen: View {
     /// If this is true, UI should not convey information using color alone
     /// and instead should use shapes or glyphs to convey information.
@@ -27,6 +24,19 @@ struct AccessibilityScreen: View {
     /// If this property's value is true, UI (mainly window) backgrounds should
     /// not be semi-transparent; they should be opaque.
     @Environment(\.accessibilityReduceTransparency) var reduceTransparency
+    
+    /// The current Dynamic Type size.
+    ///
+    /// This value changes as the user's chosen Dynamic Type size changes. The
+    /// default value is device-dependent.
+    ///
+    /// When limiting the Dynamic Type size, consider if adding a
+    /// large content view with ``View/accessibilityShowsLargeContentViewer()``
+    /// would be appropriate.
+    ///
+    /// On macOS, this value cannot be changed by users and does not affect the
+    /// text size.
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     // MARK: -
 
@@ -361,7 +371,7 @@ struct AccessibilityScreen: View {
                         Text("Hello, World!")
                             .padding()
                             /// Remove the transparency if "Reduce Transparency" is enabled.
-                            .background(reduceTransparency ? .black : .black.opacity(0.5))
+                            .background(reduceTransparency ? Color(.systemBlack) : Color(.systemBlack).opacity(0.5))
                             .foregroundColor(.white)
                             .clipShape(Capsule())
                     }
