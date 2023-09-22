@@ -95,6 +95,9 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 - [ ] CMS Module
 - [ ] System UI Components Collection
     - [ ] [https://developer.apple.com/documentation/swiftui/grid](Grid)
+- [ ] Navigation system update
+- [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
+- [ ] Migrate to Tuist
 
 ## Extensions
 

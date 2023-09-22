@@ -8,12 +8,24 @@ import SwiftUI
 /// - Checkout all the blogs under "Accessibility" project from here: https://www.hackingwithswift.com/books/ios-swiftui
 /// - https://www.hackingwithswift.com/books/ios-swiftui/supporting-specific-accessibility-needs-with-swiftui
 
+/// **Note:**
+/// - `AX` = Accessibility
+/// - `VO` = Voice Over
+
 // TODO: #1: Add example for: .accessibilityAddTraits(isSelected ? .isSelected : [])
 // https://swiftwithmajid.com/2021/09/01/the-power-of-accessibility-representation-view-modifier-in-swiftui/
 
 struct AccessibilityScreen: View {
+    /// If this is true, UI should not convey information using color alone
+    /// and instead should use shapes or glyphs to convey information.
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+
+    /// If this property's value is true, UI should avoid large animations,
+    /// especially those that simulate the third dimension.
     @Environment(\.accessibilityReduceMotion) var reduceMotion
+
+    /// If this property's value is true, UI (mainly window) backgrounds should
+    /// not be semi-transparent; they should be opaque.
     @Environment(\.accessibilityReduceTransparency) var reduceTransparency
 
     // MARK: -
@@ -64,10 +76,15 @@ struct AccessibilityScreen: View {
                         .onTapGesture {
                             selectedPicture = Int.random(in: 0...3)
                         }
+                        /// Set custom label for AX tools.
                         .accessibilityLabel("Image")
+                        /// Set custom value for AX tools.
                         .accessibilityValue(labels[selectedPicture])
+                        /// Set custom hint for AX tools.
                         .accessibilityHint("Double tap to change the image.")
+                        /// Set the element type for accessibility. So AX tools will think this is a "Button".
                         .accessibilityAddTraits(.isButton)
+                        /// Remove the default view type for accessibility. So AX tools will to think this is a "Image".
                         .accessibilityRemoveTraits(.isImage)
 
                     Divider()
@@ -79,6 +96,7 @@ struct AccessibilityScreen: View {
                     Text("Ignored Image Example")
                         .font(.title)
 
+                    /// If we use `Image(decorative:)` AX tools will ignore it.
                     Image(decorative: "anastasiya-leskova-3p0nSfa5gi8-unsplash")
                         .resizable()
                         .scaledToFill()
@@ -95,6 +113,7 @@ struct AccessibilityScreen: View {
                         .font(.title)
 
                     Text("Ignored Element")
+                        /// This element will be hidden to AX tools. So it will be ignored by AX tools.
                         .accessibilityHidden(true)
 
                     Divider()
@@ -111,6 +130,8 @@ struct AccessibilityScreen: View {
                         Text("1000")
                             .font(.title)
                     }
+                    /// This will merge all the components. So AX tools will think the whole `VStack` is a single view.
+                    /// Without this modifier, AX tools will select the `Text` components separately.
                     .accessibilityElement(children: .combine)
 
                     Divider()
@@ -123,11 +144,13 @@ struct AccessibilityScreen: View {
                         .font(.title)
 
                     VStack {
-                        Text("Your score is")
-                        Text("1000")
+                        Text("Your result is")
+                        Text("1K")
                             .font(.title)
                     }
+                    /// Ignore all the elements inside the `VStack`.
                     .accessibilityElement(children: .ignore) // Or: accessibilityElement()
+                    /// Set a custom label for the component. As above modifier ignore all the elements, we must need to set custom label for it.
                     .accessibilityLabel("Your score is 1000")
 
                     Divider()
@@ -141,6 +164,8 @@ struct AccessibilityScreen: View {
 
                     VStack {
                         Text("Item: \(countValue) piece\(countValue <= 1 ? "" : "s")")
+                            .transition(.opacity)
+                            .id("CounterComponent\(countValue)")
 
                         Button("Increment") {
                             countValue += 1
@@ -150,9 +175,13 @@ struct AccessibilityScreen: View {
                             countValue -= 1
                         }
                     }
+                    /// Ignore all the elements inside the `VStack`.
                     .accessibilityElement()
+                    /// Set custom label for AX tools.
                     .accessibilityLabel("Value")
+                    /// Set custom value for AX tools.
                     .accessibilityValue("\(countValue) piece\(countValue <= 1 ? "" : "s")")
+                    /// Add AX **Adjustable Action** support. Swipe top or bottom to change the value using VO.
                     .accessibilityAdjustableAction { direction in
                         switch direction {
                         case .increment:
@@ -178,6 +207,7 @@ struct AccessibilityScreen: View {
                         .font(.title)
 
                     HStack {
+                        /// We will show an check icon to make it easy to understand the meaning of the button without color.
                         if differentiateWithoutColor {
                             Image(systemName: "checkmark.circle")
                         }
@@ -199,6 +229,7 @@ struct AccessibilityScreen: View {
                     Text("Hello, World!")
                         .scaleEffect(scale)
                         .onTapGesture {
+                            /// We are using custom method to stop animation.
                             withOptionalAnimation {
                                 scale *= 1.5
                             }
@@ -213,6 +244,10 @@ struct AccessibilityScreen: View {
                             //     }
                             // }
                         }
+                        /// Set the element type for accessibility. So AX tools will think this is a "Button".
+                        .accessibilityAddTraits(.isButton)
+                        /// Set custom hint for AX tools.
+                        .accessibilityHint("Double tap to increase the text size.")
 
                     Divider()
 
@@ -223,6 +258,7 @@ struct AccessibilityScreen: View {
 
                     Text("Hello, World!")
                         .padding()
+                        /// Remove the transparency if "Reduce Transparency" is enabled.
                         .background(reduceTransparency ? .black : .black.opacity(0.5))
                         .foregroundColor(.white)
                         .clipShape(Capsule())
@@ -244,6 +280,8 @@ struct AccessibilityScreen_Previews: PreviewProvider {
 
 // MARK: - Global methods
 
+
+/// Only animate if "Reduce Motion" is disabled.
 func withOptionalAnimation<Result>(_ animation: Animation? = .default, _ body: () throws -> Result) rethrows -> Result {
     if UIAccessibility.isReduceMotionEnabled {
         return try body()
