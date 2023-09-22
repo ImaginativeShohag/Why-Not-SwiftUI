@@ -409,13 +409,18 @@ struct LongPressCheckmark: View {
     @Binding var isSelected: Bool
 
     var body: some View {
-        Image(systemName: isSelected ? "checkmark.rectangle" : "rectangle")
-            .onTapGesture { isSelected.toggle() }
+        Image(systemName: isSelected ? "checkmark.square" : "square")
+            /// Long press gesture, which is not accessible by VO.
+            .onLongPressGesture { isSelected.toggle() }
             .accessibilityRemoveTraits(.isImage)
             .accessibilityAddTraits(.isButton)
             .accessibilityAddTraits(isSelected ? .isSelected : [])
+            /// Set custom label for AX tools.
             .accessibilityLabel(Text("Checkmark"))
+            /// Set custom hint for AX tools.
             .accessibilityHint("You can toggle the checkmark")
-//            .accessibilityAction { isSelected.toggle() }
+            /// This element is using `onLongPressGesture`, so VO cannot access it directly.
+            /// So, for VO users we added specify the action here.
+            .accessibilityAction { isSelected.toggle() }
     }
 }
