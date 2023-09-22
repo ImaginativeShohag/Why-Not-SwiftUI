@@ -32,6 +32,8 @@ struct AccessibilityScreen: View {
 
     @State private var scale = 1.0
 
+    @State private var isSelected = false
+
     // MARK: -
 
     let pictures = [
@@ -86,6 +88,103 @@ struct AccessibilityScreen: View {
                         .accessibilityAddTraits(.isButton)
                         /// Remove the default view type for accessibility. So AX tools will to think this is a "Image".
                         .accessibilityRemoveTraits(.isImage)
+
+                    Divider()
+                }
+
+                // MARK: -
+
+                Group {
+                    Text("Custom Traits Example")
+                        .font(.title)
+
+                    Text("isButton Trait")
+                        /// The accessibility element is a button.
+                        .accessibilityAddTraits(.isButton)
+
+                    Text("isHeader Trait")
+                        /// The accessibility element is a header that divides content into
+                        /// sections, like the title of a navigation bar.
+                        .accessibilityAddTraits(.isHeader)
+
+                    Text("isSelected Trait")
+                        /// The accessibility element is currently selected.
+                        .accessibilityAddTraits(.isSelected)
+
+                    Text("isLink Trait")
+                        /// The accessibility element is a link.
+                        .accessibilityAddTraits(.isLink)
+
+                    Text("isSearchField Trait")
+                        /// The accessibility element is a search field.
+                        .accessibilityAddTraits(.isSearchField)
+
+                    Text("isImage Trait")
+                        /// The accessibility element is an image.
+                        .accessibilityAddTraits(.isImage)
+
+                    Text("playsSound Trait")
+                        /// The accessibility element plays its own sound when activated.
+                        .accessibilityAddTraits(.playsSound)
+
+                    Text("isKeyboardKey Trait")
+                        /// The accessibility element behaves as a keyboard key.
+                        .accessibilityAddTraits(.isKeyboardKey)
+
+                    Text("isStaticText Trait")
+                        /// The accessibility element is a static text that cannot be
+                        /// modified by the user.
+                        .accessibilityAddTraits(.isStaticText)
+
+                    Text("isSummaryElement Trait")
+                        /// The accessibility element provides summary information when the
+                        /// application starts.
+                        ///
+                        /// Use this trait to characterize an accessibility element that provides
+                        /// a summary of current conditions, settings, or state, like the
+                        /// temperature in the Weather app.
+                        .accessibilityAddTraits(.isSummaryElement)
+
+                    Text("updatesFrequently Trait")
+                        /// The accessibility element frequently updates its label or value.
+                        ///
+                        /// Use this trait when you want an assistive technology to poll for
+                        /// changes when it needs updated information. For example, you might use
+                        /// this trait to characterize the readout of a stopwatch.
+                        .accessibilityAddTraits(.updatesFrequently)
+
+                    Text("startsMediaSession Trait")
+                        /// The accessibility element starts a media session when it is activated.
+                        ///
+                        /// Use this trait to silence the audio output of an assistive technology,
+                        /// such as VoiceOver, during a media session that should not be interrupted.
+                        /// For example, you might use this trait to silence VoiceOver speech while
+                        /// the user is recording audio.
+                        .accessibilityAddTraits(.startsMediaSession)
+
+                    Text("allowsDirectInteraction Trait")
+                        /// The accessibility element allows direct touch interaction for
+                        /// VoiceOver users.
+                        .accessibilityAddTraits(.allowsDirectInteraction)
+
+                    Text("causesPageTurn Trait")
+                        /// The accessibility element causes an automatic page turn when VoiceOver
+                        /// finishes reading the text within it.
+                        .accessibilityAddTraits(.causesPageTurn)
+
+                    /// This code is commented intentionally. VO will think this component is a modal, and block the focus.
+                    // Text("isModal Trait")
+                    //     /// The accessibility element is modal.
+                    //     ///
+                    //     /// Use this trait to restrict which accessibility elements an assistive
+                    //     /// technology can navigate. When a modal accessibility element is visible,
+                    //     /// sibling accessibility elements that are not modal are ignored.
+                    //     .accessibilityAddTraits(.isModal)
+
+                    #warning("iOS 17")
+                    // Text("isToggle Trait")
+                    //     /// The accessibility element is a toggle.
+                    //     .accessibilityAddTraits(.isToggle)
 
                     Divider()
                 }
@@ -223,47 +322,62 @@ struct AccessibilityScreen: View {
 
                     // MARK: -
 
-                    Text("Accessibility Reduce Motion Example")
-                        .font(.title)
+                    Group {
+                        Text("Accessibility Reduce Motion Example")
+                            .font(.title)
 
-                    Text("Hello, World!")
-                        .scaleEffect(scale)
-                        .onTapGesture {
-                            /// We are using custom method to stop animation.
-                            withOptionalAnimation {
-                                scale *= 1.5
+                        Text("Hello, World!")
+                            .scaleEffect(scale)
+                            .onTapGesture {
+                                /// We are using custom method to stop animation.
+                                withOptionalAnimation {
+                                    scale *= 1.5
+                                }
+
+                                // Or,
+                                //
+                                // if reduceMotion {
+                                //     scale *= 1.5
+                                // } else {
+                                //     withAnimation {
+                                //         scale *= 1.5
+                                //     }
+                                // }
                             }
+                            /// Set the element type for accessibility. So AX tools will think this is a "Button".
+                            .accessibilityAddTraits(.isButton)
+                            /// Set custom hint for AX tools.
+                            .accessibilityHint("Double tap to increase the text size.")
 
-                            // Or,
-                            //
-                            // if reduceMotion {
-                            //     scale *= 1.5
-                            // } else {
-                            //     withAnimation {
-                            //         scale *= 1.5
-                            //     }
-                            // }
-                        }
-                        /// Set the element type for accessibility. So AX tools will think this is a "Button".
-                        .accessibilityAddTraits(.isButton)
-                        /// Set custom hint for AX tools.
-                        .accessibilityHint("Double tap to increase the text size.")
+                        Divider()
+                    }
+
+                    // MARK: -
+
+                    Group {
+                        Text("Accessibility Reduce Transparency Example")
+                            .font(.title)
+
+                        Text("Hello, World!")
+                            .padding()
+                            /// Remove the transparency if "Reduce Transparency" is enabled.
+                            .background(reduceTransparency ? .black : .black.opacity(0.5))
+                            .foregroundColor(.white)
+                            .clipShape(Capsule())
+                    }
 
                     Divider()
 
                     // MARK: -
 
-                    Text("Accessibility Reduce Transparency Example")
-                        .font(.title)
+                    Group {
+                        Text("Custom Component Example")
+                            .font(.title)
 
-                    Text("Hello, World!")
-                        .padding()
-                        /// Remove the transparency if "Reduce Transparency" is enabled.
-                        .background(reduceTransparency ? .black : .black.opacity(0.5))
-                        .foregroundColor(.white)
-                        .clipShape(Capsule())
-
-                    Divider()
+                        LongPressCheckmark(
+                            isSelected: $isSelected
+                        )
+                    }
                 }
             }
             .padding()
@@ -280,12 +394,28 @@ struct AccessibilityScreen_Previews: PreviewProvider {
 
 // MARK: - Global methods
 
-
 /// Only animate if "Reduce Motion" is disabled.
 func withOptionalAnimation<Result>(_ animation: Animation? = .default, _ body: () throws -> Result) rethrows -> Result {
     if UIAccessibility.isReduceMotionEnabled {
         return try body()
     } else {
         return try withAnimation(animation, body)
+    }
+}
+
+// MARK: - Components
+
+struct LongPressCheckmark: View {
+    @Binding var isSelected: Bool
+
+    var body: some View {
+        Image(systemName: isSelected ? "checkmark.rectangle" : "rectangle")
+            .onTapGesture { isSelected.toggle() }
+            .accessibilityRemoveTraits(.isImage)
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAddTraits(isSelected ? .isSelected : [])
+            .accessibilityLabel(Text("Checkmark"))
+            .accessibilityHint("You can toggle the checkmark")
+//            .accessibilityAction { isSelected.toggle() }
     }
 }
