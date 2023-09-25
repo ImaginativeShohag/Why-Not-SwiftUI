@@ -24,7 +24,7 @@ struct AccessibilityScreen: View {
     /// If this property's value is true, UI (mainly window) backgrounds should
     /// not be semi-transparent; they should be opaque.
     @Environment(\.accessibilityReduceTransparency) var reduceTransparency
-    
+
     /// The current Dynamic Type size.
     ///
     /// This value changes as the user's chosen Dynamic Type size changes. The
@@ -61,6 +61,8 @@ struct AccessibilityScreen: View {
     ]
 
     @State private var selectedPicture = Int.random(in: 0...3)
+
+    @State private var showAlert = false
 
     // MARK: -
 
@@ -388,6 +390,33 @@ struct AccessibilityScreen: View {
                             isSelected: $isSelected
                         )
                     }
+
+                    Divider()
+
+                    // MARK: -
+
+                    Group {
+                        Text("Custom Rotor Example")
+                            .font(.title)
+
+                        Image("leon-rohrwild-XqJyl5FD_90-unsplash")
+                            .resizable()
+                            .scaledToFit()
+                            .alert("Do you want to delete this?", isPresented: $showAlert) {
+                                Button("No", role: .cancel) {}
+                                Button("Yes", role: .destructive) {}
+                            }
+                            /// Set custom label for AX tools.
+                            .accessibilityLabel("Awesome Image")
+                            /// Adding custom rotor shortcut for adding actions.
+                            .accessibilityRotor("Actions") {
+                                /// A single rotor entry.
+                                AccessibilityRotorEntry("Delete", id: 0) {
+                                    /// Show a dialog when this rotor is activated.
+                                    showAlert = true
+                                }
+                            }
+                    }
                 }
             }
             .padding()
@@ -422,7 +451,9 @@ struct LongPressCheckmark: View {
         Image(systemName: isSelected ? "checkmark.square" : "square")
             /// Long press gesture, which is not accessible by VO.
             .onLongPressGesture { isSelected.toggle() }
+            /// Remove the default `Image` trait from this view.
             .accessibilityRemoveTraits(.isImage)
+            /// Set this component as `Button`.
             .accessibilityAddTraits(.isButton)
             .accessibilityAddTraits(isSelected ? .isSelected : [])
             /// Set custom label for AX tools.
