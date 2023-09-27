@@ -22,90 +22,97 @@ struct CustomAXActionsScreen: View {
     private let countMinValue = 0
 
     var body: some View {
-        VStack {
-            ScrollView {
+        ScrollView {
+            VStack(spacing: 16) {
+                Text("Use **VoiceOver** to check below examples.")
+                    .font(.footnote)
+                    .multilineTextAlignment(.center)
+
+                Divider()
+
+                Text("Adjustable Action Example")
+                    .font(.title)
+
                 VStack {
-                    Text("Adjustable Action Example")
-                        .font(.title)
+                    Text("Item: \(countValue) piece\(countValue <= 1 ? "" : "s")")
+                        .transition(.opacity)
+                        .id("CounterComponent\(countValue)")
 
-                    VStack {
-                        Text("Item: \(countValue) piece\(countValue <= 1 ? "" : "s")")
-                            .transition(.opacity)
-                            .id("CounterComponent\(countValue)")
+                    Button("Increment") {
+                        countValue += 1
+                    }
 
-                        Button("Increment") {
+                    Button("Decrement") {
+                        countValue -= 1
+                    }
+                }
+                .padding()
+                /// Ignore all the elements inside the `VStack`.
+                .accessibilityElement()
+                /// Set custom label for AX tools.
+                .accessibilityLabel("Value")
+                /// Set custom value for AX tools.
+                .accessibilityValue("\(countValue) piece\(countValue <= 1 ? "" : "s")")
+                /// Add AX **Adjustable Action** support. Swipe top or bottom to change the value using VO.
+                .accessibilityAdjustableAction { direction in
+                    switch direction {
+                    case .increment:
+                        if countValue < countMaxValue {
                             countValue += 1
                         }
-
-                        Button("Decrement") {
+                    case .decrement:
+                        if countValue > countMinValue {
                             countValue -= 1
                         }
+                    default:
+                        return
                     }
-                    .padding()
-                    /// Ignore all the elements inside the `VStack`.
-                    .accessibilityElement()
-                    /// Set custom label for AX tools.
-                    .accessibilityLabel("Value")
-                    /// Set custom value for AX tools.
-                    .accessibilityValue("\(countValue) piece\(countValue <= 1 ? "" : "s")")
-                    /// Add AX **Adjustable Action** support. Swipe top or bottom to change the value using VO.
-                    .accessibilityAdjustableAction { direction in
-                        switch direction {
-                        case .increment:
-                            if countValue < countMaxValue {
-                                countValue += 1
+                }
+
+                Divider()
+
+                // MARK: -
+
+                Text("Custom Actions Example")
+                    .font(.title)
+
+                LazyVGrid(
+                    columns: Array(
+                        repeating: GridItem(.flexible(), spacing: 8, alignment: .top),
+                        count: 2
+                    ),
+                    spacing: 8
+                ) {
+                    ForEach(1 ..< 100) { index in
+                        AttachmentItem(
+                            id: index,
+                            onClick: {
+                                showPreviewAlert = true
+                            },
+                            onDeleteClick: {
+                                showDeleteAlert = true
                             }
-                        case .decrement:
-                            if countValue > countMinValue {
-                                countValue -= 1
-                            }
-                        default:
-                            return
-                        }
-                    }
-
-                    Divider()
-                    
-                    // MARK: -
-
-                    Text("Custom Actions Example")
-                        .font(.title)
-
-                    LazyVGrid(
-                        columns: Array(
-                            repeating: GridItem(.flexible(), spacing: 8, alignment: .top),
-                            count: 2
-                        ),
-                        spacing: 8
-                    ) {
-                        ForEach(1 ..< 100) { index in
-                            AttachmentItem(
-                                id: index,
-                                onClick: {
-                                    showPreviewAlert = true
-                                },
-                                onDeleteClick: {
-                                    showDeleteAlert = true
-                                }
-                            )
-                        }
+                        )
                     }
                 }
             }
             .padding(.horizontal)
-            .alert("Preview dialog.", isPresented: $showPreviewAlert) {
-                Button("Ok", role: .cancel) {}
-            }
-            .alert("Do you want to delete this?", isPresented: $showDeleteAlert) {
-                Button("No", role: .cancel) {}
-                Button("Yes", role: .destructive) {}
-            }
+        }
+        .navigationTitle("Custom Accessibility Actions")
+        .alert("Preview dialog.", isPresented: $showPreviewAlert) {
+            Button("Ok", role: .cancel) {}
+        }
+        .alert("Do you want to delete this?", isPresented: $showDeleteAlert) {
+            Button("No", role: .cancel) {}
+            Button("Yes", role: .destructive) {}
         }
     }
 }
 
 #Preview("CustomAXActionsScreen") {
-    CustomAXActionsScreen()
+    NavigationStack {
+        CustomAXActionsScreen()
+    }
 }
 
 private struct AttachmentItem: View {

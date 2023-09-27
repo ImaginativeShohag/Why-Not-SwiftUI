@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-/// Resources:
+/// # Resources:
 /// - Checkout all the blogs under "Accessibility" project from here: https://www.hackingwithswift.com/books/ios-swiftui
 /// - https://www.hackingwithswift.com/books/ios-swiftui/supporting-specific-accessibility-needs-with-swiftui
 
@@ -57,7 +57,9 @@ struct GeneralAXModifiersScreen: View {
         ScrollView {
             VStack(spacing: 16) {
                 Group {
-                    Text("First, comment out all the 'accessibility*' modifiers, then navigate the screen using VoiceOver. Then uncomment the modifiers and again navigate this screen using VoiceOver. So you will understand the difference.")
+                    Text("First, comment out all the '`accessibility*`' modifiers, then navigate the screen using **VoiceOver**. Then uncomment the modifiers and again navigate this screen using VoiceOver. So you will understand the difference.")
+                        .font(.footnote)
+                        .multilineTextAlignment(.center)
 
                     Divider()
                 }
@@ -332,14 +334,16 @@ struct GeneralAXModifiersScreen: View {
                 }
             }
             .padding()
-            .multilineTextAlignment(.center)
         }
+        .navigationTitle("Accessibility Modifiers")
     }
 }
 
 struct GeneralAXModifiersScreen_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralAXModifiersScreen()
+        NavigationStack {
+            GeneralAXModifiersScreen()
+        }
     }
 }
 

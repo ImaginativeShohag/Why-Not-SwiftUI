@@ -22,7 +22,7 @@ struct AXRotorScreen: View {
         Flower(name: "Poppy", color: .red),
         Flower(name: "Bluebell", color: .blue),
         Flower(name: "Buttercup", color: .yellow),
-        Flower(name: "Tulip", color: .yellow), 
+        Flower(name: "Tulip", color: .yellow),
         Flower(name: "Iris", color: .blue),
         Flower(name: "Hyacinth", color: .blue),
         Flower(name: "Daffodil", color: .yellow),
@@ -30,13 +30,14 @@ struct AXRotorScreen: View {
     ]
 
     var body: some View {
-        VStack {
-            Text("Custom Rotor Example")
-                .font(.title)
-
+        VStack(spacing: 16) {
+            Text("Use **VoiceOver** to check the custom Rotors.")
+                .font(.footnote)
+                .multilineTextAlignment(.center)
+            
             List {
                 ForEach(flowers, id: \.id) { flower in
-                    HStack{
+                    HStack {
                         Text("✿")
                             .font(.title)
                             .foregroundStyle(flower.color)
@@ -73,11 +74,14 @@ struct AXRotorScreen: View {
                 }
             }
         }
+        .navigationTitle("Rotor Example")
     }
 }
 
 #Preview("AXRotorScreen") {
-    AXRotorScreen()
+    NavigationStack {
+        AXRotorScreen()
+    }
 }
 
 struct Flower: Identifiable {

@@ -15,15 +15,15 @@ struct AccessibilityScreen: View {
                     GeneralAXModifiersScreen()
                 }
 
-                NavigationLink("Rotor") {
+                NavigationLink("Custom Rotor Example") {
                     AXRotorScreen()
                 }
 
-                NavigationLink("Dynamic Types") {
+                NavigationLink("Dynamic Type") {
                     DynamicTypeScreen()
                 }
 
-                NavigationLink("Custom Actions") {
+                NavigationLink("Custom Accessibility Actions") {
                     CustomAXActionsScreen()
                 }
             }
