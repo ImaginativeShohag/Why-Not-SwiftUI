@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		450776D5290195AF00C05007 /* example_crash_report.json in Resources */ = {isa = PBXBuildFile; fileRef = 450776D4290195AF00C05007 /* example_crash_report.json */; };
+		450ACB7A2AC49F3C0077912D /* AccessibilityPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */; };
 		452E8F922ABE1AA9002E5A28 /* DynamicTypeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */; };
 		454539F22981310500E3D9D0 /* TextFieldValidationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */; };
 		454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */; };
@@ -120,6 +121,7 @@
 
 /* Begin PBXFileReference section */
 		450776D4290195AF00C05007 /* example_crash_report.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example_crash_report.json; sourceTree = "<group>"; };
+		450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPreferences.swift; sourceTree = "<group>"; };
 		452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTypeScreen.swift; sourceTree = "<group>"; };
 		454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationScreen.swift; sourceTree = "<group>"; };
 		454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationViewModel.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 				454E82B12AC339F70014B6A3 /* GeneralAXModifiersScreen.swift */,
 				454E82B32AC33AE00014B6A3 /* AXRotorScreen.swift */,
 				454E82B52AC33B970014B6A3 /* CustomAXActionsScreen.swift */,
+				450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */,
 			);
 			path = Accessibility;
 			sourceTree = "<group>";
@@ -823,6 +826,7 @@
 				452E8F922ABE1AA9002E5A28 /* DynamicTypeScreen.swift in Sources */,
 				459EC10C290059620019C555 /* Color.swift in Sources */,
 				459EC112290086640019C555 /* MetircKitViewModel.swift in Sources */,
+				450ACB7A2AC49F3C0077912D /* AccessibilityPreferences.swift in Sources */,
 				45F1C99A297098C000386645 /* NativeAlert.swift in Sources */,
 				458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */,
 				454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */,

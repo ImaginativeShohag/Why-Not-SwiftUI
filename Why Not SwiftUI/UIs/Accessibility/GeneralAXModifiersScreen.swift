@@ -10,29 +10,12 @@ import SwiftUI
 
 /// # Resources:
 /// - Checkout all the blogs under "Accessibility" project from here: https://www.hackingwithswift.com/books/ios-swiftui
-/// - https://www.hackingwithswift.com/books/ios-swiftui/supporting-specific-accessibility-needs-with-swiftui
 
 /// **Note:**
 /// - `AX` = Accessibility
 /// - `VO` = Voice Over
 
 struct GeneralAXModifiersScreen: View {
-    /// If this is true, UI should not convey information using color alone
-    /// and instead should use shapes or glyphs to convey information.
-    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
-
-    /// If this property's value is true, UI should avoid large animations,
-    /// especially those that simulate the third dimension.
-    @Environment(\.accessibilityReduceMotion) var reduceMotion
-
-    /// If this property's value is true, UI (mainly window) backgrounds should
-    /// not be semi-transparent; they should be opaque.
-    @Environment(\.accessibilityReduceTransparency) var reduceTransparency
-
-    // MARK: -
-
-    @State private var scale = 1.0
-
     @State private var isSelected = false
 
     // MARK: -
@@ -255,82 +238,12 @@ struct GeneralAXModifiersScreen: View {
                 // MARK: -
 
                 Group {
-                    Text("Accessibility Differentiate Without Color Example")
+                    Text("Custom Component Example")
                         .font(.title)
 
-                    HStack {
-                        /// We will show an check icon to make it easy to understand the meaning of the button without color.
-                        if differentiateWithoutColor {
-                            Image(systemName: "checkmark.circle")
-                        }
-
-                        Text("Success")
-                    }
-                    .padding()
-                    .background(differentiateWithoutColor ? .black : .green)
-                    .foregroundColor(.white)
-                    .clipShape(Capsule())
-
-                    Divider()
-
-                    // MARK: -
-
-                    Group {
-                        Text("Accessibility Reduce Motion Example")
-                            .font(.title)
-
-                        Text("Hello, World!")
-                            .scaleEffect(scale)
-                            .onTapGesture {
-                                /// We are using custom method to stop animation.
-                                withOptionalAnimation {
-                                    scale *= 1.5
-                                }
-
-                                // Or,
-                                //
-                                // if reduceMotion {
-                                //     scale *= 1.5
-                                // } else {
-                                //     withAnimation {
-                                //         scale *= 1.5
-                                //     }
-                                // }
-                            }
-                            /// Set the element type for accessibility. So AX tools will think this is a "Button".
-                            .accessibilityAddTraits(.isButton)
-                            /// Set custom hint for AX tools.
-                            .accessibilityHint("Double tap to increase the text size.")
-
-                        Divider()
-                    }
-
-                    // MARK: -
-
-                    Group {
-                        Text("Accessibility Reduce Transparency Example")
-                            .font(.title)
-
-                        Text("Hello, World!")
-                            .padding()
-                            /// Remove the transparency if "Reduce Transparency" is enabled.
-                            .background(reduceTransparency ? Color(.systemBlack) : Color(.systemBlack).opacity(0.5))
-                            .foregroundColor(.white)
-                            .clipShape(Capsule())
-                    }
-
-                    Divider()
-
-                    // MARK: -
-
-                    Group {
-                        Text("Custom Component Example")
-                            .font(.title)
-
-                        LongPressCheckmark(
-                            isSelected: $isSelected
-                        )
-                    }
+                    LongPressCheckmark(
+                        isSelected: $isSelected
+                    )
                 }
             }
             .padding()
@@ -344,17 +257,6 @@ struct GeneralAXModifiersScreen_Previews: PreviewProvider {
         NavigationStack {
             GeneralAXModifiersScreen()
         }
-    }
-}
-
-// MARK: - Global methods
-
-/// Only animate if "Reduce Motion" is disabled.
-func withOptionalAnimation<Result>(_ animation: Animation? = .default, _ body: () throws -> Result) rethrows -> Result {
-    if UIAccessibility.isReduceMotionEnabled {
-        return try body()
-    } else {
-        return try withAnimation(animation, body)
     }
 }
 

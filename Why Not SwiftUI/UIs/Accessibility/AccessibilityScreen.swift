@@ -7,24 +7,53 @@ import SwiftUI
 struct AccessibilityScreen: View {
     var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 16) {
                 Text("Accessibility")
                     .font(.title)
 
-                NavigationLink("General Accessibility Modifiers") {
+                NavigationLink {
                     GeneralAXModifiersScreen()
+                } label: {
+                    MenuItem(
+                        icon: "1.circle",
+                        label: "General Accessibility Modifiers"
+                    )
                 }
 
-                NavigationLink("Custom Rotor Example") {
+                NavigationLink {
                     AXRotorScreen()
+                } label: {
+                    MenuItem(
+                        icon: "2.circle",
+                        label: "Custom Rotor Example"
+                    )
                 }
 
-                NavigationLink("Dynamic Type") {
+                NavigationLink {
                     DynamicTypeScreen()
+                } label: {
+                    MenuItem(
+                        icon: "3.circle",
+                        label: "Dynamic Type"
+                    )
                 }
 
-                NavigationLink("Custom Accessibility Actions") {
+                NavigationLink {
                     CustomAXActionsScreen()
+                } label: {
+                    MenuItem(
+                        icon: "4.circle",
+                        label: "Custom Accessibility Actions"
+                    )
+                }
+
+                NavigationLink {
+                    AccessibilityPreferences()
+                } label: {
+                    MenuItem(
+                        icon: "5.circle",
+                        label: "Accessibility Preferences"
+                    )
                 }
             }
             .padding()
@@ -38,6 +67,19 @@ struct AccessibilityScreen_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             AccessibilityScreen()
+        }
+    }
+}
+
+struct MenuItem: View {
+    let icon: String
+    let label: String
+
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+            Text(label)
+            Spacer()
         }
     }
 }
