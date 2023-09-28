@@ -98,6 +98,7 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 - [ ] Navigation system update
 - [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
 - [ ] Migrate to Tuist
+- [x] Macro example
 
 ## Extensions
 

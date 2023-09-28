@@ -122,6 +122,7 @@
 /* Begin PBXFileReference section */
 		450776D4290195AF00C05007 /* example_crash_report.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example_crash_report.json; sourceTree = "<group>"; };
 		450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPreferences.swift; sourceTree = "<group>"; };
+		451DE7542AC5E97500E2E379 /* URLMacro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = URLMacro; path = packages/URLMacro; sourceTree = "<group>"; };
 		452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTypeScreen.swift; sourceTree = "<group>"; };
 		454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationScreen.swift; sourceTree = "<group>"; };
 		454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationViewModel.swift; sourceTree = "<group>"; };
@@ -524,6 +525,7 @@
 		45BE890628A05F73008DF51F = {
 			isa = PBXGroup;
 			children = (
+				451DE7542AC5E97500E2E379 /* URLMacro */,
 				4571D622293729B700573547 /* Localizable.strings */,
 				45BE891128A05F73008DF51F /* Why Not SwiftUI */,
 				457E603D29353FE5005595B7 /* NotificationService */,
