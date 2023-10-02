@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		450694302AC7487A00A53D4A /* SwiftMacros in Resources */ = {isa = PBXBuildFile; fileRef = 4506942F2AC7487A00A53D4A /* SwiftMacros */; };
 		450776D5290195AF00C05007 /* example_crash_report.json in Resources */ = {isa = PBXBuildFile; fileRef = 450776D4290195AF00C05007 /* example_crash_report.json */; };
 		450ACB7A2AC49F3C0077912D /* AccessibilityPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */; };
 		452E8F922ABE1AA9002E5A28 /* DynamicTypeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */; };
@@ -120,9 +121,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4506942F2AC7487A00A53D4A /* SwiftMacros */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SwiftMacros; sourceTree = "<group>"; };
 		450776D4290195AF00C05007 /* example_crash_report.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example_crash_report.json; sourceTree = "<group>"; };
 		450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPreferences.swift; sourceTree = "<group>"; };
-		451DE7542AC5E97500E2E379 /* URLMacro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = URLMacro; path = packages/URLMacro; sourceTree = "<group>"; };
 		452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTypeScreen.swift; sourceTree = "<group>"; };
 		454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationScreen.swift; sourceTree = "<group>"; };
 		454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationViewModel.swift; sourceTree = "<group>"; };
@@ -232,6 +233,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4506942C2AC7481A00A53D4A /* packages */ = {
+			isa = PBXGroup;
+			children = (
+				4506942F2AC7487A00A53D4A /* SwiftMacros */,
+			);
+			path = packages;
+			sourceTree = "<group>";
+		};
 		454539F0298130EE00E3D9D0 /* TextFieldValidation */ = {
 			isa = PBXGroup;
 			children = (
@@ -525,7 +534,7 @@
 		45BE890628A05F73008DF51F = {
 			isa = PBXGroup;
 			children = (
-				451DE7542AC5E97500E2E379 /* URLMacro */,
+				4506942C2AC7481A00A53D4A /* packages */,
 				4571D622293729B700573547 /* Localizable.strings */,
 				45BE891128A05F73008DF51F /* Why Not SwiftUI */,
 				457E603D29353FE5005595B7 /* NotificationService */,
@@ -753,6 +762,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				45F1C9B32970A49E00386645 /* SF-Pro-Rounded-Medium.otf in Resources */,
+				450694302AC7487A00A53D4A /* SwiftMacros in Resources */,
 				45F1C9B52970A49E00386645 /* SF-Pro-Rounded-Black.otf in Resources */,
 				45BE891A28A05F76008DF51F /* Preview Assets.xcassets in Resources */,
 				45F1C9B62970A49E00386645 /* SF-Pro-Rounded-Thin.otf in Resources */,

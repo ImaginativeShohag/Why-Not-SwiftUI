@@ -5,17 +5,17 @@ import PackageDescription
 import CompilerPluginSupport
 
 let package = Package(
-    name: "URLMacro",
+    name: "SwiftMacros",
     platforms: [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6), .macCatalyst(.v13)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "URLMacro",
-            targets: ["URLMacro"]
+            name: "SwiftMacros",
+            targets: ["SwiftMacros"]
         ),
         .executable(
-            name: "URLMacroClient",
-            targets: ["URLMacroClient"]
+            name: "SwiftMacrosClient",
+            targets: ["SwiftMacrosClient"]
         ),
     ],
     dependencies: [
@@ -27,7 +27,7 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         // Macro implementation that performs the source transformation of a macro.
         .macro(
-            name: "URLMacroMacros",
+            name: "CustomMacros",
             dependencies: [
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
@@ -35,16 +35,16 @@ let package = Package(
         ),
 
         // Library that exposes a macro as part of its API, which is used in client programs.
-        .target(name: "URLMacro", dependencies: ["URLMacroMacros"]),
+        .target(name: "SwiftMacros", dependencies: ["CustomMacros"]),
 
         // A client of the library, which is able to use the macro in its own code.
-        .executableTarget(name: "URLMacroClient", dependencies: ["URLMacro"]),
+        .executableTarget(name: "SwiftMacrosClient", dependencies: ["SwiftMacros"]),
 
         // A test target used to develop the macro implementation.
         .testTarget(
-            name: "URLMacroTests",
+            name: "CustomMacrosTests",
             dependencies: [
-                "URLMacroMacros",
+                "CustomMacros",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
             ]
         ),

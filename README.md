@@ -81,6 +81,9 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 ## Others
 
 - Example to create preview with mock Models and ViewModels (`ObservableObject`). (See **Media Capture & Select** Example)
+- Macro example (see `packages/URLMacro` directory)
+    - Resources
+        - [Swift Macros: Extend Swift with New Kinds of Expressions](https://www.avanderlee.com/swift/macros/)
 
 ## TODO
 
@@ -98,7 +101,6 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 - [ ] Navigation system update
 - [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
 - [ ] Migrate to Tuist
-- [x] Macro example
 
 ## Extensions
 

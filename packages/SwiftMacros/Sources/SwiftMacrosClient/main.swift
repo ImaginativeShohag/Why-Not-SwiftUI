@@ -1,4 +1,4 @@
-import URLMacro
+import SwiftMacros
 import Foundation
 
 let a = 17

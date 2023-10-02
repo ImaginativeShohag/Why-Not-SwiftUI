@@ -10,7 +10,7 @@ import Foundation
 ///
 /// produces a tuple `(x + y, "x + y")`.
 @freestanding(expression)
-public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "URLMacroMacros", type: "StringifyMacro")
+public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "CustomMacros", type: "StringifyMacro")
 
 /// A macro that produces an unwrapped URL in case of a valid input URL.
 /// For example,
@@ -19,4 +19,4 @@ public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "U
 ///
 /// produces an unwrapped `URL` if the URL is valid. Otherwise, it emits a compile-time error.
 @freestanding(expression)
-public macro URL(_ stringLiteral: String) -> URL = #externalMacro(module: "URLMacroMacros", type: "URLMacro")
+public macro URL(_ stringLiteral: String) -> URL = #externalMacro(module: "CustomMacros", type: "URLMacro")
