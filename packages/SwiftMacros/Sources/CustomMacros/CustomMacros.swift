@@ -1,5 +1,5 @@
-import SwiftCompilerPlugin
 import Foundation
+import SwiftCompilerPlugin
 import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
@@ -27,6 +27,8 @@ public struct StringifyMacro: ExpressionMacro {
 }
 
 // MARK: -
+
+/// Source: https://www.avanderlee.com/swift/macros/
 
 public struct URLMacro: ExpressionMacro {
     public static func expansion(
@@ -83,10 +85,62 @@ enum URLMacroError: Error, CustomStringConvertible {
 
 // MARK: -
 
+/// Source: https://betterprogramming.pub/use-swift-macros-to-initialize-a-structure-516728c5fb49
+
+public struct StructInitMacro: MemberMacro {
+    public static func expansion(
+        of node: AttributeSyntax,
+        providingMembersOf declaration: some DeclGroupSyntax,
+        in context: some MacroExpansionContext
+    ) throws -> [SwiftSyntax.DeclSyntax] {
+        guard let structDecl = declaration.as(StructDeclSyntax.self) else {
+            throw StructInitError.onlyApplicableToStruct
+        }
+
+        let members = structDecl.memberBlock.members
+        let variableDecl = members.compactMap { $0.decl.as(VariableDeclSyntax.self) }
+        let variablesName = variableDecl.compactMap { $0.bindings.first?.pattern }
+        let variablesType = variableDecl.compactMap { $0.bindings.first?.typeAnnotation?.type }
+
+        let initializer = try InitializerDeclSyntax(StructInitMacro.generateInitialCode(variablesName: variablesName, variablesType: variablesType)) {
+            for name in variablesName {
+                ExprSyntax("self.\(name) = \(name)")
+            }
+        }
+
+        return [DeclSyntax(initializer)]
+    }
+
+    public static func generateInitialCode(variablesName: [PatternSyntax],
+                                           variablesType: [TypeSyntax]) -> SyntaxNodeString
+    {
+        var initialCode = "init("
+        for (name, type) in zip(variablesName, variablesType) {
+            initialCode += "\(name): \(type), "
+        }
+        initialCode = String(initialCode.dropLast(2))
+        initialCode += ")"
+        return SyntaxNodeString(stringLiteral: initialCode)
+    }
+}
+
+enum StructInitError: CustomStringConvertible, Error {
+    case onlyApplicableToStruct
+
+    var description: String {
+        switch self {
+        case .onlyApplicableToStruct: return "@StructInit can only be applied to a structure"
+        }
+    }
+}
+
+// MARK: -
+
 @main
 struct URLMacroPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
         StringifyMacro.self,
         URLMacro.self,
+        StructInitMacro.self,
     ]
 }

@@ -124,6 +124,19 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 
 - `fileSize() -> Int` : The file size in KB.
 
+# Macro
+
+## Pre-built Swift macros:
+
+- `#warning("message")`
+- `#line`
+- `#function`
+- `#file`
+- `#column`
+- `#id` ... `#endif`
+- `#filePath`
+- `#colorLiteral(red: 0.292, green: 0.081, blue: 0.6, alpha: 255)`
+
 ## Licence
 
 ```
