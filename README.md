@@ -78,6 +78,13 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 
 <img src="images/typography.png" width=250/>
 
+### Date Format Playground
+
+Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com](https://nsdateformatter.com).
+
+| <img src="images/date-format-1.png" width=250/> | <img src="images/date-format-2.png" width=250/> | <img src="images/date-format-3.png" width=250/> |
+| :-: | :-: | :-: |
+
 ## Others
 
 - Example to create preview with mock Models and ViewModels (`ObservableObject`). (See **Media Capture & Select** Example)
