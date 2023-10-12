@@ -13,6 +13,11 @@
 		452E8F922ABE1AA9002E5A28 /* DynamicTypeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */; };
 		454539F22981310500E3D9D0 /* TextFieldValidationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */; };
 		454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */; };
+		454C46DB2AD8218C00E9F96B /* DateFormat1Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454C46DA2AD8218C00E9F96B /* DateFormat1Screen.swift */; };
+		454C46DD2AD86B2F00E9F96B /* DateFormat2Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454C46DC2AD86B2F00E9F96B /* DateFormat2Screen.swift */; };
+		454C46DF2AD8723400E9F96B /* DateFormatScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454C46DE2AD8723400E9F96B /* DateFormatScreen.swift */; };
+		454C46E12AD8735200E9F96B /* DateFormat3Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454C46E02AD8735200E9F96B /* DateFormat3Screen.swift */; };
+		454C46E42AD8743500E9F96B /* LocaleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454C46E32AD8743500E9F96B /* LocaleData.swift */; };
 		454E82B22AC339F70014B6A3 /* GeneralAXModifiersScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454E82B12AC339F70014B6A3 /* GeneralAXModifiersScreen.swift */; };
 		454E82B42AC33AE00014B6A3 /* AXRotorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454E82B32AC33AE00014B6A3 /* AXRotorScreen.swift */; };
 		454E82B62AC33B970014B6A3 /* CustomAXActionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454E82B52AC33B970014B6A3 /* CustomAXActionsScreen.swift */; };
@@ -127,6 +132,11 @@
 		452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTypeScreen.swift; sourceTree = "<group>"; };
 		454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationScreen.swift; sourceTree = "<group>"; };
 		454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationViewModel.swift; sourceTree = "<group>"; };
+		454C46DA2AD8218C00E9F96B /* DateFormat1Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat1Screen.swift; sourceTree = "<group>"; };
+		454C46DC2AD86B2F00E9F96B /* DateFormat2Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat2Screen.swift; sourceTree = "<group>"; };
+		454C46DE2AD8723400E9F96B /* DateFormatScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatScreen.swift; sourceTree = "<group>"; };
+		454C46E02AD8735200E9F96B /* DateFormat3Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat3Screen.swift; sourceTree = "<group>"; };
+		454C46E32AD8743500E9F96B /* LocaleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleData.swift; sourceTree = "<group>"; };
 		454E82B12AC339F70014B6A3 /* GeneralAXModifiersScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralAXModifiersScreen.swift; sourceTree = "<group>"; };
 		454E82B32AC33AE00014B6A3 /* AXRotorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AXRotorScreen.swift; sourceTree = "<group>"; };
 		454E82B52AC33B970014B6A3 /* CustomAXActionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAXActionsScreen.swift; sourceTree = "<group>"; };
@@ -248,6 +258,26 @@
 				454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */,
 			);
 			path = TextFieldValidation;
+			sourceTree = "<group>";
+		};
+		454C46D92AD8216500E9F96B /* DateFormat */ = {
+			isa = PBXGroup;
+			children = (
+				454C46E22AD8742800E9F96B /* Models */,
+				454C46DA2AD8218C00E9F96B /* DateFormat1Screen.swift */,
+				454C46DC2AD86B2F00E9F96B /* DateFormat2Screen.swift */,
+				454C46DE2AD8723400E9F96B /* DateFormatScreen.swift */,
+				454C46E02AD8735200E9F96B /* DateFormat3Screen.swift */,
+			);
+			path = DateFormat;
+			sourceTree = "<group>";
+		};
+		454C46E22AD8742800E9F96B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				454C46E32AD8743500E9F96B /* LocaleData.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		45513A8E29911BFE00BF0A0D /* CustomTextField */ = {
@@ -424,6 +454,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				454C46D92AD8216500E9F96B /* DateFormat */,
 				4554D9C629B256ED00063323 /* Accessibility */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
 				459CA62228E6FA7B00FC6F42 /* Chart */,
@@ -800,12 +831,14 @@
 				459EC10E290067B00019C555 /* MetricKitScreen.swift in Sources */,
 				456174AC2935C6370078B997 /* NotificationUtils.swift in Sources */,
 				4568D1A528F8950600FFDC5E /* BottomNavVsSideBarScreen.swift in Sources */,
+				454C46E12AD8735200E9F96B /* DateFormat3Screen.swift in Sources */,
 				45F1C9A52970A18E00386645 /* View+.swift in Sources */,
 				459EC11029007BF90019C555 /* View+ConditionalModifier.swift in Sources */,
 				4557C0F429C4B0A20030530B /* LabelToggle.swift in Sources */,
 				459837DB28EB5C3D00AB5433 /* ImageVideoCapturer.swift in Sources */,
 				45CD36AD29CBC34C00DB24BD /* MediaSelectViewModel.swift in Sources */,
 				45F1C993296F13D000386645 /* Color+.swift in Sources */,
+				454C46DF2AD8723400E9F96B /* DateFormatScreen.swift in Sources */,
 				457B0ADC28FB70730019ED01 /* MenuRow.swift in Sources */,
 				45BE892528A06D24008DF51F /* GoRestAPI.swift in Sources */,
 				459CA62728E702D400FC6F42 /* FitnessRingCardScreen.swift in Sources */,
@@ -818,6 +851,7 @@
 				45ACAF5228F9F68600C5467F /* CustomSideBar.swift in Sources */,
 				45F1C991296F129900386645 /* CoolToastScreen.swift in Sources */,
 				45513A992998F1D500BF0A0D /* TextPreviewScreen.swift in Sources */,
+				454C46DB2AD8218C00E9F96B /* DateFormat1Screen.swift in Sources */,
 				459CA63A28E76EAA00FC6F42 /* RingChartRing.swift in Sources */,
 				45513A962993F3BD00BF0A0D /* UIElementPreview.swift in Sources */,
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,
@@ -830,6 +864,7 @@
 				45F1C99D2970991200386645 /* NativeAlertScreen.swift in Sources */,
 				45ACAF5028F9F61B00C5467F /* CustomSideBarScreen.swift in Sources */,
 				458E623E28EC706B005A4E54 /* Screen.swift in Sources */,
+				454C46E42AD8743500E9F96B /* LocaleData.swift in Sources */,
 				454E82B42AC33AE00014B6A3 /* AXRotorScreen.swift in Sources */,
 				4568D1A228F8235700FFDC5E /* UIDevice+JailBroken.swift in Sources */,
 				45CD36B229CBC60700DB24BD /* URL+.swift in Sources */,
@@ -855,6 +890,7 @@
 				457E604D29354156005595B7 /* ImageDownloader.swift in Sources */,
 				45F1C9A329709BB200386645 /* CoolProgressScreen.swift in Sources */,
 				45F1C98F296F128C00386645 /* CoolToast.swift in Sources */,
+				454C46DD2AD86B2F00E9F96B /* DateFormat2Screen.swift in Sources */,
 				459CA62B28E70E2B00FC6F42 /* Typography.swift in Sources */,
 				45BE892728A06FF8008DF51F /* HomeViewModel.swift in Sources */,
 				45513A9029911C1E00BF0A0D /* CustomTextFieldView.swift in Sources */,
