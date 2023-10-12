@@ -4,7 +4,7 @@
 
 import Foundation
 
-// MARK: - Example#003: `some` vs `any`
+// MARK: - Example#003: `required` keyword
 
 class E3_A {
     var num: Int

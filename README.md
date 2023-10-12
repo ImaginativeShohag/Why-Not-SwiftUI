@@ -78,9 +78,19 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 
 <img src="images/typography.png" width=250/>
 
+### Date Format Playground
+
+Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com](https://nsdateformatter.com).
+
+| <img src="images/date-format-1.png" width=250/> | <img src="images/date-format-2.png" width=250/> | <img src="images/date-format-3.png" width=250/> |
+| :-: | :-: | :-: |
+
 ## Others
 
 - Example to create preview with mock Models and ViewModels (`ObservableObject`). (See **Media Capture & Select** Example)
+- Macro example (see `packages/URLMacro` directory)
+    - Resources
+        - [Swift Macros: Extend Swift with New Kinds of Expressions](https://www.avanderlee.com/swift/macros/)
 
 ## TODO
 
@@ -91,6 +101,13 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 - [ ] Add documentation to the extensions
 - [ ] Moya finalize
 - [ ] Home list multiple accent color
+- [ ] Use system font styles
+- [ ] CMS Module
+- [ ] System UI Components Collection
+    - [ ] [https://developer.apple.com/documentation/swiftui/grid](Grid)
+- [ ] Navigation system update
+- [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
+- [ ] Migrate to Tuist
 
 ## Extensions
 
@@ -113,6 +130,19 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 ### `URL` (`URL+.swift`)
 
 - `fileSize() -> Int` : The file size in KB.
+
+# Macro
+
+## Pre-built Swift macros:
+
+- `#warning("message")`
+- `#line`
+- `#function`
+- `#file`
+- `#column`
+- `#id` ... `#endif`
+- `#filePath`
+- `#colorLiteral(red: 0.292, green: 0.081, blue: 0.6, alpha: 255)`
 
 ## Licence
 
