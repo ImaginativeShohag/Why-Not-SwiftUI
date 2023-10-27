@@ -5,6 +5,8 @@
 import SwiftUI
 
 /// Date field symbol table: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+///
+/// Alternative: (`formatted(_:)`)[https://developer.apple.com/documentation/foundation/date/3766587-formatted]
 struct DateFormat2Screen: View {
     @State private var formatText = "yyyyMMMMddHHmmssZ"
     
@@ -47,6 +49,32 @@ struct DateFormat2Screen: View {
                     }
                 }
                 .padding()
+            }
+            .onAppear {
+                // MARK: - Alternative of date templates:
+                
+                /// Alternative: (`formatted(_:)`)[https://developer.apple.com/documentation/foundation/date/3766587-formatted]
+                
+                let date = Date()
+
+
+                let formattedDate = date.formatted(
+                    Date.FormatStyle()
+                        // .locale(<#T##locale: Locale##Locale#>)
+                        // .timeZone(<#T##format: Date.FormatStyle.Symbol.TimeZone##Date.FormatStyle.Symbol.TimeZone#>)
+                        .year(.defaultDigits)
+                        .month(.abbreviated)
+                        .day(.twoDigits)
+                        .hour(.defaultDigits(amPM: .abbreviated))
+                        .minute(.twoDigits)
+                        .timeZone(.identifier(.long))
+                        .era(.wide)
+                        .dayOfYear(.defaultDigits)
+                        .weekday(.abbreviated)
+                        .week(.defaultDigits)
+                )
+
+                print("Current date: \(formattedDate)")
             }
         }
         .navigationTitle("Date Format using Template")
