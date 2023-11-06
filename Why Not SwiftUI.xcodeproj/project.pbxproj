@@ -53,6 +53,7 @@
 		457E604E29354156005595B7 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457E604A29354156005595B7 /* ImageDownloader.swift */; };
 		458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623B28EC6D75005A4E54 /* HomeScreen.swift */; };
 		458E623E28EC706B005A4E54 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458E623D28EC706B005A4E54 /* Screen.swift */; };
+		4592F21E2AF9470200317B77 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 4592F21D2AF9470200317B77 /* SwiftUIIntrospect */; };
 		459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D128EB361D00AB5433 /* #001 KeyPath class.swift */; };
 		459837D628EB4B7100AB5433 /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D528EB4B7100AB5433 /* Fruit.swift */; };
 		459837D928EB5C1400AB5433 /* MediaSelectScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459837D828EB5C1400AB5433 /* MediaSelectScreen.swift */; };
@@ -237,6 +238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				45BE892228A063A5008DF51F /* CombineMoya in Frameworks */,
+				4592F21E2AF9470200317B77 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +296,20 @@
 				45513A982998F1D500BF0A0D /* TextPreviewScreen.swift */,
 			);
 			path = TextPreview;
+			sourceTree = "<group>";
+		};
+		455329072AEBF77600004BEA /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		455329082AEC0F7A00004BEA /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 		4554D9C629B256ED00063323 /* Accessibility */ = {
@@ -454,6 +470,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				455329072AEBF77600004BEA /* Navigation */,
 				454C46D92AD8216500E9F96B /* DateFormat */,
 				4554D9C629B256ED00063323 /* Accessibility */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
@@ -586,6 +603,7 @@
 		45BE891128A05F73008DF51F /* Why Not SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				455329082AEC0F7A00004BEA /* Navigation */,
 				457E6033293533F8005595B7 /* Mock */,
 				45799F2F28F01AD900F53467 /* CodeExample */,
 				459837D428EB4B5F00AB5433 /* Model */,
@@ -733,6 +751,7 @@
 			name = "Why Not SwiftUI";
 			packageProductDependencies = (
 				45BE892128A063A5008DF51F /* CombineMoya */,
+				4592F21D2AF9470200317B77 /* SwiftUIIntrospect */,
 			);
 			productName = "Why Not SwiftUI";
 			productReference = 45BE890F28A05F73008DF51F /* Why Not SwiftUI!.app */;
@@ -769,6 +788,7 @@
 			mainGroup = 45BE890628A05F73008DF51F;
 			packageReferences = (
 				45BE892028A063A5008DF51F /* XCRemoteSwiftPackageReference "Moya" */,
+				4592F21C2AF9470200317B77 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 45BE891028A05F73008DF51F /* Products */;
 			projectDirPath = "";
@@ -1196,6 +1216,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4592F21C2AF9470200317B77 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.1;
+			};
+		};
 		45BE892028A063A5008DF51F /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -1207,6 +1235,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4592F21D2AF9470200317B77 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4592F21C2AF9470200317B77 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
+		};
 		45BE892128A063A5008DF51F /* CombineMoya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 45BE892028A063A5008DF51F /* XCRemoteSwiftPackageReference "Moya" */;
