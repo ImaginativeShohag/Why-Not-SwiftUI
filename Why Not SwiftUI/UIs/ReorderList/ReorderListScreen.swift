@@ -20,7 +20,6 @@ struct ReorderListScreen: View {
 
     var body: some View {
         List {
-            // todo add index
             ForEach(Array(contacts.enumerated()), id: \.offset) { index, contact in
                 HStack {
                     Text("\(index + 1)")
