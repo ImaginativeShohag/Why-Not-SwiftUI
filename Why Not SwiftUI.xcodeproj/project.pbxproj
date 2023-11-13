@@ -11,6 +11,7 @@
 		450776D5290195AF00C05007 /* example_crash_report.json in Resources */ = {isa = PBXBuildFile; fileRef = 450776D4290195AF00C05007 /* example_crash_report.json */; };
 		450ACB7A2AC49F3C0077912D /* AccessibilityPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */; };
 		452E8F922ABE1AA9002E5A28 /* DynamicTypeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */; };
+		45419E7D2B0232B4008B9501 /* ReorderListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45419E7C2B0232B4008B9501 /* ReorderListScreen.swift */; };
 		454539F22981310500E3D9D0 /* TextFieldValidationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */; };
 		454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */; };
 		454C46DB2AD8218C00E9F96B /* DateFormat1Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454C46DA2AD8218C00E9F96B /* DateFormat1Screen.swift */; };
@@ -131,6 +132,7 @@
 		450776D4290195AF00C05007 /* example_crash_report.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example_crash_report.json; sourceTree = "<group>"; };
 		450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPreferences.swift; sourceTree = "<group>"; };
 		452E8F912ABE1AA9002E5A28 /* DynamicTypeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTypeScreen.swift; sourceTree = "<group>"; };
+		45419E7C2B0232B4008B9501 /* ReorderListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReorderListScreen.swift; sourceTree = "<group>"; };
 		454539F12981310500E3D9D0 /* TextFieldValidationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationScreen.swift; sourceTree = "<group>"; };
 		454539F329813F7200E3D9D0 /* TextFieldValidationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidationViewModel.swift; sourceTree = "<group>"; };
 		454C46DA2AD8218C00E9F96B /* DateFormat1Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat1Screen.swift; sourceTree = "<group>"; };
@@ -251,6 +253,14 @@
 				4506942F2AC7487A00A53D4A /* SwiftMacros */,
 			);
 			path = packages;
+			sourceTree = "<group>";
+		};
+		45419E7B2B023290008B9501 /* ReorderList */ = {
+			isa = PBXGroup;
+			children = (
+				45419E7C2B0232B4008B9501 /* ReorderListScreen.swift */,
+			);
+			path = ReorderList;
 			sourceTree = "<group>";
 		};
 		454539F0298130EE00E3D9D0 /* TextFieldValidation */ = {
@@ -470,6 +480,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				45419E7B2B023290008B9501 /* ReorderList */,
 				455329072AEBF77600004BEA /* Navigation */,
 				454C46D92AD8216500E9F96B /* DateFormat */,
 				4554D9C629B256ED00063323 /* Accessibility */,
@@ -588,6 +599,7 @@
 				457E603D29353FE5005595B7 /* NotificationService */,
 				45513A8D29911B4400BF0A0D /* README.md */,
 				45BE891028A05F73008DF51F /* Products */,
+				CA2AEDAA10423E4581732359 /* xcschemes */,
 			);
 			sourceTree = "<group>";
 		};
@@ -712,6 +724,14 @@
 				45F1C9A029709B9A00386645 /* CoolProgressView.swift */,
 			);
 			path = CoolProgress;
+			sourceTree = "<group>";
+		};
+		CA2AEDAA10423E4581732359 /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = xcschemes;
+			path = "Why Not SwiftUI.xcodeproj/project.xcworkspace/xcuserdata/shohag.xcuserdatad/xcschemes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -898,6 +918,7 @@
 				458E623C28EC6D75005A4E54 /* HomeScreen.swift in Sources */,
 				454539F429813F7200E3D9D0 /* TextFieldValidationViewModel.swift in Sources */,
 				454E82B62AC33B970014B6A3 /* CustomAXActionsScreen.swift in Sources */,
+				45419E7D2B0232B4008B9501 /* ReorderListScreen.swift in Sources */,
 				454E82B22AC339F70014B6A3 /* GeneralAXModifiersScreen.swift in Sources */,
 				459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */,
 				45AD4F1A29CD23400008CC44 /* OverlayLoadingView.swift in Sources */,
