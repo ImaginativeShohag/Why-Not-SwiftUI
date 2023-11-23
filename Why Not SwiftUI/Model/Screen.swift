@@ -25,5 +25,6 @@ struct Screen: Identifiable {
         Screen(name: "Label Toggle", showTitle: true, destination: AnyView(LabelToggleScreen())),
         Screen(name: "Date Format", showTitle: true, destination: AnyView(DateFormatScreen())),
         Screen(name: "Reorder List", showTitle: true, destination: AnyView(ReorderListScreen())),
+        Screen(name: "Always Popover", showTitle: true, destination: AnyView(AlwaysPopoverScreen())),
     ].sorted(by: \.name)
 }

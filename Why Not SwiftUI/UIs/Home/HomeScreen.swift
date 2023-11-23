@@ -63,10 +63,10 @@ struct HomeScreen: View {
 
 struct HomeScreen_Previews: PreviewProvider {
     static var previews: some View {
-        MainScreen()
+        HomeScreen()
             .previewDevice("iPhone 14 Pro Max")
 
-        MainScreen()
+        HomeScreen()
             .previewDevice("iPad Pro (11-inch) (4th generation)")
     }
 }

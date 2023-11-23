@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45045FBC2B0FBD2F002592AD /* AlwaysPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45045FBB2B0FBD2F002592AD /* AlwaysPopover.swift */; };
+		45045FBF2B0FBD68002592AD /* AlwaysPopoverScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45045FBE2B0FBD68002592AD /* AlwaysPopoverScreen.swift */; };
 		450694302AC7487A00A53D4A /* SwiftMacros in Resources */ = {isa = PBXBuildFile; fileRef = 4506942F2AC7487A00A53D4A /* SwiftMacros */; };
 		450776D5290195AF00C05007 /* example_crash_report.json in Resources */ = {isa = PBXBuildFile; fileRef = 450776D4290195AF00C05007 /* example_crash_report.json */; };
 		450ACB7A2AC49F3C0077912D /* AccessibilityPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */; };
@@ -128,6 +130,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		45045FBB2B0FBD2F002592AD /* AlwaysPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysPopover.swift; sourceTree = "<group>"; };
+		45045FBE2B0FBD68002592AD /* AlwaysPopoverScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysPopoverScreen.swift; sourceTree = "<group>"; };
 		4506942F2AC7487A00A53D4A /* SwiftMacros */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SwiftMacros; sourceTree = "<group>"; };
 		450776D4290195AF00C05007 /* example_crash_report.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example_crash_report.json; sourceTree = "<group>"; };
 		450ACB792AC49F3C0077912D /* AccessibilityPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPreferences.swift; sourceTree = "<group>"; };
@@ -247,6 +251,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		45045FBA2B0FBD19002592AD /* AlwaysPopover */ = {
+			isa = PBXGroup;
+			children = (
+				45045FBB2B0FBD2F002592AD /* AlwaysPopover.swift */,
+			);
+			path = AlwaysPopover;
+			sourceTree = "<group>";
+		};
+		45045FBD2B0FBD59002592AD /* AlwaysPopover */ = {
+			isa = PBXGroup;
+			children = (
+				45045FBE2B0FBD68002592AD /* AlwaysPopoverScreen.swift */,
+			);
+			path = AlwaysPopover;
+			sourceTree = "<group>";
+		};
 		4506942C2AC7481A00A53D4A /* packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,6 +500,7 @@
 		459CA62828E703EC00FC6F42 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				45045FBD2B0FBD59002592AD /* AlwaysPopover */,
 				45419E7B2B023290008B9501 /* ReorderList */,
 				455329072AEBF77600004BEA /* Navigation */,
 				454C46D92AD8216500E9F96B /* DateFormat */,
@@ -651,6 +672,7 @@
 		45CD36A829CBA48B00DB24BD /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				45045FBA2B0FBD19002592AD /* AlwaysPopover */,
 				45F1C99F29709B8500386645 /* CoolProgress */,
 				45F1C98D296F126900386645 /* CoolToast */,
 				45513A8E29911BFE00BF0A0D /* CustomTextField */,
@@ -889,6 +911,7 @@
 				45BE891328A05F73008DF51F /* Why_Not_SwiftUIApp.swift in Sources */,
 				459EC10A2900561D0019C555 /* TrackingService.swift in Sources */,
 				45ACAF5228F9F68600C5467F /* CustomSideBar.swift in Sources */,
+				45045FBF2B0FBD68002592AD /* AlwaysPopoverScreen.swift in Sources */,
 				45F1C991296F129900386645 /* CoolToastScreen.swift in Sources */,
 				45513A992998F1D500BF0A0D /* TextPreviewScreen.swift in Sources */,
 				454C46DB2AD8218C00E9F96B /* DateFormat1Screen.swift in Sources */,
@@ -921,6 +944,7 @@
 				45419E7D2B0232B4008B9501 /* ReorderListScreen.swift in Sources */,
 				454E82B22AC339F70014B6A3 /* GeneralAXModifiersScreen.swift in Sources */,
 				459837D228EB361D00AB5433 /* #001 KeyPath class.swift in Sources */,
+				45045FBC2B0FBD2F002592AD /* AlwaysPopover.swift in Sources */,
 				45AD4F1A29CD23400008CC44 /* OverlayLoadingView.swift in Sources */,
 				45BF412B2AAA2F4A00332BD7 /* Dictionary+.swift in Sources */,
 				459CA63028E70F2700FC6F42 /* OverviewRingCardScreen.swift in Sources */,
@@ -1071,7 +1095,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1126,7 +1150,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1156,7 +1180,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1190,7 +1214,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
