@@ -33,6 +33,8 @@ struct TextPreviewScreen: View {
             }
             .padding()
         }
+        .navigationTitle("Typography")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

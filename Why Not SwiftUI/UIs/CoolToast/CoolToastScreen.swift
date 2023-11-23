@@ -130,6 +130,8 @@ struct CoolToastScreen: View {
             data: $showToast3,
             padding: 200
         )
+        .navigationTitle("Cool Toast")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

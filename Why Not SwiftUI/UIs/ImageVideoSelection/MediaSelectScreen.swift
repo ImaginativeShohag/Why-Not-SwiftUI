@@ -14,88 +14,87 @@ struct MediaSelectScreen: View {
     @State private var showPhotoLibrary: Bool = false
 
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                ScrollView {
-                    VStack {
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3)) {
-                            ForEach(viewModel.attachmentItems) { item in
-                                ImageItemView(
-                                    item: item,
-                                    onDeleteClicked: {
-                                        viewModel.removeAttachment(item: item)
-                                    }
-                                )
-                            }
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3)) {
+                        ForEach(viewModel.attachmentItems) { item in
+                            ImageItemView(
+                                item: item,
+                                onDeleteClicked: {
+                                    viewModel.removeAttachment(item: item)
+                                }
+                            )
                         }
                     }
-                    .padding()
                 }
+                .padding()
+            }
 
-                VStack {
-                    Button {
-                        showAttachmentAddDialog = true
-                    } label: {
-                        Text("Add Attachment")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .padding()
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color.systemBackground)
-                .shadow(color: Color.black.opacity(0.1), radius: 5)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .overlay {
-                OverlayLoadingView(isPresented: $viewModel.showLoading)
-            }
-            .confirmationDialog(
-                "Add Attachment",
-                isPresented: $showAttachmentAddDialog
-            ) {
+            VStack {
                 Button {
-                    showImageCapturer = true
+                    showAttachmentAddDialog = true
                 } label: {
-                    Text("Take New Photo")
-                        .foregroundColor(Color.label)
+                    Text("Add Attachment")
                 }
-
-                Button {
-                    showVideoCapturer = true
-                } label: {
-                    Text("Take New Video")
-                        .foregroundColor(Color.label)
-                }
-
-                Button {
-                    showPhotoLibrary = true
-                } label: {
-                    Text("Choose Photo")
-                        .foregroundColor(Color.label)
-                }
-
-                Button("Cancel", role: .cancel) {}
+                .buttonStyle(.borderedProminent)
+                .padding()
             }
-            .fullScreenCover(isPresented: $showImageCapturer) {
-                ImageVideoCapturer(defaultCaptureMode: .photo) { image, videoUrl in
-                    viewModel.addAttachment(image: image, videoUrl: videoUrl)
-                }
-            }
-            .fullScreenCover(isPresented: $showVideoCapturer) {
-                ImageVideoCapturer(defaultCaptureMode: .video) { image, videoUrl in
-                    viewModel.addAttachment(image: image, videoUrl: videoUrl)
-                }
-            }
-            .photosPicker(
-                isPresented: $showPhotoLibrary,
-                selection: $viewModel.selectedItems,
-                matching: .any(of: [.images, .videos])
-            )
-            .onChange(of: viewModel.selectedItems, perform: { _ in
-                viewModel.addAttachments()
-            })
+            .frame(maxWidth: .infinity)
+            .background(Color.systemBackground)
+            .shadow(color: Color.black.opacity(0.1), radius: 5)
         }
-        .navigationViewStyle(.stack)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .overlay {
+            OverlayLoadingView(isPresented: $viewModel.showLoading)
+        }
+        .confirmationDialog(
+            "Add Attachment",
+            isPresented: $showAttachmentAddDialog
+        ) {
+            Button {
+                showImageCapturer = true
+            } label: {
+                Text("Take New Photo")
+                    .foregroundColor(Color.label)
+            }
+
+            Button {
+                showVideoCapturer = true
+            } label: {
+                Text("Take New Video")
+                    .foregroundColor(Color.label)
+            }
+
+            Button {
+                showPhotoLibrary = true
+            } label: {
+                Text("Choose Photo")
+                    .foregroundColor(Color.label)
+            }
+
+            Button("Cancel", role: .cancel) {}
+        }
+        .fullScreenCover(isPresented: $showImageCapturer) {
+            ImageVideoCapturer(defaultCaptureMode: .photo) { image, videoUrl in
+                viewModel.addAttachment(image: image, videoUrl: videoUrl)
+            }
+        }
+        .fullScreenCover(isPresented: $showVideoCapturer) {
+            ImageVideoCapturer(defaultCaptureMode: .video) { image, videoUrl in
+                viewModel.addAttachment(image: image, videoUrl: videoUrl)
+            }
+        }
+        .photosPicker(
+            isPresented: $showPhotoLibrary,
+            selection: $viewModel.selectedItems,
+            matching: .any(of: [.images, .videos])
+        )
+        .onChange(of: viewModel.selectedItems, perform: { _ in
+            viewModel.addAttachments()
+        })
+        .navigationTitle("Media Capture & Select")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

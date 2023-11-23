@@ -42,6 +42,8 @@ struct ReorderListScreen: View {
         .onAppear {
             editMode = .active
         }
+        .navigationTitle("Reorder List")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

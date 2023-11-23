@@ -60,6 +60,8 @@ struct AccessibilityScreen: View {
             .multilineTextAlignment(.center)
             .buttonStyle(.bordered)
         }
+        .navigationTitle("Accessibility")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

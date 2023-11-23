@@ -23,6 +23,8 @@ struct LabelToggleScreen: View {
             )
         }
         .padding()
+        .navigationTitle("Label Toggle")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

@@ -62,6 +62,8 @@ struct OverviewRingCardScreen: View {
         }
         .frame(maxWidth: .infinity)
         .padding(16)
+        .navigationTitle("Ring Chart: Overview")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

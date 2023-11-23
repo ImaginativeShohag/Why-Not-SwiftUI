@@ -39,6 +39,8 @@ struct CoolProgressScreen: View {
                 .padding(.horizontal)
         }
         .accentColor(Color(.systemMint))
+        .navigationTitle("Cool Progress")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

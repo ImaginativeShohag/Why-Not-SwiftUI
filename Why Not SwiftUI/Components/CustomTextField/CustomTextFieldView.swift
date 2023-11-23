@@ -11,12 +11,21 @@ struct CustomTextFieldView: View {
     @Binding var value: String
     var placeHolder: String
     var keyboardType: UIKeyboardType = .default
+    var isError: Bool = false
 
     @FocusState private var isFocused: Bool
     @State private var showValueField = false
 
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.colorScheme) private var colorScheme
+
+    private var borderColor: Color {
+        if isError {
+            .red
+        } else {
+            Color.systemGray4
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -75,18 +84,18 @@ struct CustomTextFieldView: View {
         .cornerRadius(8)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.systemGray4, lineWidth: 1)
+                .stroke(borderColor, lineWidth: 1)
         )
     }
 
     private func showValue() {
-        withAnimation(.easeIn) {
+        withAnimation(.easeIn(duration: 0.15)) {
             showValueField = true
         }
     }
 
     private func hideValue() {
-        withAnimation(.easeOut) {
+        withAnimation(.easeOut(duration: 0.15)) {
             showValueField = false
         }
     }
@@ -104,7 +113,22 @@ struct CustomTextFieldView_Previews: PreviewProvider {
             CustomTextFieldView(
                 value: .constant(""),
                 placeHolder: "Full Name",
+                keyboardType: .default,
+                isError: true
+            )
+
+            CustomTextFieldView(
+                value: .constant(""),
+                placeHolder: "Full Name",
                 keyboardType: .default
+            )
+            .disabled(true)
+
+            CustomTextFieldView(
+                value: .constant(""),
+                placeHolder: "Full Name",
+                keyboardType: .default,
+                isError: true
             )
             .disabled(true)
 
@@ -112,6 +136,13 @@ struct CustomTextFieldView_Previews: PreviewProvider {
                 value: .constant("Mahmudul Hasan Shohag"),
                 placeHolder: "Full Name",
                 keyboardType: .namePhonePad
+            )
+
+            CustomTextFieldView(
+                value: .constant("Mahmudul Hasan Shohag"),
+                placeHolder: "Full Name",
+                keyboardType: .namePhonePad,
+                isError: true
             )
 
             CustomTextFieldView(
@@ -123,8 +154,13 @@ struct CustomTextFieldView_Previews: PreviewProvider {
 
             CustomTextFieldView(
                 value: .constant("   "),
+                placeHolder: "Full Name"
+            )
+
+            CustomTextFieldView(
+                value: .constant("   "),
                 placeHolder: "Full Name",
-                keyboardType: .phonePad
+                isError: true
             )
         }
         .padding()

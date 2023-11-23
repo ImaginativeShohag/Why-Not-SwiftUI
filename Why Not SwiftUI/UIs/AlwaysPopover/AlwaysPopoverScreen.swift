@@ -47,6 +47,8 @@ struct AlwaysPopoverScreen: View {
                     .presentationCompactAdaptation(.popover)
             }
         }
+        .navigationTitle("Always Popover")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

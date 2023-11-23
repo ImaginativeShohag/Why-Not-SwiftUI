@@ -121,6 +121,8 @@ struct NativeAlertScreen: View {
                 )
             }
         }
+        .navigationTitle("Native Alert")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

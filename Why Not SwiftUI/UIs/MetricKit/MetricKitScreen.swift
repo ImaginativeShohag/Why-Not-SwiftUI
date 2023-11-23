@@ -23,6 +23,8 @@ struct MetricKitScreen: View {
         .onAppear {
             viewModel.loadCrashes()
         }
+        .navigationTitle("MetricKit")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

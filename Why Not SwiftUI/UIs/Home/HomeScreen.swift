@@ -8,53 +8,44 @@ struct HomeScreen: View {
     @StateObject private var viewModel = HomeViewModel()
 
     var body: some View {
-        NavigationView {
-            List {
-                // MARK: Custom Menu
+        List {
+            // MARK: Custom Menu
 
-                HStack {
-                    Text(NSLocalizedString("jailbroken-status", comment: "Jailbroken Status"))
-                    Spacer()
-                    Text(viewModel.isJailBroken ? "Broken" : "Not Broken")
-                        .foregroundColor(viewModel.isJailBroken ? Color(.systemRed) : Color(.systemGreen))
-                }
+            HStack {
+                Text(NSLocalizedString("jailbroken-status", comment: "Jailbroken Status"))
+                Spacer()
+                Text(viewModel.isJailBroken ? "Broken" : "Not Broken")
+                    .foregroundColor(viewModel.isJailBroken ? Color(.systemRed) : Color(.systemGreen))
+            }
 
-                // MARK: Custom Menu
+            // MARK: Custom Menu
 
-                Button {
-                    fatalError("Hello, Crashed!")
-                } label: {
-                    Text("Crash App 💥")
-                }
-                .foregroundColor(Color.theme.black)
+            Button {
+                fatalError("Hello, Crashed!")
+            } label: {
+                Text("Crash App 💥")
+            }
+            .foregroundColor(Color.theme.black)
 
-                // MARK: Custom Menu
+            // MARK: Custom Menu
 
-                Button {
-                    UNUserNotificationCenter.current().sendDummyNotification()
-                } label: {
-                    Text("Push Notification 🔔")
-                }
-                .foregroundColor(Color.theme.black)
+            Button {
+                UNUserNotificationCenter.current().sendDummyNotification()
+            } label: {
+                Text("Push Notification 🔔")
+            }
+            .foregroundColor(Color.theme.black)
 
-                // MARK: Screens
+            // MARK: Screens
 
-                ForEach(Screen.screens) { screen in
-                    NavigationLink {
-                        screen.destination
-                            .if(screen.showTitle, transform: { view in
-                                view.navigationTitle(screen.name)
-                                    .navigationBarTitleDisplayMode(.inline)
-                            })
-                    } label: {
-                        Text(screen.name)
-                    }
+            ForEach(Screen.screens) { screen in
+                NavigationLink(value: screen.destination) {
+                    Text(screen.name)
                 }
             }
-            .fontStyle(size: 16)
-            .navigationTitle("Why Not SwiftUI!")
         }
-        .navigationViewStyle(.stack)
+        .fontStyle(size: 16)
+        .navigationTitle("Why Not SwiftUI!")
         .onAppear {
             // viewModel.getPosts()
         }
@@ -63,10 +54,10 @@ struct HomeScreen: View {
 
 struct HomeScreen_Previews: PreviewProvider {
     static var previews: some View {
-        HomeScreen()
+        MainScreen()
             .previewDevice("iPhone 14 Pro Max")
 
-        HomeScreen()
+        MainScreen()
             .previewDevice("iPad Pro (11-inch) (4th generation)")
     }
 }

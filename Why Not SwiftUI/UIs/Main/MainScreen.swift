@@ -12,7 +12,7 @@ struct MainScreen: View {
             if showSplash {
                 SplashScreen()
             } else {
-                HomeScreen()
+                MainContainerScreen()
             }
         }
         .onAppear {

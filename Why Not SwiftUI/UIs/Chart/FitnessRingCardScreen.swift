@@ -48,6 +48,8 @@ struct FitnessRingCardScreen: View {
                 .fill(.ultraThinMaterial)
         }
         .padding()
+        .navigationTitle("Ring Chart: Fitness")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
