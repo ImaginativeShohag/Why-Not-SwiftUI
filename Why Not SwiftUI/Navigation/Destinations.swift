@@ -9,7 +9,6 @@ import SwiftUI
 enum Destination {
     // MARK: - Screens
 
-    case navigationControllerDemo
     case typography
     case ringChartOverview
     case ringChartFitness
@@ -33,11 +32,11 @@ enum Destination {
 
     // MARK: - Only for Unit Testing
 
-    // #if DEBUG
+    #if DEBUG
         case A
         case B
         case C(id: Int)
-    // #endif
+    #endif
 }
 
 /// We used the `description` to conform to `Hashable` and `Equatable`. It is needed to ignore the parameters of the `Destination`. The `NavController` can check any `Destination` for `popUpTo` or `launchSingleTop` etc. without checking the parameters of the `Destination`.
@@ -46,8 +45,6 @@ extension Destination: CustomStringConvertible {
         switch self {
             // MARK: - Screens
 
-        case .navigationControllerDemo:
-            "navigationControllerDemo"
         case .typography:
             "typography"
         case .ringChartOverview:
@@ -86,14 +83,14 @@ extension Destination: CustomStringConvertible {
 
             // MARK: - Only for Unit Testing
 
-        // #if DEBUG
+        #if DEBUG
             case .A:
                 "A"
             case .B:
                 "B"
             case .C:
                 "C"
-        // #endif
+        #endif
         }
     }
 }

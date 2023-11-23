@@ -4,7 +4,9 @@
 
 import SwiftUI
 
-struct NavigationControllerDemoScreen: View {
+#if DEBUG
+
+struct NavigationDemo: View {
     @ObservedObject var navController = NavController.shared
 
     var body: some View {
@@ -153,8 +155,10 @@ struct NavigationDemoScreen: View {
     }
 }
 
-struct NavigationControllerDemoScreen_Previews: PreviewProvider {
+struct NavigationDemo_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationControllerDemoScreen()
+        NavigationDemo()
     }
 }
+
+#endif

@@ -12,7 +12,7 @@
 		45045FC92B0FC87B002592AD /* Destination+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45045FC42B0FC87B002592AD /* Destination+.swift */; };
 		45045FCF2B0FC88D002592AD /* DestinationMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45045FCB2B0FC88D002592AD /* DestinationMapper.swift */; };
 		45045FD02B0FC88D002592AD /* Destinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45045FCC2B0FC88D002592AD /* Destinations.swift */; };
-		45045FD12B0FC88D002592AD /* NavigationDemoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45045FCD2B0FC88D002592AD /* NavigationDemoScreen.swift */; };
+		45045FD12B0FC88D002592AD /* NavigationDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45045FCD2B0FC88D002592AD /* NavigationDemo.swift */; };
 		45045FD22B0FC88D002592AD /* NavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45045FCE2B0FC88D002592AD /* NavController.swift */; };
 		45045FD42B0FC9B8002592AD /* MainContainerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45045FD32B0FC9B8002592AD /* MainContainerScreen.swift */; };
 		450694302AC7487A00A53D4A /* SwiftMacros in Resources */ = {isa = PBXBuildFile; fileRef = 4506942F2AC7487A00A53D4A /* SwiftMacros */; };
@@ -142,7 +142,7 @@
 		45045FC42B0FC87B002592AD /* Destination+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Destination+.swift"; sourceTree = "<group>"; };
 		45045FCB2B0FC88D002592AD /* DestinationMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationMapper.swift; sourceTree = "<group>"; };
 		45045FCC2B0FC88D002592AD /* Destinations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Destinations.swift; sourceTree = "<group>"; };
-		45045FCD2B0FC88D002592AD /* NavigationDemoScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationDemoScreen.swift; sourceTree = "<group>"; };
+		45045FCD2B0FC88D002592AD /* NavigationDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationDemo.swift; sourceTree = "<group>"; };
 		45045FCE2B0FC88D002592AD /* NavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavController.swift; sourceTree = "<group>"; };
 		45045FD32B0FC9B8002592AD /* MainContainerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainerScreen.swift; sourceTree = "<group>"; };
 		4506942F2AC7487A00A53D4A /* SwiftMacros */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SwiftMacros; sourceTree = "<group>"; };
@@ -350,14 +350,6 @@
 			path = TextPreview;
 			sourceTree = "<group>";
 		};
-		455329072AEBF77600004BEA /* Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				45045FCD2B0FC88D002592AD /* NavigationDemoScreen.swift */,
-			);
-			path = Navigation;
-			sourceTree = "<group>";
-		};
 		455329082AEC0F7A00004BEA /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -365,6 +357,7 @@
 				45045FCB2B0FC88D002592AD /* DestinationMapper.swift */,
 				45045FCC2B0FC88D002592AD /* Destinations.swift */,
 				45045FCE2B0FC88D002592AD /* NavController.swift */,
+				45045FCD2B0FC88D002592AD /* NavigationDemo.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -530,7 +523,6 @@
 			children = (
 				45045FBD2B0FBD59002592AD /* AlwaysPopover */,
 				45419E7B2B023290008B9501 /* ReorderList */,
-				455329072AEBF77600004BEA /* Navigation */,
 				454C46D92AD8216500E9F96B /* DateFormat */,
 				4554D9C629B256ED00063323 /* Accessibility */,
 				4568D1A328F894CC00FFDC5E /* BottomNavVsSideBar */,
@@ -960,7 +952,7 @@
 				459837D628EB4B7100AB5433 /* Fruit.swift in Sources */,
 				4568D1AE28F898E700FFDC5E /* BottomNavIOSScreen.swift in Sources */,
 				454539F22981310500E3D9D0 /* TextFieldValidationScreen.swift in Sources */,
-				45045FD12B0FC88D002592AD /* NavigationDemoScreen.swift in Sources */,
+				45045FD12B0FC88D002592AD /* NavigationDemo.swift in Sources */,
 				45F1C9A129709B9A00386645 /* CoolProgressView.swift in Sources */,
 				45726D1228F44E66003DF76A /* #003 required keyword.swift in Sources */,
 				45799F2E28F0041F00F53467 /* #002 some vs any keyword.swift in Sources */,

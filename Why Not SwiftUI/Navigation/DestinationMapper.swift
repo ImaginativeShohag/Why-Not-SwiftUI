@@ -10,14 +10,14 @@ enum DestinationMapper {
         switch destination {
             // MARK: - Only for Unit Testing
 
-            // #if DEBUG
-            case .A:
-                EmptyView()
-            case .B:
-                EmptyView()
-            case .C:
-                EmptyView()
-            // #endif
+            #if DEBUG
+                case .A:
+                    EmptyView()
+                case .B:
+                    EmptyView()
+                case .C:
+                    EmptyView()
+            #endif
                 
             // MARK: - Pre-defined
                 
@@ -25,9 +25,6 @@ enum DestinationMapper {
                 EmptyView()
                 
             // MARK: - Screens
-                
-            case .navigationControllerDemo:
-                NavigationControllerDemoScreen()
             
             case .typography:
                 TextPreviewScreen()
