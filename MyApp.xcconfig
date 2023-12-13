@@ -1,0 +1,44 @@
+ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon
+CODE_SIGN_ENTITLEMENTS=Entitlements/Why-Not-SwiftUI.entitlements
+CODE_SIGN_IDENTITY=iPhone Developer
+ENABLE_PREVIEWS=YES
+INFOPLIST_FILE=Derived/InfoPlists/Why-Not-SwiftUI-Info.plist
+IPHONEOS_DEPLOYMENT_TARGET=16.4
+PRODUCT_NAME=Why_Not_SwiftUI
+SDKROOT=iphoneos
+SUPPORTS_MACCATALYST=NO
+SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD=YES
+SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD=NO
+SWIFT_VERSION=5.0
+TARGETED_DEVICE_FAMILY=1,2
+
+LD_RUNPATH_SEARCH_PATHS[config=Debug Development]=$(inherited) @executable_path/Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Debug Production]=$(inherited) @executable_path/Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Debug Staging]=$(inherited) @executable_path/Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Release Development]=$(inherited) @executable_path/Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Release Production]=$(inherited) @executable_path/Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Release Staging]=$(inherited) @executable_path/Frameworks
+PRODUCT_BUNDLE_IDENTIFIER[config=Debug Development]=org.imaginativeworld.Why-Not-SwiftUI-dev
+PRODUCT_BUNDLE_IDENTIFIER[config=Debug Production]=org.imaginativeworld.Why-Not-SwiftUI
+PRODUCT_BUNDLE_IDENTIFIER[config=Debug Staging]=org.imaginativeworld.Why-Not-SwiftUI-uat
+PRODUCT_BUNDLE_IDENTIFIER[config=Release Development]=org.imaginativeworld.Why-Not-SwiftUI-dev
+PRODUCT_BUNDLE_IDENTIFIER[config=Release Production]=org.imaginativeworld.Why-Not-SwiftUI
+PRODUCT_BUNDLE_IDENTIFIER[config=Release Staging]=org.imaginativeworld.Why-Not-SwiftUI-uat
+SWIFT_ACTIVE_COMPILATION_CONDITIONS[config=Debug Development]=DEBUG DEVELOPMENT
+SWIFT_ACTIVE_COMPILATION_CONDITIONS[config=Debug Production]=DEBUG PRODUCTION
+SWIFT_ACTIVE_COMPILATION_CONDITIONS[config=Debug Staging]=DEBUG UAT
+SWIFT_ACTIVE_COMPILATION_CONDITIONS[config=Release Development]=DEVELOPMENT
+SWIFT_ACTIVE_COMPILATION_CONDITIONS[config=Release Production]=PRODUCTION
+SWIFT_ACTIVE_COMPILATION_CONDITIONS[config=Release Staging]=UAT
+SWIFT_COMPILATION_MODE[config=Debug Development]=singlefile
+SWIFT_COMPILATION_MODE[config=Debug Production]=singlefile
+SWIFT_COMPILATION_MODE[config=Debug Staging]=singlefile
+SWIFT_COMPILATION_MODE[config=Release Development]=wholemodule
+SWIFT_COMPILATION_MODE[config=Release Production]=wholemodule
+SWIFT_COMPILATION_MODE[config=Release Staging]=wholemodule
+SWIFT_OPTIMIZATION_LEVEL[config=Debug Development]=-Onone
+SWIFT_OPTIMIZATION_LEVEL[config=Debug Production]=-Onone
+SWIFT_OPTIMIZATION_LEVEL[config=Debug Staging]=-Onone
+SWIFT_OPTIMIZATION_LEVEL[config=Release Development]=-Owholemodule
+SWIFT_OPTIMIZATION_LEVEL[config=Release Production]=-Owholemodule
+SWIFT_OPTIMIZATION_LEVEL[config=Release Staging]=-Owholemodule

@@ -89,6 +89,19 @@ fastlane/test_output
 
 iOSInjectionProject/
 
+### Projects ###
+*.xcodeproj
+*.xcworkspace
+
+### Tuist derived files ###
+graph.dot
+Derived/
+
+### Tuist managed dependencies ###
+Tuist/Dependencies/graph.json
+Tuist/Dependencies/Carthage
+Tuist/Dependencies/SwiftPackageManager
+
 # --------------------------------
 # https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
 # --------------------------------
