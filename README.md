@@ -6,6 +6,7 @@ Feel free to request features or suggestions for improvements.
 
 [![Developer](https://img.shields.io/badge/Maintainer-ImaginativeShohag-green)](https://github.com/ImaginativeShohag)
 [![Developer](https://img.shields.io/badge/-buy_me_a_coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/ImShohag)
+[![Tuist badge](https://img.shields.io/badge/Powered%20by-Tuist-blue)](https://tuist.io)
 
 ## What we have hare!
 
@@ -32,11 +33,11 @@ A simple example to demonstrate separate views for iPhone and iPad. Users will s
 | <img src="images/bottom-nav.png" width=165/> | <img src="images/side-bar.png" width=250/> |
 | :-: | :-: |
 
-### Component: `CoolProgress`
+### Component: `SuperProgress`
 
 <img src="images/cool-progress.gif" width=250/>
 
-### Component: `CoolToast`
+### Component: `SuperToast`
 
 A cool "Android Toast" like implementation for SwiftUI.
 
@@ -92,6 +93,90 @@ Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com]
     - Resources
         - [Swift Macros: Extend Swift with New Kinds of Expressions](https://www.avanderlee.com/swift/macros/)
 
+## Project Setup
+
+This project is using [Tuist](https://tuist.io). To run the project we need some initial setup.
+
+### Step 1: Install Tuist (One time setup)
+
+Install Tuist using the following command:
+
+```bash
+curl -Ls https://install.tuist.io | bash
+```
+
+### Step 2: Fetch dependencies
+
+We need to fetch the app dependencies. So use the following command to fetch the dependencies using Tuist.
+
+```bash
+tuist fetch
+```
+
+### Step 3: Generate the project
+
+Finally, create the project file using the following command:
+
+```bash
+tuist generate
+```
+
+This will generate the project file and run the project in Xcode.
+
+### Notes
+
+- As we are using Tuist to manage our Xcode project, use the following command to open the Tuist manifest files in Xcode for editing:
+
+```bash
+tuist edit
+```
+
+- We have to run the `tuist fetch` every time we add or update dependency to our project.
+
+- After changing branch we also need to run the `tuist generate` command to generate project files.
+
+- Please don't use Xcode Source Control. ([Issue](https://github.com/tuist/tuist/issues/4630))
+
+Please see the [Tuist documentation](https://docs.tuist.io/tutorial/get-started) for details.
+
+## Project Map
+
+![Project Map](graph.png)
+
+# Tuist Cheat Sheet
+
+## Access `Bundle`
+
+**Note:** Let's assume our target name is `Core`.
+
+```swift
+/// Get current targets `Bundle` instance.
+let bundle = Bundle.module
+
+/// Get a specific targets `Bundle` instance.
+let bundle = CoreResources.bundle
+// Equivalent old way:
+let bundle = Bundle(identifier: "com.apple.art4.Core")
+```
+
+## Access Assets
+
+**Note:** Let's assume our target name is `Core`.
+
+```swift
+// Old way
+let color: Color = Color("example-color")
+
+// New way
+let color: Color = CoreAsset.exampleColor.swiftUIColor
+
+// Old way
+let image: UIImage = UIImage("example-image")! // The asset must be in the current target :(
+
+// New way
+let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
+```
+
 ## TODO
 
 - [ ] MetricKit crash report example (WIP)
@@ -105,9 +190,9 @@ Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com]
 - [ ] CMS Module
 - [ ] System UI Components Collection
     - [ ] [https://developer.apple.com/documentation/swiftui/grid](Grid)
-- [ ] Navigation system update
+- [x] Navigation system update
 - [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
-- [ ] Migrate to Tuist
+- [x] Migrate to Tuist
 
 ## Extensions
 
