@@ -57,13 +57,3 @@ struct KeyPathDummyModel {
         }
     }
 }
-
-// MARK: - Extensions
-
-extension Sequence {
-    func sorted<T: Comparable>(by keyPath: KeyPath<Element, T>) -> [Element] {
-        return sorted { a, b in
-            a[keyPath: keyPath] < b[keyPath: keyPath]
-        }
-    }
-}

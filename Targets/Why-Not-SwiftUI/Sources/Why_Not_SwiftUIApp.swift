@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import Home
 
 @main
 struct Why_Not_SwiftUIApp: App {
