@@ -2,6 +2,7 @@
 //  Copyright © 2022 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Core
 import SwiftUI
 
 struct HomeScreen: View {
@@ -13,7 +14,9 @@ struct HomeScreen: View {
 
             HStack {
                 Text(NSLocalizedString("jailbroken-status", comment: "Jailbroken Status"))
+
                 Spacer()
+
                 Text(viewModel.isJailBroken ? "Broken" : "Not Broken")
                     .foregroundColor(viewModel.isJailBroken ? Color(.systemRed) : Color(.systemGreen))
             }

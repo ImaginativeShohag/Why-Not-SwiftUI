@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import Core
 
 struct MainContainerScreen: View {
     @ObservedObject private var navController = NavController.shared

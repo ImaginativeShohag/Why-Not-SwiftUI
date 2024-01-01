@@ -2,6 +2,7 @@
 //  Copyright © 2022 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import CommonUI
 import SwiftUI
 
 struct SuperProgressScreen: View {

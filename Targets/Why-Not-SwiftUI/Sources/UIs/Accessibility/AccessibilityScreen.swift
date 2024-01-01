@@ -48,7 +48,7 @@ struct AccessibilityScreen: View {
                 }
 
                 NavigationLink {
-                    AccessibilityPreferences()
+                    AccessibilityPreferencesScreen()
                 } label: {
                     MenuItem(
                         icon: "5.circle",
