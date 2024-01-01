@@ -13,7 +13,7 @@ struct MenuItemTitleView: View {
     let iconTint: Color
     @Binding var isSelected: Bool
     let callback: () -> Void
-    
+
     var body: some View {
         Button {
             callback()
@@ -25,7 +25,7 @@ struct MenuItemTitleView: View {
                     .scaledToFit()
                     .foregroundColor(iconTint)
                     .frame(width: 22, height: 22)
-                
+
                 Text(title)
                     .font(.system(size: 17))
                     .padding(.horizontal, 13)
@@ -49,7 +49,7 @@ struct MenuSubItemView: View {
     let type: MenuGroup
     @Binding var showMenu: Bool
     var rowSelectedAction: (_ menu: MenuTarget) -> Void
-    
+
     var body: some View {
         LazyVStack {
             ForEach(menuList.filter { $0.group == type }) { menu in
@@ -67,9 +67,9 @@ struct MenuSubItemView: View {
                             menuList[count].isSelected = false
                         }
                     }
-                            
+
                     showMenu = false
-                            
+
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                         rowSelectedAction(menu.target)
                     }
@@ -78,7 +78,6 @@ struct MenuSubItemView: View {
         }
     }
 }
-
 
 struct SidebarMenuButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
@@ -93,10 +92,10 @@ private struct MenuRow: View {
     var isSelected: Bool
     var color: Color
     var onClick: () -> Void
-    
+
     @State private var isPressed: Bool = false
     @State private var textColor: Color = .clear
-    
+
     var body: some View {
         let dragGesture = DragGesture(minimumDistance: 0)
             .onChanged { _ in
@@ -109,7 +108,7 @@ private struct MenuRow: View {
                     isPressed = false
                 }
             }
-        
+
         Button {
             onClick()
         } label: {
@@ -121,7 +120,7 @@ private struct MenuRow: View {
                         .scaledToFit()
                         .foregroundColor(isPressed ? .white : (isSelected ? .white : color))
                         .frame(width: 22, height: 22)
-                
+
                     Text(title)
                         .font(.system(size: 17))
                         .foregroundColor(.white)
@@ -150,7 +149,7 @@ private struct MenuRow: View {
         .onAppear {
             textColor = isPressed ? .white : (isSelected ? .white : Color.black)
         }
-        .onChange(of: isPressed) { isPressed in
+        .onChange(of: isPressed) {
             withAnimation(Animation.easeInOut(duration: 0.2)) {
                 textColor = isPressed ? .white : (isSelected ? .white : Color.black)
             }
@@ -168,7 +167,7 @@ struct MenuRow_Previews: PreviewProvider {
                 isSelected: false,
                 color: .red
             ) {}
-            
+
             MenuRow(
                 image: UIImage(systemName: "star")!,
                 title: "Lorem Ipsum",
@@ -176,7 +175,7 @@ struct MenuRow_Previews: PreviewProvider {
                 isSelected: true,
                 color: .red
             ) {}
-            
+
             MenuRow(
                 image: UIImage(systemName: "star")!,
                 title: "Lorem Ipsum",
@@ -187,4 +186,3 @@ struct MenuRow_Previews: PreviewProvider {
         }
     }
 }
-

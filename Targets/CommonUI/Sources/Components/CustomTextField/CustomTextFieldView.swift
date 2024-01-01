@@ -54,8 +54,8 @@ public struct CustomTextFieldView: View {
                 }
             }
             .keyboardType(keyboardType)
-            .onChange(of: isFocused) { focused in
-                if focused {
+            .onChange(of: isFocused) {
+                if isFocused {
                     showValue()
                 } else {
                     if value == "" {
@@ -63,8 +63,8 @@ public struct CustomTextFieldView: View {
                     }
                 }
             }
-            .onChange(of: value) { newValue in
-                if !newValue.isEmpty {
+            .onChange(of: value) {
+                if !value.isEmpty {
                     showValue()
                 } else if !isFocused {
                     hideValue()

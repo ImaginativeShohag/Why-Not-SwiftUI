@@ -6,24 +6,21 @@ import SwiftUI
 
 public struct BottomNavVsSideBarScreen: View {
     @Environment(\.dismiss) private var dismiss
-    
+
     public init() {}
-    
+
     public var body: some View {
-        NavigationView {
-            ZStack {
-                if UIDevice.current.userInterfaceIdiom == .phone {
-                    BottomNavIOSScreen() {
-                        dismiss()
-                    }
-                } else {
-                    SideBarIPadScreen() {
-                        dismiss()
-                    }
+        ZStack {
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                BottomNavIOSScreen {
+                    dismiss()
+                }
+            } else {
+                SideBarIPadScreen {
+                    dismiss()
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden()
     }
 }

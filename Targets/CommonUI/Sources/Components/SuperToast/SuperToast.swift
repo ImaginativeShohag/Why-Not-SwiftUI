@@ -47,8 +47,8 @@ private struct ModernSuperToast: ViewModifier {
                 dismiss: dismiss
             )
         }
-        .onChange(of: data) { newValue in
-            if newValue == .none {
+        .onChange(of: data) {
+            if data == .none {
                 isPresented = false
 
                 dismissDispatchWorkItem?.cancel()

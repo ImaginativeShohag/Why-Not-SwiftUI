@@ -13,7 +13,7 @@ public struct MediaSelectScreen: View {
     @State private var showImageCapturer: Bool = false
     @State private var showVideoCapturer: Bool = false
     @State private var showPhotoLibrary: Bool = false
-    
+
     public init(viewModel: MediaSelectViewModel = MediaSelectViewModel()) {
         self.viewModel = viewModel
     }
@@ -95,9 +95,9 @@ public struct MediaSelectScreen: View {
             selection: $viewModel.selectedItems,
             matching: .any(of: [.images, .videos])
         )
-        .onChange(of: viewModel.selectedItems, perform: { _ in
+        .onChange(of: viewModel.selectedItems) {
             viewModel.addAttachments()
-        })
+        }
         .navigationTitle("Media Capture & Select")
         .navigationBarTitleDisplayMode(.inline)
     }
