@@ -5,65 +5,43 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-private let deploymentTarget = "17.0"
+private let deploymentTargetVersion = "17.0"
 
 let project = Project.app(
     name: "Why-Not-SwiftUI",
-    platform: .iOS,
-    deploymentTarget: .iOS(
-        targetVersion: deploymentTarget,
-        devices: [.iphone, .ipad]
-    ),
+    deploymentTargets: .iOS(deploymentTargetVersion),
+    destinations: [.iPhone, .iPad, .macWithiPadDesign, .appleVisionWithiPadDesign],
     baseSettings: [
         // Signing
         "CODE_SIGN_STYLE": "Automatic",
         "DEVELOPMENT_TEAM": "UT4XSTUQLU",
 
         // Version
-        "MARKETING_VERSION": "1.0",
-        "CURRENT_PROJECT_VERSION": "1",
+        "MARKETING_VERSION": appVersion,
+        "CURRENT_PROJECT_VERSION": appBuild,
+
+        "IPHONEOS_DEPLOYMENT_TARGET": "\(deploymentTargetVersion)",
+
+        // Recommended by Xcode
+        "ENABLE_USER_SCRIPT_SANDBOXING": true
 
         // Strict concurrency checking
         // NOTE: Will try later to make app read for Swift 6.
         // "SWIFT_STRICT_CONCURRENCY": "complete"
-
-        "IPHONEOS_DEPLOYMENT_TARGET": "\(deploymentTarget)"
-    ],
-    additionalTargets: [
-        Module(
-            name: "Core",
-            hasResources: true
-        ),
-        Module(
-            name: "CommonUI",
-            hasResources: true,
-            dependencies: ["Core"]
-        ),
-        Module(
-            name: "Home",
-            dependencies: ["Core", "CommonUI"]
-        )
-    ],
-    externalDependencies: [
-        .external(name: "Alamofire"),
-        .external(name: "Moya"),
-        .external(name: "CombineMoya"),
-        .external(name: "Kingfisher"),
-        .external(name: "DGCharts"),
-        .external(name: "Lottie"),
-        // SwiftMacros depends on a Swift Macro, which is not yet supported.
-        //.external(name: "SwiftMacros")
     ],
     infoPlist: [
+        "CFBundleDisplayName": "$(XCC_PRODUCT_NAME)",
         "CFBundleShortVersionString": "$(MARKETING_VERSION)",
         "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
-        "UIMainStoryboardFile": "",
-        "UILaunchStoryboardName": "LaunchScreen",
         "CFBundleName": "$(PRODUCT_NAME)",
         "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
 
         // We need this to detect jail-broken device.
         "LSApplicationQueriesSchemes": ["cydia"],
+
+        "UILaunchScreen": [
+            "UILaunchScreen": []
+        ],
 
         "UIAppFonts": [
             "SF-Pro-Rounded-Black.otf",
@@ -77,7 +55,7 @@ let project = Project.app(
             "SF-Pro-Rounded-Ultralight.otf",
             "RobotoSlab-VariableFont.ttf"
         ],
-        
+
         "UIBackgroundModes": [
             "remote-notification"
         ],
@@ -91,9 +69,39 @@ let project = Project.app(
         "UIApplicationSupportsIndirectInputEvents": "TRUE",
 
         "NSCameraUsageDescription": "Record video",
-        "NSMicrophoneUsageDescription": "Record audio",
-
-        "CFBundleDisplayName": "$(XCC_PRODUCT_NAME)",
+        "NSMicrophoneUsageDescription": "Record audio"
+    ],
+    configInfoPlist: [
         "CONF_HOST_URL": "$(XCC_HOST_URL)"
-    ]
+    ],
+    modules: [
+        Module(
+            name: "Core",
+            hasResources: true,
+            hasUnitTest: true
+        ),
+        Module(
+            name: "CommonUI",
+            hasResources: true,
+            hasUITest: true,
+            dependencies: ["Core"]
+        ),
+        Module(
+            name: "Home",
+            hasUnitTest: true,
+            hasUITest: true,
+            dependencies: ["Core", "CommonUI"]
+        )
+    ],
+    externalDependencies: [
+        .external(name: "Alamofire"),
+        .external(name: "Moya"),
+        .external(name: "CombineMoya"),
+        .external(name: "Kingfisher"),
+        .external(name: "DGCharts"),
+        .external(name: "Lottie"),
+        // SwiftMacros depends on a Swift Macro, which is not yet supported.
+        // .external(name: "SwiftMacros")
+    ],
+    coreDataModels: []
 )

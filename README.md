@@ -95,19 +95,47 @@ Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com]
 
 ## Project Setup
 
+## Project Setup
+
 This project is using [Tuist](https://tuist.io). To run the project we need some initial setup.
 
-### Step 1: Install Tuist (One time setup)
+### Step 1: Install [mise](https://mise.jdx.dev/)
 
-Install Tuist using the following command:
+We need `mise` to install `Tuist` and for maintaining project based `Tuist` versioning.
+
+Install `mise` CLI:
 
 ```bash
-curl -Ls https://install.tuist.io | bash
+# Install CLI
+$ curl https://mise.jdx.dev/install.sh | sh
+
+# Check mise version
+$ ~/.local/bin/mise --version
+mise xxxx.x.x
+
+# Add mise to Zsh configuration file (`.zshrc`) for auto activate mise
+$ echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
+```
+Finally, restart your shell session to use `mise`.
+
+### Step 2: Install `Tuist`
+
+Install `Tuist` using the following command:
+
+```bash
+mise install tuist
 ```
 
-### Step 2: Fetch dependencies
+### Step 3: Clone repository and change directory to the repository
 
-We need to fetch the app dependencies. So use the following command to fetch the dependencies using Tuist.
+```bash
+git clone git@github.pie.apple.com:RDDM/MyStore.git
+cd MyStore
+```
+
+### Step 4: Fetch dependencies
+
+We need to fetch the app dependencies. So use the following command to fetch the dependencies using `Tuist`.
 
 ```bash
 tuist fetch
@@ -115,33 +143,69 @@ tuist fetch
 
 ### Step 3: Generate the project
 
-Finally, create the project file using the following command:
+Finally, generate and open the project using the following command:
 
 ```bash
 tuist generate
 ```
 
-This will generate the project file and run the project in Xcode.
+This will generate the project file and open the project in Xcode.
 
 ### Notes
 
-- As we are using Tuist to manage our Xcode project, use the following command to open the Tuist manifest files in Xcode for editing:
+- As we are using `Tuist` to manage our Xcode project, use the following command to open the Tuist manifest files in Xcode for editing:
 
 ```bash
 tuist edit
 ```
 
-- We have to run the `tuist fetch` every time we add or update dependency to our project.
+- We have to run the `tuist fetch` every time we change any dependency of our project.
+
+- To upgrade dependency versions, use `tuist fetch --update` command.
+
+- Always use `tuist generate` to open the project.
 
 - After changing branch we also need to run the `tuist generate` command to generate project files.
 
 - Please don't use Xcode Source Control. ([Issue](https://github.com/tuist/tuist/issues/4630))
 
-Please see the [Tuist documentation](https://docs.tuist.io/tutorial/get-started) for details.
+Please see the [Tuist documentation](https://docs.tuist.io) for details.
 
 ## Project Map
 
 ![Project Map](graph.png)
+
+## Directory Structure
+
+- `Root`: Root directory
+    - `ConfigurationFiles`: Configuration files
+    - `CoreData`: Core Data models
+    - `Entitlements`: Entitlements
+    - `Targets`: Targets/Modules
+        - `ModuleX`: An example target/module
+            - `Resources`: Resource of `ModuleX`
+            - `Sources`: Source codes of `ModuleX`
+                - `Models`: All models for `ModuleX`
+                    - **Note**: Keep models screen/sheet name wise.
+                - `UI`: All the UI files for `ModuleX`. It also contains `ViewModel`s.
+                    - `Components`: Common UI components that are shared in multiple screens
+                    - `Screens`: All screens, sheets etc.
+                        - `XYZ`: UI files for screen/sheet `XYZ`
+                            - `Components`: Common UI components for screen/sheet `XYZ`
+                                - `ABCView.swift`: Example component file
+                            - `XYZScreen.swift`: Example screen/sheet UI file
+                            - `XYZViewModel.swift`: Example view model file
+                - `ViewModels`: Common `ViewModel`s for `ModuleX`.
+            - `Tests`: Unit test target
+                - `Resources`: Resource of `Tests`
+                - `XYZTests.swift`: Example unit test file
+            - `UITests`: UI test target
+                - `Resources`: Resource of `UITests`
+                - `XYZUITests.swift`: Example UI test file
+        - `ModuleY`
+        - `ModuleZ`
+        - ...
+    - `Tuist`: Tuist configuration files
 
 # Tuist Cheat Sheet
 

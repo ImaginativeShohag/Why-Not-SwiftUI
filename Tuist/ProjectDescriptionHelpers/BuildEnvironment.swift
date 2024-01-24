@@ -4,212 +4,113 @@
 
 import ProjectDescription
 
-// MARK: - Environment constants for App.
+public enum BuildSetting {
+    case app, target, unitTest, notificationServiceExtension
+
+    func settings(buildTarget: BuildEnvironment, variant: Configuration.Variant) -> SettingsDictionary {
+        switch self {
+            case .app:
+                [
+                    "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)\(buildTarget.bundleIdentifierPostFix)",
+                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": buildTarget.conditions(variant: variant)
+                ]
+
+            case .target:
+                [
+                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": buildTarget.conditions(variant: variant)
+                ]
+
+            case .unitTest:
+                [
+                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": buildTarget.conditions(variant: variant),
+
+                    // For Testing
+                    "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/Why-Not-SwiftUI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Why-Not-SwiftUI",
+                    "BUNDLE_LOADER": "$(TEST_HOST)",
+                    "TEST_TARGET_NAME": "Why-Not-SwiftUI"
+                ]
+            
+        case .notificationServiceExtension:
+            [
+                "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)\(buildTarget.bundleIdentifierPostFix).NotificationServiceExtension",
+                "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG DEVELOPMENT"
+            ]
+        }
+    }
+}
+
+// MARK: - Environment constants.
 
 public enum BuildEnvironment: String, CaseIterable {
     case development, staging, production
 
-    public var debugConfiguration: Configuration {
+    func name(variant: Configuration.Variant) -> ConfigurationName {
         switch self {
             case .development:
-                return .debug(
-                    name: "Debug Development",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)-dev",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG DEVELOPMENT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Development.xcconfig"
-                )
+                ConfigurationName(stringLiteral: "\(variant == .debug ? "Debug" : "Release") Development")
             case .staging:
-                return .debug(
-                    name: "Debug Staging",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)-uat",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG UAT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Staging.xcconfig"
-                )
+                ConfigurationName(stringLiteral: "\(variant == .debug ? "Debug" : "Release") Staging")
             case .production:
-                return .debug(
-                    name: "Debug Production",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG PRODUCTION"
-                    ],
-                    xcconfig: "ConfigurationFiles/Production.xcconfig"
-                )
+                ConfigurationName(stringLiteral: "\(variant == .debug ? "Debug" : "Release") Production")
         }
     }
 
-    public var releaseConfiguration: Configuration {
+    func conditions(variant: Configuration.Variant) -> SettingValue {
         switch self {
             case .development:
-                return .release(
-                    name: "Release Development",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)-dev",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEVELOPMENT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Development.xcconfig"
-                )
+                "\(variant == .debug ? "DEBUG " : "")DEVELOPMENT"
             case .staging:
-                return .release(
-                    name: "Release Staging",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)-uat",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "UAT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Staging.xcconfig"
-                )
+                "\(variant == .debug ? "DEBUG " : "")STAGING"
             case .production:
-                return .release(
-                    name: "Release Production",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "PRODUCTION"
-                    ],
-                    xcconfig: "ConfigurationFiles/Production.xcconfig"
-                )
+                "\(variant == .debug ? "DEBUG " : "")PRODUCTION"
         }
     }
 
-    public static let allConfigurations = Self.allCases.map(\.debugConfiguration) + Self.allCases.map(\.releaseConfiguration)
-}
-
-// MARK: - Environment constants for Targets.
-
-public enum TargetBuildEnvironment: String, CaseIterable {
-    case development, staging, production
-
-    public var debugConfiguration: Configuration {
+    var bundleIdentifierPostFix: String {
         switch self {
             case .development:
-                return .debug(
-                    name: "Debug Development",
-                    settings: [
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG DEVELOPMENT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Development.xcconfig"
-                )
+                "-dev"
             case .staging:
-                return .debug(
-                    name: "Debug Staging",
-                    settings: [
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG UAT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Staging.xcconfig"
-                )
+                "-staging"
             case .production:
-                return .debug(
-                    name: "Debug Production",
-                    settings: [
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG PRODUCTION"
-                    ],
-                    xcconfig: "ConfigurationFiles/Production.xcconfig"
-                )
+                ""
         }
     }
 
-    public var releaseConfiguration: Configuration {
+    var xcconfigFilePath: Path {
         switch self {
             case .development:
-                return .release(
-                    name: "Release Development",
-                    settings: [
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEVELOPMENT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Development.xcconfig"
-                )
+                "ConfigurationFiles/Development.xcconfig"
             case .staging:
-                return .release(
-                    name: "Release Staging",
-                    settings: [
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "UAT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Staging.xcconfig"
-                )
+                "ConfigurationFiles/Staging.xcconfig"
             case .production:
-                return .release(
-                    name: "Release Production",
-                    settings: [
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "PRODUCTION"
-                    ],
-                    xcconfig: "ConfigurationFiles/Production.xcconfig"
-                )
+                "ConfigurationFiles/Production.xcconfig"
         }
     }
 
-    public static let allConfigurations = Self.allCases.map(\.debugConfiguration) + Self.allCases.map(\.releaseConfiguration)
-}
+    public static func getConfigurations(for instance: BuildSetting) -> [Configuration] {
+        var configurations: [Configuration] = []
 
-// MARK: - Environment constants for Notification Service Extension.
+        for item in BuildEnvironment.allCases {
+            // Debug
+            configurations.append(
+                .debug(
+                    name: item.name(variant: .debug),
+                    settings: instance.settings(buildTarget: item, variant: .debug),
+                    xcconfig: item.xcconfigFilePath
+                )
+            )
 
-public enum NotificationServiceExtBuildEnvironment: String, CaseIterable {
-    case development, staging, production
-
-    public var debugConfiguration: Configuration {
-        switch self {
-            case .development:
-                return .debug(
-                    name: "Debug Development",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)-dev.NotificationServiceExtension",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG DEVELOPMENT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Development.xcconfig"
+            // Release
+            configurations.append(
+                .release(
+                    name: item.name(variant: .release),
+                    settings: instance.settings(buildTarget: item, variant: .release),
+                    xcconfig: item.xcconfigFilePath
                 )
-            case .staging:
-                return .debug(
-                    name: "Debug Staging",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)-uat.NotificationServiceExtension",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG UAT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Staging.xcconfig"
-                )
-            case .production:
-                return .debug(
-                    name: "Debug Production",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId).NotificationServiceExtension",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG PRODUCTION"
-                    ],
-                    xcconfig: "ConfigurationFiles/Production.xcconfig"
-                )
+            )
         }
-    }
 
-    public var releaseConfiguration: Configuration {
-        switch self {
-            case .development:
-                return .release(
-                    name: "Release Development",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)-dev.NotificationServiceExtension",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEVELOPMENT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Development.xcconfig"
-                )
-            case .staging:
-                return .release(
-                    name: "Release Staging",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)-uat.NotificationServiceExtension",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "UAT"
-                    ],
-                    xcconfig: "ConfigurationFiles/Staging.xcconfig"
-                )
-            case .production:
-                return .release(
-                    name: "Release Production",
-                    settings: [
-                        "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId).NotificationServiceExtension",
-                        "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "PRODUCTION"
-                    ],
-                    xcconfig: "ConfigurationFiles/Production.xcconfig"
-                )
-        }
+        return configurations
     }
-
-    public static let allConfigurations = Self.allCases.map(\.debugConfiguration) + Self.allCases.map(\.releaseConfiguration)
 }

@@ -7,9 +7,10 @@ import ProjectDescription
 let appExtensions = [
     Target(
         name: "NotificationServiceExtension",
-        platform: .iOS,
+        destinations: [.iPhone, .iPad, .macWithiPadDesign, .appleVisionWithiPadDesign],
         product: .appExtension,
         bundleId: "\(Constants.bundleId).NotificationServiceExtension",
+        deploymentTargets: .iOS("17.0"),
         infoPlist: .extendingDefault(with: [
             "CFBundleDisplayName": "$(PRODUCT_NAME)",
             "NSExtension": [
@@ -20,7 +21,7 @@ let appExtensions = [
         sources: "NotificationServiceExtension/**",
         dependencies: [],
         settings: .settings(
-            configurations: NotificationServiceExtBuildEnvironment.allConfigurations
+            configurations: BuildEnvironment.getConfigurations(for: .notificationServiceExtension)
         )
     )
 ]
