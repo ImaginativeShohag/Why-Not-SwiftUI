@@ -25,9 +25,9 @@ public enum BuildSetting {
                     "SWIFT_ACTIVE_COMPILATION_CONDITIONS": buildTarget.conditions(variant: variant),
 
                     // For Testing
-                    "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/Why-Not-SwiftUI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Why-Not-SwiftUI",
+                    "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/WhyNotSwiftUI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WhyNotSwiftUI",
                     "BUNDLE_LOADER": "$(TEST_HOST)",
-                    "TEST_TARGET_NAME": "Why-Not-SwiftUI"
+                    "TEST_TARGET_NAME": "WhyNotSwiftUI"
                 ]
             
         case .notificationServiceExtension:

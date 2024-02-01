@@ -33,6 +33,9 @@ public extension URL {
     ///
     /// Tested: `IsLocalQuickTimeVideoURLTest`
     func isLocalQuickTimeVideoURL() -> Bool {
-        return scheme == "file" && host == nil && absoluteString.fileExtension() == "mov"
+        SuperLog.v("schema: \(scheme)")
+        SuperLog.v("host: \(host)")
+        SuperLog.v("absoluteString.fileExtension(): \(absoluteString.fileExtension())")
+        return scheme == "file" && host == nil && absoluteString.fileExtension().lowercased() == "mov"
     }
 }

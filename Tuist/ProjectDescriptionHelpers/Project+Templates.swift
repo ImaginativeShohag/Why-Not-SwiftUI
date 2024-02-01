@@ -280,7 +280,7 @@ public extension Project {
                 .target(name: name)
             ],
             settings: .settings(
-                configurations: BuildEnvironment.getConfigurations(for: .target)
+                configurations: BuildEnvironment.getConfigurations(for: .unitTest)
             )
         )
 
