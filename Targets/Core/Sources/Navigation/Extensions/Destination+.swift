@@ -4,14 +4,14 @@
 
 import Foundation
 
-extension Destination: Hashable {
+extension BaseDestination: Hashable {
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.description)
+        hasher.combine(self.route)
     }
 }
 
-extension Destination: Equatable {
-    public static func == (lhs: Destination, rhs: Destination) -> Bool {
-        return lhs.description == rhs.description
+extension BaseDestination: Equatable {
+    public static func == (lhs: BaseDestination, rhs: BaseDestination) -> Bool {
+        return lhs.route == rhs.route
     }
 }

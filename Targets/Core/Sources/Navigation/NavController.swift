@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// Control the app navigation.
 ///
@@ -11,7 +12,7 @@ public class NavController: ObservableObject {
     public static let shared = NavController()
 
     /// Navigation stack.
-    @Published public var navStack = [Destination]()
+    @Published public var navStack = [BaseDestination]()
 
     private init() {}
 
@@ -20,10 +21,10 @@ public class NavController: ObservableObject {
     /// - Parameters:
     ///   - destination: target destination.
     ///   - launchSingleTop: Whether this navigation action should launch as single-top (i.e., there will be at most one copy of a given destination on the top of the back stack).
-    public func navigateTo(_ destination: Destination, launchSingleTop: Bool = false) {
+    public func navigateTo(_ destination: BaseDestination, launchSingleTop: Bool = false) {
         SuperLog.v("navigateTo: destination: \(destination) | launchSingleTop: \(launchSingleTop)")
 
-        if destination == .root {
+        if destination is Destination.Root {
             popUpToRoot()
         } else if !navStack.isEmpty, launchSingleTop {
             if navStack.last != destination {
@@ -43,10 +44,10 @@ public class NavController: ObservableObject {
     ///   - inclusive: Whether the `popUpTo` destination should be popped from the back stack.
     ///
     /// - Note: If `Destination.root` is passed for `destination`, then other parameters will be ignored.
-    public func navigateTo(_ destination: Destination, launchSingleTop: Bool = false, popUpTo: Destination, inclusive: Bool = false) {
+    public func navigateTo(_ destination: BaseDestination, launchSingleTop: Bool = false, popUpTo: BaseDestination.Type, inclusive: Bool = false) {
         SuperLog.v("navigateTo: destination: \(destination) | launchSingleTop: \(launchSingleTop) | popUpTo: \(popUpTo) | inclusive: \(inclusive)")
 
-        if destination == .root {
+        if destination is Destination.Root {
             popUpToRoot()
         } else {
             self.popUpTo(popUpTo, inclusive: inclusive)
@@ -69,13 +70,22 @@ public class NavController: ObservableObject {
     /// - Parameters:
     ///   - destination: Target destination.
     ///   - inclusive: Whether the `destination` should be popped from the back stack.
-    public func popUpTo(_ destination: Destination, inclusive: Bool = false) {
+    public func popUpTo(_ destination: BaseDestination.Type, inclusive: Bool = false) {
         SuperLog.v("popUpTo: destination: \(destination) | inclusive: \(inclusive)")
 
-        if destination == .root {
+        let destinationRoute = String(describing: destination)
+        let rootDestinationRoute = String(describing: Destination.Root.self)
+        SuperLog.v("popUpTo: destinationRoute: \(destinationRoute) == rootDestinationRoute: \(rootDestinationRoute)")
+
+        if destinationRoute == rootDestinationRoute {
             popUpToRoot()
         } else if !navStack.isEmpty {
-            let index = navStack.lastIndex(of: destination)
+            let index = navStack.lastIndex { currentDestination in
+                let currentDestinationRoute = String(describing: type(of: currentDestination))
+                SuperLog.v("popUpTo: destinationRoute: \(destinationRoute) == currentDestinationRoute: \(currentDestinationRoute)")
+
+                return destinationRoute == currentDestinationRoute
+            }
 
             if let index = index {
                 var removeItemCount = navStack.count - index
@@ -93,8 +103,8 @@ public class NavController: ObservableObject {
         navStack.removeAll()
     }
 
-    public func currentDestination() -> Destination {
-        return navStack.last ?? .root
+    public func currentDestination() -> BaseDestination {
+        return navStack.last ?? Destination.Root()
     }
 
     /// - Returns: Current navigation stack as `String`.
@@ -102,7 +112,7 @@ public class NavController: ObservableObject {
         var path = ""
 
         for (index, item) in navStack.enumerated() {
-            path += "\(index == 0 ? "" : " > ")(\(index + 1)) \(item)"
+            path += "\(index == 0 ? "" : " > ")(\(index + 1)) \(type(of: item))"
         }
 
         return path

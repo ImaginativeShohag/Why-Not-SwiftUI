@@ -12,19 +12,11 @@ struct NavigationDemo: View {
     var body: some View {
         NavigationStack(path: $navController.navStack) {
             NavigationDemoScreen("Root")
-                .navigationDestination(for: Destination.self) { destination in
-                    switch destination {
-                    case .A:
-                        NavigationDemoScreen("A")
-
-                    case .B:
-                        NavigationDemoScreen("B")
-
-                    case .C:
-                        NavigationDemoScreen("C")
-
-                    default:
-                        NavigationDemoScreen("\(destination)")
+                .navigationDestination(for: BaseDestination.self) { destination in
+                    if let destination = destination as? ModuleXDestination {
+                        ModuleXDestination.getScreen(for: destination)
+                    } else if let destination = destination as? ModuleYDestination {
+                        ModuleYDestination.getScreen(for: destination)
                     }
                 }
         }
@@ -45,8 +37,9 @@ struct NavigationDemoScreen: View {
         ScrollView {
             VStack(spacing: 16) {
                 Text("Root > \(navController.description())")
+                    .font(.footnote)
                     .monospaced()
-                    .padding()
+                    .padding([.leading, .trailing, .bottom])
 
                 Group {
                     Button {
@@ -63,38 +56,38 @@ struct NavigationDemoScreen: View {
 
                     HStack(spacing: 8) {
                         Button {
-                            navController.navigateTo(.A)
+                            navController.navigateTo(Destination.A())
                         } label: {
                             Text("Nav to `A`")
                         }
 
                         Button {
-                            navController.navigateTo(.B)
+                            navController.navigateTo(Destination.B())
                         } label: {
                             Text("Nav to `B`")
                         }
 
                         Button {
-                            navController.navigateTo(.C(id: UUID().hashValue))
+                            navController.navigateTo(Destination.C(id: UUID().hashValue))
                         } label: {
                             Text("Nav to `C`")
                         }
                     }
 
                     Button {
-                        navController.navigateTo(.B, popUpTo: .A)
+                        navController.navigateTo(Destination.B(), popUpTo: Destination.A.self)
                     } label: {
                         Text("`popUpTo(.A)`\n**Nav to `B`**")
                     }
 
                     Button {
-                        navController.navigateTo(.B, popUpTo: .A, inclusive: true)
+                        navController.navigateTo(Destination.B(), popUpTo: Destination.A.self, inclusive: true)
                     } label: {
                         Text("`popUpTo(.A, inclusive: true)`\n**Nav to `B`**")
                     }
 
                     Button {
-                        navController.navigateTo(.B, launchSingleTop: true, popUpTo: .A, inclusive: true)
+                        navController.navigateTo(Destination.B(), launchSingleTop: true, popUpTo: Destination.A.self, inclusive: true)
                     } label: {
                         Text("`popUpTo(.A, inclusive: true)`\n**Nav to `B` with `launchSingleTop`**")
                     }
@@ -107,19 +100,19 @@ struct NavigationDemoScreen: View {
 
                     HStack(spacing: 8) {
                         Button {
-                            navController.popUpTo(.A)
+                            navController.popUpTo(Destination.A.self)
                         } label: {
                             Text("`popUpTo(.A)`")
                         }
 
                         Button {
-                            navController.popUpTo(.B)
+                            navController.popUpTo(Destination.B.self)
                         } label: {
                             Text("`popUpTo(.B)`")
                         }
 
                         Button {
-                            navController.popUpTo(.C(id: UUID().hashValue))
+                            navController.popUpTo(Destination.C.self)
                         } label: {
                             Text("`popUpTo(.C)`")
                         }
@@ -127,19 +120,19 @@ struct NavigationDemoScreen: View {
 
                     HStack(spacing: 8) {
                         Button {
-                            navController.popUpTo(.A, inclusive: true)
+                            navController.popUpTo(Destination.A.self, inclusive: true)
                         } label: {
                             Text("`popUpTo(.A)`\n**`inclusive`**")
                         }
 
                         Button {
-                            navController.popUpTo(.B, inclusive: true)
+                            navController.popUpTo(Destination.B.self, inclusive: true)
                         } label: {
                             Text("`popUpTo(.B)`\n**`inclusive`**")
                         }
 
                         Button {
-                            navController.popUpTo(.C(id: UUID().hashValue), inclusive: true)
+                            navController.popUpTo(Destination.C.self, inclusive: true)
                         } label: {
                             Text("`popUpTo(.C)`\n**`inclusive`**")
                         }
