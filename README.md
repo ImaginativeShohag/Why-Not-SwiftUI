@@ -129,8 +129,8 @@ mise install tuist
 ### Step 3: Clone repository and change directory to the repository
 
 ```bash
-git clone git@github.pie.apple.com:RDDM/MyStore.git
-cd MyStore
+git clone git@github.com:ImaginativeShohag/Why-Not-SwiftUI.git
+cd Why-Not-SwiftUI
 ```
 
 ### Step 4: Fetch dependencies
@@ -220,7 +220,7 @@ let bundle = Bundle.module
 /// Get a specific targets `Bundle` instance.
 let bundle = CoreResources.bundle
 // Equivalent old way:
-let bundle = Bundle(identifier: "com.apple.art4.Core")
+let bundle = Bundle(identifier: "org.imaginativeworld.Why-Not-SwiftUI.Core")
 ```
 
 ## Access Assets
@@ -296,7 +296,7 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 ## Licence
 
 ```
-Copyright 2021 Md. Mahmudul Hasan Shohagm
+Copyright 2021 Md. Mahmudul Hasan Shohag
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
