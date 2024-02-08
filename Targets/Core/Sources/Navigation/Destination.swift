@@ -11,7 +11,7 @@ import SwiftUI
 ///     - Pros:
 ///         - We can use any type of data.
 ///     - Cons:
-///         - We cannot traverse through the stack, so we can't implement `popUpTo` etc with this.
+///         - We cannot traverse through the stack, so we can't implement `popUpTo` etc. with this.
 ///
 /// - `enum` as Destination
 ///     - Pros:

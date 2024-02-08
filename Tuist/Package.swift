@@ -14,6 +14,6 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Kingfisher", from: "7.0.0"),
         .package(url: "https://github.com/danielgindi/Charts", from: "5.0.0"),
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.3.0"),
-        .package(path: "packages/SwiftMacros")
+        .package(path: "../../../packages/SwiftMacros")
     ]
 )
