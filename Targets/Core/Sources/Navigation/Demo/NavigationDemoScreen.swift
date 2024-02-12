@@ -15,6 +15,9 @@ struct NavigationDemo: View {
                 .navigationDestination(for: BaseDestination.self) { destination in
                     AnyView(destination.getScreen())
                 }
+                .onChange(of: navController.navStack) {
+                    SuperLog.v("navStack: \(navController.navStack)")
+                }
         }
     }
 }
@@ -70,19 +73,31 @@ struct NavigationDemoScreen: View {
                         }
                     }
 
+                    Button {
+                        navController.navigateTo(
+                            [
+                                BaseDestination.A(),
+                                BaseDestination.B(),
+                                BaseDestination.C(id: UUID().hashValue)
+                            ]
+                        )
+                    } label: {
+                        Text("Nav to `[A, B, C]`")
+                    }
+
                     HStack(spacing: 8) {
                         Button {
                             navController.navigateTo(BaseDestination.B(), popUpTo: BaseDestination.A.self)
                         } label: {
                             Text("`popUpTo(.A)`\n**Nav to `B`**")
                         }
-                        
+
                         Button {
                             navController.navigateTo(BaseDestination.C(id: UUID().hashValue), popUpTo: BaseDestination.B.self)
                         } label: {
                             Text("`popUpTo(.B)`\n**Nav to `C`**")
                         }
-                        
+
                         Button {
                             navController.navigateTo(BaseDestination.A(), popUpTo: BaseDestination.C.self)
                         } label: {
