@@ -2,7 +2,20 @@
 //  Copyright © 2023 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Core
 import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    class Typography: BaseDestination {
+        override public func getScreen() -> any View {
+            TextPreviewScreen()
+        }
+    }
+}
+
+// MARK: - UI
 
 public struct TextPreviewScreen: View {
     public init() {}

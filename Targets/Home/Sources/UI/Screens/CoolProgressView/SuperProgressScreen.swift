@@ -3,12 +3,24 @@
 //
 
 import CommonUI
+import Core
 import SwiftUI
 
+// MARK: - Destination
+
+public extension Destination {
+    class SuperProgress: BaseDestination {
+        override public func getScreen() -> any View {
+            SuperProgressScreen()
+        }
+    }
+}
+
+// MARK: - UI
+
 public struct SuperProgressScreen: View {
-    
     public init() {}
-    
+
     public var body: some View {
         VStack(spacing: 32) {
             VStack {

@@ -25,7 +25,7 @@ public class NavController: ObservableObject {
         SuperLog.v("navigateTo: destination: \(destination) | launchSingleTop: \(launchSingleTop)")
 
         if destination is Destination.Root {
-            popUpToRoot()
+            fatalError("This is not allowed. To go back to root screen, use `popUpToRoot()` instead.")
         } else if !navStack.isEmpty, launchSingleTop {
             if navStack.last != destination {
                 navStack.append(destination)
@@ -48,7 +48,7 @@ public class NavController: ObservableObject {
         SuperLog.v("navigateTo: destination: \(destination) | launchSingleTop: \(launchSingleTop) | popUpTo: \(popUpTo) | inclusive: \(inclusive)")
 
         if destination is Destination.Root {
-            popUpToRoot()
+            fatalError("This is not allowed. To go back to root screen, use `popUpToRoot()` instead.")
         } else {
             self.popUpTo(popUpTo, inclusive: inclusive)
 
@@ -74,11 +74,9 @@ public class NavController: ObservableObject {
         SuperLog.v("popUpTo: destination: \(destination) | inclusive: \(inclusive)")
 
         let destinationRoute = String(describing: destination)
-        let rootDestinationRoute = String(describing: Destination.Root.self)
-        SuperLog.v("popUpTo: destinationRoute: \(destinationRoute) == rootDestinationRoute: \(rootDestinationRoute)")
 
-        if destinationRoute == rootDestinationRoute {
-            popUpToRoot()
+        if destination is Destination.Root.Type {
+            fatalError("This is not allowed. To go back to root screen, use `popUpToRoot()` instead.")
         } else if !navStack.isEmpty {
             let index = navStack.lastIndex { currentDestination in
                 let currentDestinationRoute = String(describing: type(of: currentDestination))

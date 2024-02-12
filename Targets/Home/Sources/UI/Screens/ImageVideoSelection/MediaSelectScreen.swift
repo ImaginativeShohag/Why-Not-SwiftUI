@@ -3,8 +3,21 @@
 //
 
 import CommonUI
+import Core
 import PhotosUI
 import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    class MediaCaptureAndSelect: BaseDestination {
+        override public func getScreen() -> any View {
+            MediaSelectScreen()
+        }
+    }
+}
+
+// MARK: - UI
 
 public struct MediaSelectScreen: View {
     @ObservedObject var viewModel = MediaSelectViewModel()

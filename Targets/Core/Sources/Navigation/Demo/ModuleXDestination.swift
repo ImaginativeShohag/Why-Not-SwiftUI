@@ -6,26 +6,16 @@ import SwiftUI
 
 #if DEBUG
 
-class ModuleXDestination: BaseDestination {}
+extension BaseDestination {
+    final class A: BaseDestination {
+        override func getScreen() -> any View {
+            NavigationDemoScreen(route)
+        }
+    }
 
-extension Destination {
-    final class A: ModuleXDestination {}
-
-    final class B: ModuleXDestination {}
-}
-
-extension ModuleXDestination {
-    @ViewBuilder
-    static func getScreen(for destination: ModuleXDestination) -> some View {
-        switch destination {
-        case is Destination.A:
-            NavigationDemoScreen(destination.route)
-
-        case is Destination.B:
-            NavigationDemoScreen(destination.route)
-
-        default:
-            EmptyView()
+    final class B: BaseDestination {
+        override func getScreen() -> any View {
+            NavigationDemoScreen(route)
         }
     }
 }

@@ -4,6 +4,21 @@
 
 import SwiftUI
 
+import Core
+import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    class ReorderList: BaseDestination {
+        override public func getScreen() -> any View {
+            ReorderListScreen()
+        }
+    }
+}
+
+// MARK: - UI
+
 /// Resources:
 /// - [How to Reorder List rows in SwiftUI List](https://sarunw.com/posts/swiftui-list-onmove/)
 
@@ -16,7 +31,7 @@ public struct ReorderListScreen: View {
         "Foo",
         "Bar"
     ]
-    
+
     public init() {}
 
     public var body: some View {

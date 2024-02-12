@@ -3,7 +3,20 @@
 //
 
 import CommonUI
+import Core
 import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    class SuperToast: BaseDestination {
+        override public func getScreen() -> any View {
+            SuperToastScreen()
+        }
+    }
+}
+
+// MARK: - UI
 
 public struct SuperToastScreen: View {
     @State var showToastOne = false
@@ -12,7 +25,7 @@ public struct SuperToastScreen: View {
     @State private var showToast1 = false
     @State private var showToast2 = false
     @State private var showToast3: SuperToastData? = nil
-    
+
     public init() {}
 
     public var body: some View {

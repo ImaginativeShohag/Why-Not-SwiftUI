@@ -3,23 +3,26 @@
 //
 
 import CommonUI
+import Core
 import SwiftUI
 
-struct NativeAlertScreenAlert: Identifiable {
-    enum AlertType {
-        case create
-        case delete
-        case success
-    }
+// MARK: - Destination
 
-    let id: AlertType
+public extension Destination {
+    class NativeAlert: BaseDestination {
+        override public func getScreen() -> any View {
+            NativeAlertScreen()
+        }
+    }
 }
+
+// MARK: - UI
 
 public struct NativeAlertScreen: View {
     @State var showAlert = false
     @State var alertData: NativeAlertData? = nil
     @State var alertType: NativeAlertScreenAlert? = nil
-    
+
     public init() {}
 
     public var body: some View {
@@ -133,4 +136,16 @@ struct NativeAlertScreen_Previews: PreviewProvider {
     static var previews: some View {
         NativeAlertScreen()
     }
+}
+
+// MARK: - Models
+
+struct NativeAlertScreenAlert: Identifiable {
+    enum AlertType {
+        case create
+        case delete
+        case success
+    }
+
+    let id: AlertType
 }

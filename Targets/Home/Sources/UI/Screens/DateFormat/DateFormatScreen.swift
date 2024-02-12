@@ -2,13 +2,25 @@
 //  Copyright © 2023 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Core
 import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    class DateFormat: BaseDestination {
+        override public func getScreen() -> any View {
+            DateFormatScreen()
+        }
+    }
+}
+
+// MARK: - UI
 
 /// Inspiration: https://nsdateformatter.com
 public struct DateFormatScreen: View {
-    
     public init() {}
-    
+
     public var body: some View {
         VStack {
             NavigationLink {
@@ -22,7 +34,7 @@ public struct DateFormatScreen: View {
             } label: {
                 Text("Date Format using Template")
             }
-            
+
             NavigationLink {
                 DateFormat3Screen()
             } label: {

@@ -3,11 +3,24 @@
 //
 
 import CommonUI
+import Core
 import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    class TextFieldValidation: BaseDestination {
+        override public func getScreen() -> any View {
+            TextFieldValidationScreen()
+        }
+    }
+}
+
+// MARK: - UI
 
 public struct TextFieldValidationScreen: View {
     @StateObject private var viewModel = TextFieldValidationViewModel()
-    
+
     public init() {}
 
     public var body: some View {

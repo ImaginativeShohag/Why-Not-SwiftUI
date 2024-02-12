@@ -3,11 +3,24 @@
 //
 
 import CommonUI
+import Core
 import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    class LabelToggle: BaseDestination {
+        override public func getScreen() -> any View {
+            LabelToggleScreen()
+        }
+    }
+}
+
+// MARK: - UI
 
 public struct LabelToggleScreen: View {
     @State var isOn = false
-    
+
     public init() {}
 
     public var body: some View {
