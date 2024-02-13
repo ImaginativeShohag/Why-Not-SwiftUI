@@ -257,6 +257,8 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [x] Navigation system update
 - [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
 - [x] Migrate to Tuist
+- [ ] Migrate to Tuist 4.0
+- [ ] Fix a freeze issue in `NavigationView` inside `NavigationStack`
 
 ## Extensions
 

@@ -2,12 +2,24 @@
 //  Copyright © 2022 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Core
 import SwiftUI
 
+// MARK: - Destination
+
+public extension Destination {
+    final class RingChartFitness: BaseDestination {
+        override public func getScreen() -> any View {
+            FitnessRingCardScreen()
+        }
+    }
+}
+
+// MARK: - UI
+
 public struct FitnessRingCardScreen: View {
-    
     public init() {}
-    
+
     public var body: some View {
         HStack(spacing: 24) {
             ZStack {

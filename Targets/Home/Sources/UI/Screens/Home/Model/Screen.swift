@@ -8,68 +8,68 @@ import SwiftUI
 struct Screen: Identifiable {
     let id = UUID().uuidString
     let name: String
-    let destination: Destination
+    let destination: BaseDestination
 
     static let screens: [Screen] = [
         Screen(
             name: "Typography",
-            destination: .typography
+            destination: Destination.Typography()
         ),
         Screen(
             name: "Ring Chart: Overview",
-            destination: .ringChartOverview
+            destination: Destination.RingChartOverview()
         ),
         Screen(
             name: "Ring Chart: Fitness",
-            destination: .ringChartFitness
+            destination: Destination.RingChartFitness()
         ),
         Screen(
             name: "Media Capture & Select",
-            destination: .mediaCaptureAndSelect
+            destination: Destination.MediaCaptureAndSelect()
         ),
         Screen(
             name: "BottomNav vs SideBar",
-            destination: .bottomNavAndSideBar
+            destination: Destination.BottomNavAndSideBar()
         ),
         Screen(
             name: "MetricKit",
-            destination: .metricKit
+            destination: Destination.MetricKit()
         ),
         Screen(
             name: "Super Toast",
-            destination: .superToast
+            destination: Destination.SuperToast()
         ),
         Screen(
             name: "Native Alert",
-            destination: .nativeAlert
+            destination: Destination.NativeAlert()
         ),
         Screen(
             name: "Super Progress",
-            destination: .superProgress
+            destination: Destination.SuperProgress()
         ),
         Screen(
             name: "TextField Validation",
-            destination: .textFieldValidation
+            destination: Destination.TextFieldValidation()
         ),
         Screen(
             name: "Accessibility",
-            destination: .accessibility
+            destination: Destination.Accessibility()
         ),
         Screen(
             name: "Label Toggle",
-            destination: .labelToggle
+            destination: Destination.LabelToggle()
         ),
         Screen(
             name: "Date Format",
-            destination: .dateFormat
+            destination: Destination.DateFormat()
         ),
         Screen(
             name: "Reorder List",
-            destination: .reorderList
+            destination: Destination.ReorderList()
         ),
         Screen(
             name: "Always Popover",
-            destination: .alwaysPopover
+            destination: Destination.AlwaysPopover()
         ),
     ].sorted(by: \.name)
 }

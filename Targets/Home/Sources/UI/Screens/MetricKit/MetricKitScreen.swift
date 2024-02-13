@@ -2,11 +2,24 @@
 //  Copyright © 2022 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Core
 import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    final class MetricKit: BaseDestination {
+        override public func getScreen() -> any View {
+            MetricKitScreen()
+        }
+    }
+}
+
+// MARK: - UI
 
 public struct MetricKitScreen: View {
     @StateObject private var viewModel = MetricKitViewModel()
-    
+
     public init() {}
 
     public var body: some View {

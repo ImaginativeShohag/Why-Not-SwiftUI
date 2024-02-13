@@ -13,8 +13,8 @@ struct MainContainerScreen: View {
         NavigationStack(path: $navController.navStack) {
             HomeScreen()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .navigationDestination(for: Destination.self) { destination in
-                    DestinationMapper.getScreen(destination: destination)
+                .navigationDestination(for: BaseDestination.self) { destination in
+                    AnyView(destination.getScreen())
                 }
                 .onChange(of: navController.navStack) {
                     SuperLog.v("navStack: \(navController.navStack)")

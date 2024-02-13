@@ -2,12 +2,25 @@
 //  Copyright © 2023 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Core
 import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    final class AlwaysPopover: BaseDestination {
+        override public func getScreen() -> any View {
+            AlwaysPopoverScreen()
+        }
+    }
+}
+
+// MARK: - UI
 
 public struct AlwaysPopoverScreen: View {
     @State private var showInfo1: Bool = false
     @State private var showInfo2: Bool = false
-    
+
     public init() {}
 
     public var body: some View {

@@ -29,12 +29,12 @@ public enum BuildSetting {
                     "BUNDLE_LOADER": "$(TEST_HOST)",
                     "TEST_TARGET_NAME": "WhyNotSwiftUI"
                 ]
-            
-        case .notificationServiceExtension:
-            [
-                "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)\(buildTarget.bundleIdentifierPostFix).NotificationServiceExtension",
-                "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG DEVELOPMENT"
-            ]
+
+            case .notificationServiceExtension:
+                [
+                    "PRODUCT_BUNDLE_IDENTIFIER": "\(Project.bundleId)\(buildTarget.bundleIdentifierPostFix).NotificationServiceExtension",
+                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": buildTarget.conditions(variant: variant)
+                ]
         }
     }
 }

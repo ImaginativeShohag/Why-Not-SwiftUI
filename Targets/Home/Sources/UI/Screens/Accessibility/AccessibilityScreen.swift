@@ -2,12 +2,24 @@
 //  Copyright © 2023 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Core
 import SwiftUI
 
+// MARK: - Destination
+
+public extension Destination {
+    final class Accessibility: BaseDestination {
+        override public func getScreen() -> any View {
+            AccessibilityScreen()
+        }
+    }
+}
+
+// MARK: - UI
+
 public struct AccessibilityScreen: View {
-    
     public init() {}
-    
+
     public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {

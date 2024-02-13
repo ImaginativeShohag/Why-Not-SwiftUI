@@ -3,7 +3,20 @@
 //
 
 import CommonUI
+import Core
 import SwiftUI
+
+// MARK: - Destination
+
+public extension Destination {
+    final class RingChartOverview: BaseDestination {
+        override public func getScreen() -> any View {
+            OverviewRingCardScreen()
+        }
+    }
+}
+
+// MARK: - UI
 
 public struct OverviewRingCardScreen: View {
     let audits = [
