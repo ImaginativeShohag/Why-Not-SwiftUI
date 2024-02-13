@@ -8,13 +8,14 @@ import ProjectDescriptionHelpers
 let dependencies = Dependencies(
     swiftPackageManager: .init(
         productTypes: [
+            "SwiftMacros": .framework,
             "Alamofire": .framework,
             "Moya": .framework,
             "CombineMoya": .framework,
             "Kingfisher": .framework,
             "DGCharts": .framework,
             "Lottie": .framework,
-            "SwiftMacros": .framework
+            "Shimmer": .framework
         ],
         baseSettings: Settings.settings(
             configurations: BuildEnvironment.getConfigurations(for: .target)

@@ -94,14 +94,15 @@ let project = Project.app(
         )
     ],
     externalDependencies: [
+        // SwiftMacros depends on a Swift Macro, which is not yet supported.
+        // .external(name: "SwiftMacros"),
         .external(name: "Alamofire"),
         .external(name: "Moya"),
         .external(name: "CombineMoya"),
         .external(name: "Kingfisher"),
         .external(name: "DGCharts"),
         .external(name: "Lottie"),
-        // SwiftMacros depends on a Swift Macro, which is not yet supported.
-        // .external(name: "SwiftMacros")
+        .external(name: "Shimmer")
     ],
     coreDataModels: []
 )
