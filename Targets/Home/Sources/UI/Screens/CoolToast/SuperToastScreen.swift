@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class SuperToast: BaseDestination {
+    final class SuperToast: BaseDestination {
         override public func getScreen() -> any View {
             SuperToastScreen()
         }

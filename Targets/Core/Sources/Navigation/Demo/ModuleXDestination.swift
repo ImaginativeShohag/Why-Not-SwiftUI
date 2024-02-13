@@ -6,7 +6,7 @@ import SwiftUI
 
 #if DEBUG
 
-extension BaseDestination {
+extension Destination {
     final class A: BaseDestination {
         override func getScreen() -> any View {
             NavigationDemoScreen(route)

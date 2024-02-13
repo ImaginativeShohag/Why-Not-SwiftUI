@@ -2,7 +2,7 @@
 //  Copyright © 2023 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-@testable import Why_Not_SwiftUI
+@testable import Core
 import XCTest
 
 final class CollectionSubscriptExtensionTest: XCTestCase {

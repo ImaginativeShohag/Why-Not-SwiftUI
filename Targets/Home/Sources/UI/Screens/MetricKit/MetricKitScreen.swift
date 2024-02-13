@@ -8,7 +8,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class MetricKit: BaseDestination {
+    final class MetricKit: BaseDestination {
         override public func getScreen() -> any View {
             MetricKitScreen()
         }

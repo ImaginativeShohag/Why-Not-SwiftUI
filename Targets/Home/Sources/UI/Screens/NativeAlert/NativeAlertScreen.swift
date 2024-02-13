@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class NativeAlert: BaseDestination {
+    final class NativeAlert: BaseDestination {
         override public func getScreen() -> any View {
             NativeAlertScreen()
         }

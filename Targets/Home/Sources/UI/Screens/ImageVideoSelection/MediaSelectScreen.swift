@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class MediaCaptureAndSelect: BaseDestination {
+    final class MediaCaptureAndSelect: BaseDestination {
         override public func getScreen() -> any View {
             MediaSelectScreen()
         }

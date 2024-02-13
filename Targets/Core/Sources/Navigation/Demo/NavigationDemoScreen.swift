@@ -41,33 +41,41 @@ struct NavigationDemoScreen: View {
                     .padding([.leading, .trailing, .bottom])
 
                 Group {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Dismiss")
-                    }
+                    HStack(spacing: 8) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Text("Dismiss")
+                        }
 
-                    Button {
-                        navController.popUpToRoot()
-                    } label: {
-                        Text("Back to `Root`")
+                        Button {
+                            navController.popBackStack()
+                        } label: {
+                            Text("`popBackStack()`")
+                        }
+
+                        Button {
+                            navController.popUpToRoot()
+                        } label: {
+                            Text("Back to `Root`")
+                        }
                     }
 
                     HStack(spacing: 8) {
                         Button {
-                            navController.navigateTo(BaseDestination.A())
+                            navController.navigateTo(Destination.A())
                         } label: {
                             Text("Nav to `A`")
                         }
 
                         Button {
-                            navController.navigateTo(BaseDestination.B())
+                            navController.navigateTo(Destination.B())
                         } label: {
                             Text("Nav to `B`")
                         }
 
                         Button {
-                            navController.navigateTo(BaseDestination.C(id: UUID().hashValue))
+                            navController.navigateTo(Destination.C(id: UUID().hashValue))
                         } label: {
                             Text("Nav to `C`")
                         }
@@ -76,68 +84,76 @@ struct NavigationDemoScreen: View {
                     Button {
                         navController.navigateTo(
                             [
-                                BaseDestination.A(),
-                                BaseDestination.B(),
-                                BaseDestination.C(id: UUID().hashValue)
+                                Destination.A(),
+                                Destination.B(),
+                                Destination.C(id: UUID().hashValue)
                             ]
                         )
                     } label: {
                         Text("Nav to `[A, B, C]`")
                     }
 
+                    Button {
+                        navController.navigateTo(
+                            [
+                                Destination.A(),
+                                Destination.B(),
+                                Destination.C(id: UUID().hashValue)
+                            ],
+                            popUpTo: Destination.A.self,
+                            inclusive: true
+                        )
+                    } label: {
+                        Text("`popUpTo(.A, inclusive: true)`\n**Nav to `[A, B, C]`**")
+                    }
+
                     HStack(spacing: 8) {
                         Button {
-                            navController.navigateTo(BaseDestination.B(), popUpTo: BaseDestination.A.self)
+                            navController.navigateTo(Destination.B(), popUpTo: Destination.A.self)
                         } label: {
                             Text("`popUpTo(.A)`\n**Nav to `B`**")
                         }
 
                         Button {
-                            navController.navigateTo(BaseDestination.C(id: UUID().hashValue), popUpTo: BaseDestination.B.self)
+                            navController.navigateTo(Destination.C(id: UUID().hashValue), popUpTo: Destination.B.self)
                         } label: {
                             Text("`popUpTo(.B)`\n**Nav to `C`**")
                         }
 
                         Button {
-                            navController.navigateTo(BaseDestination.A(), popUpTo: BaseDestination.C.self)
+                            navController.navigateTo(Destination.A(), popUpTo: Destination.C.self)
                         } label: {
                             Text("`popUpTo(.C)`\n**Nav to `A`**")
                         }
                     }
 
                     Button {
-                        navController.navigateTo(BaseDestination.B(), popUpTo: BaseDestination.A.self, inclusive: true)
+                        navController.navigateTo(Destination.B(), popUpTo: Destination.A.self, inclusive: true)
                     } label: {
                         Text("`popUpTo(.A, inclusive: true)`\n**Nav to `B`**")
                     }
 
                     Button {
-                        navController.navigateTo(BaseDestination.B(), launchSingleTop: true, popUpTo: BaseDestination.A.self, inclusive: true)
+                        navController.navigateTo(Destination.B(), launchSingleTop: true, popUpTo: Destination.A.self, inclusive: true)
                     } label: {
                         Text("`popUpTo(.A, inclusive: true)`\n**Nav to `B` with `launchSingleTop`**")
                     }
 
-                    Button {
-                        navController.popBackStack()
-                    } label: {
-                        Text("`popBackStack()`")
-                    }
-
                     HStack(spacing: 8) {
                         Button {
-                            navController.popUpTo(BaseDestination.A.self)
+                            navController.popUpTo(Destination.A.self)
                         } label: {
                             Text("`popUpTo(.A)`")
                         }
 
                         Button {
-                            navController.popUpTo(BaseDestination.B.self)
+                            navController.popUpTo(Destination.B.self)
                         } label: {
                             Text("`popUpTo(.B)`")
                         }
 
                         Button {
-                            navController.popUpTo(BaseDestination.C.self)
+                            navController.popUpTo(Destination.C.self)
                         } label: {
                             Text("`popUpTo(.C)`")
                         }
@@ -145,19 +161,19 @@ struct NavigationDemoScreen: View {
 
                     HStack(spacing: 8) {
                         Button {
-                            navController.popUpTo(BaseDestination.A.self, inclusive: true)
+                            navController.popUpTo(Destination.A.self, inclusive: true)
                         } label: {
                             Text("`popUpTo(.A)`\n**`inclusive`**")
                         }
 
                         Button {
-                            navController.popUpTo(BaseDestination.B.self, inclusive: true)
+                            navController.popUpTo(Destination.B.self, inclusive: true)
                         } label: {
                             Text("`popUpTo(.B)`\n**`inclusive`**")
                         }
 
                         Button {
-                            navController.popUpTo(BaseDestination.C.self, inclusive: true)
+                            navController.popUpTo(Destination.C.self, inclusive: true)
                         } label: {
                             Text("`popUpTo(.C)`\n**`inclusive`**")
                         }
