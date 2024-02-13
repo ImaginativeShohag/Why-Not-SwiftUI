@@ -8,7 +8,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class AlwaysPopover: BaseDestination {
+    final class AlwaysPopover: BaseDestination {
         override public func getScreen() -> any View {
             AlwaysPopoverScreen()
         }

@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class TextFieldValidation: BaseDestination {
+    final class TextFieldValidation: BaseDestination {
         override public func getScreen() -> any View {
             TextFieldValidationScreen()
         }

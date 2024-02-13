@@ -6,7 +6,7 @@ import SwiftUI
 
 #if DEBUG
 
-extension BaseDestination {
+extension Destination {
     final class C: BaseDestination {
         let id: Int
 

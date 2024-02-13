@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class LabelToggle: BaseDestination {
+    final class LabelToggle: BaseDestination {
         override public func getScreen() -> any View {
             LabelToggleScreen()
         }

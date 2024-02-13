@@ -50,6 +50,8 @@ public class NavController: ObservableObject {
     /// - Parameters:
     ///   - destination: target destination.
     ///   - launchSingleTop: Whether this navigation action should launch as single-top (i.e., there will be at most one copy of a given destination on the top of the back stack).
+    ///
+    /// - Note: Don't pass `Destination.Root`in `destination` parameter.
     public func navigateTo(_ destination: BaseDestination, launchSingleTop: Bool = false) {
         SuperLog.v("navigateTo: destination: \(destination) | launchSingleTop: \(launchSingleTop)")
 
@@ -65,12 +67,13 @@ public class NavController: ObservableObject {
             navStack.append(destination)
         }
     }
-    
 
     /// Navigate to multiple destinations.
     ///
     /// - Parameters:
     ///   - destinations: target destinations.
+    ///
+    /// - Note: Don't pass `Destination.Root`in `destination` parameter.
     public func navigateTo(_ destinations: [BaseDestination]) {
         SuperLog.v("navigateTo: destinations: \(destinations)")
 
@@ -83,6 +86,26 @@ public class NavController: ObservableObject {
         }
     }
 
+    /// Navigate to multiple destinations.
+    ///
+    /// - Parameters:
+    ///   - destinations: target destinations.
+    ///   - popUpTo: Pop up to a given destination.
+    ///   - inclusive: Whether the `popUpTo` destination should be popped from the back stack.
+    ///
+    /// - Note: Don't pass `Destination.Root`in `destination` or `popUpTo` parameter.
+    public func navigateTo(_ destinations: [BaseDestination], popUpTo: BaseDestination.Type, inclusive: Bool = false) {
+        SuperLog.v("navigateTo: destinations: \(destinations) | popUpTo: \(popUpTo) | inclusive: \(inclusive)")
+
+        guard destinations.first(where: { $0 is Destination.Root }) == nil else {
+            fatalError("This is not allowed. To go back to root screen, use `popUpToRoot()` instead.")
+        }
+
+        self.popUpTo(popUpTo, inclusive: inclusive)
+
+        navigateTo(destinations)
+    }
+
     /// Navigate to a destination.
     ///
     /// - Parameters:
@@ -91,7 +114,7 @@ public class NavController: ObservableObject {
     ///   - popUpTo: Pop up to a given destination.
     ///   - inclusive: Whether the `popUpTo` destination should be popped from the back stack.
     ///
-    /// - Note: If `Destination.root` is passed for `destination`, then other parameters will be ignored.
+    /// - Note: Don't pass `Destination.Root`in `destination` or `popUpTo` parameter.
     public func navigateTo(_ destination: BaseDestination, launchSingleTop: Bool = false, popUpTo: BaseDestination.Type, inclusive: Bool = false) {
         SuperLog.v("navigateTo: destination: \(destination) | launchSingleTop: \(launchSingleTop) | popUpTo: \(popUpTo) | inclusive: \(inclusive)")
 
@@ -118,6 +141,8 @@ public class NavController: ObservableObject {
     /// - Parameters:
     ///   - destination: Target destination.
     ///   - inclusive: Whether the `destination` should be popped from the back stack.
+    ///
+    /// - Note: Don't pass `Destination.Root`in `destination` parameter.
     public func popUpTo(_ destination: BaseDestination.Type, inclusive: Bool = false) {
         SuperLog.v("popUpTo: destination: \(destination) | inclusive: \(inclusive)")
 

@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class SuperProgress: BaseDestination {
+    final class SuperProgress: BaseDestination {
         override public func getScreen() -> any View {
             SuperProgressScreen()
         }

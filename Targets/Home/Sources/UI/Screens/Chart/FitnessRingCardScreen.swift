@@ -8,7 +8,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class RingChartFitness: BaseDestination {
+    final class RingChartFitness: BaseDestination {
         override public func getScreen() -> any View {
             FitnessRingCardScreen()
         }

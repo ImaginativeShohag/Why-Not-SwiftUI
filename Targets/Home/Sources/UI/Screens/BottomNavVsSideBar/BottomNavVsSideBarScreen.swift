@@ -8,7 +8,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class BottomNavAndSideBar: BaseDestination {
+    final class BottomNavAndSideBar: BaseDestination {
         override public func getScreen() -> any View {
             BottomNavVsSideBarScreen()
         }

@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    class ReorderList: BaseDestination {
+    final class ReorderList: BaseDestination {
         override public func getScreen() -> any View {
             ReorderListScreen()
         }
