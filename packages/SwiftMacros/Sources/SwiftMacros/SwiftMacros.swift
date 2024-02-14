@@ -18,7 +18,7 @@ public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "C
 /// A macro that produces an unwrapped URL in case of a valid input URL.
 /// For example,
 ///
-///     #URL("https://www.avanderlee.com")
+///     #URL("https://imaginativeworld.org")
 ///
 /// produces an unwrapped `URL` if the URL is valid. Otherwise, it emits a compile-time error.
 @freestanding(expression)

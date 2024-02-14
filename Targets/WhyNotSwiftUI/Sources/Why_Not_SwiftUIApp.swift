@@ -4,6 +4,7 @@
 
 import SwiftUI
 import Home
+import SwiftMacros
 
 @main
 struct Why_Not_SwiftUIApp: App {
@@ -11,6 +12,9 @@ struct Why_Not_SwiftUIApp: App {
     @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
 
     private let trackingService = TrackingService.shared
+    
+    /// Just testing custom `Macro`. Nothing else. Ignore.
+    let url = #URL("https://imaginativeworld.org")
 
     var body: some Scene {
         WindowGroup {
@@ -35,4 +39,11 @@ struct Why_Not_SwiftUIApp: App {
             }
         }
     }
+}
+
+/// Just testing custom `Macro`. Nothing else. Ignore.
+@StructInit
+struct DummyStruct {
+    let variable1: String
+    let variable2: Int
 }
