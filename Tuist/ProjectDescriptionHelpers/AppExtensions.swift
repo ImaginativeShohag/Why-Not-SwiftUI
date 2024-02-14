@@ -5,7 +5,7 @@
 import ProjectDescription
 
 let appExtensions = [
-    Target(
+    Target.target(
         name: "NotificationServiceExtension",
         destinations: [.iPhone, .iPad, .macWithiPadDesign, .appleVisionWithiPadDesign],
         product: .appExtension,
