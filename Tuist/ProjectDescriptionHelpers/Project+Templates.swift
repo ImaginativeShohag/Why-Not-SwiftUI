@@ -85,7 +85,7 @@ public extension Project {
             ),
             targets: targets,
             schemes: [
-                Scheme(
+                .scheme(
                     name: "\(name) Development",
                     shared: true,
                     buildAction: .buildAction(targets: [appMainTarget]),
@@ -101,7 +101,7 @@ public extension Project {
                         configuration: BuildEnvironment.development.name(variant: .release)
                     )
                 ),
-                Scheme(
+                .scheme(
                     name: "\(name) Staging",
                     shared: true,
                     buildAction: .buildAction(targets: [appMainTarget]),
@@ -117,7 +117,7 @@ public extension Project {
                         configuration: BuildEnvironment.staging.name(variant: .release)
                     )
                 ),
-                Scheme(
+                .scheme(
                     name: "\(name) Production",
                     shared: true,
                     buildAction: .buildAction(targets: [appMainTarget]),
@@ -165,9 +165,9 @@ public extension Project {
         }
 
         // Core Data
-        let coreDataModels = module.coreDataModels.map { CoreDataModel($0) }
+        let coreDataModels = module.coreDataModels.map { CoreDataModel.coreDataModel($0) }
 
-        let sources = Target(
+        let sources = Target.target(
             name: name,
             destinations: destinations,
             product: .framework,
@@ -193,7 +193,7 @@ public extension Project {
                 resources = ["Targets/\(name)/Tests/Resources/**"]
             }
 
-            tests = Target(
+            tests = Target.target(
                 name: "\(name)Tests",
                 destinations: destinations,
                 product: .unitTests,
@@ -219,7 +219,7 @@ public extension Project {
                 resources = ["Targets/\(name)/UITests/Resources/**"]
             }
 
-            uiTests = Target(
+            uiTests = Target.target(
                 name: "\(name)UITests",
                 destinations: destinations,
                 product: .uiTests,
@@ -249,9 +249,9 @@ public extension Project {
         infoPlist: [String: Plist.Value],
         coreDataModels: [Path]
     ) -> [Target] {
-        let coreDataModels = coreDataModels.map { CoreDataModel($0) }
+        let coreDataModels = coreDataModels.map { CoreDataModel.coreDataModel($0) }
 
-        let mainTarget = Target(
+        let mainTarget = Target.target(
             name: name,
             destinations: destinations,
             product: .app,
@@ -268,7 +268,7 @@ public extension Project {
             coreDataModels: coreDataModels
         )
 
-        let testTarget = Target(
+        let testTarget = Target.target(
             name: "\(name)Tests",
             destinations: destinations,
             product: .unitTests,
@@ -284,7 +284,7 @@ public extension Project {
             )
         )
 
-        let uiTestTarget = Target(
+        let uiTestTarget = Target.target(
             name: "\(name)UITests",
             destinations: destinations,
             product: .uiTests,
