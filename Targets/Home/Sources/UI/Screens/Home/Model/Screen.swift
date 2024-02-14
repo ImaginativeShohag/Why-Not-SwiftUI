@@ -71,5 +71,9 @@ struct Screen: Identifiable {
             name: "Always Popover",
             destination: Destination.AlwaysPopover()
         ),
+        Screen(
+            name: "ShimmerUI",
+            destination: Destination.ShimmerUI()
+        ),
     ].sorted(by: \.name)
 }
