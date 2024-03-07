@@ -23,8 +23,7 @@ import PackageDescription
         ],
         baseSettings: Settings.settings(
             configurations: BuildEnvironment.getConfigurations(for: .target)
-        ),
-        platforms: [.iOS]
+        )
     )
 #endif
 
