@@ -8,7 +8,7 @@ import ProjectDescriptionHelpers
 private let deploymentTargetVersion = "17.0"
 
 let project = Project.app(
-    name: "WhyNotSwiftUI",
+    name: Constants.projectName,
     deploymentTargets: .iOS(deploymentTargetVersion),
     destinations: [.iPhone, .iPad, .macWithiPadDesign, .appleVisionWithiPadDesign],
     baseSettings: [

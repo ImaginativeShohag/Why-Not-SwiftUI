@@ -7,6 +7,7 @@ import ProjectDescription
 public enum BuildSetting {
     case app, target, unitTest, notificationServiceExtension
 
+    /// - Returns: The build settings for the schemas based on the `buildTarget` and `variant`.
     func settings(buildTarget: BuildEnvironment, variant: Configuration.Variant) -> SettingsDictionary {
         switch self {
             case .app:
@@ -25,9 +26,9 @@ public enum BuildSetting {
                     "SWIFT_ACTIVE_COMPILATION_CONDITIONS": buildTarget.conditions(variant: variant),
 
                     // For Testing
-                    "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/WhyNotSwiftUI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WhyNotSwiftUI",
+                    "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/\(Constants.projectName).app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/\(Constants.projectName)",
                     "BUNDLE_LOADER": "$(TEST_HOST)",
-                    "TEST_TARGET_NAME": "WhyNotSwiftUI"
+                    "TEST_TARGET_NAME": "\(Constants.projectName)"
                 ]
 
             case .notificationServiceExtension:
@@ -44,6 +45,7 @@ public enum BuildSetting {
 public enum BuildEnvironment: String, CaseIterable {
     case development, staging, production
 
+    /// - Returns: The name of the schemas based on the `variant`.
     func name(variant: Configuration.Variant) -> ConfigurationName {
         switch self {
             case .development:
@@ -55,17 +57,19 @@ public enum BuildEnvironment: String, CaseIterable {
         }
     }
 
+    /// - Returns: The  Active Compilation Conditions based on `variant`.
     func conditions(variant: Configuration.Variant) -> SettingValue {
         switch self {
             case .development:
-                "\(variant == .debug ? "DEBUG " : "")DEVELOPMENT"
+                "$(inherited) \(variant == .debug ? "DEBUG " : "")DEVELOPMENT"
             case .staging:
-                "\(variant == .debug ? "DEBUG " : "")STAGING"
+                "$(inherited) \(variant == .debug ? "DEBUG " : "")STAGING"
             case .production:
-                "\(variant == .debug ? "DEBUG " : "")PRODUCTION"
+                "$(inherited) \(variant == .debug ? "DEBUG " : "")PRODUCTION"
         }
     }
 
+    /// - Returns: The post-fix for the bundle identifier.
     var bundleIdentifierPostFix: String {
         switch self {
             case .development:
@@ -77,6 +81,7 @@ public enum BuildEnvironment: String, CaseIterable {
         }
     }
 
+    /// - Returns: The `xcconfig` files directory path.
     var xcconfigFilePath: Path {
         switch self {
             case .development:
@@ -88,6 +93,7 @@ public enum BuildEnvironment: String, CaseIterable {
         }
     }
 
+    /// - Returns: The build configurations based on the `instance`.
     public static func getConfigurations(for instance: BuildSetting) -> [Configuration] {
         var configurations: [Configuration] = []
 
