@@ -81,6 +81,20 @@ struct NavigationDemoScreen: View {
                         }
                     }
 
+                    HStack(spacing: 8) {
+                        NavigationLink(destination: Destination.A()) {
+                            Text("Nav to `A`\n**(NavLink)**")
+                        }
+
+                        NavigationLink(destination: Destination.B()) {
+                            Text("Nav to `B`\n**(NavLink)**")
+                        }
+
+                        NavigationLink(destination: Destination.C(id: UUID().hashValue)) {
+                            Text("Nav to `C`\n**(NavLink)**")
+                        }
+                    }
+
                     Button {
                         navController.navigateTo(
                             [
