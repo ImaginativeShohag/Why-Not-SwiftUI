@@ -193,7 +193,13 @@ public extension ShimmerUI {
             VStack(alignment: self.alignment, spacing: self.spacing) {
                 self.content()
             }
-            .frame(maxWidth: .infinity)
+            .frame(
+                maxWidth: .infinity,
+                alignment: Alignment(
+                    horizontal: self.alignment,
+                    vertical: .center
+                )
+            )
             .padding(.all, self.padding)
             .background(Color.secondarySystemGroupedBackground)
             .cornerRadius(8)
@@ -224,7 +230,13 @@ public extension ShimmerUI {
             HStack(alignment: self.alignment, spacing: self.spacing) {
                 self.content()
             }
-            .frame(maxWidth: .infinity)
+            .frame(
+                maxWidth: .infinity,
+                alignment: Alignment(
+                    horizontal: .center,
+                    vertical: self.alignment
+                )
+            )
             .padding(.all, self.padding)
             .background(Color.secondarySystemGroupedBackground)
             .cornerRadius(8)
@@ -353,7 +365,13 @@ public extension ShimmerUI {
             VStack(alignment: self.alignment, spacing: self.spacing) {
                 self.content()
             }
-            .frame(maxWidth: .infinity)
+            .frame(
+                maxWidth: .infinity,
+                alignment: Alignment(
+                    horizontal: self.alignment,
+                    vertical: .center
+                )
+            )
             .redacted(reason: .placeholder)
             .shimmering()
             .accessibilityLabel("Loading")
@@ -381,7 +399,13 @@ public extension ShimmerUI {
             HStack(alignment: self.alignment, spacing: self.spacing) {
                 self.content()
             }
-            .frame(maxWidth: .infinity)
+            .frame(
+                maxWidth: .infinity,
+                alignment: Alignment(
+                    horizontal: .center,
+                    vertical: self.alignment
+                )
+            )
             .redacted(reason: .placeholder)
             .shimmering()
             .accessibilityLabel("Loading")
