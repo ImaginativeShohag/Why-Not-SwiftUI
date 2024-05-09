@@ -6,6 +6,7 @@ Feel free to request features or suggestions for improvements.
 
 [![Developer](https://img.shields.io/badge/Maintainer-ImaginativeShohag-green)](https://github.com/ImaginativeShohag)
 [![Developer](https://img.shields.io/badge/-buy_me_a_coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/ImShohag)
+[![Tuist badge](https://img.shields.io/badge/Powered%20by-Tuist-blue)](https://tuist.io)
 
 ## What we have hare!
 
@@ -32,11 +33,11 @@ A simple example to demonstrate separate views for iPhone and iPad. Users will s
 | <img src="images/bottom-nav.png" width=165/> | <img src="images/side-bar.png" width=250/> |
 | :-: | :-: |
 
-### Component: `CoolProgress`
+### Component: `SuperProgress`
 
 <img src="images/cool-progress.gif" width=250/>
 
-### Component: `CoolToast`
+### Component: `SuperToast`
 
 A cool "Android Toast" like implementation for SwiftUI.
 
@@ -91,6 +92,160 @@ Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com]
 - Macro example (see `packages/URLMacro` directory)
     - Resources
         - [Swift Macros: Extend Swift with New Kinds of Expressions](https://www.avanderlee.com/swift/macros/)
+- This project is using [Tuist](https://tuist.io). Current `Tuist` implementation has following examples:
+    - Quick module add using `Module` model
+    - Custom Schema
+    - Custom `xcconfig`
+    - Custom Build Config
+    - Custom InfoPlist
+
+## Project Setup
+
+## Project Setup
+
+This project is using [Tuist](https://tuist.io). To run the project we need some initial setup.
+
+### Step 1: Install [mise](https://mise.jdx.dev/)
+
+We need `mise` to install `Tuist` and for maintaining project based `Tuist` versioning.
+
+Install `mise` CLI:
+
+```bash
+# Install CLI
+$ curl https://mise.jdx.dev/install.sh | sh
+
+# Check mise version
+$ ~/.local/bin/mise --version
+mise xxxx.x.x
+
+# Add mise to Zsh configuration file (`.zshrc`) for auto activate mise
+$ echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
+```
+Finally, restart your shell session to use `mise`.
+
+### Step 2: Install `Tuist`
+
+Install `Tuist` using the following command:
+
+```bash
+mise install tuist
+```
+
+### Step 3: Clone repository and change directory to the repository
+
+```bash
+git clone git@github.com:ImaginativeShohag/Why-Not-SwiftUI.git
+cd Why-Not-SwiftUI
+```
+
+### Step 4: Fetch dependencies
+
+We need to fetch the app dependencies. So use the following command to install the dependencies from `Package.resolved` file using `Tuist`.
+
+```bash
+tuist install
+```
+
+### Step 3: Generate the project
+
+Finally, generate and open the project using the following command:
+
+```bash
+tuist generate
+```
+
+This will generate the project file and open the project in Xcode.
+
+### Notes
+
+- As we are using `Tuist` to manage our Xcode project, use the following command to open the Tuist manifest files in Xcode for editing:
+
+```bash
+tuist edit
+```
+
+- We have to run the `tuist install` every time we change any dependency of our project.
+
+- To upgrade dependency versions, use `tuist install --update` command.
+
+- Always use `tuist generate` to open the project.
+
+- After changing branch we also need to run the `tuist generate` command to generate project files.
+
+- Please don't use Xcode Source Control. ([Issue](https://github.com/tuist/tuist/issues/4630))
+
+Please see the [Tuist documentation](https://docs.tuist.io) for details.
+
+## Project Map
+
+![Project Map](graph.png)
+
+## Directory Structure
+
+- `Root`: Root directory
+    - `ConfigurationFiles`: Configuration files
+    - `CoreData`: Core Data models
+    - `Entitlements`: Entitlements
+    - `Targets`: Targets/Modules
+        - `ModuleX`: An example target/module
+            - `Resources`: Resource of `ModuleX`
+            - `Sources`: Source codes of `ModuleX`
+                - `Models`: All models for `ModuleX`
+                    - **Note**: Keep models screen/sheet name wise.
+                - `UI`: All the UI files for `ModuleX`. It also contains `ViewModel`s.
+                    - `Components`: Common UI components that are shared in multiple screens
+                    - `Screens`: All screens, sheets etc.
+                        - `XYZ`: UI files for screen/sheet `XYZ`
+                            - `Components`: Common UI components for screen/sheet `XYZ`
+                                - `ABCView.swift`: Example component file
+                            - `XYZScreen.swift`: Example screen/sheet UI file
+                            - `XYZViewModel.swift`: Example view model file
+                - `ViewModels`: Common `ViewModel`s for `ModuleX`.
+            - `Tests`: Unit test target
+                - `Resources`: Resource of `Tests`
+                - `XYZTests.swift`: Example unit test file
+            - `UITests`: UI test target
+                - `Resources`: Resource of `UITests`
+                - `XYZUITests.swift`: Example UI test file
+        - `ModuleY`
+        - `ModuleZ`
+        - ...
+    - `Tuist`: Tuist configuration files
+
+# Tuist Cheat Sheet
+
+## Access `Bundle`
+
+**Note:** Let's assume our target name is `Core`.
+
+```swift
+/// Get current targets `Bundle` instance.
+let bundle = Bundle.module
+
+/// Get a specific targets `Bundle` instance.
+let bundle = CoreResources.bundle
+// Equivalent old way:
+let bundle = Bundle(identifier: "org.imaginativeworld.Why-Not-SwiftUI.Core")
+```
+
+## Access Assets
+
+**Note:** Let's assume our target name is `Core`.
+
+```swift
+// Old way
+let color: Color = Color("example-color")
+
+// New way
+let color: Color = CoreAsset.exampleColor.swiftUIColor
+
+// Old way
+let image: UIImage = UIImage("example-image")! // The asset must be in the current target :(
+
+// New way
+let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
+```
 
 ## TODO
 
@@ -105,9 +260,12 @@ Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com]
 - [ ] CMS Module
 - [ ] System UI Components Collection
     - [ ] [https://developer.apple.com/documentation/swiftui/grid](Grid)
-- [ ] Navigation system update
+- [x] Navigation system update
 - [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
-- [ ] Migrate to Tuist
+- [x] Migrate to Tuist
+- [x] Migrate to Tuist 4.0
+- [ ] Fix a freeze issue in `NavigationView` inside `NavigationStack`
+- [x] Add `ShimmerUI`
 
 ## Extensions
 
@@ -147,7 +305,7 @@ Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com]
 ## Licence
 
 ```
-Copyright 2021 Md. Mahmudul Hasan Shohagm
+Copyright 2021 Md. Mahmudul Hasan Shohag
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

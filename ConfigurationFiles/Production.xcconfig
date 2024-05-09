@@ -1,0 +1,6 @@
+//
+//  Copyright © 2023 Md. Mahmudul Hasan Shohag. All rights reserved.
+//
+
+XCC_PRODUCT_NAME = Why Not SwiftUI!
+XCC_HOST_URL = https:/$()/example.com
