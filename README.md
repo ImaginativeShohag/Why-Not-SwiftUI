@@ -86,6 +86,13 @@ Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com]
 | <img src="images/date-format-1.png" width=250/> | <img src="images/date-format-2.png" width=250/> | <img src="images/date-format-3.png" width=250/> |
 | :-: | :-: | :-: |
 
+### `ShimmerUI`
+
+A ready to use wrapper for [SwiftUI-Shimmer](https://github.com/markiv/SwiftUI-Shimmer).
+
+| <img src="images/shimmer-ui-1.gif" width=250/> | <img src="images/shimmer-ui-2.gif" width=250/> | <img src="images/shimmer-ui-3.gif" width=250/> |
+| :-: | :-: | :-: |
+
 ## Others
 
 - Example to create preview with mock Models and ViewModels (`ObservableObject`). (See **Media Capture & Select** Example)
@@ -98,6 +105,7 @@ Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com]
     - Custom `xcconfig`
     - Custom Build Config
     - Custom InfoPlist
+- `NavController`: A ready to use navigation wrapper on top of `NavigationStack`.
 
 ## Project Setup
 
