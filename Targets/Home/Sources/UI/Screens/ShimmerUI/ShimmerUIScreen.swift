@@ -47,7 +47,7 @@ public struct ShimmerUIScreen: View {
             }
         }
         .buttonStyle(.borderedProminent)
-        .navigationTitle("Always Popover")
+        .navigationTitle("ShimmerUI")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
