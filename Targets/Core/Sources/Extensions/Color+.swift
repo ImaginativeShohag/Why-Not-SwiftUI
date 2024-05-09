@@ -12,6 +12,18 @@ public extension Color {
             blue: .random(in: 0...1)
         )
     }
+
+    static var debugRandom: Color {
+        #if DEBUG
+        return Color(
+            red: .random(in: 0...1),
+            green: .random(in: 0...1),
+            blue: .random(in: 0...1)
+        )
+        #else
+        return Color.clear
+        #endif
+    }
 }
 
 public extension Color {

@@ -90,6 +90,10 @@ let project = Project.app(
             name: "Home",
             hasUnitTest: true,
             hasUITest: true,
+            dependencies: ["Core", "CommonUI", "Todo"]
+        ),
+        Module(
+            name: "Todo",
             dependencies: ["Core", "CommonUI"]
         )
     ],
