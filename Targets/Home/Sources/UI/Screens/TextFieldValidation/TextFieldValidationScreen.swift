@@ -19,7 +19,7 @@ public extension Destination {
 // MARK: - UI
 
 public struct TextFieldValidationScreen: View {
-    @StateObject private var viewModel = TextFieldValidationViewModel()
+    @State private var viewModel = TextFieldValidationViewModel()
 
     public init() {}
 
@@ -68,6 +68,11 @@ public struct TextFieldValidationScreen: View {
                 .disabled(!viewModel.canSubmit)
             }
             .padding()
+            .alert(
+                isPresented: $viewModel.showSuccessAlert,
+                title: "Success!",
+                primaryButtonText: "Ok"
+            )
         }
         .animation(.easeInOut, value: [viewModel.canSubmit, viewModel.showEmailError])
         .navigationTitle("TextField Validation")

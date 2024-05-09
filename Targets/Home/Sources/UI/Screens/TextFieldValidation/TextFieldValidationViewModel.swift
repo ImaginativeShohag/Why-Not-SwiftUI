@@ -5,27 +5,31 @@
 import SwiftUI
 
 @MainActor
-class TextFieldValidationViewModel: ObservableObject {
-    @Published var fullName: String = "" {
+@Observable
+class TextFieldValidationViewModel {
+    var fullName: String = "" {
         didSet {
             validate()
         }
     }
 
-    @Published var email: String = "" {
+    var email: String = "" {
         didSet {
             validate()
         }
     }
 
-    @Published var phoneNumber: String = "" {
+    var phoneNumber: String = "" {
         didSet {
             validate()
         }
     }
 
-    @Published var canSubmit = false
-    @Published var showEmailError = false
+    var canSubmit = false
+    var showEmailError = false
+    var showSuccessAlert = false
+
+    nonisolated init() {}
 
     func validate() {
         showEmailError = !email.isEmpty && !email.isValidEmail()
@@ -36,6 +40,8 @@ class TextFieldValidationViewModel: ObservableObject {
     }
 
     func submit() {
-        // no-op
+        // ...
+        
+        showSuccessAlert = true
     }
 }
