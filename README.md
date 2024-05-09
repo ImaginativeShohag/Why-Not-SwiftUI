@@ -92,6 +92,12 @@ Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com]
 - Macro example (see `packages/URLMacro` directory)
     - Resources
         - [Swift Macros: Extend Swift with New Kinds of Expressions](https://www.avanderlee.com/swift/macros/)
+- This project is using [Tuist](https://tuist.io). Current `Tuist` implementation has following examples:
+    - Quick module add using `Module` model
+    - Custom Schema
+    - Custom `xcconfig`
+    - Custom Build Config
+    - Custom InfoPlist
 
 ## Project Setup
 
@@ -135,10 +141,10 @@ cd Why-Not-SwiftUI
 
 ### Step 4: Fetch dependencies
 
-We need to fetch the app dependencies. So use the following command to fetch the dependencies using `Tuist`.
+We need to fetch the app dependencies. So use the following command to install the dependencies from `Package.resolved` file using `Tuist`.
 
 ```bash
-tuist fetch
+tuist install
 ```
 
 ### Step 3: Generate the project
@@ -159,9 +165,9 @@ This will generate the project file and open the project in Xcode.
 tuist edit
 ```
 
-- We have to run the `tuist fetch` every time we change any dependency of our project.
+- We have to run the `tuist install` every time we change any dependency of our project.
 
-- To upgrade dependency versions, use `tuist fetch --update` command.
+- To upgrade dependency versions, use `tuist install --update` command.
 
 - Always use `tuist generate` to open the project.
 
