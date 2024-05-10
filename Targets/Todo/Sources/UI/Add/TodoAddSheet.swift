@@ -5,36 +5,61 @@
 import SwiftUI
 
 struct TodoAddSheet: View {
-    @State var title: String = ""
-    @State var details: String = ""
+    @Environment(\.dismiss) private var dismiss
 
-    let onAddClick: (_ title: String, _ details: String) -> Void
+    @State var title: String = ""
+    @State var notes: String = ""
+    @State var priority: TodoPriority = .none
+
+    let onAddClick: (_ title: String, _ notes: String, _ priority: TodoPriority) -> Void
 
     var body: some View {
-        VStack {
-            TextField("Title", text: $title)
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Title", text: $title)
 
-            TextField("Details", text: $details)
+                    TextField("Details", text: $notes, axis: .vertical)
+                        .lineLimit(...5)
+                }
 
-            Spacer()
+                Section {
+                    Picker("Priority", selection: $priority) {
+                        Text("None").tag(TodoPriority.none)
+                        Divider()
+                        Text("Large").tag(TodoPriority.low)
+                        Text("Medium").tag(TodoPriority.medium)
+                        Text("Small").tag(TodoPriority.high)
+                    }
+                }
+            }
+            .navigationTitle("New Todo")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(role: .cancel) {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                    }
+                }
 
-            Button {
-                onAddClick(title, details)
-            } label: {
-                Text("Add")
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        onAddClick(title, notes, priority)
+                    } label: {
+                        Text("Add")
+                            .fontWeight(.bold)
+                    }
+                }
             }
         }
-        .textFieldStyle(.roundedBorder)
-        .padding()
     }
 }
 
 #Preview {
     VStack {}
         .sheet(isPresented: .constant(true), content: {
-            NavigationStack {
-                TodoAddSheet { _, _ in }
-            }
-            .presentationDetents([.height(150)])
+            TodoAddSheet { _, _, _ in }
+                .presentationDetents([.medium])
         })
 }

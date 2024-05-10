@@ -5,6 +5,9 @@
 import Core
 import SwiftUI
 
+/// Known issue:
+/// - After completing a todo, it is not getting auto hide when completed list is hidden.
+
 // MARK: - Destination
 
 public extension Destination {
@@ -22,21 +25,18 @@ struct TodoHomeScreen: View {
 
     @State var showAddSheet = false
     @State var editItem: Todo? = nil
-    @State var showCompleted = false
 
     var body: some View {
         VStack {
-            List(viewModel.todoList.filter { todo in
-                if showCompleted {
-                    true
-                } else {
-                    !todo.isCompleted
-                }
-            }.reversed()) { todo in
+            List(viewModel.todoList) { todo in
                 TodoItemViewWrapped(
                     todo: todo,
                     onClick: {
-                        //
+                        NavController.shared.navigateTo(
+                            Destination.TodoDetail(
+                                id: todo.id
+                            )
+                        )
                     },
                     onEditClick: {
                         editItem = todo
@@ -46,11 +46,20 @@ struct TodoHomeScreen: View {
         }
         .background(Color.debugRandom)
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    showCompleted.toggle()
+                    viewModel.changeSortToShowLatestFirst()
                 } label: {
-                    Image(systemName: showCompleted ? "checkmark.rectangle.stack.fill" : "checkmark.rectangle.stack")
+                    Image(systemName: "arrow.up.arrow.down")
+                        .background(Color.debugRandom)
+                }
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    viewModel.changeShowCompletedItems()
+                } label: {
+                    Image(systemName: viewModel.showCompletedItems ? "checkmark.rectangle.stack.fill" : "checkmark.rectangle.stack")
                         .background(Color.debugRandom)
                 }
             }
@@ -73,31 +82,40 @@ struct TodoHomeScreen: View {
             }
         }
         .navigationTitle("Todo")
+        .task {
+            await viewModel.load()
+        }
         .sheet(isPresented: $showAddSheet) {
             TodoAddSheet(
-                onAddClick: { title, details in
+                onAddClick: { title, notes, priority in
                     showAddSheet.toggle()
 
-                    viewModel.add(title: title, details: details)
+                    viewModel.add(
+                        title: title,
+                        notes: notes,
+                        priority: priority
+                    )
                 }
             )
-            .presentationDetents([.height(150)])
+            .presentationDetents([.medium])
         }
         .sheet(item: $editItem) { todo in
             TodoEditSheet(
                 title: todo.title,
-                details: todo.details,
-                onSaveClick: { title, details in
+                notes: todo.notes,
+                priority: todo.priority,
+                onSaveClick: { title, notes, priority in
                     editItem = nil
 
                     viewModel.save(
                         todo: todo,
                         title: title,
-                        details: details
+                        notes: notes,
+                        priority: priority
                     )
                 }
             )
-            .presentationDetents([.height(150)])
+            .presentationDetents([.medium])
         }
     }
 }
@@ -116,7 +134,8 @@ struct TodoItemViewWrapped: View {
     var body: some View {
         TodoItemView(
             title: todo.title,
-            details: todo.details,
+            notes: todo.notes,
+            priority: todo.priority,
             isCompleted: todo.isCompleted
         ) {
             onClick()
@@ -148,19 +167,44 @@ struct TodoItemViewWrapped: View {
 
 struct TodoItemView: View {
     let title: String
-    let details: String
+    let notes: String
+    let priority: TodoPriority
     let isCompleted: Bool
     let onClick: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(title)
-                .font(.headline)
+        HStack {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.headline)
 
-            Text(details)
-                .font(.body)
+                Text(notes)
+                    .font(.body)
+                    .lineLimit(...2)
+            }
+
+            Spacer()
+
+            Group {
+                switch priority {
+                case .none:
+                    Color.clear
+                case .low:
+                    Color.green
+                case .medium:
+                    Color.yellow
+                case .high:
+                    Color.red
+                }
+            }
+            .frame(width: 16, height: 16)
+            .cornerRadius(8)
         }
+        .contentShape(Rectangle())
         .strikethrough(isCompleted)
+        .onTapGesture {
+            onClick()
+        }
         .background(Color.debugRandom)
     }
 }

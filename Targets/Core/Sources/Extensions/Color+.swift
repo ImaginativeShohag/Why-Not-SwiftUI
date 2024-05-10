@@ -18,7 +18,8 @@ public extension Color {
         return Color(
             red: .random(in: 0...1),
             green: .random(in: 0...1),
-            blue: .random(in: 0...1)
+            blue: .random(in: 0...1),
+            opacity: 0.5
         )
         #else
         return Color.clear
