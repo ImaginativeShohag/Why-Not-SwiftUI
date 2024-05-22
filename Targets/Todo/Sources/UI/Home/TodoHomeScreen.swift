@@ -5,8 +5,9 @@
 import Core
 import SwiftUI
 
-/// Known issue:
-/// - After completing a todo, it is not getting auto hide when completed list is hidden.
+/// Known issue/todo:
+/// - [x] After completing a todo, it is not getting auto hide when completed list is hidden.
+/// - [ ] After adding an item, all view get updated!
 
 // MARK: - Destination
 
@@ -28,7 +29,7 @@ struct TodoHomeScreen: View {
 
     var body: some View {
         VStack {
-            List(viewModel.todoList) { todo in
+            List(viewModel.todoList, id: \.id) { todo in
                 TodoItemViewWrapped(
                     todo: todo,
                     onClick: {
@@ -40,9 +41,13 @@ struct TodoHomeScreen: View {
                     },
                     onEditClick: {
                         editItem = todo
+                    },
+                    onCompleteClick: {
+                        viewModel.toggleTodoCompleteStatus(for: todo)
                     }
                 )
             }
+            .animation(.default, value: viewModel.todoList)
         }
         .background(Color.debugRandom)
         .toolbar {
@@ -74,10 +79,9 @@ struct TodoHomeScreen: View {
 
                             Text("New Todo")
                         }
+                        .frame(maxWidth: .infinity)
                         .background(Color.debugRandom)
                     }
-
-                    Spacer()
                 }
             }
         }
@@ -90,11 +94,13 @@ struct TodoHomeScreen: View {
                 onAddClick: { title, notes, priority in
                     showAddSheet.toggle()
 
-                    viewModel.add(
-                        title: title,
-                        notes: notes,
-                        priority: priority
-                    )
+                    Task {
+                        await viewModel.add(
+                            title: title,
+                            notes: notes,
+                            priority: priority
+                        )
+                    }
                 }
             )
             .presentationDetents([.medium])
@@ -107,12 +113,14 @@ struct TodoHomeScreen: View {
                 onSaveClick: { title, notes, priority in
                     editItem = nil
 
-                    viewModel.save(
-                        todo: todo,
-                        title: title,
-                        notes: notes,
-                        priority: priority
-                    )
+                    Task {
+                        await viewModel.save(
+                            todo: todo,
+                            title: title,
+                            notes: notes,
+                            priority: priority
+                        )
+                    }
                 }
             )
             .presentationDetents([.medium])
@@ -122,14 +130,17 @@ struct TodoHomeScreen: View {
 
 #Preview {
     NavigationStack {
-        TodoHomeScreen()
+        TodoHomeScreen(
+            viewModel: TodoHomeViewModel(forPreview: true)
+        )
     }
 }
 
 struct TodoItemViewWrapped: View {
-    @ObservedObject var todo: Todo
+    var todo: Todo
     let onClick: () -> Void
     let onEditClick: () -> Void
+    let onCompleteClick: () -> Void
 
     var body: some View {
         TodoItemView(
@@ -153,7 +164,7 @@ struct TodoItemViewWrapped: View {
         }
         .swipeActions(edge: .trailing) {
             Button {
-                todo.isCompleted.toggle()
+                onCompleteClick()
             } label: {
                 Label(
                     todo.isCompleted ? "Incomplete" : "Complete",

@@ -61,13 +61,19 @@ struct TodoDetailScreen: View {
                     }
 
                     HStack {
-                        priorityColor
-                            .frame(width: 16, height: 16)
-                            .cornerRadius(8)
+                        if todo.priority != .none {
+                            priorityColor
+                                .frame(width: 16, height: 16)
+                                .cornerRadius(8)
+                        }
 
                         Text(priorityCaption)
                     }
-                    .font(.subheadline)
+                    .monospaced()
+                    .font(.footnote)
+                    .padding(6)
+                    .background(Color.secondarySystemBackground)
+                    .containerShape(Capsule())
 
                     if !todo.notes.isEmpty {
                         Text(todo.notes)
@@ -96,6 +102,7 @@ struct TodoDetailScreen: View {
 #Preview {
     NavigationStack {
         TodoDetailScreen(
+            viewModel: TodoDetailViewModel(forPreview: true),
             id: UUID().hashValue
         )
     }

@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import OSLog
 
 /// Enum which maps an appropriate symbol which added as prefix for each log message
 ///
@@ -36,11 +37,10 @@ public func print(_ items: Any..., separator: String = " ", terminator: String =
     #endif
 }
 
+/// **SuperLog** is a `Logger` wrapper for logging.
 ///
-/// **SuperLog** is a `Swift.print()` wrapper for logging.
-///
-/// **SuperLog** only executes `print()` when `DEBUG` flag is `true`.
-///
+/// - Note: **SuperLog** only executes `Logger` when `DEBUG` flag is `true`.
+/// - Note: For SwiftUI previews, it use `Swift.print()` instead of `Logger`.
 public class SuperLog {
     // Restrict object creation.
     private init() {}
@@ -145,7 +145,34 @@ public class SuperLog {
     /// Format parameters and print out the log.
     private class func printLog(type: LogEvent, _ object: Any, filename: String, line: Int, column: Int, funcName: String) {
         if isLoggingEnabled {
-            print("\(Date().toString()) \(type.rawValue)[\(sourceFileName(filePath: filename))]:\(line):\(column) \(funcName) -> \(object)")
+            let objectAsString = "\(object)"
+            let mainFileName = sourceFileName(filePath: filename)
+            let message = "\(Date().toString()) \(type.rawValue)[\(mainFileName)]:\(line):\(column) \(funcName) -> \(objectAsString)"
+            let logger = Logger(subsystem: Logger.subsystem, category: mainFileName)
+
+            switch type {
+            case .v:
+                logger.log("\(message)")
+
+            case .d:
+                logger.debug("\(message)")
+
+            case .i:
+                logger.info("\(message)")
+
+            case .e:
+                logger.error("\(message)")
+
+            case .w:
+                logger.warning("\(message)")
+
+            case .c:
+                logger.critical("\(message)")
+            }
+
+            if ProcessInfo.processInfo.isSwiftUIPreview {
+                print(message)
+            }
         }
     }
 
@@ -159,9 +186,15 @@ public class SuperLog {
     }
 }
 
-extension Date {
+// MARK: - Extensions
+
+private extension Logger {
+    /// Using your bundle identifier is a great way to ensure a unique identifier.
+    static var subsystem = Bundle.main.bundleIdentifier!
+}
+
+private extension Date {
     func toString() -> String {
         return SuperLog.dateFormatter.string(from: self as Date)
     }
 }
-

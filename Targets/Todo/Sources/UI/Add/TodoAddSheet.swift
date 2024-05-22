@@ -19,7 +19,7 @@ struct TodoAddSheet: View {
                 Section {
                     TextField("Title", text: $title)
 
-                    TextField("Details", text: $notes, axis: .vertical)
+                    TextField("Notes", text: $notes, axis: .vertical)
                         .lineLimit(...5)
                 }
 
@@ -27,9 +27,9 @@ struct TodoAddSheet: View {
                     Picker("Priority", selection: $priority) {
                         Text("None").tag(TodoPriority.none)
                         Divider()
-                        Text("Large").tag(TodoPriority.low)
+                        Text("Low").tag(TodoPriority.low)
                         Text("Medium").tag(TodoPriority.medium)
-                        Text("Small").tag(TodoPriority.high)
+                        Text("High").tag(TodoPriority.high)
                     }
                 }
             }

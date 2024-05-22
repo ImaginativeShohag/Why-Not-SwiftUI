@@ -2,15 +2,21 @@
 //  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import SwiftData
 import SwiftUI
 
-class Todo: ObservableObject, Identifiable {
-    let id: Int
-    @Published var title: String
-    @Published var notes: String
-    @Published var priority: TodoPriority
+enum TodoPriority: Codable {
+    case none, low, medium, high
+}
+
+@Model
+class Todo {
+    @Attribute(.unique) let id: Int
+    var title: String
+    var notes: String
+    var priority: TodoPriority
     let createdAt: Date
-    @Published var isCompleted: Bool
+    var isCompleted: Bool
 
     init(
         id: Int = UUID().hashValue,
@@ -27,8 +33,4 @@ class Todo: ObservableObject, Identifiable {
         self.createdAt = createdAt
         self.isCompleted = isCompleted
     }
-}
-
-enum TodoPriority {
-    case none, low, medium, high
 }
