@@ -7,7 +7,7 @@ import Home
 import SwiftUI
 
 struct MainContainerScreen: View {
-    @ObservedObject private var navController = NavController.shared
+    @Bindable private var navController = NavController.shared
 
     var body: some View {
         NavigationStack(path: $navController.navStack) {

@@ -88,6 +88,8 @@ extension Key: ExpressibleByStringLiteral {
     }
 }
 
+extension Key: Sendable {}
+
 // The marker protocol
 public protocol PropertyListValue {}
 
