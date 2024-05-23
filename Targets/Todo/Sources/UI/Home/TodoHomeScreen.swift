@@ -5,10 +5,6 @@
 import Core
 import SwiftUI
 
-/// Known issue/todo:
-/// - [x] After completing a todo, it is not getting auto hide when completed list is hidden.
-/// - [ ] After adding an item, all view get updated!
-
 // MARK: - Destination
 
 public extension Destination {
@@ -22,7 +18,7 @@ public extension Destination {
 // MARK: - UI
 
 struct TodoHomeScreen: View {
-    @StateObject var viewModel = TodoHomeViewModel()
+    @State var viewModel = TodoHomeViewModel()
 
     @State var showAddSheet = false
     @State var editItem: Todo? = nil
@@ -128,6 +124,8 @@ struct TodoHomeScreen: View {
     }
 }
 
+#if DEBUG
+
 #Preview {
     NavigationStack {
         TodoHomeScreen(
@@ -135,6 +133,8 @@ struct TodoHomeScreen: View {
         )
     }
 }
+
+#endif
 
 struct TodoItemViewWrapped: View {
     var todo: Todo

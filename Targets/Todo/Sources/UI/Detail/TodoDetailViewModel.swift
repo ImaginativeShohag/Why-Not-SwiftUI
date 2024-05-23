@@ -5,14 +5,19 @@
 import Foundation
 
 @MainActor
-class TodoDetailViewModel: ObservableObject {
-    @Published var todo: Todo? = nil
+@Observable
+class TodoDetailViewModel {
+    var todo: Todo?
 
-    private let repository = TodoRepository()
+    private let repository: TodoRepository
 
     private var isPreview = false
 
-    nonisolated init() {}
+    nonisolated init(
+        repository: TodoRepository = TodoRepository()
+    ) {
+        self.repository = repository
+    }
 
     func getTodo(id: Int) async {
         guard !isPreview else { return }
@@ -24,12 +29,12 @@ class TodoDetailViewModel: ObservableObject {
 #if DEBUG
 
 extension TodoDetailViewModel {
-    convenience nonisolated init(forPreview: Bool = true) {
+    convenience nonisolated init(forPreview: Bool) {
         self.init()
 
-        isPreview = true
-
         Task { @MainActor in
+            self.isPreview = true
+            
             self.todo = Todo(title: "Lorem", notes: "Ipsum", priority: .high)
         }
     }

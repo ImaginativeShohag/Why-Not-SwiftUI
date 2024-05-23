@@ -299,6 +299,7 @@ public extension ShimmerUI {
         private let alignment: Alignment
         @ViewBuilder private let content: () -> Content
         
+        @MainActor
         public init(
             iPhoneColumn: Int = 1,
             iPadColumn: Int = 2,

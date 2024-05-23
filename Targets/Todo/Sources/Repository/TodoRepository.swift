@@ -6,28 +6,27 @@ import Core
 import Foundation
 import SwiftData
 
-class TodoRepository {
-    private var database: (any IDatabase)?
+@globalActor actor DataActor {
+    static var shared = DataActor()
+}
+
+@DataActor
+final class TodoRepository {
+    private lazy var database: any IDatabase = TodoDataSource.shared.database
     
-    init() {
+    nonisolated init() {
         SuperLog.d("Thread: \(Thread.current)")
-        
-        Task {
-            self.database = await TodoDataSource.shared.database
-        }
     }
 
     func getAll() async -> [Todo] {
-        guard let database else { return [] }
-        
         let descriptor = FetchDescriptor<Todo>()
         
-        return await (try? database.fetch(descriptor)) ?? []
+        let data = try? await database.fetch(descriptor)
+        
+        return data ?? []
     }
     
     func getBy(id: Int) async -> Todo? {
-        guard let database else { return nil }
-        
         let predicate = #Predicate<Todo> {
             $0.id == id
         }
@@ -39,24 +38,18 @@ class TodoRepository {
     }
     
     func insert(todo: Todo) async throws {
-        guard let database else { return }
-        
         await database.insert(todo)
         
         try await database.save()
     }
     
     func delete(todo: Todo) async throws {
-        guard let database else { return }
-        
         await database.delete(todo)
         
         try await database.save()
     }
     
     func update(todo: Todo, title: String, notes: String, priority: TodoPriority) async throws {
-        guard let database else { return }
-        
         todo.title = title
         todo.notes = notes
         todo.priority = priority

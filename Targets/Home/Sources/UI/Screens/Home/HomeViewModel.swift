@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 import Core
 
+@MainActor
 class HomeViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     

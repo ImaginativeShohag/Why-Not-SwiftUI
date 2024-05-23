@@ -26,7 +26,7 @@ public extension Destination {
 // MARK: - UI
 
 struct TodoDetailScreen: View {
-    @StateObject var viewModel = TodoDetailViewModel()
+    @State var viewModel = TodoDetailViewModel()
 
     let id: Int
 
@@ -99,6 +99,8 @@ struct TodoDetailScreen: View {
     }
 }
 
+#if DEBUG
+
 #Preview {
     NavigationStack {
         TodoDetailScreen(
@@ -107,3 +109,5 @@ struct TodoDetailScreen: View {
         )
     }
 }
+
+#endif

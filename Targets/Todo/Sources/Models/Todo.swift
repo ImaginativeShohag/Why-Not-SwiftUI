@@ -10,7 +10,7 @@ enum TodoPriority: Codable {
 }
 
 @Model
-class Todo {
+final class Todo: Sendable {
     @Attribute(.unique) let id: Int
     var title: String
     var notes: String

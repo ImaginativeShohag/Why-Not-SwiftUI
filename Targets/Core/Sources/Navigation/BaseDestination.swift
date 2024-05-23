@@ -4,13 +4,14 @@
 
 import SwiftUI
 
-open class BaseDestination {
+open class BaseDestination: @unchecked Sendable {
     public var route: String {
         String(describing: type(of: self))
     }
 
     public init() {}
 
+    @MainActor
     @ViewBuilder
     open func getScreen() -> any View {
         fatalError("Not implemented!")

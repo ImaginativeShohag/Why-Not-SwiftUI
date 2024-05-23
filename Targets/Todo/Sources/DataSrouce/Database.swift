@@ -7,26 +7,25 @@ import SwiftData
 
 @ModelActor
 public actor Database: IDatabase {
-  public func delete(_ model: some PersistentModel) async {
-    self.modelContext.delete(model)
-  }
-
-  public func insert(_ model: some PersistentModel) async {
-    self.modelContext.insert(model)
-  }
-
-  public func delete<T: PersistentModel>(
-    where predicate: Predicate<T>?
-  ) async throws {
-    try self.modelContext.delete(model: T.self, where: predicate)
-  }
-
-  public func save() async throws {
-    try self.modelContext.save()
-  }
-
-  public func fetch<T>(_ descriptor: FetchDescriptor<T>) async throws -> [T] where T: PersistentModel {
-    return try self.modelContext.fetch(descriptor)
-  }
+    public func delete<T>(_ model: T) async where T : Sendable, T : PersistentModel {
+        modelContext.delete(model)
+    }
+    
+    public func insert<T>(_ model: T) async where T : Sendable, T : PersistentModel {
+        modelContext.insert(model)
+    }
+    
+    public func delete<T>(where predicate: Predicate<T>?) async throws where T : Sendable, T : PersistentModel {
+        try modelContext.delete(model: T.self, where: predicate)
+    }
+    
+    public func save() async throws {
+        try modelContext.save()
+    }
+    
+    public func fetch<T>(_ descriptor: FetchDescriptor<T>) async throws -> [T] where T : Sendable, T : PersistentModel {
+        return try modelContext.fetch(descriptor)
+    }
 }
 
+extension FetchDescriptor: @unchecked Sendable {}

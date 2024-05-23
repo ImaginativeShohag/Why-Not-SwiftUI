@@ -7,23 +7,28 @@ import Foundation
 import SwiftUI
 
 @MainActor
-class TodoHomeViewModel: ObservableObject {
-    @Published var todoList: [Todo] = []
-    @Published var showCompletedItems = false
-    @Published var sortToShowLatestFirst = true
+@Observable
+class TodoHomeViewModel {
+    private(set) var todoList: [Todo] = []
+    private(set) var showCompletedItems = false
+    private(set) var sortToShowLatestFirst = true
 
-    private let repository = TodoRepository()
+    private let repository: TodoRepository
 
     private var isPreview = false
 
     private var sourceTodoList: [Todo] = []
 
-    nonisolated init() {}
+    nonisolated init(
+        repository: TodoRepository = TodoRepository()
+    ) {
+        self.repository = repository
+    }
 
     func load() async {
         guard !isPreview else { return }
         guard todoList.isEmpty else { return }
-
+        
         sourceTodoList = await repository.getAll()
 
         updateList()
@@ -108,13 +113,13 @@ class TodoHomeViewModel: ObservableObject {
 #if DEBUG
 
 extension TodoHomeViewModel {
-    convenience nonisolated init(forPreview: Bool = true) {
+    convenience nonisolated init(forPreview: Bool) {
         self.init()
 
-        isPreview = true
-
         Task { @MainActor in
-            sourceTodoList = (1 ... 100).map {
+            self.isPreview = true
+
+            self.sourceTodoList = (1 ... 100).map {
                 Todo(
                     title: "Task \($0)",
                     notes: "Notes \($0)",
@@ -122,7 +127,7 @@ extension TodoHomeViewModel {
                     isCompleted: $0 % 2 == 0 ? true : false
                 )
             }
-            
+
             updateList()
         }
     }

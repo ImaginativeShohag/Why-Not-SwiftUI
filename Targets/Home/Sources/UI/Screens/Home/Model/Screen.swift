@@ -6,7 +6,7 @@ import Core
 import SwiftUI
 import Todo
 
-struct Screen: Identifiable {
+struct Screen: Identifiable, Sendable {
     let id = UUID().uuidString
     let name: String
     let destination: BaseDestination
