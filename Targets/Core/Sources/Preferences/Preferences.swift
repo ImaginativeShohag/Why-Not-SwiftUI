@@ -24,6 +24,7 @@ extension Key {
 ///     print("Changed from: \(old) to \(new)")
 /// }
 /// ```
+@MainActor
 public enum Preferences {
     @UserDefault(key: .authToken)
     public static var authToken: String?

@@ -91,7 +91,6 @@ struct TodoDetailScreen: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .background(Color.debugRandom)
         .navigationTitle(viewModel.todo?.title ?? "Loading...")
         .task {
             await viewModel.getTodo(id: id)

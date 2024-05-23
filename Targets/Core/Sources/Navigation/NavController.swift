@@ -37,8 +37,9 @@ import SwiftUI
 /// Control the app navigation.
 ///
 /// Tested `NavControllerTests`
+@MainActor
 @Observable
-public final class NavController: Sendable {
+public final class NavController {
     public static let shared = NavController()
 
     /// Navigation stack.

@@ -26,8 +26,11 @@ struct TodoHomeScreen: View {
     var body: some View {
         VStack {
             List(viewModel.todoList, id: \.id) { todo in
-                TodoItemViewWrapped(
-                    todo: todo,
+                TodoItemView(
+                    title: todo.title,
+                    notes: todo.notes,
+                    priority: todo.priority,
+                    isCompleted: todo.isCompleted,
                     onClick: {
                         NavController.shared.navigateTo(
                             Destination.TodoDetail(
@@ -45,14 +48,12 @@ struct TodoHomeScreen: View {
             }
             .animation(.default, value: viewModel.todoList)
         }
-        .background(Color.debugRandom)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     viewModel.changeSortToShowLatestFirst()
                 } label: {
                     Image(systemName: "arrow.up.arrow.down")
-                        .background(Color.debugRandom)
                 }
             }
 
@@ -61,7 +62,6 @@ struct TodoHomeScreen: View {
                     viewModel.changeShowCompletedItems()
                 } label: {
                     Image(systemName: viewModel.showCompletedItems ? "checkmark.rectangle.stack.fill" : "checkmark.rectangle.stack")
-                        .background(Color.debugRandom)
                 }
             }
 
@@ -76,7 +76,6 @@ struct TodoHomeScreen: View {
                             Text("New Todo")
                         }
                         .frame(maxWidth: .infinity)
-                        .background(Color.debugRandom)
                     }
                 }
             }
@@ -136,52 +135,55 @@ struct TodoHomeScreen: View {
 
 #endif
 
-struct TodoItemViewWrapped: View {
-    var todo: Todo
-    let onClick: () -> Void
-    let onEditClick: () -> Void
-    let onCompleteClick: () -> Void
-
-    var body: some View {
-        TodoItemView(
-            title: todo.title,
-            notes: todo.notes,
-            priority: todo.priority,
-            isCompleted: todo.isCompleted
-        ) {
-            onClick()
-        }
-        .swipeActions(edge: .leading) {
-            Button {
-                onEditClick()
-            } label: {
-                Label(
-                    "Edit",
-                    systemImage: "square.and.pencil"
-                )
-            }
-            .tint(Color.blue)
-        }
-        .swipeActions(edge: .trailing) {
-            Button {
-                onCompleteClick()
-            } label: {
-                Label(
-                    todo.isCompleted ? "Incomplete" : "Complete",
-                    systemImage: todo.isCompleted ? "minus.square" : "checkmark.square"
-                )
-            }
-            .tint(todo.isCompleted ? Color.red : Color.green)
-        }
-    }
-}
+//struct TodoItemViewWrapped: View {
+//    var todo: Todo
+//    let onClick: () -> Void
+//    let onEditClick: () -> Void
+//    let onCompleteClick: () -> Void
+//
+//    var body: some View {
+//        TodoItemView(
+//            title: todo.title,
+//            notes: todo.notes,
+//            priority: todo.priority,
+//            isCompleted: todo.isCompleted
+//        ) {
+//            onClick()
+//        }
+//        .swipeActions(edge: .leading) {
+//            Button {
+//                onEditClick()
+//            } label: {
+//                Label(
+//                    "Edit",
+//                    systemImage: "square.and.pencil"
+//                )
+//            }
+//            .tint(Color.blue)
+//        }
+//        .swipeActions(edge: .trailing) {
+//            Button {
+//                onCompleteClick()
+//            } label: {
+//                Label(
+//                    todo.isCompleted ? "Incomplete" : "Complete",
+//                    systemImage: todo.isCompleted ? "minus.square" : "checkmark.square"
+//                )
+//            }
+//            .tint(todo.isCompleted ? Color.red : Color.green)
+//        }
+//    }
+//}
 
 struct TodoItemView: View {
     let title: String
     let notes: String
     let priority: TodoPriority
     let isCompleted: Bool
+    
     let onClick: () -> Void
+    let onEditClick: () -> Void
+    let onCompleteClick: () -> Void
 
     var body: some View {
         HStack {
@@ -216,6 +218,27 @@ struct TodoItemView: View {
         .onTapGesture {
             onClick()
         }
-        .background(Color.debugRandom)
+        .swipeActions(edge: .leading) {
+            Button {
+                onEditClick()
+            } label: {
+                Label(
+                    "Edit",
+                    systemImage: "square.and.pencil"
+                )
+            }
+            .tint(Color.blue)
+        }
+        .swipeActions(edge: .trailing) {
+            Button {
+                onCompleteClick()
+            } label: {
+                Label(
+                    isCompleted ? "Incomplete" : "Complete",
+                    systemImage: isCompleted ? "minus.square" : "checkmark.square"
+                )
+            }
+            .tint(isCompleted ? Color.red : Color.green)
+        }
     }
 }

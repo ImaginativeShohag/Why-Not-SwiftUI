@@ -114,7 +114,7 @@ struct Ring: Identifiable {
     var isText: Bool = false
 }
 
-var rings: [Ring] = [
+let rings: [Ring] = [
     Ring(progress: 24, value: "Steps", keyIcon: "figure.walk", keyColor: Color.green),
     Ring(progress: 90, value: "Calories", keyIcon: "flame.fill", keyColor: Color.red),
     Ring(progress: 72, value: "Sleep time", keyIcon: "powersleep", keyColor: Color.purple, isText: false),

@@ -5,6 +5,11 @@
 import Foundation
 import OSLog
 
+@globalActor
+actor LogActor: GlobalActor {
+    static var shared = LogActor()
+}
+
 /// Enum which maps an appropriate symbol which added as prefix for each log message
 ///
 /// - e: Log type error
@@ -27,12 +32,13 @@ private enum LogEvent: String {
 /// - Note: `print()` might cause [security vulnerabilities](https://codifiedsecurity.com/mobile-app-security-testing-checklist-ios/).
 ///
 /// - Parameter object: The object which is to be logged.
-///
 public func print(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     // Only allowing in DEBUG mode
     #if DEBUG
-        if SuperLog.isEnabled {
-            Swift.print(items, separator: separator, terminator: terminator)
+        Task { @LogActor in
+            if SuperLog.isEnabled {
+                Swift.print(items, separator: separator, terminator: terminator)
+            }
         }
     #endif
 }
@@ -41,15 +47,18 @@ public func print(_ items: Any..., separator: String = " ", terminator: String =
 ///
 /// - Note: **SuperLog** only executes `Logger` when `DEBUG` flag is `true`.
 /// - Note: For SwiftUI previews, it use `Swift.print()` instead of `Logger`.
-public class SuperLog {
+public enum SuperLog {
     // Restrict object creation.
-    private init() {}
+    // private init() {}
 
     /// Enable or disable the library.
+    @LogActor
     public static var isEnabled: Bool = true
 
-    static var dateFormat = "yyyy-MM-dd hh:mm:ssSSS"
-    static var dateFormatter: DateFormatter {
+    @LogActor
+    public static var dateFormat = "yyyy-MM-dd hh:mm:ssSSS"
+    @LogActor
+    public static var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
         formatter.locale = Locale.current
@@ -57,6 +66,7 @@ public class SuperLog {
         return formatter
     }
 
+    @LogActor
     private static var isLoggingEnabled: Bool {
         #if DEBUG
             if isEnabled {
@@ -78,7 +88,7 @@ public class SuperLog {
     ///   - line: Line number in file from where the logging is done
     ///   - column: Column number of the log message
     ///   - funcName: Name of the function from where the logging is done
-    public class func v(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
+    public static func v(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
         printLog(type: LogEvent.v, object, filename: filename, line: line, column: column, funcName: funcName)
     }
 
@@ -90,7 +100,7 @@ public class SuperLog {
     ///   - line: Line number in file from where the logging is done
     ///   - column: Column number of the log message
     ///   - funcName: Name of the function from where the logging is done
-    public class func d(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
+    public static func d(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
         printLog(type: LogEvent.d, object, filename: filename, line: line, column: column, funcName: funcName)
     }
 
@@ -102,7 +112,7 @@ public class SuperLog {
     ///   - line: Line number in file from where the logging is done
     ///   - column: Column number of the log message
     ///   - funcName: Name of the function from where the logging is done
-    public class func i(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
+    public static func i(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
         printLog(type: LogEvent.i, object, filename: filename, line: line, column: column, funcName: funcName)
     }
 
@@ -114,7 +124,7 @@ public class SuperLog {
     ///   - line: Line number in file from where the logging is done
     ///   - column: Column number of the log message
     ///   - funcName: Name of the function from where the logging is done
-    public class func e(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
+    public static func e(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
         printLog(type: LogEvent.e, object, filename: filename, line: line, column: column, funcName: funcName)
     }
 
@@ -126,7 +136,7 @@ public class SuperLog {
     ///   - line: Line number in file from where the logging is done
     ///   - column: Column number of the log message
     ///   - funcName: Name of the function from where the logging is done
-    public class func w(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
+    public static func w(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
         printLog(type: LogEvent.w, object, filename: filename, line: line, column: column, funcName: funcName)
     }
 
@@ -138,40 +148,42 @@ public class SuperLog {
     ///   - line: Line number in file from where the logging is done
     ///   - column: Column number of the log message
     ///   - funcName: Name of the function from where the logging is done
-    public class func c(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
+    public static func c(_ object: Any, filename: String = #file, line: Int = #line, column: Int = #column, funcName: String = #function) {
         printLog(type: LogEvent.c, object, filename: filename, line: line, column: column, funcName: funcName)
     }
 
     /// Format parameters and print out the log.
-    private class func printLog(type: LogEvent, _ object: Any, filename: String, line: Int, column: Int, funcName: String) {
-        if isLoggingEnabled {
-            let objectAsString = "\(object)"
-            let mainFileName = sourceFileName(filePath: filename)
-            let message = "\(Date().toString()) \(type.rawValue)[\(mainFileName)]:\(line):\(column) \(funcName) -> \(objectAsString)"
-            let logger = Logger(subsystem: Logger.subsystem, category: mainFileName)
+    private static func printLog(type: LogEvent, _ object: Any, filename: String, line: Int, column: Int, funcName: String) {
+        Task { @LogActor in
+            if isLoggingEnabled {
+                let objectAsString = "\(object)"
+                let mainFileName = sourceFileName(filePath: filename)
+                let message = "\(Date().toString()) \(type.rawValue)[\(mainFileName)]:\(line):\(column) \(funcName) -> \(objectAsString)"
+                let logger = Logger(subsystem: Logger.subsystem, category: mainFileName)
 
-            switch type {
-            case .v:
-                logger.log("\(message)")
+                switch type {
+                case .v:
+                    logger.log("\(message)")
 
-            case .d:
-                logger.debug("\(message)")
+                case .d:
+                    logger.debug("\(message)")
 
-            case .i:
-                logger.info("\(message)")
+                case .i:
+                    logger.info("\(message)")
 
-            case .e:
-                logger.error("\(message)")
+                case .e:
+                    logger.error("\(message)")
 
-            case .w:
-                logger.warning("\(message)")
+                case .w:
+                    logger.warning("\(message)")
 
-            case .c:
-                logger.critical("\(message)")
-            }
+                case .c:
+                    logger.critical("\(message)")
+                }
 
-            if ProcessInfo.processInfo.isSwiftUIPreview {
-                print(message)
+                if ProcessInfo.processInfo.isSwiftUIPreview {
+                    print(message)
+                }
             }
         }
     }
@@ -180,7 +192,7 @@ public class SuperLog {
     ///
     /// - Parameter filePath: Full file path in bundle
     /// - Returns: File Name with extension
-    private class func sourceFileName(filePath: String) -> String {
+    private static func sourceFileName(filePath: String) -> String {
         let components = filePath.components(separatedBy: "/")
         return components.isEmpty ? "" : components.last!
     }
@@ -190,10 +202,11 @@ public class SuperLog {
 
 private extension Logger {
     /// Using your bundle identifier is a great way to ensure a unique identifier.
-    static var subsystem = Bundle.main.bundleIdentifier!
+    static let subsystem = Bundle.main.bundleIdentifier!
 }
 
 private extension Date {
+    @LogActor
     func toString() -> String {
         return SuperLog.dateFormatter.string(from: self as Date)
     }
