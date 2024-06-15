@@ -39,6 +39,7 @@ struct SideBarOverlay<Content: View>: View {
     }
 }
 
+@MainActor
 private struct SideBarWrapper<Content: View>: View {
     @Binding var showSideBar: Bool
     let content: () -> Content

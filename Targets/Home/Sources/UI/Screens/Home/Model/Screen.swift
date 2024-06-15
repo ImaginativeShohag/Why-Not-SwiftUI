@@ -4,8 +4,9 @@
 
 import Core
 import SwiftUI
+import Todo
 
-struct Screen: Identifiable {
+struct Screen: Identifiable, Sendable {
     let id = UUID().uuidString
     let name: String
     let destination: BaseDestination
@@ -74,6 +75,10 @@ struct Screen: Identifiable {
         Screen(
             name: "ShimmerUI",
             destination: Destination.ShimmerUI()
+        ),
+        Screen(
+            name: "Todo App",
+            destination: Destination.TodoHome()
         ),
     ].sorted(by: \.name)
 }

@@ -23,11 +23,11 @@ let project = Project.app(
         "IPHONEOS_DEPLOYMENT_TARGET": "\(deploymentTargetVersion)",
 
         // Recommended by Xcode
-        "ENABLE_USER_SCRIPT_SANDBOXING": true
+        "ENABLE_USER_SCRIPT_SANDBOXING": true,
 
         // Strict concurrency checking
         // NOTE: Will try later to make app read for Swift 6.
-        // "SWIFT_STRICT_CONCURRENCY": "complete"
+        "SWIFT_STRICT_CONCURRENCY": "complete"
     ],
     infoPlist: [
         "CFBundleDisplayName": "$(XCC_PRODUCT_NAME)",
@@ -90,6 +90,10 @@ let project = Project.app(
             name: "Home",
             hasUnitTest: true,
             hasUITest: true,
+            dependencies: ["Core", "CommonUI", "Todo"]
+        ),
+        Module(
+            name: "Todo",
             dependencies: ["Core", "CommonUI"]
         )
     ],

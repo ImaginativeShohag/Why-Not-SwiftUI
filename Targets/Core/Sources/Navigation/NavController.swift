@@ -37,11 +37,13 @@ import SwiftUI
 /// Control the app navigation.
 ///
 /// Tested `NavControllerTests`
-public class NavController: ObservableObject {
+@MainActor
+@Observable
+public final class NavController {
     public static let shared = NavController()
 
     /// Navigation stack.
-    @Published public var navStack = [BaseDestination]()
+    public var navStack = [BaseDestination]()
 
     private init() {}
 

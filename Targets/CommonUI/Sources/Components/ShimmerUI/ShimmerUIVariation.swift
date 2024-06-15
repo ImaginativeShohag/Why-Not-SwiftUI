@@ -434,6 +434,7 @@ public extension ShimmerUI.Block {
         private let alignment: Alignment
         private let block: BlockType
         
+        @MainActor
         public init(
             iPhoneColumn: Int = 1,
             iPadColumn: Int = 2,
