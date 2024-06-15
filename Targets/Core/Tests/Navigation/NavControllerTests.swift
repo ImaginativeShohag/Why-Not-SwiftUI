@@ -12,6 +12,7 @@ private extension NavController {
     }
 }
 
+@MainActor
 final class NavControllerTests: XCTestCase {
     let navController = NavController.shared
     
