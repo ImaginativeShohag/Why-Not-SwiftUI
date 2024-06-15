@@ -26,6 +26,10 @@ Example for showing local notifications.
 
 Example of common accessibility modifiers.
 
+| <img src="images/accessibility-1.png" width=250/> | <img src="images/accessibility-2.png" width=250/> | <img src="images/accessibility-3.png" width=250/> |
+| :-: | :-: |
+| <img src="images/accessibility-4.png" width=250/> | <img src="images/accessibility-5.png" width=250/> | <img src="images/accessibility-6.png" width=250/> |
+
 ### Bottom Nav vs Side Bar
 
 A simple example to demonstrate separate views for iPhone and iPad. Users will see the bottom nav on iPhone and Sidebar on iPad.
