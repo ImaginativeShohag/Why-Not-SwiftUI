@@ -42,6 +42,7 @@ public extension UIDevice {
 
 private enum JailBrokenHelper {
     // check if cydia is installed (using URI Scheme)
+    @MainActor
     static func hasCydiaInstalled() -> Bool {
         return UIApplication.shared.canOpenURL(URL(string: "cydia://")!)
     }

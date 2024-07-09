@@ -4,9 +4,9 @@
 
 import Core
 import Foundation
+import SwiftData
 import SwiftUI
 
-@MainActor
 @Observable
 class TodoHomeViewModel {
     private(set) var todoList: [Todo] = []
@@ -19,16 +19,16 @@ class TodoHomeViewModel {
 
     private var sourceTodoList: [Todo] = []
 
-    nonisolated init(
-        repository: TodoRepository = TodoRepository()
+    init(
+        modelContainer: ModelContainer
     ) {
-        self.repository = repository
+        self.repository = TodoRepository(modelContainer: modelContainer)
     }
 
     func load() async {
         guard !isPreview else { return }
         guard todoList.isEmpty else { return }
-        
+
         sourceTodoList = await repository.getAll()
 
         updateList()
@@ -113,23 +113,25 @@ class TodoHomeViewModel {
 #if DEBUG
 
 extension TodoHomeViewModel {
-    convenience nonisolated init(forPreview: Bool) {
-        self.init()
+    convenience init(forPreview: Bool) {
+        self.init(
+            modelContainer: PreviewSampleData.container
+        )
 
-        Task { @MainActor in
-            self.isPreview = true
+        SuperLog.d("hi")
 
-            self.sourceTodoList = (1 ... 100).map {
-                Todo(
-                    title: "Task \($0)",
-                    notes: "Notes \($0)",
-                    priority: $0 % 2 == 0 ? .none : .medium,
-                    isCompleted: $0 % 2 == 0 ? true : false
-                )
-            }
+        self.isPreview = true
 
-            updateList()
+        self.sourceTodoList = (1 ... 100).map {
+            Todo(
+                title: "Task \($0)",
+                notes: "Notes \($0)",
+                priority: $0 % 2 == 0 ? .none : .medium,
+                isCompleted: $0 % 2 == 0 ? true : false
+            )
         }
+
+        updateList()
     }
 }
 

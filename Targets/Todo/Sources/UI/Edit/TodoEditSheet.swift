@@ -4,6 +4,7 @@
 
 import SwiftUI
 
+@MainActor
 struct TodoEditSheet: View {
     @Environment(\.dismiss) private var dismiss
 

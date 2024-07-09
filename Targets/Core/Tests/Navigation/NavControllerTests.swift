@@ -7,23 +7,26 @@ import Foundation
 import XCTest
 
 private extension NavController {
+    @MainActor
     func reset() {
         navStack = []
     }
 }
 
-@MainActor
 final class NavControllerTests: XCTestCase {
+    @MainActor
     let navController = NavController.shared
     
     // MARK: Blank
 
+    @MainActor
     func test_popUpToRoot_stackShouldBeBlank() {
         navController.popUpToRoot()
         
         XCTAssert(NavController.shared.navStack.isEmpty)
     }
     
+    @MainActor
     func test_navigateTo() {
         // MARK: navigateTo(Destination.A()) => A
 
@@ -69,6 +72,7 @@ final class NavControllerTests: XCTestCase {
         XCTAssert(navController.navStack[1] == Destination.B())
     }
     
+    @MainActor
     func test_navigateToMultipleDestination() {
         // MARK: navigateTo([A(),B(),C()]) => A > B > C
 
@@ -131,6 +135,7 @@ final class NavControllerTests: XCTestCase {
         XCTAssert(navController.navStack[4] == Destination.C(id: UUID().hashValue))
     }
     
+    @MainActor
     func test_popBackStack() {
         // MARK: popBackStack
 
@@ -150,6 +155,7 @@ final class NavControllerTests: XCTestCase {
         XCTAssert(navController.navStack[1] == Destination.B())
     }
     
+    @MainActor
     func test_popUpTo() {
         // MARK: [Empty Stack] popUpTo(Destination.A()) => No Throw
 
@@ -208,6 +214,7 @@ final class NavControllerTests: XCTestCase {
         XCTAssert(navController.navStack[2] == Destination.C(id: UUID().hashValue))
     }
     
+    @MainActor
     func test_navigateToWithPopUpTo() {
         // MARK: [Empty Stack] navigateTo(Destination.A(), popUpTo: Destination.B()) => A
 
@@ -401,6 +408,7 @@ final class NavControllerTests: XCTestCase {
         XCTAssert(navController.navStack[0] == Destination.B())
     }
     
+    @MainActor
     func test_navigateToMultipleDestinationWithPopUpTo() {
         // MARK: [Empty Stack] navigateTo([A(),B(),C()], popUpTo: Destination.B()) => A > B > C
 

@@ -2,9 +2,10 @@
 //  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-import Foundation
+import Observation
+import SwiftData
+import SwiftUI
 
-@MainActor
 @Observable
 class TodoDetailViewModel {
     var todo: Todo?
@@ -13,10 +14,10 @@ class TodoDetailViewModel {
 
     private var isPreview = false
 
-    nonisolated init(
-        repository: TodoRepository = TodoRepository()
+    init(
+        modelContainer: ModelContainer
     ) {
-        self.repository = repository
+        self.repository = TodoRepository(modelContainer: modelContainer)
     }
 
     func getTodo(id: Int) async {
@@ -25,19 +26,3 @@ class TodoDetailViewModel {
         todo = await repository.getBy(id: id)
     }
 }
-
-#if DEBUG
-
-extension TodoDetailViewModel {
-    convenience nonisolated init(forPreview: Bool) {
-        self.init()
-
-        Task { @MainActor in
-            self.isPreview = true
-            
-            self.todo = Todo(title: "Lorem", notes: "Ipsum", priority: .high)
-        }
-    }
-}
-
-#endif

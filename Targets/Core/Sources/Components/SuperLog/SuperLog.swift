@@ -5,11 +5,6 @@
 import Foundation
 import OSLog
 
-@globalActor
-actor LogActor: GlobalActor {
-    static var shared = LogActor()
-}
-
 /// Enum which maps an appropriate symbol which added as prefix for each log message
 ///
 /// - e: Log type error
@@ -35,10 +30,8 @@ private enum LogEvent: String {
 public func print(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     // Only allowing in DEBUG mode
     #if DEBUG
-        Task { @LogActor in
-            if SuperLog.isEnabled {
-                Swift.print(items, separator: separator, terminator: terminator)
-            }
+        if SuperLog.isEnabled {
+            Swift.print(items, separator: separator, terminator: terminator)
         }
     #endif
 }
@@ -48,16 +41,11 @@ public func print(_ items: Any..., separator: String = " ", terminator: String =
 /// - Note: **SuperLog** only executes `Logger` when `DEBUG` flag is `true`.
 /// - Note: For SwiftUI previews, it use `Swift.print()` instead of `Logger`.
 public enum SuperLog {
-    // Restrict object creation.
-    // private init() {}
-
     /// Enable or disable the library.
-    @LogActor
-    public static var isEnabled: Bool = true
+    public nonisolated(unsafe) static var isEnabled: Bool = true
 
-    @LogActor
-    public static var dateFormat = "yyyy-MM-dd hh:mm:ssSSS"
-    @LogActor
+    public nonisolated(unsafe) static var dateFormat = "yyyy-MM-dd hh:mm:ssSSS"
+
     public static var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
@@ -66,7 +54,6 @@ public enum SuperLog {
         return formatter
     }
 
-    @LogActor
     private static var isLoggingEnabled: Bool {
         #if DEBUG
             if isEnabled {
@@ -154,36 +141,34 @@ public enum SuperLog {
 
     /// Format parameters and print out the log.
     private static func printLog(type: LogEvent, _ object: Any, filename: String, line: Int, column: Int, funcName: String) {
-        Task { @LogActor in
-            if isLoggingEnabled {
-                let objectAsString = "\(object)"
-                let mainFileName = sourceFileName(filePath: filename)
-                let message = "\(Date().toString()) \(type.rawValue)[\(mainFileName)]:\(line):\(column) \(funcName) -> \(objectAsString)"
-                let logger = Logger(subsystem: Logger.subsystem, category: mainFileName)
+        if isLoggingEnabled {
+            let objectAsString = "\(object)"
+            let mainFileName = sourceFileName(filePath: filename)
+            let message = "\(Date().toString()) \(type.rawValue)[\(mainFileName)]:\(line):\(column) \(funcName) -> \(objectAsString)"
+            let logger = Logger(subsystem: Logger.subsystem, category: mainFileName)
 
-                switch type {
-                case .v:
-                    logger.log("\(message)")
+            switch type {
+            case .v:
+                logger.log("\(message)")
 
-                case .d:
-                    logger.debug("\(message)")
+            case .d:
+                logger.debug("\(message)")
 
-                case .i:
-                    logger.info("\(message)")
+            case .i:
+                logger.info("\(message)")
 
-                case .e:
-                    logger.error("\(message)")
+            case .e:
+                logger.error("\(message)")
 
-                case .w:
-                    logger.warning("\(message)")
+            case .w:
+                logger.warning("\(message)")
 
-                case .c:
-                    logger.critical("\(message)")
-                }
+            case .c:
+                logger.critical("\(message)")
+            }
 
-                if ProcessInfo.processInfo.isSwiftUIPreview {
-                    print(message)
-                }
+            if ProcessInfo.processInfo.isSwiftUIPreview {
+                print(message)
             }
         }
     }
@@ -206,7 +191,6 @@ private extension Logger {
 }
 
 private extension Date {
-    @LogActor
     func toString() -> String {
         return SuperLog.dateFormatter.string(from: self as Date)
     }

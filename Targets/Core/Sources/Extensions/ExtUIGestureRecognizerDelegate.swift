@@ -21,3 +21,4 @@ extension UINavigationController: UIGestureRecognizerDelegate {
         true
     }
 }
+    
