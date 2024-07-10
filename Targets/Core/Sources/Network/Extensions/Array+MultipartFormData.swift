@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 Md. Mahmudul Hasan Shohag. All rights reserved.
+//  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
 import Foundation
@@ -16,6 +16,18 @@ public extension Array where Element == MultipartFormData {
         self.append(
             MultipartFormData(
                 provider: .data(value.data(using: .utf8)!),
+                name: key
+            )
+        )
+    }
+
+    /// Append `Bool` values.
+    ///
+    /// Tested: `ArrayMultipartFormDataAppendTest`
+    mutating func append(key: String, value: Bool) {
+        self.append(
+            MultipartFormData(
+                provider: .data("\(value ? 1 : 0)".data(using: .utf8)!),
                 name: key
             )
         )
@@ -106,7 +118,7 @@ public extension Array where Element == MultipartFormData {
                     mimeType: "image/jpeg"
                 )
             } else {
-                SuperLog.v("Unknown object: \(attachment)")
+                CoolLog.v("Unknown object: \(attachment)")
             }
         }
     }
