@@ -6,10 +6,10 @@ import Foundation
 import Security
 
 final class STCertificateManager {
-    static let shared = STCertificateManager()
+    nonisolated(unsafe) static let shared = STCertificateManager()
 
     // PEM format is the base64 format of a certificate.
-    private let pemFormatPublicKeys = [
+    private let pemFormatPublicKeys: [[Int]] = [
         // Certificates Hex
         // [0x11, 0x22, 0xAA, 0xBB, ...]
     ]

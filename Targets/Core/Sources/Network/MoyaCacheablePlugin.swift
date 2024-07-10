@@ -2,7 +2,6 @@
 //  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-import CoolLog
 import Foundation
 import Moya
 
@@ -17,7 +16,7 @@ final class MoyaCacheablePlugin: PluginType {
         if let cacheableTarget = target as? MoyaCacheable {
             var mutableRequest = request
             mutableRequest.cachePolicy = cacheableTarget.cachePolicy
-            CoolLog.v("cachePolicy: \(cacheableTarget.cachePolicy)")
+            SuperLog.v("cachePolicy: \(cacheableTarget.cachePolicy)")
             return mutableRequest
         }
 

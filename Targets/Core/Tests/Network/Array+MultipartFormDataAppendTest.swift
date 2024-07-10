@@ -2,12 +2,12 @@
 //  Copyright © 2023 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-@testable import Core
+import Core
 import Foundation
 import Moya
 import XCTest
 
-class ArrayMultipartFormDataAppendTest: XCTestCase {
+final class ArrayMultipartFormDataAppendTest: XCTestCase {
     // MARK: - Value
 
     func testAppend_keyValueString_shouldAdd() {

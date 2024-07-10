@@ -118,7 +118,7 @@ public extension Array where Element == MultipartFormData {
                     mimeType: "image/jpeg"
                 )
             } else {
-                CoolLog.v("Unknown object: \(attachment)")
+                SuperLog.v("Unknown object: \(attachment)")
             }
         }
     }

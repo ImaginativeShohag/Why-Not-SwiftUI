@@ -3,7 +3,7 @@
 //
 
 public struct Env {
-    public static let shared = Env()
+    nonisolated(unsafe) public static let shared = Env()
 
     public let environment: Environment
 
@@ -30,7 +30,6 @@ public struct Env {
 
     public let defaultSession = NetworkSession.getNetworkSession(
         hostUrl: Config.HOST_URL,
-        enableServerTrustManager: true,
         httpAdditionalHeaders: [
             "Accept": "application/json"
         ]

@@ -15,12 +15,12 @@ enum NewsAPI {
 }
 
 extension NewsAPI: ApiEndpoint {
-    public var baseURL: URL { URL(string: Env.shared.baseURL)! }
+    public var baseURL: URL { URL(string: "https://raw.githubusercontent.com/ImaginativeShohag/Why-Not-SwiftUI")! }
     
     public var path: String {
         switch self {
         case .allNews:
-            return "/v1/user/validate"
+            return "/dev/raw/news_all.json"
         }
     }
     

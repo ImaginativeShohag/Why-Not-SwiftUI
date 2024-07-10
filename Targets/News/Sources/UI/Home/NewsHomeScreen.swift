@@ -5,62 +5,93 @@
 import SwiftUI
 
 struct NewsHomeScreen: View {
+    @State var viewModel = NewsHomeViewModel()
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            List {
-                Text("Featured")
-                    .font(.headline)
-                
-                ScrollView(.horizontal) {
-                    HStack(spacing: 16) {
-                        ForEach(1 ... 10, id: \.self) { _ in
-                            NewsCardItemView()
+            switch viewModel.news {
+            case .loading:
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            case let .error(message):
+                ContentUnavailableView(message, image: "newspaper")
+
+            case let .data(newsList):
+                List {
+                    Text("Featured")
+                        .font(.headline)
+
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 16) {
+                            ForEach(newsList.filter { $0.isFeatured }) { news in
+                                NewsCardItemView(
+                                    title: news.title,
+                                    details: news.details,
+                                    date: news.getPublishedAt()
+                                )
                                 .frame(width: 200)
                                 .padding(.vertical)
+                            }
                         }
+                        .padding(.horizontal, 2)
                     }
-                    .padding(.horizontal, 2)
-                }
 
-                Text("Latest")
-                    .font(.headline)
+                    Text("Latest")
+                        .font(.headline)
 
-                ForEach(1 ... 10, id: \.self) { _ in
-                    NewsItemView()
+                    ForEach(newsList) { news in
+                        NewsItemView(
+                            title: news.title,
+                            details: news.details,
+                            date: news.getPublishedAt()
+                        )
+                    }
                 }
+                .listStyle(.plain)
             }
-            .listStyle(.plain)
         }
         .background(Color(.secondarySystemBackground))
         .navigationTitle("News")
+        .task {
+            await viewModel.loadData()
+        }
     }
 }
 
 private struct NewsItemView: View {
+    let title: String
+    let details: String
+    let date: Date?
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+            Text(title)
                 .font(.headline)
 
-            Text("1 Jan 2050")
+            Text(date?.timeIntervalSinceNow() ?? "N/A")
                 .font(.caption)
 
-            Text("sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
+            Text(details)
                 .lineLimit(2)
         }
     }
 }
 
 private struct NewsCardItemView: View {
+    let title: String
+    let details: String
+    let date: Date?
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+            Text(title)
                 .font(.headline)
 
-            Text("1 Jan 2050")
+            Text(date?.timeIntervalSinceNow() ?? "N/A")
                 .font(.caption)
 
-            Text("sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
+            Text(details)
                 .lineLimit(2)
         }
         .padding()
