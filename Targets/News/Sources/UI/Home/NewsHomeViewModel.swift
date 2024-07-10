@@ -16,6 +16,8 @@ class NewsHomeViewModel {
     }
 
     func loadData() async {
+        guard case .loading = news else { return }
+
         news = .loading
 
         let result = await repository.getAllNews()
@@ -28,8 +30,29 @@ class NewsHomeViewModel {
                 news = .error(message: response.message ?? "Unknown error")
             }
 
-        case .failure(let error, let errorMessage, let statusCode):
+        case .failure(_, let errorMessage, _):
             news = .error(message: errorMessage)
         }
     }
 }
+
+#if DEBUG
+
+extension NewsHomeViewModel {
+    convenience init(forPreview: Bool) {
+        self.init()
+
+        news =
+            .data(
+                data: (1 ... 10)
+                    .map {
+                        News.mockItem(
+                            id: $0,
+                            isFeatured: $0 % 2 == 0 ? true : false
+                        )
+                    }
+            )
+    }
+}
+
+#endif

@@ -6,7 +6,7 @@
             "id": 1,
             "title": "Lorem Ipsum 1",
             "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.",
-            "thumbnail": "https://example.com/example1.jpg",
+            "thumbnail": "https://picsum.photos/id/1/300/200",
             "is_featured": true,
             "published_at": "2024-07-01T10:00:00+00:00"
         },
@@ -14,7 +14,7 @@
             "id": 2,
             "title": "Lorem Ipsum 2",
             "details": "Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor.",
-            "thumbnail": "https://example.com/example2.jpg",
+            "thumbnail": "https://picsum.photos/id/2/300/200",
             "is_featured": false,
             "published_at": "2024-07-02T11:00:00+00:00"
         },
@@ -22,7 +22,7 @@
             "id": 3,
             "title": "Lorem Ipsum 3",
             "details": "Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa.",
-            "thumbnail": "https://example.com/example3.jpg",
+            "thumbnail": "https://picsum.photos/id/3/300/200",
             "is_featured": true,
             "published_at": "2024-07-03T12:00:00+00:00"
         },
@@ -30,7 +30,7 @@
             "id": 4,
             "title": "Lorem Ipsum 4",
             "details": "Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante.",
-            "thumbnail": "https://example.com/example4.jpg",
+            "thumbnail": "https://picsum.photos/id/4/300/200",
             "is_featured": false,
             "published_at": "2024-07-04T13:00:00+00:00"
         },
@@ -38,7 +38,7 @@
             "id": 5,
             "title": "Lorem Ipsum 5",
             "details": "Curabitur at lacus ac velit ornare lobortis. Curabitur a felis in nunc fringilla tristique. Morbi mattis ullamcorper velit. Phasellus gravida semper nisi. Nullam vel sem. Nam adipiscing. Vestibulum eu odio. In ultricies feugiat ligula. Morbi ac felis. Nunc egestas, augue at pellentesque laoreet.",
-            "thumbnail": "https://example.com/example5.jpg",
+            "thumbnail": "https://picsum.photos/id/5/300/200",
             "is_featured": true,
             "published_at": "2024-07-05T14:00:00+00:00"
         },
@@ -46,7 +46,7 @@
             "id": 6,
             "title": "Lorem Ipsum 6",
             "details": "Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.",
-            "thumbnail": "https://example.com/example6.jpg",
+            "thumbnail": "https://picsum.photos/id/6/300/200",
             "is_featured": false,
             "published_at": "2024-07-06T15:00:00+00:00"
         },
@@ -54,7 +54,7 @@
             "id": 7,
             "title": "Lorem Ipsum 7",
             "details": "Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.",
-            "thumbnail": "https://example.com/example7.jpg",
+            "thumbnail": "https://picsum.photos/id/7/300/200",
             "is_featured": true,
             "published_at": "2024-07-07T16:00:00+00:00"
         },
@@ -62,7 +62,7 @@
             "id": 8,
             "title": "Lorem Ipsum 8",
             "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa.",
-            "thumbnail": "https://example.com/example8.jpg",
+            "thumbnail": "https://picsum.photos/id/8/300/200",
             "is_featured": false,
             "published_at": "2024-07-08T17:00:00+00:00"
         },
@@ -70,7 +70,7 @@
             "id": 9,
             "title": "Lorem Ipsum 9",
             "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa.",
-            "thumbnail": "https://example.com/example9.jpg",
+            "thumbnail": "https://picsum.photos/id/9/300/200",
             "is_featured": true,
             "published_at": "2024-07-09T18:00:00+00:00"
         },
@@ -78,7 +78,7 @@
             "id": 10,
             "title": "Lorem Ipsum 10",
             "details": "Curabitur at lacus ac velit ornare lobortis. Curabitur a felis in nunc fringilla tristique. Morbi mattis ullamcorper velit. Phasellus gravida semper nisi. Nullam vel sem. Nam adipiscing. Vestibulum eu odio. In ultricies feugiat ligula. Morbi ac felis. Nunc egestas.",
-            "thumbnail": "https://example.com/example10.jpg",
+            "thumbnail": "https://picsum.photos/id/10/300/200",
             "is_featured": false,
             "published_at": "2024-07-10T19:00:00+00:00"
         },
@@ -86,7 +86,7 @@
             "id": 11,
             "title": "Lorem Ipsum 11",
             "details": "Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.",
-            "thumbnail": "https://example.com/example11.jpg",
+            "thumbnail": "https://picsum.photos/id/11/300/200",
             "is_featured": true,
             "published_at": "2024-07-11T20:00:00+00:00"
         },
@@ -94,7 +94,7 @@
             "id": 12,
             "title": "Lorem Ipsum 12",
             "details": "Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.",
-            "thumbnail": "https://example.com/example12.jpg",
+            "thumbnail": "https://picsum.photos/id/12/300/200",
             "is_featured": false,
             "published_at": "2024-07-12T21:00:00+00:00"
         },
@@ -102,7 +102,7 @@
             "id": 13,
             "title": "Lorem Ipsum 13",
             "details": "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.",
-            "thumbnail": "https://example.com/example13.jpg",
+            "thumbnail": "https://picsum.photos/id/13/300/200",
             "is_featured": true,
             "published_at": "2024-07-13T22:00:00+00:00"
         },
@@ -110,7 +110,7 @@
             "id": 14,
             "title": "Lorem Ipsum 14",
             "details": "Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
-            "thumbnail": "https://example.com/example14.jpg",
+            "thumbnail": "https://picsum.photos/id/14/300/200",
             "is_featured": false,
             "published_at": "2024-07-14T23:00:00+00:00"
         },
@@ -118,7 +118,7 @@
             "id": 15,
             "title": "Lorem Ipsum 15",
             "details": "Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.",
-            "thumbnail": "https://example.com/example15.jpg",
+            "thumbnail": "https://picsum.photos/id/15/300/200",
             "is_featured": true,
             "published_at": "2024-07-15T10:00:00+00:00"
         },
@@ -126,7 +126,7 @@
             "id": 16,
             "title": "Lorem Ipsum 16",
             "details": "Sed posuere consectetur est at lobortis. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum. Nulla vitae elit libero, a pharetra augue. Curabitur blandit tempus porttitor. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
-            "thumbnail": "https://example.com/example16.jpg",
+            "thumbnail": "https://picsum.photos/id/16/300/200",
             "is_featured": false,
             "published_at": "2024-07-16T11:00:00+00:00"
         },
@@ -134,7 +134,7 @@
             "id": 17,
             "title": "Lorem Ipsum 17",
             "details": "Donec sed odio dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Nullam quis risus eget urna mollis ornare vel eu leo. Sed posuere consectetur est at lobortis.",
-            "thumbnail": "https://example.com/example17.jpg",
+            "thumbnail": "https://picsum.photos/id/17/300/200",
             "is_featured": true,
             "published_at": "2024-07-17T12:00:00+00:00"
         },
@@ -142,7 +142,7 @@
             "id": 18,
             "title": "Lorem Ipsum 18",
             "details": "Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Maecenas faucibus mollis interdum. Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-            "thumbnail": "https://example.com/example18.jpg",
+            "thumbnail": "https://picsum.photos/id/18/300/200",
             "is_featured": false,
             "published_at": "2024-07-18T13:00:00+00:00"
         },
@@ -150,7 +150,7 @@
             "id": 19,
             "title": "Lorem Ipsum 19",
             "details": "Curabitur at lacus ac velit ornare lobortis. Curabitur a felis in nunc fringilla tristique. Morbi mattis ullamcorper velit. Phasellus gravida semper nisi. Nullam vel sem. Nam adipiscing. Vestibulum eu odio. In ultricies feugiat ligula. Morbi ac felis. Nunc egestas.",
-            "thumbnail": "https://example.com/example19.jpg",
+            "thumbnail": "https://picsum.photos/id/19/300/200",
             "is_featured": true,
             "published_at": "2024-07-19T14:00:00+00:00"
         },
@@ -158,7 +158,7 @@
             "id": 20,
             "title": "Lorem Ipsum 20",
             "details": "Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.",
-            "thumbnail": "https://example.com/example20.jpg",
+            "thumbnail": "https://picsum.photos/id/20/300/200",
             "is_featured": false,
             "published_at": "2024-07-20T15:00:00+00:00"
         }

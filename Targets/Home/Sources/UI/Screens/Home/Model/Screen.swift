@@ -3,6 +3,7 @@
 //
 
 import Core
+import News
 import SwiftUI
 import Todo
 
@@ -79,6 +80,10 @@ struct Screen: Identifiable, Sendable {
         Screen(
             name: "Todo App",
             destination: Destination.TodoHome()
+        ),
+        Screen(
+            name: "News App",
+            destination: Destination.NewsHome()
         ),
     ].sorted(by: \.name)
 }
