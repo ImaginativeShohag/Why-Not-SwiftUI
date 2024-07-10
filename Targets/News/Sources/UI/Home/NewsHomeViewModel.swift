@@ -15,8 +15,8 @@ class NewsHomeViewModel {
         self.repository = repository
     }
 
-    func loadData() async {
-        guard case .loading = news else { return }
+    func loadData(forced: Bool = false) async {
+        guard news.isLoading || forced else { return }
 
         news = .loading
 

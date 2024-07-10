@@ -98,6 +98,11 @@ struct NewsHomeScreen: View {
                 }
             }
         }
+        .refreshable {
+            if !viewModel.news.isLoading {
+                await viewModel.loadData(forced: true)
+            }
+        }
         .task {
             await viewModel.loadData()
         }
