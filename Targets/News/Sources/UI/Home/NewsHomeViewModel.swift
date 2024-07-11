@@ -9,6 +9,8 @@ import Foundation
 class NewsHomeViewModel {
     var news: UIState<[News]> = .loading
 
+    private var isPreview: Bool = false
+
     private let repository: NewsRepository
 
     init(repository: NewsRepository = NewsRepository()) {
@@ -16,7 +18,7 @@ class NewsHomeViewModel {
     }
 
     func loadData(forced: Bool = false) async {
-        guard news.isLoading || forced else { return }
+        guard !isPreview, news.isLoading || forced else { return }
 
         news = .loading
 
@@ -39,19 +41,33 @@ class NewsHomeViewModel {
 #if DEBUG
 
 extension NewsHomeViewModel {
-    convenience init(forPreview: Bool) {
+    convenience init(
+        forPreview: Bool,
+        isLoading: Bool = false,
+        isError: Bool = false,
+        showFeatured: Bool = true
+    ) {
         self.init()
 
-        news =
-            .data(
-                data: (1 ... 10)
-                    .map {
-                        News.mockItem(
-                            id: $0,
-                            isFeatured: $0 % 2 == 0 ? true : false
-                        )
-                    }
-            )
+        isPreview = true
+
+        if isLoading {
+            news = .loading
+        } else if isError {
+            news = .error(message: "Something went wrong!")
+        } else {
+            let newsList: [News]
+
+            if showFeatured {
+                newsList = (1 ... 20)
+                    .map { News.mockItem(id: $0, isFeatured: $0 % 2 == 0 ? true : false) }
+            } else {
+                newsList = (1 ... 20)
+                    .map { News.mockItem(id: $0, isFeatured: false) }
+            }
+
+            news = .data(data: newsList)
+        }
     }
 }
 

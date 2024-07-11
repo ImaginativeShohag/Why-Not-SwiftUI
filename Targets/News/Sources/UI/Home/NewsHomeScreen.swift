@@ -45,41 +45,49 @@ struct NewsHomeScreen: View {
                 case .loading:
                     ProgressView()
                         .accessibilityIdentifier("loading_container")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(
+                            maxWidth: .infinity,
+                            maxHeight: .infinity,
+                            alignment: .center
+                        )
 
                 case let .error(message):
-                    ContentUnavailableView(message, image: "newspaper")
+                    ContentUnavailableView(message, systemImage: "exclamationmark.triangle")
                         .accessibilityIdentifier("error_container")
 
                 case let .data(newsList):
                     LazyVStack(alignment: .leading, spacing: 16) {
-                        Text("Top Stories")
-                            .accessibilityIdentifier("headline_featured")
-                            .font(.system(.title, weight: .heavy))
-                            .foregroundStyle(.red)
-                            .padding(.horizontal)
+                        let featuredNews = newsList.filter { $0.isFeatured }
 
-                        ScrollView(.horizontal) {
-                            HStack(spacing: 16) {
-                                ForEach(newsList.filter { $0.isFeatured }) { news in
-                                    NavigationLink(
-                                        destination: Destination.NewsDetails(news: news)
-                                    ) {
-                                        NewsCardItemView(
-                                            title: news.title,
-                                            details: news.details,
-                                            date: news.getPublishedAt(),
-                                            thumbnail: news.thumbnail
-                                        )
+                        if !featuredNews.isEmpty {
+                            Text("Top Stories")
+                                .accessibilityIdentifier("headline_featured")
+                                .font(.system(.title, weight: .heavy))
+                                .foregroundStyle(.red)
+                                .padding(.horizontal)
+
+                            ScrollView(.horizontal) {
+                                HStack(spacing: 16) {
+                                    ForEach(featuredNews) { news in
+                                        NavigationLink(
+                                            destination: Destination.NewsDetails(news: news)
+                                        ) {
+                                            NewsCardItemView(
+                                                title: news.title,
+                                                details: news.details,
+                                                date: news.getPublishedAt(),
+                                                thumbnail: news.thumbnail
+                                            )
+                                        }
+                                        .accessibilityIdentifier("featured_news_item_\(news.id)")
                                     }
-                                    .accessibilityIdentifier("featured_news_item_\(news.id)")
                                 }
+                                .padding(.horizontal)
                             }
-                            .padding(.horizontal)
+                            .accessibilityIdentifier("featured")
+                            .scrollClipDisabled()
+                            .scrollIndicators(.hidden)
                         }
-                        .accessibilityIdentifier("featured")
-                        .scrollClipDisabled()
-                        .scrollIndicators(.hidden)
 
                         Text("Latest")
                             .accessibilityIdentifier("headline_latest")
@@ -178,13 +186,35 @@ private struct NewsCardItemView: View {
 
 #if DEBUG
 
-struct NewsHomeScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            NewsHomeScreen(
-                viewModel: NewsHomeViewModel(forPreview: true)
-            )
-        }
+#Preview("Loading") {
+    NavigationStack {
+        NewsHomeScreen(
+            viewModel: NewsHomeViewModel(forPreview: true, isLoading: true)
+        )
+    }
+}
+
+#Preview("Success") {
+    NavigationStack {
+        NewsHomeScreen(
+            viewModel: NewsHomeViewModel(forPreview: true)
+        )
+    }
+}
+
+#Preview("Success (without featured)") {
+    NavigationStack {
+        NewsHomeScreen(
+            viewModel: NewsHomeViewModel(forPreview: true, showFeatured: false)
+        )
+    }
+}
+
+#Preview("Error") {
+    NavigationStack {
+        NewsHomeScreen(
+            viewModel: NewsHomeViewModel(forPreview: true, isError: true)
+        )
     }
 }
 
