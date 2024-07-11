@@ -9,3 +9,25 @@ struct AllNewsResponse: Codable {
     let message: String?
     let news: [News]?
 }
+
+#if DEBUG
+
+extension AllNewsResponse {
+    static func mockSuccessItem() -> AllNewsResponse {
+        AllNewsResponse(
+            success: true,
+            message: "success",
+            news: (1 ... 10).map { News.mockItem(id: $0) }
+        )
+    }
+
+    static func mockErrorItem() -> AllNewsResponse {
+        AllNewsResponse(
+            success: false,
+            message: "Server error.",
+            news: nil
+        )
+    }
+}
+
+#endif

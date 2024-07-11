@@ -32,6 +32,7 @@ struct NewsHomeScreen: View {
                 Group {
                     Text("🥭 News")
                     Text(Date().toString(dateFormat: "MMMM d") ?? "N/A")
+                        .accessibilityIdentifier("headline_date")
                         .foregroundStyle(.gray)
                 }
                 .font(.system(.title, weight: .heavy))
@@ -43,14 +44,17 @@ struct NewsHomeScreen: View {
                 switch viewModel.news {
                 case .loading:
                     ProgressView()
+                        .accessibilityIdentifier("loading_container")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                 case let .error(message):
                     ContentUnavailableView(message, image: "newspaper")
+                        .accessibilityIdentifier("error_container")
 
                 case let .data(newsList):
                     LazyVStack(alignment: .leading, spacing: 16) {
                         Text("Top Stories")
+                            .accessibilityIdentifier("headline_featured")
                             .font(.system(.title, weight: .heavy))
                             .foregroundStyle(.red)
                             .padding(.horizontal)
@@ -67,15 +71,18 @@ struct NewsHomeScreen: View {
                                             date: news.getPublishedAt(),
                                             thumbnail: news.thumbnail
                                         )
+                                        .accessibilityIdentifier("featured_news_item_\(news.id)")
                                     }
                                 }
                             }
                             .padding(.horizontal)
                         }
+                        .accessibilityIdentifier("featured")
                         .scrollClipDisabled()
                         .scrollIndicators(.hidden)
 
                         Text("Latest")
+                            .accessibilityIdentifier("headline_latest")
                             .font(.system(.title, weight: .black))
                             .padding(.horizontal)
 
@@ -89,6 +96,7 @@ struct NewsHomeScreen: View {
                                     date: news.getPublishedAt(),
                                     thumbnail: news.thumbnail
                                 )
+                                .accessibilityIdentifier("news_item_\(news.id)")
                             }
                         }
                         .padding(.horizontal)
@@ -165,6 +173,8 @@ private struct NewsCardItemView: View {
     }
 }
 
+#if DEBUG
+
 struct NewsHomeScreen_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
@@ -174,3 +184,5 @@ struct NewsHomeScreen_Previews: PreviewProvider {
         }
     }
 }
+
+#endif

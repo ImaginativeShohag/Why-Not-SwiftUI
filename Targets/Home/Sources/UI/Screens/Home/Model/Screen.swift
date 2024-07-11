@@ -82,7 +82,7 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.TodoHome()
         ),
         Screen(
-            name: "News App",
+            name: "🥭 News App",
             destination: Destination.NewsHome()
         ),
     ].sorted(by: \.name)

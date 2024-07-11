@@ -46,19 +46,44 @@ extension NewsAPI: ApiEndpoint {
     }
     
     public var stubResponseType: StubResponseType {
+        if CommandLine.arguments.contains(uiTestArgResponseSuccess) {
+            return .success
+        } else if CommandLine.arguments.contains(uiTestArgResponseFailure) {
+            return .failure
+        } else if CommandLine.arguments.contains(uiTestArgResponseError) {
+            return .error
+        }
+        
         return .disabled
     }
     
     public var stubStatusCode: Int {
-        return 200
+        switch stubResponseType {
+        case .failure:
+            return 500
+            
+        default:
+            return 200
+        }
     }
     
     public var stubData: Data? {
+        #if DEBUG
         switch self {
         case .allNews:
-            return #"""
-            {"success":true,"message":"Request processed successfully","token":"lorem-ipsum"}
-            """#.data(using: .utf8)
+            switch stubResponseType {
+            case .failure:
+                return nil
+                
+            case .error:
+                return AllNewsResponse.mockErrorItem().toData()
+                
+            default:
+                return AllNewsResponse.mockSuccessItem().toData()
+            }
         }
+        #else
+        return nil
+        #endif
     }
 }

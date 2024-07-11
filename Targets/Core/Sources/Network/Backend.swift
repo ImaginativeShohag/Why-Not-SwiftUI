@@ -18,7 +18,7 @@ import Moya
 public class Backend<API>: MoyaProvider<API> where API: ApiEndpoint {
     public init(
         isStubbed: Bool = false,
-        stubBehavior: StubBehavior = .delayed(seconds: 1),
+        stubBehavior: StubBehavior = .immediate,
         session: Session
     ) {
         var plugins: [PluginType] = [
