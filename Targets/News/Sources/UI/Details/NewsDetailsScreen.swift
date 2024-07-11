@@ -34,17 +34,21 @@ struct NewsDetailsScreen: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
                 NewsThumbnail(url: news.thumbnail)
+                    .accessibilityIdentifier("thumbnail")
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .padding(.bottom)
 
                 Text(news.title)
+                    .accessibilityIdentifier("title")
                     .font(.system(.title, weight: .heavy))
 
                 Text(news.getPublishedAt()?.timeIntervalSinceNow() ?? "N/A")
+                    .accessibilityIdentifier("published_date")
                     .font(.callout)
                     .foregroundStyle(.gray)
 
                 Text(news.details)
+                    .accessibilityIdentifier("details")
 
                 Spacer()
             }

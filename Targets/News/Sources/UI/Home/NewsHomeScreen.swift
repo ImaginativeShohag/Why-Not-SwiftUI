@@ -71,8 +71,8 @@ struct NewsHomeScreen: View {
                                             date: news.getPublishedAt(),
                                             thumbnail: news.thumbnail
                                         )
-                                        .accessibilityIdentifier("featured_news_item_\(news.id)")
                                     }
+                                    .accessibilityIdentifier("featured_news_item_\(news.id)")
                                 }
                             }
                             .padding(.horizontal)
@@ -96,8 +96,8 @@ struct NewsHomeScreen: View {
                                     date: news.getPublishedAt(),
                                     thumbnail: news.thumbnail
                                 )
-                                .accessibilityIdentifier("news_item_\(news.id)")
                             }
+                            .accessibilityIdentifier("news_item_\(news.id)")
                         }
                         .padding(.horizontal)
                     }
@@ -127,12 +127,15 @@ private struct NewsItemView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             NewsThumbnail(url: thumbnail)
+                .accessibilityIdentifier("thumbnail")
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(title)
+                    .accessibilityIdentifier("title")
                     .font(.system(.headline, weight: .heavy))
 
                 Text(date?.timeIntervalSinceNow() ?? "N/A")
+                    .accessibilityIdentifier("published_date")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

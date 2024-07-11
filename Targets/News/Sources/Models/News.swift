@@ -29,10 +29,10 @@ extension News {
     static func mockItem(id: Int = 1, isFeatured: Bool = true) -> News {
         News(
             id: id,
-            title: "Lorem Ipsum",
+            title: "Lorem Ipsum \(id)",
             details: "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
             thumbnail: "https://picsum.photos/id/\(id)/300/200",
-            isFeatured: true,
+            isFeatured: isFeatured,
             publishedAt: "2024-07-01T10:00:00+00:00"
         )
     }

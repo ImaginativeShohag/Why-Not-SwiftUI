@@ -15,7 +15,8 @@ class NewsHomeUITests: XCTestCase {
     }
 
     func test_headlineDate_shouldBeCurrentDate() {
-        app.runApp()
+        app.launchApp()
+        runAppAndGoToModule()
 
         let headlineDate = app.staticTexts["headline_date"]
         XCTAssertTrue(headlineDate.waitForExistence(timeout: 5))
@@ -24,7 +25,8 @@ class NewsHomeUITests: XCTestCase {
     }
 
     func test_whenSuccess_shouldShowNews() async throws {
-        app.runApp(for: .success)
+        app.launchApp(for: .success)
+        runAppAndGoToModule()
 
         // Test: Featured News
         let featuredTitle = app.staticTexts["headline_featured"]
@@ -32,18 +34,19 @@ class NewsHomeUITests: XCTestCase {
 
         let featuredScrollView = app.scrollViews["featured"]
         XCTAssertTrue(
-            featuredScrollView.staticTexts["featured_news_item_1"].exists
+            featuredScrollView.buttons["featured_news_item_2"].exists
         )
 
         // Test: Latest News
         let latestTitle = app.staticTexts["headline_latest"]
         XCTAssertTrue(latestTitle.waitForExistence(timeout: 5))
 
-        XCTAssertTrue(app.staticTexts["news_item_1"].exists)
+        XCTAssertTrue(app.buttons["news_item_1"].exists)
     }
 
     func test_whenError_shouldShowError() async throws {
-        app.runApp(for: .error)
+        app.launchApp(for: .error)
+        runAppAndGoToModule()
 
         let errorContainer = app.staticTexts["error_container"]
         XCTAssertTrue(errorContainer.waitForExistence(timeout: 5))
@@ -52,40 +55,20 @@ class NewsHomeUITests: XCTestCase {
     }
 
     func test_whenFailure_shouldShowError() async throws {
-        app.runApp(for: .failure)
+        app.launchApp(for: .failure)
+        runAppAndGoToModule()
 
         let errorContainer = app.staticTexts["error_container"]
         XCTAssertTrue(errorContainer.waitForExistence(timeout: 5))
 
         XCTAssertTrue(errorContainer.label.contains("500"))
     }
-}
 
-extension XCUIApplication {
-    func runApp(for responseType: StubResponseType = .success) {
-        // Add UI test argument
-        launchArguments += [uiTestArgEnable]
-
-        // Add response type argument
-        switch responseType {
-        case .failure:
-            launchArguments += [uiTestArgResponseFailure]
-
-        case .error:
-            launchArguments += [uiTestArgResponseError]
-
-        default:
-            launchArguments += [uiTestArgResponseSuccess]
-        }
-
-        // Launch the app
-        launch()
-
-        // Go to the target module
-        let newsAppBtn = staticTexts["🥭 News App"]
+    func runAppAndGoToModule() {
+        let newsAppBtn = app.staticTexts["🥭 News App"]
 
         while !newsAppBtn.exists {
-            swipeUp()
+            app.swipeUp()
         }
 
         newsAppBtn.tap()

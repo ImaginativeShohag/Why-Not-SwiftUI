@@ -17,7 +17,12 @@ extension AllNewsResponse {
         AllNewsResponse(
             success: true,
             message: "success",
-            news: (1 ... 10).map { News.mockItem(id: $0) }
+            news: (1 ... 20).map {
+                News.mockItem(
+                    id: $0,
+                    isFeatured: $0 % 2 == 0 ? true : false
+                )
+            }
         )
     }
 
