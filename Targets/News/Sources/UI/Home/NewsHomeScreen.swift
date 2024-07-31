@@ -161,6 +161,7 @@ struct NewsHomeScreen: View {
                 Spacer()
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
         .refreshable {
             if !viewModel.news.isLoading {
                 await viewModel.loadData(forced: true)
