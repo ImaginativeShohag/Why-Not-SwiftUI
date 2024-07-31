@@ -56,6 +56,7 @@ struct NewsHomeScreen: View {
                 case let .error(message):
                     ContentUnavailableView(label: {
                         Label(message, systemImage: "exclamationmark.triangle")
+                            .accessibilityIdentifier("error_container")
                     }, description: {
                         Text("Cannot load news from server.")
                     }, actions: {
@@ -67,7 +68,6 @@ struct NewsHomeScreen: View {
                             Text("Retry")
                         }
                     })
-                    .accessibilityIdentifier("error_container")
 
                 case let .data(newsList):
                     if newsList.isEmpty {
@@ -194,6 +194,7 @@ struct NewsTypesSectionView: View {
                     } label: {
                         Text("Retry")
                     }
+                    .buttonStyle(.bordered)
                 }
 
             case let .data(types):
@@ -305,6 +306,14 @@ private struct NewsCardItemView: View {
     NavigationStack {
         NewsHomeScreen(
             viewModel: NewsHomeViewModel(forPreview: true, showFeatured: false)
+        )
+    }
+}
+
+#Preview("Success (with news type error)") {
+    NavigationStack {
+        NewsHomeScreen(
+            viewModel: NewsHomeViewModel(forPreview: true, isNewsTypeError: true)
         )
     }
 }

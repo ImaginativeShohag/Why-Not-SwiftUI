@@ -67,7 +67,8 @@ extension NewsHomeViewModel {
         isLoading: Bool = false,
         isError: Bool = false,
         showFeatured: Bool = true,
-        hasNews: Bool = true
+        hasNews: Bool = true,
+        isNewsTypeError: Bool = false
     ) {
         self.init()
 
@@ -91,11 +92,16 @@ extension NewsHomeViewModel {
             }
 
             news = .data(data: newsList)
-            types = .data(data: (1 ... 20).map {
-                NewsType.mockItem(
-                    id: $0
-                )
-            })
+
+            if isNewsTypeError {
+                types = .error(message: "Something went wrong!")
+            } else {
+                types = .data(data: (1 ... 20).map {
+                    NewsType.mockItem(
+                        id: $0
+                    )
+                })
+            }
         }
     }
 }

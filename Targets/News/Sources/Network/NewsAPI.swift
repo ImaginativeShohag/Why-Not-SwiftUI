@@ -51,7 +51,7 @@ extension NewsAPI: ApiEndpoint {
     }
     
     public var stubStatusCode: Int {
-        if let response = ProcessInfo.processInfo.environment[uiTestEnvironmentKeyResponseCode],
+        if let response = ProcessInfo.processInfo.environment["\(uiTestEnvKeyResponseStatusCode)-\(self)"],
            let targetStatusCode = Int(response)
         {
             return targetStatusCode

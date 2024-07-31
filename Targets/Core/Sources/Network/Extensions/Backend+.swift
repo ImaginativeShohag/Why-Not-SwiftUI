@@ -27,6 +27,6 @@ public let uiTestArgResponseFailure = "ui-testing-response-failure"
 public let uiTestArgResponseError = "ui-testing-response-error"
 
 public let uiTestEnvironmentKeyResponse = "ui-testing-response"
-public let uiTestEnvironmentKeyResponseCode = "ui-testing-response-code"
+public let uiTestEnvKeyResponseStatusCode = "ui-testing-response-code"
 
 let isUITestEnvironment = CommandLine.arguments.contains(uiTestArgEnable)
