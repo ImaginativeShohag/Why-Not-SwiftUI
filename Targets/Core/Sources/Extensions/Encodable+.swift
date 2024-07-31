@@ -5,7 +5,7 @@
 import Foundation
 
 public extension Encodable {
-    /// Converts the conforming Encodable object to Data.
+    /// Converts the conforming `Encodable` object to `Data`.
     ///
     /// - Returns: The JSON-encoded `Data` representation of the object, or `nil` if encoding fails.
     func toData() -> Data? {
@@ -19,6 +19,9 @@ public extension Encodable {
         }
     }
 
+    /// Convert the `Encodable` object to JSON `String`.
+    ///
+    /// - Returns: The JSON `String`, or `nil` if fails to convert.
     func toJsonString() -> String? {
         if let data = toData(), let jsonStr = String(data: data, encoding: .utf8) {
             return jsonStr
