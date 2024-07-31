@@ -2,7 +2,6 @@
 //  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-import Core
 import XCTest
 
 extension XCUIApplication {

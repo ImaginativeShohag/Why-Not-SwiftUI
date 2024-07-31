@@ -2,7 +2,7 @@
 //  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-import Core
+@testable import Core
 @testable import News
 import XCTest
 
