@@ -4,24 +4,26 @@
 
 import Core
 import XCTest
+@testable import News
+
+struct MockResponse {
+    let route: ApiEndpoint
+    let statusCode: Int
+    let response: Encodable
+}
 
 extension XCUIApplication {
-    func launchApp(for responseType: StubResponseType = .success) {
-        // Add UI test argument
+    /// [`statusCode`: `response`]
+    func launchApp(with responses: [MockResponse] = []) {
+        // Add UI test flag argument
         launchArguments += [uiTestArgEnable]
 
-        // Add response type argument
-        switch responseType {
-        case .failure:
-            launchArguments += [uiTestArgResponseFailure]
-
-        case .error:
-            launchArguments += [uiTestArgResponseError]
-
-        default:
-            launchArguments += [uiTestArgResponseSuccess]
+        // Target response list
+        for response in responses {
+            launchEnvironment["\(response.route)"] = response.response.toJsonString()
+            launchEnvironment[uiTestEnvironmentKeyResponseCode] = "\(response.statusCode)"
         }
-
+        
         // Launch the app
         launch()
     }

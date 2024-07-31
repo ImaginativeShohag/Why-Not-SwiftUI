@@ -18,4 +18,11 @@ public extension Encodable {
             return nil
         }
     }
+
+    func toJsonString() -> String? {
+        if let data = toData(), let jsonStr = String(data: data, encoding: .utf8) {
+            return jsonStr
+        }
+        return nil
+    }
 }

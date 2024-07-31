@@ -8,6 +8,7 @@ import Foundation
 @Observable
 class NewsHomeViewModel {
     var news: UIState<[News]> = .loading
+    var types: UIState<[NewsType]> = .loading
 
     private var isPreview: Bool = false
 
@@ -36,6 +37,26 @@ class NewsHomeViewModel {
             news = .error(message: errorMessage)
         }
     }
+
+    func loadTypes() async {
+        guard !isPreview else { return }
+
+        types = .loading
+
+        let result = await repository.getNewsTypes()
+
+        switch result {
+        case .success(let response):
+            if response.success == true, let newsList = response.data {
+                types = .data(data: newsList)
+            } else {
+                types = .error(message: response.message ?? "Unknown error")
+            }
+
+        case .failure(_, let errorMessage, _):
+            types = .error(message: errorMessage)
+        }
+    }
 }
 
 #if DEBUG
@@ -45,7 +66,8 @@ extension NewsHomeViewModel {
         forPreview: Bool,
         isLoading: Bool = false,
         isError: Bool = false,
-        showFeatured: Bool = true
+        showFeatured: Bool = true,
+        hasNews: Bool = true
     ) {
         self.init()
 
@@ -55,6 +77,8 @@ extension NewsHomeViewModel {
             news = .loading
         } else if isError {
             news = .error(message: "Something went wrong!")
+        } else if !hasNews {
+            news = .data(data: [])
         } else {
             let newsList: [News]
 
@@ -67,6 +91,11 @@ extension NewsHomeViewModel {
             }
 
             news = .data(data: newsList)
+            types = .data(data: (1 ... 20).map {
+                NewsType.mockItem(
+                    id: $0
+                )
+            })
         }
     }
 }

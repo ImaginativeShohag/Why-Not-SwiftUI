@@ -12,4 +12,11 @@ class NewsRepository {
             on: .allNews
         )
     }
+
+    func getNewsTypes() async -> ApiResult<NewsTypesResponse> {
+        return await DataSource.News.request(
+            NewsTypesResponse.self,
+            on: .newsTypes
+        )
+    }
 }

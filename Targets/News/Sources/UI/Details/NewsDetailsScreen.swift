@@ -59,6 +59,8 @@ struct NewsDetailsScreen: View {
     }
 }
 
+#if DEBUG
+
 struct NewsDetailsScreen_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
@@ -68,3 +70,5 @@ struct NewsDetailsScreen_Previews: PreviewProvider {
         }
     }
 }
+
+#endif

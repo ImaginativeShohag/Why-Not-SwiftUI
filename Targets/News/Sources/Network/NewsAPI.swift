@@ -10,8 +10,9 @@ extension DataSource {
     static let News = Backend<NewsAPI>()
 }
 
-enum NewsAPI {
+enum NewsAPI: CaseIterable {
     case allNews
+    case newsTypes
 }
 
 extension NewsAPI: ApiEndpoint {
@@ -21,6 +22,9 @@ extension NewsAPI: ApiEndpoint {
         switch self {
         case .allNews:
             return "/dev/raw/news_all.json"
+            
+        case .newsTypes:
+            return "/dev/raw/news_types.json"
         }
     }
     
@@ -39,51 +43,30 @@ extension NewsAPI: ApiEndpoint {
     }
     
     public var headers: [String: String]? {
-        switch self {
-        case .allNews:
-            return [:]
-        }
+        return [:]
     }
     
     public var stubResponseType: StubResponseType {
-        if CommandLine.arguments.contains(uiTestArgResponseSuccess) {
-            return .success
-        } else if CommandLine.arguments.contains(uiTestArgResponseFailure) {
-            return .failure
-        } else if CommandLine.arguments.contains(uiTestArgResponseError) {
-            return .error
-        }
-        
         return .disabled
     }
     
     public var stubStatusCode: Int {
-        switch stubResponseType {
-        case .failure:
-            return 500
-            
-        default:
-            return 200
+        if let response = ProcessInfo.processInfo.environment[uiTestEnvironmentKeyResponseCode],
+           let targetStatusCode = Int(response)
+        {
+            return targetStatusCode
         }
+        
+        return 200
     }
     
     public var stubData: Data? {
-        #if DEBUG
-        switch self {
-        case .allNews:
-            switch stubResponseType {
-            case .failure:
-                return nil
-                
-            case .error:
-                return AllNewsResponse.mockErrorItem().toData()
-                
-            default:
-                return AllNewsResponse.mockSuccessItem().toData()
-            }
+        if let response = ProcessInfo.processInfo.environment["\(self)"],
+           let jsonData = response.data(using: .utf8)
+        {
+            return jsonData
         }
-        #else
+        
         return nil
-        #endif
     }
 }

@@ -25,6 +25,15 @@ public extension Color {
         return Color.clear
         #endif
     }
+    
+    static var randomSystemColor: Color {
+        let systemColors: [Color] = [
+            .red, .blue, .pink, .teal,
+            .green, .indigo, .orange, .purple,
+            .yellow, .gray
+        ]
+        return systemColors.randomElement() ?? .blue
+    }
 }
 
 public extension Color {

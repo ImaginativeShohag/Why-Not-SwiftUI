@@ -51,77 +51,176 @@ struct NewsHomeScreen: View {
                             alignment: .center
                         )
 
+                    Spacer()
+
                 case let .error(message):
-                    ContentUnavailableView(message, systemImage: "exclamationmark.triangle")
-                        .accessibilityIdentifier("error_container")
+                    ContentUnavailableView(label: {
+                        Label(message, systemImage: "exclamationmark.triangle")
+                    }, description: {
+                        Text("Cannot load news from server.")
+                    }, actions: {
+                        Button(action: {
+                            Task {
+                                await viewModel.loadData(forced: true)
+                            }
+                        }) {
+                            Text("Retry")
+                        }
+                    })
+                    .accessibilityIdentifier("error_container")
 
                 case let .data(newsList):
-                    LazyVStack(alignment: .leading, spacing: 16) {
-                        let featuredNews = newsList.filter { $0.isFeatured }
-
-                        if !featuredNews.isEmpty {
-                            Text("Top Stories")
-                                .accessibilityIdentifier("headline_featured")
-                                .font(.system(.title, weight: .heavy))
-                                .foregroundStyle(.red)
-                                .padding(.horizontal)
-
-                            ScrollView(.horizontal) {
-                                HStack(spacing: 16) {
-                                    ForEach(featuredNews) { news in
-                                        NavigationLink(
-                                            destination: Destination.NewsDetails(news: news)
-                                        ) {
-                                            NewsCardItemView(
-                                                title: news.title,
-                                                details: news.details,
-                                                date: news.getPublishedAt(),
-                                                thumbnail: news.thumbnail
-                                            )
-                                        }
-                                        .accessibilityIdentifier("featured_news_item_\(news.id)")
-                                    }
+                    if newsList.isEmpty {
+                        ContentUnavailableView(label: {
+                            Label(
+                                "No news yet!",
+                                systemImage: "newspaper"
+                            )
+                        }, description: {
+                            Text("No news found on the server.")
+                        }, actions: {
+                            Button(action: {
+                                Task {
+                                    await viewModel.loadData(forced: true)
                                 }
+                            }) {
+                                Text("Refresh")
+                            }
+                        })
+                        .accessibilityIdentifier("empty_container")
+                    } else {
+                        LazyVStack(alignment: .leading, spacing: 16) {
+                            let featuredNews = newsList.filter { $0.isFeatured }
+
+                            if !featuredNews.isEmpty {
+                                Text("Top Stories")
+                                    .accessibilityIdentifier("headline_featured")
+                                    .font(.system(.title, weight: .heavy))
+                                    .foregroundStyle(.red)
+                                    .padding(.horizontal)
+
+                                ScrollView(.horizontal) {
+                                    HStack(spacing: 16) {
+                                        ForEach(featuredNews) { news in
+                                            NavigationLink(
+                                                destination: Destination.NewsDetails(news: news)
+                                            ) {
+                                                NewsCardItemView(
+                                                    title: news.title,
+                                                    details: news.details,
+                                                    date: news.getPublishedAt(),
+                                                    thumbnail: news.thumbnail
+                                                )
+                                            }
+                                            .accessibilityIdentifier("featured_news_item_\(news.id)")
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
+                                .accessibilityIdentifier("featured")
+                                .scrollClipDisabled()
+                                .scrollIndicators(.hidden)
+                            }
+
+                            NewsTypesSectionView(
+                                types: viewModel.types,
+                                onRetryClick: {
+                                    Task {
+                                        await viewModel.loadTypes()
+                                    }
+                                },
+                                onClick: { _ in
+                                    //
+                                }
+                            )
+
+                            Text("Latest")
+                                .accessibilityIdentifier("headline_latest")
+                                .font(.system(.title, weight: .black))
                                 .padding(.horizontal)
-                            }
-                            .accessibilityIdentifier("featured")
-                            .scrollClipDisabled()
-                            .scrollIndicators(.hidden)
-                        }
 
-                        Text("Latest")
-                            .accessibilityIdentifier("headline_latest")
-                            .font(.system(.title, weight: .black))
+                            ForEach(newsList) { news in
+                                NavigationLink(
+                                    destination: Destination.NewsDetails(news: news)
+                                ) {
+                                    NewsItemView(
+                                        title: news.title,
+                                        details: news.details,
+                                        date: news.getPublishedAt(),
+                                        thumbnail: news.thumbnail
+                                    )
+                                }
+                                .accessibilityIdentifier("news_item_\(news.id)")
+                            }
                             .padding(.horizontal)
-
-                        ForEach(newsList) { news in
-                            NavigationLink(
-                                destination: Destination.NewsDetails(news: news)
-                            ) {
-                                NewsItemView(
-                                    title: news.title,
-                                    details: news.details,
-                                    date: news.getPublishedAt(),
-                                    thumbnail: news.thumbnail
-                                )
-                            }
-                            .accessibilityIdentifier("news_item_\(news.id)")
                         }
-                        .padding(.horizontal)
+                        .buttonStyle(.plain)
                     }
-
-                    .buttonStyle(.plain)
                 }
+
+                Spacer()
             }
         }
         .refreshable {
             if !viewModel.news.isLoading {
                 await viewModel.loadData(forced: true)
+                await viewModel.loadTypes()
             }
         }
         .task {
             await viewModel.loadData()
+            await viewModel.loadTypes()
         }
+    }
+}
+
+struct NewsTypesSectionView: View {
+    let types: UIState<[NewsType]>
+    let onRetryClick: () -> Void
+    let onClick: (NewsType) -> Void
+
+    var body: some View {
+        HStack(alignment: .center) {
+            switch types {
+            case .loading:
+                ProgressView()
+
+            case let .error(message):
+                VStack {
+                    Text(message)
+
+                    Button {
+                        onRetryClick()
+                    } label: {
+                        Text("Retry")
+                    }
+                }
+
+            case let .data(types):
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 16) {
+                        ForEach(types, id: \.id) { type in
+                            Button {
+                                onClick(type)
+                            } label: {
+                                Text(type.name)
+                                    .padding(.vertical, 8)
+                                    .padding(.horizontal, 16)
+                                    .background(Color.systemGroupedBackground)
+                                    .cornerRadius(20)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(Color.randomSystemColor, lineWidth: 4)
+                                    )
+                            }
+                        }
+                    }
+                    .padding(.vertical)
+                    .padding(.horizontal)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 
@@ -206,6 +305,14 @@ private struct NewsCardItemView: View {
     NavigationStack {
         NewsHomeScreen(
             viewModel: NewsHomeViewModel(forPreview: true, showFeatured: false)
+        )
+    }
+}
+
+#Preview("Success (No News)") {
+    NavigationStack {
+        NewsHomeScreen(
+            viewModel: NewsHomeViewModel(forPreview: true, hasNews: false)
         )
     }
 }
