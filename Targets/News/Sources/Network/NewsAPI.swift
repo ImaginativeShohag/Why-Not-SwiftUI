@@ -51,22 +51,16 @@ extension NewsAPI: ApiEndpoint {
     }
     
     public var stubStatusCode: Int {
-        if let response = ProcessInfo.processInfo.environment["\(uiTestEnvKeyResponseStatusCode)-\(self)"],
-           let targetStatusCode = Int(response)
-        {
-            return targetStatusCode
-        }
+        // Custom implementation.
         
-        return 200
+        // Else, default value.
+        return uiTestStatusCode ?? 200
     }
     
     public var stubData: Data? {
-        if let response = ProcessInfo.processInfo.environment["\(self)"],
-           let jsonData = response.data(using: .utf8)
-        {
-            return jsonData
-        }
+        // Custom implementation.
         
-        return nil
+        // Else, default value.
+        return uiTestStubData
     }
 }
