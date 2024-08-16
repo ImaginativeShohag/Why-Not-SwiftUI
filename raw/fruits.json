@@ -1,0 +1,81 @@
+{
+    "success": true,
+    "message": "success",
+    "data": [
+        {
+            "name": "Apple",
+            "emoji": "🍎",
+            "color": "#FF0800"
+        },
+        {
+            "name": "Banana",
+            "emoji": "🍌",
+            "color": "#FFE135"
+        },
+        {
+            "name": "Cherry",
+            "emoji": "🍒",
+            "color": "#DE3163"
+        },
+        {
+            "name": "Grapes",
+            "emoji": "🍇",
+            "color": "#6F2DA8"
+        },
+        {
+            "name": "Orange",
+            "emoji": "🍊",
+            "color": "#FFA500"
+        },
+        {
+            "name": "Strawberry",
+            "emoji": "🍓",
+            "color": "#FC5A8D"
+        },
+        {
+            "name": "Watermelon",
+            "emoji": "🍉",
+            "color": "#FC6C85"
+        },
+        {
+            "name": "Peach",
+            "emoji": "🍑",
+            "color": "#FFE5B4"
+        },
+        {
+            "name": "Pineapple",
+            "emoji": "🍍",
+            "color": "#F7B02D"
+        },
+        {
+            "name": "Mango",
+            "emoji": "🥭",
+            "color": "#FFCC02"
+        },
+        {
+            "name": "Lemon",
+            "emoji": "🍋",
+            "color": "#FFF700"
+        },
+        {
+            "name": "Blueberry",
+            "emoji": "🫐",
+            "color": "#4F86F7"
+        },
+        {
+            "name": "Pear",
+            "emoji": "🍐",
+            "color": "#D1E231"
+        },
+        {
+            "name": "Kiwi",
+            "emoji": "🥝",
+            "color": "#8EE53F"
+        },
+        {
+            "name": "Coconut",
+            "emoji": "🥥",
+            "color": "#965A3E"
+        }
+    ]
+}
