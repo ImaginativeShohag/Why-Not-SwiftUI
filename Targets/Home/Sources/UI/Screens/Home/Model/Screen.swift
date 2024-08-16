@@ -85,5 +85,9 @@ struct Screen: Identifiable, Sendable {
             name: "🥭 News App",
             destination: Destination.NewsHome()
         ),
+        Screen(
+            name: "URLSession Example",
+            destination: Destination.URLSession()
+        ),
     ].sorted(by: \.name)
 }

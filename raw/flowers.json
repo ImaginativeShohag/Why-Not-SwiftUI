@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "message": "success",
+  "data": [
+    {
+      "name": "Rose",
+      "emoji": "🌹",
+      "color": "#FF007F"
+    },
+    {
+      "name": "Sunflower",
+      "emoji": "🌻",
+      "color": "#FFD700"
+    },
+    {
+      "name": "Tulip",
+      "emoji": "🌷",
+      "color": "#FF6347"
+    },
+    {
+      "name": "Cherry Blossom",
+      "emoji": "🌸",
+      "color": "#FFB7C5"
+    },
+    {
+      "name": "Hibiscus",
+      "emoji": "🌺",
+      "color": "#FF69B4"
+    },
+    {
+      "name": "Lotus",
+      "emoji": "🪷",
+      "color": "#F4C2C2"
+    },
+    {
+      "name": "Blossom",
+      "emoji": "🌼",
+      "color": "#FFFACD"
+    },
+    {
+      "name": "Lavender",
+      "emoji": "💐",
+      "color": "#E6E6FA"
+    },
+    {
+      "name": "Blossoming Heart",
+      "emoji": "💮",
+      "color": "#F08080"
+    },
+    {
+      "name": "Rose Bouquet",
+      "emoji": "💐",
+      "color": "#FF69B4"
+    }
+  ]
+}

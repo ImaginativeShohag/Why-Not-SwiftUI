@@ -41,7 +41,7 @@ struct NewsHomeScreen: View {
                 Divider()
                     .padding(.vertical)
 
-                switch viewModel.news {
+                switch viewModel.newsState {
                 case .loading:
                     ProgressView()
                         .accessibilityIdentifier("loading_container")
@@ -123,7 +123,7 @@ struct NewsHomeScreen: View {
                             }
 
                             NewsTypesSectionView(
-                                types: viewModel.types,
+                                types: viewModel.typesState,
                                 onRetryClick: {
                                     Task {
                                         await viewModel.loadTypes()
@@ -163,7 +163,7 @@ struct NewsHomeScreen: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .refreshable {
-            if !viewModel.news.isLoading {
+            if !viewModel.newsState.isLoading {
                 await viewModel.loadData(forced: true)
                 await viewModel.loadTypes()
             }
