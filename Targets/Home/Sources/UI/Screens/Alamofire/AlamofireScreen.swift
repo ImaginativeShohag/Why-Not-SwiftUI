@@ -8,19 +8,19 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    final class URLSession: BaseDestination {
+    final class Alamofire: BaseDestination {
         override public func getScreen() -> any View {
-            URLSessionScreen()
+            AlamofireScreen()
         }
     }
 }
 
 // MARK: - UI
 
-struct URLSessionScreen: View {
-    @State private var viewModel: URLSessionViewModel
+struct AlamofireScreen: View {
+    @State private var viewModel: AlamofireViewModel
 
-    init(viewModel: URLSessionViewModel = URLSessionViewModel()) {
+    init(viewModel: AlamofireViewModel = AlamofireViewModel()) {
         self.viewModel = viewModel
     }
 
@@ -59,10 +59,10 @@ struct URLSessionScreen: View {
                 }
             }
         }
-        .navigationTitle("URLSession Example")
+        .navigationTitle("Alamofire Example")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            await viewModel.getFruits()
+            await viewModel.getFlowers()
         }
     }
 }
@@ -71,32 +71,32 @@ struct URLSessionScreen: View {
 
 #Preview("Loading") {
     NavigationStack {
-        URLSessionScreen(
-            viewModel: URLSessionViewModel(forPreview: true, isLoading: true)
+        AlamofireScreen(
+            viewModel: AlamofireViewModel(forPreview: true, isLoading: true)
         )
     }
 }
 
 #Preview("Success") {
     NavigationStack {
-        URLSessionScreen(
-            viewModel: URLSessionViewModel(forPreview: true)
+        AlamofireScreen(
+            viewModel: AlamofireViewModel(forPreview: true)
         )
     }
 }
 
 #Preview("Success (No Data)") {
     NavigationStack {
-        URLSessionScreen(
-            viewModel: URLSessionViewModel(forPreview: true, hasData: false)
+        AlamofireScreen(
+            viewModel: AlamofireViewModel(forPreview: true, hasData: false)
         )
     }
 }
 
 #Preview("Error") {
     NavigationStack {
-        URLSessionScreen(
-            viewModel: URLSessionViewModel(forPreview: true, isError: true)
+        AlamofireScreen(
+            viewModel: AlamofireViewModel(forPreview: true, isError: true)
         )
     }
 }

@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-struct FruitDetailsScreen: View {
+struct ObjectDetailsScreen: View {
     let icon: String
     let name: String
     let color: Color
@@ -12,11 +12,10 @@ struct FruitDetailsScreen: View {
     var body: some View {
         VStack {
             Text(icon)
-                .fontStyle(size: 150)
+                .fontStyle(size: 128)
 
             Text(name)
-                .font(.largeTitle)
-                .fontWeight(.bold)
+                .fontStyle(size: 48, weight: .bold)
                 .foregroundStyle(color)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -27,8 +26,8 @@ struct FruitDetailsScreen: View {
     }
 }
 
-#Preview("Fruit Details Screen") {
-    FruitDetailsScreen(
+#Preview("Details Screen") {
+    ObjectDetailsScreen(
         icon: "🥭",
         name: "Mango",
         color: Color.red
