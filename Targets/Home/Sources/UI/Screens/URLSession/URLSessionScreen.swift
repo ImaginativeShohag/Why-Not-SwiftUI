@@ -52,7 +52,7 @@ struct URLSessionScreen: View {
                                     color: fruit.getColor()
                                 )
                             } label: {
-                                Text(fruit.getName())
+                                Text(fruit.getEmoji() + " " + fruit.getName())
                             }
                         }
                     }

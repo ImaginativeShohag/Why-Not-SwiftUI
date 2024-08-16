@@ -45,7 +45,14 @@ extension Flower {
             Flower(name: "Blossom", emoji: "🌼", color: "#FFFACD"),
             Flower(name: "Lavender", emoji: "💐", color: "#E6E6FA"),
             Flower(name: "Blossoming Heart", emoji: "💮", color: "#F08080"),
-            Flower(name: "Rose Bouquet", emoji: "💐", color: "#FF69B4")
+            Flower(name: "Rose Bouquet", emoji: "💐", color: "#FF69B4"),
+            Flower(name: "Daisy", emoji: "🌼", color: "#FFFFE0"),
+            Flower(name: "Orchid", emoji: "🌸", color: "#DA70D6"),
+            Flower(name: "Iris", emoji: "🌸", color: "#5A4FCF"),
+            Flower(name: "Lily", emoji: "🌺", color: "#E5A0D4"),
+            Flower(name: "Peony", emoji: "🌸", color: "#FFC0CB"),
+            Flower(name: "Poppy", emoji: "🌺", color: "#FF4500"),
+            Flower(name: "Marigold", emoji: "🌼", color: "#FFAF1F"),
         ]
     }
 }

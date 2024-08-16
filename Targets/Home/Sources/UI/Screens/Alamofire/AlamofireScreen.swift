@@ -18,6 +18,7 @@ public extension Destination {
 // MARK: - UI
 
 struct AlamofireScreen: View {
+    @Namespace private var animation
     @State private var viewModel: AlamofireViewModel
 
     init(viewModel: AlamofireViewModel = AlamofireViewModel()) {
@@ -36,23 +37,23 @@ struct AlamofireScreen: View {
                     systemImage: "exclamationmark.triangle"
                 )
 
-            case .data(let fruits):
-                if fruits.isEmpty {
+            case .data(let flowers):
+                if flowers.isEmpty {
                     ContentUnavailableView(
-                        "No fruit found.",
+                        "No flower found.",
                         systemImage: "cube.box"
                     )
                 } else {
                     List {
-                        ForEach(fruits) { fruit in
+                        ForEach(flowers) { flower in
                             NavigationLink {
                                 ObjectDetailsScreen(
-                                    icon: fruit.getEmoji(),
-                                    name: fruit.getName(),
-                                    color: fruit.getColor()
+                                    icon: flower.getEmoji(),
+                                    name: flower.getName(),
+                                    color: flower.getColor()
                                 )
                             } label: {
-                                Text(fruit.getName())
+                                Text(flower.getEmoji() + " " + flower.getName())
                             }
                         }
                     }

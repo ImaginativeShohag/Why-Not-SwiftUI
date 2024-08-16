@@ -51,6 +51,41 @@
       "name": "Rose Bouquet",
       "emoji": "💐",
       "color": "#FF69B4"
+    },
+    {
+      "name": "Daisy",
+      "emoji": "🌼",
+      "color": "#FFFFE0"
+    },
+    {
+      "name": "Orchid",
+      "emoji": "🌸",
+      "color": "#DA70D6"
+    },
+    {
+      "name": "Iris",
+      "emoji": "🌸",
+      "color": "#5A4FCF"
+    },
+    {
+      "name": "Lily",
+      "emoji": "🌺",
+      "color": "#E5A0D4"
+    },
+    {
+      "name": "Peony",
+      "emoji": "🌸",
+      "color": "#FFC0CB"
+    },
+    {
+      "name": "Poppy",
+      "emoji": "🌺",
+      "color": "#FF4500"
+    },
+    {
+      "name": "Marigold",
+      "emoji": "🌼",
+      "color": "#FFAF1F"
     }
   ]
 }
