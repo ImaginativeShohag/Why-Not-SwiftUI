@@ -45,7 +45,7 @@ public struct HomeScreen: View {
 
             ForEach(Screen.screens) { screen in
                 NavigationLink(value: screen.destination) {
-                    Text(screen.name)
+                    Text(screen.name.toMarkdown())
                 }
             }
         }

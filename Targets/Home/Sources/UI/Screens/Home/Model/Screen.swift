@@ -86,12 +86,16 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.NewsHome()
         ),
         Screen(
-            name: "Network: URLSession Example",
+            name: "Network: `URLSession` Example",
             destination: Destination.URLSession()
         ),
         Screen(
-            name: "Network: Alamofire Example",
+            name: "Network: `Alamofire` Example",
             destination: Destination.Alamofire()
+        ),
+        Screen(
+            name: "`@AppStorage` Example",
+            destination: Destination.AppStorage()
         ),
     ].sorted(by: \.name)
 }
