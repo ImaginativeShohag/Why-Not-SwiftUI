@@ -97,5 +97,9 @@ struct Screen: Identifiable, Sendable {
             name: "`@AppStorage` Example",
             destination: Destination.AppStorage()
         ),
+        Screen(
+            name: "`Realm` Example",
+            destination: Destination.RealmDB()
+        ),
     ].sorted(by: \.name)
 }

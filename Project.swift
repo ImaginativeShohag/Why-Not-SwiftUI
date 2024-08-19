@@ -111,7 +111,9 @@ let project = Project.app(
         .external(name: "Kingfisher"),
         .external(name: "DGCharts"),
         .external(name: "Lottie"),
-        .external(name: "Shimmer")
+        .external(name: "Shimmer"),
+        .external(name: "RealmSwift"),
+        .external(name: "Realm"),
     ],
     coreDataModels: []
 )
