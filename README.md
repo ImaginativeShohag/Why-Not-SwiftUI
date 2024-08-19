@@ -110,6 +110,9 @@ A ready to use wrapper for [SwiftUI-Shimmer](https://github.com/markiv/SwiftUI-S
     - Custom Build Config
     - Custom InfoPlist
 - `NavController`: A ready to use navigation wrapper on top of `NavigationStack`.
+- Basic example for `URLSession`
+- Basic example for `Alamofire`
+- Basic example for `@AppStorage`
 
 ## Project Setup
 
