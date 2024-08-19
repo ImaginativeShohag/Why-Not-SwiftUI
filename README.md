@@ -113,6 +113,7 @@ A ready to use wrapper for [SwiftUI-Shimmer](https://github.com/markiv/SwiftUI-S
 - Basic example for `URLSession`
 - Basic example for `Alamofire`
 - Basic example for `@AppStorage`
+- Basic example for `Realm`
 
 ## Project Setup
 
