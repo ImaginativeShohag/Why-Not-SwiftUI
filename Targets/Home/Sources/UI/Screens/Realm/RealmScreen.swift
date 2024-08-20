@@ -169,16 +169,26 @@ private struct ItemDetailsView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Enter a new name:")
+            Text("Enter a new name")
                 .font(.title)
 
             // Accept a new name
-            TextField("New name", text: $item.name)
-                .navigationBarTitle(item.name)
-                .navigationBarItems(trailing: Toggle(isOn: $item.isFavorite) {
-                    Image(systemName: item.isFavorite ? "heart.fill" : "heart")
-                })
-        }.padding()
+            HStack {
+                TextField("New name", text: $item.name)
+                    .navigationBarTitle(item.name)
+                    .navigationBarItems(trailing: Toggle(isOn: $item.isFavorite) {
+                        Image(systemName: item.isFavorite ? "heart.fill" : "heart")
+                    })
+
+                Image(systemName: "pencil.line")
+            }
+            .padding()
+            .overlay {
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.gray, lineWidth: 1)
+            }
+        }
+        .padding()
     }
 }
 

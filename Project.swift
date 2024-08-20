@@ -112,6 +112,7 @@ let project = Project.app(
         .external(name: "DGCharts"),
         .external(name: "Lottie"),
         .external(name: "Shimmer"),
+        // We need both "RealmSwift" and "Realm" to solve the "Undefined symbol" issue.
         .external(name: "RealmSwift"),
         .external(name: "Realm"),
     ],

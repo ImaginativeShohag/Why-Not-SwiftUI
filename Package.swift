@@ -20,10 +20,7 @@ import PackageDescription
             "DGCharts": .framework,
             "Lottie": .framework,
             "Shimmer": .framework,
-            // Have to use `.staticFramework` for the issue:
-            // Issue: https://github.com/realm/realm-swift/issues/8605
             "RealmSwift": .framework,
-            "Realm": .framework,
         ],
         baseSettings: Settings.settings(
             configurations: BuildEnvironment.getConfigurations(for: .target)
