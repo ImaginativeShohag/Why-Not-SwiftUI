@@ -97,6 +97,12 @@ A ready to use wrapper for [SwiftUI-Shimmer](https://github.com/markiv/SwiftUI-S
 | <img src="images/shimmer-ui-1.gif" width=250/> | <img src="images/shimmer-ui-2.gif" width=250/> | <img src="images/shimmer-ui-3.gif" width=250/> |
 | :-: | :-: | :-: |
 
+### Animation Examples
+
+A collection of animation related SwiftUI features.
+
+<img src="images/animation.gif" width=250/>
+
 ## Others
 
 - Example to create preview with mock Models and ViewModels (`ObservableObject`). (See **Media Capture & Select** Example)
