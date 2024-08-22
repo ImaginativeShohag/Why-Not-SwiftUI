@@ -101,5 +101,9 @@ struct Screen: Identifiable, Sendable {
             name: "`Realm` Example",
             destination: Destination.RealmDB()
         ),
+        Screen(
+            name: "Animation Example",
+            destination: Destination.Animation()
+        ),
     ].sorted(by: \.name)
 }
