@@ -18,7 +18,6 @@ public extension Destination {
 // MARK: - UI
 
 struct AlamofireScreen: View {
-    @Namespace private var animation
     @State private var viewModel: AlamofireViewModel
 
     init(viewModel: AlamofireViewModel = AlamofireViewModel()) {

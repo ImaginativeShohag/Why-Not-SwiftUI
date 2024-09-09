@@ -115,6 +115,7 @@ let project = Project.app(
         // We need both "RealmSwift" and "Realm" to solve the "Undefined symbol" issue.
         .external(name: "RealmSwift"),
         .external(name: "Realm"),
+        .external(name: "MarkdownUI"),
     ],
     coreDataModels: []
 )

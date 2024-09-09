@@ -109,5 +109,9 @@ struct Screen: Identifiable, Sendable {
             name: "`WebView` Example",
             destination: Destination.WebView()
         ),
+        Screen(
+            name: "**Ollama** Example",
+            destination: Destination.Ollama()
+        ),
     ].sorted(by: \.name)
 }

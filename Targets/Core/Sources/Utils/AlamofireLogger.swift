@@ -14,8 +14,10 @@ import Foundation
 ///     eventMonitors: [AlamofireLogger()]
 /// )
 /// ```
-final class AlamofireLogger: EventMonitor {
-    func requestDidResume(_ request: Request) {
+public final class AlamofireLogger: EventMonitor {
+    public init() {}
+
+    public func requestDidResume(_ request: Request) {
         queue.async {
             guard let request = request.request else { return }
 
@@ -40,7 +42,7 @@ final class AlamofireLogger: EventMonitor {
         }
     }
 
-    func requestDidFinish(_ request: Request) {
+    public func requestDidFinish(_ request: Request) {
         queue.async {
             guard let dataRequest = request as? DataRequest,
                   let task = dataRequest.task,
