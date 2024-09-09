@@ -4,6 +4,7 @@
 
 import Core
 import SwiftUI
+import Observation
 
 @Observable
 class URLSessionViewModel {
@@ -29,6 +30,8 @@ class URLSessionViewModel {
                 } else {
                     state = .error(message: "Cannot Load Data!")
                 }
+            } else {
+                state = .error(message: "Wrong response. Please try again.")
             }
         } catch {
             state = .error(message: error.localizedDescription)

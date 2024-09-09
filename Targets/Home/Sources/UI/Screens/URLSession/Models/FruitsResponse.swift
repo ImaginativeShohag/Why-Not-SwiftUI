@@ -13,7 +13,7 @@ struct FruitsResponse: Codable {
     let data: [Fruit]?
 }
 
-// MARK: - Datum
+// MARK: - Fruit
 
 struct Fruit: Codable, Hashable, Identifiable {
     let name, emoji, color: String?
@@ -32,6 +32,8 @@ struct Fruit: Codable, Hashable, Identifiable {
         return Color(hex: color ?? "#000000")
     }
 }
+
+#if DEBUG
 
 extension Fruit {
     static func mockItems() -> [Fruit] {
@@ -54,3 +56,5 @@ extension Fruit {
         ]
     }
 }
+
+#endif
