@@ -6,7 +6,23 @@ import Alamofire
 import Core
 import SwiftUI
 
+/// # Setup
+///
+/// 1. Install Ollama from here: https://ollama.com/download
+/// 2. Run Ollama
+/// 3. Update the `ollamaModel` and `ollamaEndpoint` constants.
+///
+/// Enjoy!
+
+/// The model that you already downloaded in Ollama and want to use with the app.
+///
+/// Documentation: https://github.com/ollama/ollama/blob/main/README.md#pull-a-model
+/// Models: https://ollama.com/library
 private let ollamaModel = "llama3.1:8b"
+
+/// The web address where Ollama is served.
+///
+/// Documentation: https://github.com/ollama/ollama/blob/main/README.md#rest-api
 private let ollamaEndpoint = "http://localhost:11434"
 
 @Observable
