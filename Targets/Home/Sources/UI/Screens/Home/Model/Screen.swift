@@ -110,8 +110,10 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.WebView()
         ),
         Screen(
-            name: "**Ollama** Example",
+            name: "`Ollama` Example",
             destination: Destination.Ollama()
         ),
-    ].sorted(by: \.name)
+    ].sorted { old, new in
+        old.name.filter { $0.isLetter || $0.isNumber } <  new.name.filter { $0.isLetter || $0.isNumber }
+    }
 }

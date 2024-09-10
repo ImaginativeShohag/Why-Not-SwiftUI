@@ -96,6 +96,7 @@ class OllamaViewModel {
                         resultText += response.response
 
                         answerChatMessage.message = resultText
+                        answerChatMessage.type = .answer
 
                         if let context = response.context {
                             self.currentContext = context

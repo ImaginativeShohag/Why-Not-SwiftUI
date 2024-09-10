@@ -20,7 +20,7 @@ public extension Destination {
 
 struct OllamaScreen: View {
     @State private var viewModel: OllamaViewModel
-    @State var prompt = "Why is the sky blue? Answer briefly."
+    @State var prompt = "Show me a hello world code in swift"
 
     init(viewModel: OllamaViewModel = OllamaViewModel()) {
         self.viewModel = viewModel
