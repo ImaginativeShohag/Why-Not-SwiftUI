@@ -18,6 +18,7 @@ import SwiftUI
 ///
 /// Documentation: https://github.com/ollama/ollama/blob/main/README.md#pull-a-model
 /// Models: https://ollama.com/library
+/// Command: Model List: `ollama list`
 private let ollamaModel = "llama3.1:8b"
 
 /// The web address where Ollama is served.
@@ -27,7 +28,7 @@ private let ollamaEndpoint = "http://localhost:11434"
 
 @Observable
 class OllamaViewModel {
-    var state: UIState<String> = .data(data: "")
+    var messages: [ChatMessage] = []
     var isStreaming: Bool = false
 
     @ObservationIgnored private var isPreview: Bool = false
@@ -43,23 +44,30 @@ class OllamaViewModel {
 
         isStreaming = true
 
-        // Initialize the text.
-        let previousText = state.getData() ?? ""
-
-        var resultText = """
-        \(previousText)
-
-        **Question:** \(prompt)
-
-        **Answer:** 
-        """
-
         // Push the question.
 
-        if previousText.isEmpty {
-            state = .data(
-                data: "**Question:** \(prompt)"
+        withAnimation {
+            messages.append(
+                ChatMessage(
+                    message: prompt,
+                    type: .question
+                )
             )
+        }
+
+        // Initialize the answer text.
+
+        var resultText = ""
+
+        // Push the answer.
+
+        let answerChatMessage = ChatMessage(
+            message: resultText,
+            type: .answer
+        )
+
+        withAnimation {
+            messages.append(answerChatMessage)
         }
 
         // Generate the answer.
@@ -87,15 +95,15 @@ class OllamaViewModel {
                     case let .success(response):
                         resultText += response.response
 
-                        self.state = .data(
-                            data: resultText
-                        )
+                        answerChatMessage.message = resultText
 
                         if let context = response.context {
                             self.currentContext = context
                         }
+
                     case let .failure(error):
-                        self.state = .error(message: error.localizedDescription)
+                        answerChatMessage.message = "Error: \(error.localizedDescription)"
+                        answerChatMessage.type = .error
 
                         self.isStreaming = false
                     }
@@ -114,7 +122,6 @@ class OllamaViewModel {
 extension OllamaViewModel {
     convenience init(
         forPreview: Bool,
-        isLoading: Bool = false,
         isError: Bool = false,
         hasData: Bool = true,
         isStreamming: Bool = false
@@ -124,22 +131,40 @@ extension OllamaViewModel {
         isPreview = true
         isStreaming = isStreamming
 
-        if isLoading {
-            state = .loading
-        } else if isError {
-            state = .error(message: "Something went wrong!")
-        } else if !hasData {
-            state = .data(data: "")
-        } else {
-            state = .data(data: """
-            Lorem Ipsum  
-            Lorem Ipsum  
-
-
-            Lorem Ipsum  
-
-            Lorem Ipsum  
-            """)
+        if isError {
+            messages.append(
+                contentsOf: [
+                    ChatMessage(
+                        message: "Lorem ipsum dolor?",
+                        type: .question
+                    ),
+                    ChatMessage(
+                        message: "Error: Something went wrong!",
+                        type: .error
+                    ),
+                ]
+            )
+        } else if hasData {
+            messages.append(
+                contentsOf: [
+                    ChatMessage(
+                        message: "Lorem ipsum dolor?",
+                        type: .question
+                    ),
+                    ChatMessage(
+                        message: "Error: Something went wrong!",
+                        type: .answer
+                    ),
+                    ChatMessage(
+                        message: "Lorem ipsum dolor?",
+                        type: .question
+                    ),
+                    ChatMessage(
+                        message: "Error: Something went wrong!",
+                        type: .answer
+                    ),
+                ]
+            )
         }
     }
 }
@@ -174,4 +199,28 @@ struct OllamaResponse: Codable {
         case evalCount = "eval_count"
         case evalDuration = "eval_duration"
     }
+}
+
+@Observable
+class ChatMessage: Identifiable {
+    let id = UUID()
+    var message: String
+    var type: ChatMessageType
+
+    init(message: String, type: ChatMessageType) {
+        self.message = message
+        self.type = type
+    }
+}
+
+extension ChatMessage: Equatable {
+    static func == (lhs: ChatMessage, rhs: ChatMessage) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+enum ChatMessageType {
+    case question
+    case answer
+    case error
 }

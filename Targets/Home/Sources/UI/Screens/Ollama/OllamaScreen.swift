@@ -28,77 +28,62 @@ struct OllamaScreen: View {
 
     var body: some View {
         ZStack {
-            switch viewModel.state {
-            case .loading:
-                ProgressView()
-
-            case .error(let message):
-                ContentUnavailableView(
-                    message,
-                    systemImage: "exclamationmark.triangle"
-                )
-
-            case .data(let response):
-                VStack {
-                    if response.isEmpty {
-                        ContentUnavailableView(
-                            "Ask anything!",
-                            systemImage: "message"
-                        )
-                    } else {
-                        ScrollView {
-                            VStack(alignment: .leading) {
-                                Markdown(response)
-                                    .padding()
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .defaultScrollAnchor(.bottom)
-                    }
-
-                    HStack {
-                        TextField("Ask anything...", text: $prompt)
-                            .submitLabel(.go)
-                            .onSubmit {
-                                ask()
-                            }
-                            .disabled(viewModel.isStreaming)
-
-                        if viewModel.isStreaming {
-                            ProgressView()
-                        } else {
-                            Button {
-                                ask()
-                            } label: {
-                                Image(systemName: "paperplane")
+            VStack {
+                if viewModel.messages.isEmpty {
+                    ContentUnavailableView(
+                        "Ask anything!",
+                        systemImage: "message"
+                    )
+                } else {
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            ForEach(viewModel.messages) { model in
+                                ChatBubbleView(
+                                    message: model.message,
+                                    isMe: model.type == .question,
+                                    isError: model.type == .error
+                                )
                             }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding()
-                    .background(Material.regular)
+                    .defaultScrollAnchor(.bottom)
                 }
+
+                HStack {
+                    TextField("Ask anything...", text: $prompt)
+                        .submitLabel(.go)
+                        .onSubmit {
+                            ask()
+                        }
+                        .disabled(viewModel.isStreaming)
+
+                    if viewModel.isStreaming {
+                        ProgressView()
+                    } else {
+                        Button {
+                            ask()
+                        } label: {
+                            Image(systemName: "paperplane")
+                        }
+                    }
+                }
+                .padding()
+                .background(Material.regular)
             }
         }
         .navigationTitle("Ollama Example")
         .navigationBarTitleDisplayMode(.inline)
     }
-    
+
     func ask() {
         viewModel.ask(prompt)
-        
+
         prompt = ""
     }
 }
 
 #if DEBUG
-
-#Preview("Loading") {
-    NavigationStack {
-        OllamaScreen(
-            viewModel: OllamaViewModel(forPreview: true, isLoading: true)
-        )
-    }
-}
 
 #Preview("Empty") {
     NavigationStack {
@@ -133,3 +118,60 @@ struct OllamaScreen: View {
 }
 
 #endif
+
+struct ChatBubbleView: View {
+    let message: String
+    let isMe: Bool
+    let isError: Bool
+
+    init(message: String, isMe: Bool, isError: Bool = false) {
+        self.message = message
+        self.isMe = isMe
+        self.isError = isError
+    }
+
+    var body: some View {
+        HStack {
+            if isMe {
+                Spacer()
+            }
+
+            Markdown(message)
+                .markdownTextStyle(\.text) {
+                    ForegroundColor(
+                        (isMe || isError) ? .white : .black
+                    )
+                }
+                .padding(10)
+                .background(
+                    isError ? Color.red :
+                        (isMe ? Color.blue : Color.gray.opacity(0.3))
+                )
+                .cornerRadius(16)
+
+            if !isMe {
+                Spacer()
+            }
+        }
+        .padding(isMe ? .trailing : .leading, 16)
+        .padding(.vertical, 4)
+    }
+}
+
+#Preview("ChatBubbleView") {
+    VStack {
+        ChatBubbleView(message: "Hello, how are you?", isMe: false)
+        ChatBubbleView(message: "I'm doing great, thanks!", isMe: true)
+        ChatBubbleView(
+            message: "Hello, how are you?",
+            isMe: false,
+            isError: true
+        )
+        ChatBubbleView(
+            message: "I'm doing great, thanks!",
+            isMe: true,
+            isError: true
+        )
+    }
+    .padding()
+}
