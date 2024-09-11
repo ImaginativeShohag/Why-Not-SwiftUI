@@ -42,10 +42,9 @@ public final class AlamofireLogger: EventMonitor {
         }
     }
 
-    public func requestDidFinish(_ request: Request) {
+    public func requestDidFinish(_ dataRequest: Request) {
         queue.async {
-            guard let dataRequest = request as? DataRequest,
-                  let task = dataRequest.task,
+            guard let task = dataRequest.task,
                   let metrics = dataRequest.metrics,
                   let request = task.originalRequest,
                   let httpMethod = request.httpMethod,
@@ -71,22 +70,41 @@ public final class AlamofireLogger: EventMonitor {
 
                 self.logHeaders(headers: response.allHeaderFields)
 
-                guard let data = dataRequest.data else { return }
+                if let dataRequest = dataRequest as? DataRequest, let data = dataRequest.data {
+                    print("Body:")
 
-                print("Body:")
+                    do {
+                        let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+                        let prettyData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
 
-                do {
-                    let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                    let prettyData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
-
-                    if let prettyString = String(data: prettyData, encoding: .utf8) {
-                        print(prettyString)
-                    }
-                } catch {
-                    if let string = String(data: data, encoding: String.Encoding.utf8) {
-                        print(string)
+                        if let prettyString = String(data: prettyData, encoding: .utf8) {
+                            print(prettyString)
+                        }
+                    } catch {
+                        if let string = String(data: data, encoding: String.Encoding.utf8) {
+                            print(string)
+                        }
                     }
                 }
+            }
+
+            print("<<< ================================")
+        }
+    }
+
+    public func request<Value>(
+        _ streamRequest: DataStreamRequest,
+        didParseStream result: Result<Value, AFError>
+    ) {
+        queue.async {
+            print("<<< ================================")
+
+            switch result {
+                case .success(let value):
+                    print("Stream value: \(value)")
+
+                case .failure(let error):
+                    print("Stream error: \(error)")
             }
 
             print("<<< ================================")
