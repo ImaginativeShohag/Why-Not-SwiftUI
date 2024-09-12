@@ -77,16 +77,16 @@ final class UserRepository {
 
 /*:
  The underlying @MainActor implementation is similar to our custom-defined @SwiftLeeActor:
- 
+
  ```swift
  @globalActor
  final actor MainActor: GlobalActor {
      static let shared: MainActor
  }
  ```
- 
+
  It’s available by default and defined inside the concurrency framework. In other words, you can start using this global actor immediately and mark your code to be executed on the main thread by synchronizing via this global actor.
- 
+
  You can use a global actor with properties, methods, closures, and instances.
  */
 
@@ -112,9 +112,9 @@ func updateData(completion: @MainActor @escaping () -> ()) {
 
 /*:
  ### Using the main actor directly
- 
+
  The MainActor in Swift comes with an extension to use the actor directly:
- 
+
  ```swift
  extension MainActor {
 
@@ -122,7 +122,7 @@ func updateData(completion: @MainActor @escaping () -> ()) {
      public static func run<T>(resultType: T.Type = T.self, body: @MainActor @Sendable () throws -> T) async rethrows -> T
  }
  ```
- 
+
  This allows us to use the MainActor directly from within methods, even if we didn’t define any of its body using the global actor attribute:
  */
 

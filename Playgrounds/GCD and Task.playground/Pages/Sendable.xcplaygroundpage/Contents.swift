@@ -36,6 +36,7 @@ struct MyData: Sendable {
 
 final class MyClass: Sendable {
     let value: Int
+    
     init(value: Int) {
         self.value = value
     }
@@ -48,7 +49,7 @@ final class MyClass: Sendable {
  */
 
 actor MyActor: Sendable {
-    let value: Int
+    let value: Int = 42
 }
 
 //: [Next](@next)

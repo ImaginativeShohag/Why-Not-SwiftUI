@@ -39,14 +39,14 @@ import Foundation
 
 for index in 1..<10 {
     DispatchQueue.main.async {
-        sleep(1000)
+        sleep(1)
         print("Main: Executes Asynchronously (\(index))")
     }
 
     DispatchQueue.global().async {
         // Attempting to synchronously execute a work item on the main queue results in deadlock. That's why we calling it from another thread.
         DispatchQueue.main.sync {
-            sleep(1000)
+            sleep(1)
             print("Main: Executes Synchronously (\(index))")
         }
     }
@@ -54,14 +54,14 @@ for index in 1..<10 {
 
 for index in 1..<10 {
     DispatchQueue.global().sync {
-        sleep(1000)
+        sleep(1)
         print("Global: Executes Synchronously (\(index))")
     }
 }
 
 for index in 1..<10 {
     DispatchQueue.global().async {
-        sleep(1000)
+        sleep(1)
         print("Global: Executes Asynchronously (\(index))")
     }
 }
@@ -79,9 +79,37 @@ for index in 1..<10 {
 
 for index in 1..<10 {
     DispatchQueue.global(qos: .background).async {
-        sleep(1000)
+        sleep(1)
         print("Global (QoS: .background): Executes Asynchronously (\(index))")
     }
 }
+
+/*:
+ # Creating a concurrent dispatch queue
+
+ A concurrent dispatch queue can be created by passing in an attribute as a parameter to the DispatchQueue initializer:
+ */
+
+let concurrentQueue = DispatchQueue(label: "imaginativeshohag.concurrent.queue", attributes: .concurrent)
+
+concurrentQueue.async {
+    print("Task 1 started")
+    // Do some work..
+    print("Task 1 finished")
+}
+
+concurrentQueue.async {
+    print("Task 2 started")
+    // Do some work..
+    print("Task 2 finished")
+}
+
+/*
+ Concurrent Queue prints:
+ Task 1 started
+ Task 2 started
+ Task 1 finished
+ Task 2 finished
+ */
 
 //: [Next](@next)
