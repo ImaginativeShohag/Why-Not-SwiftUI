@@ -100,4 +100,7 @@ Task {
     print("2 second later")
 }
 
+// Ignore. Necessary to run the playground.
+sleep(20)
+
 //: [Next](@next)

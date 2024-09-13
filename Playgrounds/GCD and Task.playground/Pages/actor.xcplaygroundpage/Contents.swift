@@ -147,4 +147,7 @@ actor Logger {
     }
 }
 
+let logger = Logger()
+logger.logMessage("Lorem ipsum") // Called without `await`
+
 //: [Next](@next)

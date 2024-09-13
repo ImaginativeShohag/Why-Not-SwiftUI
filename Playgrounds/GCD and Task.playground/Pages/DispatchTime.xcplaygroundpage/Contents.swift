@@ -30,10 +30,10 @@ DispatchQueue.main.asyncAfter(deadline: delay) {
  */
 
 func schedulePeriodicTask() {
-    let interval: DispatchTimeInterval = .seconds(5)
+    let interval: DispatchTimeInterval = .seconds(3)
 
     DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + interval) {
-        print("Task executed")
+        print("Task executed (every 3 seconds)")
         schedulePeriodicTask() // Call the function again to schedule the next execution
     }
 }
@@ -99,5 +99,8 @@ if semaphore.wait(timeout: timeout) == .timedOut {
 } else {
     print("Task completed before timeout")
 }
+
+// Ignore. Necessary to run the playground.
+sleep(20)
 
 //: [Next](@next)

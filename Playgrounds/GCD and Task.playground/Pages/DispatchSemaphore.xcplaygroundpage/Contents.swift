@@ -24,4 +24,7 @@ for index in 1 ... 10 {
     }
 }
 
+// Ignore. Necessary to run the playground.
+sleep(12)
+
 //: [Next](@next)
