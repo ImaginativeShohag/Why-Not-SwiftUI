@@ -21,11 +21,6 @@ import Foundation
 
  Source: https://developer.apple.com/documentation/dispatch/dispatchqueue
 
- Dispatch queues are responsible for executing tasks either serially or concurrently. There are two main types:
-
- - Serial Queue: Tasks are executed one at a time, in the order they are added.
- - Concurrent Queue: Multiple tasks are executed at the same time, depending on system resources.
-
  You can create custom queues or use predefined ones:
 
  - Main Queue: Runs tasks on the main thread, typically used for UI updates.
@@ -40,14 +35,14 @@ import Foundation
 for index in 1..<10 {
     DispatchQueue.main.async {
         sleep(1)
-        print("Main: Executes Asynchronously (\(index))")
+        print("Main: Executes Asynchronously (\(index)) (\(Thread.current))")
     }
 
     DispatchQueue.global().async {
         // Attempting to synchronously execute a work item on the main queue results in deadlock. That's why we calling it from another thread.
         DispatchQueue.main.sync {
             sleep(1)
-            print("Main: Executes Synchronously (\(index))")
+            print("Main: Executes Synchronously (\(index)) (\(Thread.current))")
         }
     }
 }
@@ -55,14 +50,14 @@ for index in 1..<10 {
 for index in 1..<10 {
     DispatchQueue.global().sync {
         sleep(1)
-        print("Global: Executes Synchronously (\(index))")
+        print("Global: Executes Synchronously (\(index)) (\(Thread.current))")
     }
 }
 
 for index in 1..<10 {
     DispatchQueue.global().async {
         sleep(1)
-        print("Global: Executes Asynchronously (\(index))")
+        print("Global: Executes Asynchronously (\(index)) (\(Thread.current))")
     }
 }
 
@@ -80,36 +75,52 @@ for index in 1..<10 {
 for index in 1..<10 {
     DispatchQueue.global(qos: .background).async {
         sleep(1)
-        print("Global (QoS: .background): Executes Asynchronously (\(index))")
+        print("Global (QoS: .background): Executes Asynchronously (\(index)) (\(Thread.current))")
     }
 }
 
 /*:
- # Creating a concurrent dispatch queue
+ # Serial vs Concurrent Queue
+ 
+ Dispatch queues are responsible for executing tasks either serially or concurrently. There are two main types:
 
- A concurrent dispatch queue can be created by passing in an attribute as a parameter to the DispatchQueue initializer:
+ - Serial Queue: Tasks are executed one at a time, in the order they are added.
+ - Concurrent Queue: Multiple tasks are executed at the same time, depending on system resources.
+ */
+
+/*:
+ ## Creating a serial dispatch queue
+
+ A serial dispatch queue can be created by using the `DispatchQueue` initializer:
+ */
+
+let serialQueue = DispatchQueue(label: "imaginativeshohag.concurrent.queue")
+
+for index in 1..<10 {
+    serialQueue.async {
+        print("(Serial) Task \(index) started (\(Thread.current))")
+        // Do some work..
+        print("(Serial) Task \(index) finished (\(Thread.current))")
+    }
+}
+
+/*:
+ ## Creating a concurrent dispatch queue
+
+ A concurrent dispatch queue can be created by passing in an attribute as a parameter to the `DispatchQueue` initializer:
  */
 
 let concurrentQueue = DispatchQueue(label: "imaginativeshohag.concurrent.queue", attributes: .concurrent)
 
-concurrentQueue.async {
-    print("Task 1 started")
-    // Do some work..
-    print("Task 1 finished")
+for index in 1..<10 {
+    concurrentQueue.async {
+        print("(Concurrent) Task \(index) started (\(Thread.current))")
+        // Do some work..
+        print("(Concurrent) Task \(index) finished (\(Thread.current))")
+    }
 }
 
-concurrentQueue.async {
-    print("Task 2 started")
-    // Do some work..
-    print("Task 2 finished")
-}
-
-/*
- Concurrent Queue prints:
- Task 1 started
- Task 2 started
- Task 1 finished
- Task 2 finished
- */
+// Ignore. Necessary to run the playground.
+sleep(50)
 
 //: [Next](@next)
