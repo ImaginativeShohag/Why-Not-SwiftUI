@@ -2,12 +2,12 @@ import Foundation
 
 public func someAsyncFunction() async {
     try? await Task.sleep(for: .seconds(1))
-    print("(someAsyncFunction) 1 second later")
+    print("(someAsyncFunction) 1 second later (\(Thread.current))")
 }
 
 public func performAsyncOperation() async {
     try? await Task.sleep(for: .seconds(1))
-    print("(performAsyncOperation) 1 second later")
+    print("(performAsyncOperation) 1 second later (\(Thread.current))")
 }
 
 public func highPriorityWork() async {

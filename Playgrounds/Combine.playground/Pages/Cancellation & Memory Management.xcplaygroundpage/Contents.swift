@@ -10,6 +10,8 @@ import UIKit
  A subscription returns a `Cancellable` object
 
  Correct memory management using `Cancellable` makes sure you're not retaining any references.
+ 
+ ⚠️ Run this pl
  */
 
 class MyClass {

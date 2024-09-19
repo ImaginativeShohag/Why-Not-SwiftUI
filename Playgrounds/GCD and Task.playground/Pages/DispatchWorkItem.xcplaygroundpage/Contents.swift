@@ -33,6 +33,9 @@ DispatchQueue.global().async(execute: workItem2)
 sleep(1)
 workItem2.cancel() // Cancel task
 
+/*: ⚠️ Here you can see the "Some work 2." is showing in the console! Because the cancelation is not handled inside the task. We have to manually stop the task where necessary. See the next example to know how to handle the cancellation.
+ */
+
 //: ## Stop the task after cancel called
 
 var workItem3: DispatchWorkItem?

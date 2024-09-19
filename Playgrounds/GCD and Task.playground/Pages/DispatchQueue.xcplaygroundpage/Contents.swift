@@ -32,6 +32,8 @@ import Foundation
  - Asynchronous (async): Returns immediately, allowing the current thread to continue while the task runs in the background.
  */
 
+//: 🚨 Run this playground page to Xcode to watch the `main` queue `print`s.
+
 for index in 1..<10 {
     DispatchQueue.main.async {
         sleep(1)
@@ -39,7 +41,7 @@ for index in 1..<10 {
     }
 
     DispatchQueue.global().async {
-        // Attempting to synchronously execute a work item on the main queue results in deadlock. That's why we calling it from another thread.
+        //: ⚠️ Attempting to synchronously execute a work item on the main queue results in deadlock. That's why we calling it from another thread.
         DispatchQueue.main.sync {
             sleep(1)
             print("Main: Executes Synchronously (\(index)) (\(Thread.current))")
@@ -81,7 +83,7 @@ for index in 1..<10 {
 
 /*:
  # Serial vs Concurrent Queue
- 
+
  Dispatch queues are responsible for executing tasks either serially or concurrently. There are two main types:
 
  - Serial Queue: Tasks are executed one at a time, in the order they are added.
@@ -119,8 +121,5 @@ for index in 1..<10 {
         print("(Concurrent) Task \(index) finished (\(Thread.current))")
     }
 }
-
-// Ignore. Necessary to run the playground.
-sleep(50)
 
 //: [Next](@next)

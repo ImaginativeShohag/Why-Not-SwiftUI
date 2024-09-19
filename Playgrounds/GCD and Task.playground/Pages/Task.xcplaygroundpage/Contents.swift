@@ -2,7 +2,19 @@
 
 import Foundation
 
-//: # Structured Concurrency
+//: # Structured Concurrency Model
+
+print("Current Thread: \(Thread.current)")
+
+/*:
+ # Async function
+
+ We can create a async function using `async` keyword.
+ */
+
+func exampleAsyncFunction() async {
+    // some task
+}
 
 /*:
  # Creating Tasks
@@ -10,9 +22,43 @@ import Foundation
  A Task represents a unit of asynchronous work. You can create a task to run concurrent operations without blocking the current thread.
  */
 
-Task {
+ Task {
+    print("Task 1: \(Thread.current)")
+     
     // Asynchronous work
     await someAsyncFunction()
+ }
+
+/*:
+ # Context inheritance
+
+ `Task` inherit the
+ */
+
+Task { @MainActor in
+    print("Task 2: \(Thread.current)")
+
+    await someAsyncFunction()
+
+    Task {
+        print("Task 3: \(Thread.current)")
+        
+        // Asynchronous work
+        await someAsyncFunction()
+    }
+}
+
+Task {
+    print("Task 4: \(Thread.current)")
+
+    await someAsyncFunction()
+
+    Task { @MainActor in
+        print("Task 5: \(Thread.current)")
+        
+        // Asynchronous work
+        await someAsyncFunction()
+    }
 }
 
 /*:
@@ -22,7 +68,22 @@ Task {
  */
 
 Task.detached {
+    print("Task 6 (detached): \(Thread.current)")
+    
     await performAsyncOperation()
+}
+
+Task { @MainActor in
+    print("Task 7: \(Thread.current)")
+
+    await someAsyncFunction()
+
+    Task.detached {
+        print("Task 8: \(Thread.current)")
+        
+        // Asynchronous work
+        await someAsyncFunction()
+    }
 }
 
 /*:
@@ -100,7 +161,6 @@ Task {
     print("2 second later")
 }
 
-// Ignore. Necessary to run the playground.
-sleep(20)
+// Yield example
 
 //: [Next](@next)
