@@ -14,12 +14,16 @@ class Counter {
 
     func increment() {
         queue.sync {
+            print("increment \(Thread.current)")
             value += 1
         }
     }
 
     func getValue() -> Int {
-        return queue.sync { value }
+        return queue.sync {
+            print("getValue \(Thread.current)")
+            return value
+        }
     }
 }
 
@@ -32,3 +36,5 @@ DispatchQueue.concurrentPerform(iterations: 1000) { _ in
 print("Final counter value: \(counter.getValue())")
 
 //: [Next](@next)
+
+// check locking code for class

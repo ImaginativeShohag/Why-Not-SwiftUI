@@ -5,11 +5,13 @@ import Foundation
 
 /*:
  # Combining publishers
+
  Several operators let you _combine_ multiple publishers together
  */
 
 /*:
  ## `CombineLatest`
+
  - combines values from multiple publishers
  - ... waits for each to have delivered at least one value
  - ... then calls your closure to produce a combined value
@@ -33,12 +35,13 @@ let validatedCredentialsSubscription = Publishers
     }
 
 //: Example: simulate typing a username and the password twice
-usernamePublisher.send("avanderlee")
+usernamePublisher.send("ImaginativeShohag")
 passwordPublisher.send("weakpass")
 passwordPublisher.send("verystrongpassword")
 
 /*:
  ## `Merge`
+ 
  - merges multiple publishers value streams into one
  - ... values order depends on the absolute order of emission amongs all merged publishers
  - ... all publishers must be of the same type.

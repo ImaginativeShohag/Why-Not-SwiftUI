@@ -9,8 +9,11 @@
         <page name='DispatchTime'/>
         <page name='Data race - solution'/>
         <page name='Task'/>
+        <page name='Task Cancellation'/>
+        <page name='Task Group'/>
         <page name='actor'/>
         <page name='Sendable'/>
+        <page name='Completion Handlers into async functions'/>
         <page name='GCD vs Task'/>
     </pages>
 </playground>

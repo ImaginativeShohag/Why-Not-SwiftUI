@@ -10,9 +10,9 @@ import UIKit
  A subscription returns a `Cancellable` object
 
  Correct memory management using `Cancellable` makes sure you're not retaining any references.
- 
- ⚠️ Run this pl
  */
+
+//: ⚠️ Run this playground in the Xcode. Otherwise the code will not run correctly.
 
 class MyClass {
     var cancellable: Cancellable?

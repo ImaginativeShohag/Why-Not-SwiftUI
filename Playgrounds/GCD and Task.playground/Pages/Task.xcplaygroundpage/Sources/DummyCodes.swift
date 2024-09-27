@@ -15,11 +15,6 @@ public func highPriorityWork() async {
     print("(highPriorityWork) 1 second later")
 }
 
-public func performTask() async {
-    try? await Task.sleep(for: .seconds(1))
-    print("(performTask) 1 second later")
-}
-
 public func fetchData() async -> String {
     try? await Task.sleep(for: .seconds(1))
     print("(fetchData) 1 second later")

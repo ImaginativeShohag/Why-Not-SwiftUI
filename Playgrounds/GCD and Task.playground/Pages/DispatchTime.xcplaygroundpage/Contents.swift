@@ -17,6 +17,7 @@ import Foundation
  */
 
 let delay = DispatchTime.now() + 2.0 // 2 seconds delay
+
 DispatchQueue.main.asyncAfter(deadline: delay) {
     print("Task executed after a 2-second delay")
 }
@@ -89,7 +90,7 @@ let semaphore = DispatchSemaphore(value: 0)
 let timeout = DispatchTime.now() + .seconds(5)
 
 DispatchQueue.global().async {
-    sleep(3) // Simulate some work
+    sleep(7) // Simulate some work
     print("Work completed, signaling semaphore")
     semaphore.signal() // Signal semaphore after work is done
 }

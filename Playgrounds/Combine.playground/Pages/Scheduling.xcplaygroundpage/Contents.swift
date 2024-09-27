@@ -14,6 +14,7 @@ let firstStepDone = DispatchSemaphore(value: 0)
 
 /*:
  ## `receive(on:)`
+
  - determines on which scheduler values will be received by the next operator and then on
  - used with a `DispatchQueue`, lets you control on which queue values are being delivered
  */
@@ -40,11 +41,13 @@ firstStepDone.wait()
 
 /*:
  ## `subscribe(on:)`
+
  - determines on which scheduler the subscription occurs
  - useful to control on which scheduler the work _starts_
  - may or may not impact the queue on which values are delivered
  */
 print("\n* Demonstrating subscribe(on:)")
+
 let subscription2 = [1, 2, 3, 4, 5].publisher
     .subscribe(on: DispatchQueue.global())
     .handleEvents(receiveOutput: { value in

@@ -101,7 +101,9 @@ let serialQueue = DispatchQueue(label: "imaginativeshohag.concurrent.queue")
 for index in 1..<10 {
     serialQueue.async {
         print("(Serial) Task \(index) started (\(Thread.current))")
+        
         // Do some work..
+        
         print("(Serial) Task \(index) finished (\(Thread.current))")
     }
 }
@@ -117,7 +119,9 @@ let concurrentQueue = DispatchQueue(label: "imaginativeshohag.concurrent.queue",
 for index in 1..<10 {
     concurrentQueue.async {
         print("(Concurrent) Task \(index) started (\(Thread.current))")
+        
         // Do some work..
+        
         print("(Concurrent) Task \(index) finished (\(Thread.current))")
     }
 }

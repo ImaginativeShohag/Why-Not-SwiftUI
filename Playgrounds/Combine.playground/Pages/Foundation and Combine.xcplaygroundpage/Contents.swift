@@ -6,6 +6,7 @@ import UIKit
 
 /*:
  ## Foundation and Combine
+
  Foundation adds Combine publishers for many types, like:
  */
 
@@ -33,6 +34,7 @@ Just(28)
 
 /*:
  ### A Timer publisher exposing Cocoa's `Timer`
+
  - this one is a bit special as it is a `Connectable`
  - ... use `autoconnect` to automatically start it when a subscriber subscribes
  */

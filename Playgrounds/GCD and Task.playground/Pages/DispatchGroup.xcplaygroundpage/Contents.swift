@@ -48,11 +48,11 @@ dispatchGroup1.notify(queue: .global()) {
     print("All tasks are complete! (dispatch group 1)")
 }
 
-let dispatchGroup2 = DispatchGroup()
-
 /*:
  # Example for `.wait()`
  */
+
+let dispatchGroup2 = DispatchGroup()
 
 for i in (4 ... 8).reversed() {
     dispatchGroup2.enter()

@@ -76,7 +76,7 @@ final class UserRepository {
 //: ### `@MainActor`
 
 /*:
- The underlying @MainActor implementation is similar to our custom-defined @SwiftLeeActor:
+ The underlying @MainActor implementation is similar to our custom-defined `@DataActor`:
 
  ```swift
  @globalActor

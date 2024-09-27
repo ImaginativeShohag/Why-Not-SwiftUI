@@ -16,7 +16,7 @@ for index in 1 ... 10 {
     DispatchQueue.global().async {
         semaphore.wait() // Wait for resource
 
-        print("Task \(index) started")
+        print("Task \(index) started (\(Thread.current))")
         sleep(1) // Simulate time-consuming task
         print("Task \(index) finished")
 
