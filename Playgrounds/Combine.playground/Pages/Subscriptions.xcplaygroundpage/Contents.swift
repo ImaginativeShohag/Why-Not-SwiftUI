@@ -18,17 +18,24 @@ enum ExampleError: Swift.Error {
 
 let subject = PassthroughSubject<String, ExampleError>()
 
-// The handleEvents operator lets you intercept
-// All stages of a subscription lifecycle
-subject.handleEvents(receiveSubscription: { _ in
-    print("New subscription!")
-}, receiveOutput: { _ in
-    print("Received new value!")
-}, receiveCompletion: { _ in
-    print("A subscription completed")
-}, receiveCancel: {
-    print("A subscription cancelled")
-})
+/*:
+ The `handleEvents` operator lets you intercept all stages of a subscription lifecycle.
+ */
+subject.handleEvents(
+    receiveSubscription: { _ in
+        print("New subscription!")
+    },
+    receiveOutput: { _ in
+        print("Received new value!")
+    },
+    receiveCompletion: { _ in
+        print("A subscription completed")
+    },
+    receiveCancel: {
+        print("A subscription cancelled")
+    }
+)
+//: Replaces any errors in the stream with the provided element.
 .replaceError(with: "Failure")
 .sink { value in
     print("Subscriber received value: \(value)")

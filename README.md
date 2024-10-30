@@ -103,6 +103,14 @@ A collection of animation related SwiftUI features.
 
 <img src="images/animation.gif" width=250/>
 
+## Playground Books
+
+Check `Playgrounds` directory for the books.
+
+### **GCD and Structured Concurrency Model:** A quick guide about the GCD (`DispatchQueue` etc.) and Structured Concurrency Model (`Task`, `actor`, `Sendable` etc.)
+
+<img src="images/GCD and Structured Concurrency Model.png" width=300/>
+
 ## Others
 
 - Example to create preview with mock Models and ViewModels (`ObservableObject`). (See **Media Capture & Select** Example)
@@ -288,6 +296,9 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [x] Migrate to Tuist 4.0
 - [ ] Fix a freeze issue in `NavigationView` inside `NavigationStack`
 - [x] Add `ShimmerUI`
+- [ ] Update `Backend`
+- [ ] Update `ShimmerUI`
+- [ ] Update Tuist docs ("Access Assets" section etc.)
 
 ## Extensions
 

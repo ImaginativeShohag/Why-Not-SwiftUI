@@ -5,6 +5,7 @@ import Foundation
 
 /*:
  # Scheduling operators
+
  - Combine introduces the `Scheduler` protocol
  - ... adopted by `DispatchQueue`, `RunLoop` and others
  - ... lets you determine the execution context for subscription and value delivery

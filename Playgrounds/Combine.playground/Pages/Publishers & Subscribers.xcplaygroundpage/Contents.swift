@@ -42,9 +42,10 @@ let subscription2 = publisher2
 /*:
  ## Example 3
 
- assign publisher values to a property on an object
+ Assign publisher values to a property on an object
   */
 print("")
+
 class MyClass {
     var property: Int = 0 {
         didSet {

@@ -9,7 +9,8 @@ import Foundation
  - A subject is a publisher ...
  - ... relays values it receives from other publishers ...
  - ... can be manually fed with new values
- - ... subjects as also subscribers, and can be used with `subscribe(_:)`
+ - ... subjects are also subscribers, and can be used with `subscribe(_:)`
+ - Unlike typical publishers, subjects are **hot**: they can start emitting values even before a subscriber attaches, and any new subscriber may miss previously emitted values.
  */
 
 /*:
@@ -51,6 +52,7 @@ let publisher = ["Here", "we", "go!"].publisher
 
 publisher.subscribe(relay)
 
+//: This will not work. Because after calling `publisher.subscribe(relay)`, the `PassthroughSubject` (`relay`) becomes a downstream subscriber of publisher.
 relay.send("Final Value!")
 
 /*:

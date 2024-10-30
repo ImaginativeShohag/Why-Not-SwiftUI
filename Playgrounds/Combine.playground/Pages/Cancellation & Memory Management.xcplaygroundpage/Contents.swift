@@ -2,7 +2,11 @@
 
 import Combine
 import Foundation
+import PlaygroundSupport
 import UIKit
+
+// This is necessary for the Playgrounds app. This enables indefinite execution, which is necessary for this page.
+PlaygroundPage.current.needsIndefiniteExecution = true
 
 /*:
  # Cancellation
@@ -11,8 +15,6 @@ import UIKit
 
  Correct memory management using `Cancellable` makes sure you're not retaining any references.
  */
-
-//: ⚠️ Run this playground in the Xcode. Otherwise the code will not run correctly.
 
 class MyClass {
     var cancellable: Cancellable?

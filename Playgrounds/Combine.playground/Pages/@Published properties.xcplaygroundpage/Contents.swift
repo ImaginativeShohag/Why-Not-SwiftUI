@@ -5,11 +5,13 @@ import Foundation
 import UIKit
 
 /*:
- ## @Published properties
+ # @Published properties
+
  A [Property Wrapper](https://www.avanderlee.com/swift/property-wrappers/) that adds a `Publisher` to any property.
 
  _Note: Xcode Playgrounds don't support running this Playground page with the @Published property unfortunately._
  */
+
 final class FormViewModel {
     @Published var isSubmitAllowed: Bool = true
 }
@@ -38,10 +40,11 @@ print("Button enabled is \(formViewController.submitButton.isEnabled)")
 
 /*:
  ## ObservableObject
+
  - a class inheriting from `ObservableObject` automagically synthesizes an observable
  - ... which fires whenever any of the `@Published` properties of the class change
-
  */
+
 print("\n* Demonstrating ObservableObject")
 
 class ObservableFormViewModel: ObservableObject {
@@ -58,8 +61,8 @@ let formSubscription = form.objectWillChange.sink { _ in
 }
 
 form.isSubmitAllowed = false
-form.username = "Florent"
-form.password = "12345"
+form.username = "ImaginativeShohag"
+form.password = "AwesomePassword"
 form.somethingElse = 0 // note that this doesn't output anything
 
 //: [Next](@next)

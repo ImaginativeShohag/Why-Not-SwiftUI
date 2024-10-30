@@ -5,13 +5,14 @@ import Foundation
 import UIKit
 
 /*:
- [Previous](@previous)
- ## flatmap
+ # `flatmap`
+
  - with `flatmap` you provide a new publisher every time you get a value from the upstream publisher
  - ... values all get _flattened_ into a single stream of values
  - ... it looks like Swift's `flatMap` where you flatten inner arrays of an array, just asynchronous.
 
- ## matching error types
+ ## Matching error types
+
  - use `mapError` to map a failure into a different error type
  */
 
@@ -38,4 +39,5 @@ let subscription = URLPublisher.flatMap { requestURL in
 }
 
 URLPublisher.send(URL(string: "https://httpbin.org/image/jpeg")!)
+
 //: [Next](@next)

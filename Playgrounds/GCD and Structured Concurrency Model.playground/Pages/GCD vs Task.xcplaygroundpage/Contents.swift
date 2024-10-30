@@ -8,7 +8,7 @@ import Foundation
  - `DispatchQueue.main.async` -> `Task { @MainActor in ... }`
  - `DispatchQueue.main.sync` -> `await MainActor.run { ... }`
  - `DispatchQueue.global().async` -> `Task.detached { ... }` or `Task.detached(priority: .background) { ... }`
- - `DispatchQueue.global().sync` -> No valid use case found
+ - `DispatchQueue.global().sync` -> Calling `async` function in a non `@MainActor` `Task`
  */
 
 /*:

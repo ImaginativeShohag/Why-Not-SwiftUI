@@ -5,7 +5,7 @@ import Foundation
 import UIKit
 
 /*:
- ## Custom UIKit Publishers
+ # Custom UIKit Publishers
 
  Unfortunately, not all UIKit elements are ready to use with Combine. A UISwitch, for example, does not support KVO. Therefore, custom UIKit publishers.
  */
@@ -22,7 +22,8 @@ final class UIControlSubscription<SubscriberType: Subscriber, Control: UIControl
     }
 
     func request(_ demand: Subscribers.Demand) {
-        // We do nothing here as we only want to send events when they occur.
+        // We will not send element based on demand.
+        // So, we do nothing here as we only want to send events when they occur.
         // See, for more info: https://developer.apple.com/documentation/combine/subscribers/demand
     }
 
@@ -74,7 +75,8 @@ extension CombineCompatible where Self: UIControl {
 
 /*:
  ## Responding to UITouch events
- #### With the above, we can easily create a publisher to listen for `UIButton` events as an example.
+
+ With the above, we can easily create a publisher to listen for `UIButton` events as an example.
  */
 
 /// With the above, we can easily create a publisher to listen for `UIButton` events as an example.
@@ -88,7 +90,8 @@ subscription.cancel()
 
 /*:
  ## Solving the UISwitch KVO problem
- #### As the `UISwitch.isOn` property does not support KVO this extension can become handy.
+
+ As the `UISwitch.isOn` property does not support KVO, this extension can become handy.
  */
 
 extension CombineCompatible where Self: UISwitch {
@@ -106,10 +109,15 @@ submitButton.isEnabled = false
 
 switcher.isOnPublisher.assign(to: \.isEnabled, on: submitButton)
 
-/// As the `isOn` property is not sending out `valueChanged` events itself, we need to do this manually here.
-/// This is the same behavior as it would be if the user switches the `UISwitch` in-app.
+//: Observe `isEnabled`
+submitButton.publisher(for: \.isEnabled)
+    .sink { print("Submit button enabled: \($0)") }
+
+/*:
+ As the `isOn` property is not sending out `valueChanged` events itself, we need to do this manually here.
+ This is the same behavior as it would be if the user switches the `UISwitch` in-app.
+ */
 switcher.isOn = true
 switcher.sendActions(for: .valueChanged)
-print(submitButton.isEnabled)
 
 //: [Next](@next)

@@ -5,7 +5,8 @@ import Foundation
 import UIKit
 
 /*:
- ## Future and Promises
+ # Future and Promises
+ 
  - a `Future` delivers exactly one value (or an error) and completes
  - ... it's a lightweight version of publishers, useful in contexts where you'd use a closure callback
  - ... allows you to call custom methods and return a Result.success or Result.failure
@@ -16,7 +17,7 @@ struct User {
     let name: String
 }
 
-let users = [User(id: 0, name: "Antoine"), User(id: 1, name: "Henk"), User(id: 2, name: "Bart")]
+let users = [User(id: 1, name: "Antoine"), User(id: 2, name: "Henk"), User(id: 3, name: "Bart")]
 
 enum FetchError: Error {
     case userNotFound
@@ -54,7 +55,7 @@ fetchUserPublisher
         print("User is \(result)")
     }
 
-fetchUserPublisher.send(0)
+fetchUserPublisher.send(1)
 fetchUserPublisher.send(5)
 
 //: [Next](@next)
