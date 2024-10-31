@@ -22,9 +22,16 @@ import Foundation
   */
 let publisher1 = Just(42)
 
-// You need to _subscribe_ to receive values (here using a sink with a closure)
+//: You need to _subscribe_ to receive values (here using a sink with a closure)
 let subscription1 = publisher1.sink { value in
     print("Received value from publisher1: \(value)")
+}
+
+//: Another variation of `sink`
+publisher1.sink { completion in
+    print("Received completion from publisher1: \(completion)")
+} receiveValue: { value in
+    print("(Variation) Received value from publisher1: \(value)")
 }
 
 /*:

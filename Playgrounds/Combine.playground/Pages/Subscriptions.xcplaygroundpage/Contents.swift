@@ -21,7 +21,7 @@ let subject = PassthroughSubject<String, ExampleError>()
 /*:
  The `handleEvents` operator lets you intercept all stages of a subscription lifecycle.
  */
-subject.handleEvents(
+let cancellable = subject.handleEvents(
     receiveSubscription: { _ in
         print("New subscription!")
     },
@@ -44,7 +44,22 @@ subject.handleEvents(
 subject.send("Hello!")
 subject.send("Hello again!")
 subject.send("Hello for the last time!")
+
+/*:
+ ## Check failure
+ */
+
 subject.send(completion: .failure(.somethingWentWrong))
 subject.send("Hello?? :(")
 
+/*:
+ ## Check cancellable
+
+ Comment out `send(completion: .failure(...)` code and try the following code to try cancel event.
+ */
+
+cancellable.cancel()
+subject.send("Hello?? :(")
+
+//:
 //: [Next](@next)

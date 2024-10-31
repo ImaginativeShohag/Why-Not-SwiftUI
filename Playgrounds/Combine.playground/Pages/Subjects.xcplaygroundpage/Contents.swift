@@ -10,7 +10,7 @@ import Foundation
  - ... relays values it receives from other publishers ...
  - ... can be manually fed with new values
  - ... subjects are also subscribers, and can be used with `subscribe(_:)`
- - Unlike typical publishers, subjects are **hot**: they can start emitting values even before a subscriber attaches, and any new subscriber may miss previously emitted values.
+ - Unlike typical publishers (which are cold ❄️), subjects are **hot** 🔥: they can start emitting values even before a subscriber attaches, and any new subscriber may miss previously emitted values.
  */
 
 /*:
@@ -79,7 +79,7 @@ variable.send("More text")
  */
 
 //: Run the code once then uncomment the below code and run again to see the effect.
-// variable.send(completion: .finished)
+variable.send(completion: .finished)
 
 variable.send("Another more text")
 
