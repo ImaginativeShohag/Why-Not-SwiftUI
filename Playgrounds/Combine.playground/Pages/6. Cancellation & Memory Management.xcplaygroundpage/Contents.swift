@@ -26,8 +26,8 @@ class MyClass {
 
     init(subject: PassthroughSubject<Int, Never>) {
         cancellable = subject.sink { value in
-            // Note that we are introducing a retain cycle on `self`
-            // on purpose, by not using `weak` or `unowned`
+            // ⚠️ Note that we are introducing a retain cycle on `self`
+            // on purpose, by not using `weak` or `unowned`.
             self.variable += value
         }
     }
@@ -54,7 +54,7 @@ emitNextValue(from: [1, 2, 3, 4, 5, 6, 7, 8], after: 0.5)
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
     print("Nullify object")
-    //: **TODO** uncomment the next line to see the change
+    // ⚠️ TODO: Uncomment the next line to see the change
     // object?.cancellable = nil
     object = nil
 }

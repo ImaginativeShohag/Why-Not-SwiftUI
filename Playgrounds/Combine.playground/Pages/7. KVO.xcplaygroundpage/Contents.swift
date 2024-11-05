@@ -12,6 +12,10 @@ import Combine
 //: Define a Class with a KVO-Compliant Property:
 
 class Person: NSObject {
+    /// The `name` property of a `Person`, which is observable using Key-Value Observing (KVO).
+    ///
+    /// - Note: This property is marked with `@objc` and `dynamic` to enable compatibility with Objective-C's KVO, allowing you to observe changes to its value.
+    ///         This setup also enables using it with Combine's `publisher(for:)` method to create a reactive publisher for changes to `name`.
     @objc dynamic var name: String = ""
 }
 
