@@ -4,6 +4,7 @@
 
 import Foundation
 import Moya
+import SuperLog
 
 /// This protocol will be used to define cache policy for the requests.
 public protocol MoyaCacheable {

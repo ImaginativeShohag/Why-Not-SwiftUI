@@ -4,6 +4,7 @@
 
 import Core
 import Home
+import SuperLog
 import SwiftUI
 
 @MainActor

@@ -4,6 +4,7 @@
 
 import Foundation
 import Moya
+import SuperLog
 import UIKit
 
 public extension Array where Element == MultipartFormData {

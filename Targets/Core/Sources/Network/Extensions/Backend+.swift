@@ -4,6 +4,7 @@
 
 import Foundation
 import Moya
+import NetworkKit
 
 public extension Backend {
     convenience init(
@@ -13,7 +14,7 @@ public extension Backend {
         self.init(
             isStubbed: isUITestEnvironment ? true : isStubbed,
             stubBehavior: stubBehavior,
-            session: Env.shared.defaultSession
+            session: NetworkSession.default
         )
     }
 }

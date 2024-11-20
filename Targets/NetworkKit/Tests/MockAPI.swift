@@ -2,7 +2,7 @@
 //  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-import Core
+import NetworkKit
 import Foundation
 import Moya
 
@@ -10,8 +10,14 @@ public enum MockAPI {
     case mockGetSuccess
     case mockGetFail
     case mockGetError
+    case mockGetAuthenticationError
     case mockGetErrorWithNoData
-    case mockGetErrorWithUnparsableData
+    case mockGetSuccessWithNoData
+    case mockGetErrorWithUnParsableData
+    case mockGetErrorWithEmpty
+    case mockGetSuccessWithEmpty
+    case mockGetSuccessWithNil
+    case mockRequestCustomEndpoint(_ endpoint: String)
 }
 
 extension MockAPI: ApiEndpoint {
@@ -28,11 +34,29 @@ extension MockAPI: ApiEndpoint {
         case .mockGetError:
             return "/api/mock-get-error"
 
+        case .mockGetAuthenticationError:
+            return "/api/mock-get-authentication-error"
+
         case .mockGetErrorWithNoData:
             return "/api/mock-get-error-with-no-data"
 
-        case .mockGetErrorWithUnparsableData:
+        case .mockGetSuccessWithNoData:
+            return "/api/mock-get-success-with-no-data"
+
+        case .mockGetErrorWithUnParsableData:
             return "/api/mock-get-error-with-unparsable-data"
+
+        case .mockGetErrorWithEmpty:
+            return "/api/mock-get-error-with-empty"
+
+        case .mockGetSuccessWithEmpty:
+            return "/api/mock-get-success-with-empty"
+
+        case .mockGetSuccessWithNil:
+            return "/api/mock-get-success-with-nil"
+
+        case .mockRequestCustomEndpoint(let endpoint):
+            return endpoint
         }
     }
 
@@ -61,11 +85,29 @@ extension MockAPI: ApiEndpoint {
         case .mockGetError:
             return .error
 
+        case .mockGetAuthenticationError:
+            return .error
+
         case .mockGetErrorWithNoData:
             return .error
 
-        case .mockGetErrorWithUnparsableData:
+        case .mockGetSuccessWithNoData:
+            return .success
+
+        case .mockGetErrorWithUnParsableData:
             return .error
+
+        case .mockGetErrorWithEmpty:
+            return .error
+
+        case .mockGetSuccessWithEmpty:
+            return .success
+
+        case .mockGetSuccessWithNil:
+            return .success
+
+        case .mockRequestCustomEndpoint:
+            return .success
         }
     }
 
@@ -78,13 +120,31 @@ extension MockAPI: ApiEndpoint {
             return 200
 
         case .mockGetError:
+            return 500
+
+        case .mockGetAuthenticationError:
             return 401
 
         case .mockGetErrorWithNoData:
             return 500
 
-        case .mockGetErrorWithUnparsableData:
+        case .mockGetSuccessWithNoData:
+            return 200
+
+        case .mockGetErrorWithUnParsableData:
             return 500
+
+        case .mockGetErrorWithEmpty:
+            return 500
+
+        case .mockGetSuccessWithEmpty:
+            return 200
+
+        case .mockGetSuccessWithNil:
+            return 200
+
+        case .mockRequestCustomEndpoint:
+            return 200
         }
     }
 
@@ -94,29 +154,35 @@ extension MockAPI: ApiEndpoint {
             return #"""
             {
               "success": true,
-              "message": "Request processed successfully",
+              "message": "Request processed successfully.",
             }
             """#.data(using: .utf8)
 
         case .mockGetFail:
-            return #"""
-            {
-              "success": false,
-              "message": "Request is failed",
-            }
-            """#.data(using: .utf8)
+            return #"{}"#.data(using: .utf8)
 
         case .mockGetError:
             return #"""
             {
-              "message": "Unauthenticated",
+              "success": false,
+              "message": "Request failed.",
+            }
+            """#.data(using: .utf8)
+
+        case .mockGetAuthenticationError:
+            return #"""
+            {
+              "message": "Unauthenticated.",
             }
             """#.data(using: .utf8)
 
         case .mockGetErrorWithNoData:
             return nil
 
-        case .mockGetErrorWithUnparsableData:
+        case .mockGetSuccessWithNoData:
+            return nil
+
+        case .mockGetErrorWithUnParsableData:
             return #"""
             <!DOCTYPE html>
             <html>
@@ -126,6 +192,18 @@ extension MockAPI: ApiEndpoint {
                 </body>
             </html>
             """#.data(using: .utf8)
+
+        case .mockGetErrorWithEmpty:
+            return "".data(using: .utf8)
+
+        case .mockGetSuccessWithEmpty:
+            return "".data(using: .utf8)
+
+        case .mockGetSuccessWithNil:
+            return nil
+
+        case .mockRequestCustomEndpoint:
+            return nil
         }
     }
 

@@ -103,11 +103,17 @@ A collection of animation related SwiftUI features.
 
 <img src="images/animation.gif" width=250/>
 
+### UI Testing with Mock data
+
+Checkout the "News" module to get an example for how to run an UI test using mock data.
+
 ## Playground Books
 
 Check `Playgrounds` directory for the books.
 
 ### **GCD and Structured Concurrency Model:** A quick guide about the GCD (`DispatchQueue` etc.) and Structured Concurrency Model (`Task`, `actor`, `Sendable` etc.)
+
+### **Combine:** An introduction guide for the Combine framework.
 
 <img src="images/GCD and Structured Concurrency Model.png" width=300/>
 
@@ -299,6 +305,7 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [ ] Update `Backend`
 - [ ] Update `ShimmerUI`
 - [ ] Update Tuist docs ("Access Assets" section etc.)
+- [ ] Move version to xconfig file
 
 ## Extensions
 
