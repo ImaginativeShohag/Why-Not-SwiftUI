@@ -21,21 +21,36 @@ public final class CertificateManager {
     ///
     /// # PEM format public key
     ///
-    /// PEM format public keys represented as arrays of hexadecimal integers.
+    /// PEM format public keys represented as arrays of integers.
     ///
-    /// Each array within `pemFormatPublicKeys` represents a PEM format certificate in hexadecimal.
+    /// Each array within `keys` represents a PEM format certificate in integer array.
     /// PEM (Privacy-Enhanced Mail) files are commonly used to encode certificates and keys in a text format.
     /// A PEM file contains a base64-encoded certificate, wrapped with specific header and footer lines:
     /// `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.
     /// The hex arrays in this property are converted to base64 strings, which are then processed to extract public keys.
+    /// 
+    /// # Convert DER to PEM format
     ///
-    /// If you need to convert a PEM file into a hexadecimal array that can be used in this property, you can use the following terminal command:
+    /// To convert a DER file to PEM file use following command:
+    ///
+    /// ```bash
+    /// openssl x509 -inform der -in certificate.cer -outform pem -out certificate.pem
+    /// ```
+    ///
+    /// Replace `certificate.cer` with the CER file name.
+    ///
+    /// Note: If your file starts with `-----BEGIN CERTIFICATE-----` then it is already in PEM format.
+    ///
+    /// # Convert PEM to Integer array
+    ///
+    /// If you need to convert a PEM file into a integer array that can be used in this property, you can use the following terminal command:
     ///
     /// ```bash
     /// sed '/-----/d' yourfile.pem | tr -d '\r\n' | xxd -p | tr -d '\r\n' | sed 's/../0x&, /g' | sed 's/, $//' | pbcopy && pbpaste
     /// ```
     ///
     /// ### Description of the command:
+    ///
     /// 1. **`sed '/-----/d' yourfile.pem`**: Removes any lines containing `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----` from the PEM file, effectively discarding the certificate headers and footers.
     /// 2. **`tr -d '\n'`**: Removes any newline characters, resulting in a single continuous string of the certificate's base64-encoded data.
     /// 3. **`xxd -p`**: Converts the base64 content into a plain hexadecimal format (using the ASCII-encoded values).
@@ -57,7 +72,7 @@ public final class CertificateManager {
     public init(keys pemFormatPublicKeys: [[Int]]) {
         var publicKeys: [SecKey] = []
 
-        // Loop through each PEM-formatted public key in hexadecimal
+        // Loop through each PEM-formatted public key
         for pemFormatPublicKey in pemFormatPublicKeys {
             if let publicKey = SecKey.fromPEM(pemFormatPublicKey) {
                 publicKeys.append(publicKey)
