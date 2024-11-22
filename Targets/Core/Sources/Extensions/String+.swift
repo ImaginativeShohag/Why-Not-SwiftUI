@@ -18,8 +18,10 @@ public extension String {
         return URL(fileURLWithPath: self).deletingPathExtension().lastPathComponent
     }
 
+    /// Tested: `FileExtensionTests`
     func fileExtension() -> String {
-        return URL(fileURLWithPath: self).pathExtension
+        guard let url = URLComponents(string: self)?.url else { return "" }
+        return url.pathExtension
     }
 
     func isValidEmail() -> Bool {
