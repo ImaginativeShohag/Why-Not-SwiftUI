@@ -97,7 +97,8 @@ let project = Project.app(
         ),
         Module(
             name: "NavigationKit",
-            hasUnitTest: true
+            hasUnitTest: true,
+            dependencies: ["SuperLog"]
         ),
         Module(
             name: "Home",

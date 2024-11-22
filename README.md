@@ -294,7 +294,7 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [ ] Use system font styles
 - [ ] CMS Module
 - [ ] System UI Components Collection
-    - [ ] [https://developer.apple.com/documentation/swiftui/grid](Grid)
+    - [ ] (Grid)[https://developer.apple.com/documentation/swiftui/grid]
 - [x] Navigation system update
 - [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
 - [x] Migrate to Tuist
@@ -303,7 +303,7 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [x] Add `ShimmerUI`
 - [x] Update `Backend`
 - [ ] Update `ShimmerUI`
-- [ ] Update Tuist docs ("Access Assets" section etc.)
+- [ ] Update `Tuist` docs ("Access Assets" section etc.)
 
 ## Extensions
 
