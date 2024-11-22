@@ -3,6 +3,7 @@
 //
 
 import Core
+import NavigationKit
 import SwiftData
 import SwiftUI
 

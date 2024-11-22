@@ -2,8 +2,11 @@
 //  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Alamofire
+import Foundation
+
 public struct Env {
-    nonisolated(unsafe) public static let shared = Env()
+    public nonisolated(unsafe) static let shared = Env()
 
     public let environment: Environment
 
@@ -27,11 +30,4 @@ public struct Env {
 
         #endif
     }
-
-    public let defaultSession = NetworkSession.getNetworkSession(
-        hostUrl: Config.HOST_URL,
-        httpAdditionalHeaders: [
-            "Accept": "application/json"
-        ]
-    )
 }

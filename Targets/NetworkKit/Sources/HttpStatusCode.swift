@@ -47,7 +47,7 @@ public enum HttpStatusCode {
         422: "Unprocessable Entity! The request was well-formed but unable to be followed due to semantic errors.",
         429: "Too Many Requests. The user has sent too many requests in a given amount of time.",
         431: "Request Header Fields Too Large! The server is unwilling to process the request because the request header fields are too large.",
-        500: "Internal Server Error. Please try again",
+        500: "Internal Server Error. Please try again.",
         501: "Not Implemented! The server does not support the functionality required to fulfill the request.",
         502: "Bad Gateway: The server received an invalid response from an upstream server while acting as a gateway or proxy.",
         503: "Service Unavailable! The server is currently unable to handle the request due to a temporary overload or maintenance.",

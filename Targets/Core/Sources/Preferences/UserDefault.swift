@@ -23,6 +23,7 @@ public struct UserDefault<T: PropertyListValue> {
         set { UserDefaults.standard.set(newValue, forKey: key.rawValue) }
     }
 
+    /// The ``UserDefault/projectedValue`` is the property accessed with the `$` operator.
     public var projectedValue: UserDefault<T> { return self }
 
     func observe(change: @escaping (T?, T?) -> Void) -> NSObject {

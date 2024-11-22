@@ -5,6 +5,7 @@
 import Core
 import Foundation
 import Moya
+import NetworkKit
 
 extension DataSource {
     static let News = Backend<NewsAPI>()

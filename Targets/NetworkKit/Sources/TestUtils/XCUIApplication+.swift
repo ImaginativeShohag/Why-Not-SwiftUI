@@ -4,7 +4,7 @@
 
 import XCTest
 
-extension XCUIApplication {
+public extension XCUIApplication {
     func launchApp(with responses: [MockResponse] = []) {
         // Add UI test flag argument
         launchArguments += [uiTestArgEnable]

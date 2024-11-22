@@ -7,6 +7,7 @@ import Combine
 import CombineMoya
 import Foundation
 import Moya
+import SuperLog
 
 /// This is a subclass of `MoyaProvider`. This is the heart for API call.
 ///
@@ -16,14 +17,26 @@ import Moya
 ///
 /// - Note: Tested with `BackendTest`.
 public class Backend<API>: MoyaProvider<API> where API: ApiEndpoint {
+    private let onError: (_ route: String, _ code: Int) -> ()
+
+    /// Initializes the provider for network calls.
+    ///
+    /// - Parameters:
+    ///   - isStubbed: A boolean value to indicate if the responses will be stubbed.
+    ///   - stubBehavior: Explains the stub behavior. Default is set to `.delayed(seconds: 1)`.
+    ///   - session: Underlying `URLSession` for this instance.
+    ///   - onError: A callback closure with `route` and `statusCode` in parameter. It will be executed when the network call fails.
     public init(
         isStubbed: Bool = false,
-        stubBehavior: StubBehavior = .immediate,
-        session: Session
+        stubBehavior: StubBehavior = .delayed(seconds: 1),
+        session: Session,
+        onError: @escaping (_ route: String, _ code: Int) -> () = { _, _ in }
     ) {
         var plugins: [PluginType] = [
             MoyaCacheablePlugin()
         ]
+
+        self.onError = onError
 
         #if DEBUG
         plugins.append(NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)))
@@ -70,13 +83,10 @@ public extension Backend {
     ) async -> ApiResult<T> where T: Decodable {
         await withCheckedContinuation { continuation in
             var cancellable: AnyCancellable?
-            var finishedWithoutValue = true
-
             // ----------------------------------------------------------------
             // Check task cancellation
             // ----------------------------------------------------------------
             if _Concurrency.Task.isCancelled {
-                SuperLog.d("debug-here 0")
                 continuation.resume(returning: Backend.canceledRequestResult())
                 cancellable?.cancel()
                 return
@@ -93,29 +103,14 @@ public extension Backend {
                     case .finished:
                         SuperLog.v("finished")
 
-                        // ----------------------------------------------------------------
-                        // Check task cancellation
-                        // ----------------------------------------------------------------
-                        if _Concurrency.Task.isCancelled {
-                            SuperLog.d("debug-here 1")
-                            continuation.resume(returning: Backend.canceledRequestResult())
-                            cancellable?.cancel()
-                            return
-                        }
-                        // ----------------------------------------------------------------
-
-                        if finishedWithoutValue {
-                            continuation.resume(returning: .failure(
-                                error: MoyaError.underlying(AsyncError.finishedWithoutValue, nil),
-                                errorMessage: "Unknown error!",
-                                statusCode: -1
-                            ))
-                        }
-
                     case let .failure(error):
                         SuperLog.v("failed: \(error)")
 
                         let statusCode: Int = error.response?.statusCode ?? -1
+
+                        DispatchQueue.main.async {
+                            self.onError(endpoint.path, statusCode)
+                        }
 
                         // ----------------------------------------------------------------
                         // Handle `Empty` model
@@ -127,7 +122,6 @@ public extension Backend {
                             // Check task cancellation
                             // ----------------------------------------------------------------
                             if _Concurrency.Task.isCancelled {
-                                SuperLog.d("debug-here 2")
                                 continuation.resume(returning: Backend.canceledRequestResult())
                                 cancellable?.cancel()
                                 return
@@ -142,31 +136,57 @@ public extension Backend {
                         // Error message generation
                         // ----------------------------------------------------------------
 
-                        var errorMessage: String = self.getErrorMessage(for: error)
+                        var errorMessage = ""
+
+                        #if PRODUCTION
+                        if case let .statusCode(response) = error {
+                            /// If the app is in **production** we only show status code related messages.
+                            errorMessage = HttpStatusCode.getMessage(for: response.statusCode)
+
+                            if statusCode > 0 {
+                                errorMessage = "(\(statusCode)) \(errorMessage)"
+                            }
+                        } else {
+                            /// If the app is in **production** and the error is **not related** to **status code** then we show this.
+                            errorMessage = "Something went wrong. Please try again."
+                        }
+                        #else
+
+                        errorMessage = self.getErrorMessage(for: error)
 
                         if statusCode > 0 {
                             errorMessage = "(\(statusCode)) \(errorMessage)"
+                        }
+                        #endif
+
+                        // ----------------------------------------------------------------
+                        // For parsing error
+                        // ----------------------------------------------------------------
+
+                        if (200 ... 299).contains(statusCode), case .objectMapping = error {
+                            errorMessage = "Invalid server response. Please try again."
                         }
 
                         // ----------------------------------------------------------------
                         // Try to parse the error message from response
                         // ----------------------------------------------------------------
 
-                        if let parsedErrorMessage = self.parseResponseErrorMessage(from: error) {
+                        /// In **production** we will not show server given errors.
+                        else if let parsedErrorMessage = self.parseResponseErrorMessage(from: error) {
+                            #if !PRODUCTION
                             errorMessage = parsedErrorMessage
+                            #endif
                         }
 
                         // ----------------------------------------------------------------
                         // Check task cancellation
                         // ----------------------------------------------------------------
                         if _Concurrency.Task.isCancelled {
-                            SuperLog.d("debug-here 3")
                             continuation.resume(returning: Backend.canceledRequestResult())
                             cancellable?.cancel()
                             return
                         }
                         // ----------------------------------------------------------------
-
                         continuation.resume(returning: .failure(
                             error: error,
                             errorMessage: errorMessage,
@@ -180,14 +200,12 @@ public extension Backend {
                     // Check task cancellation
                     // ----------------------------------------------------------------
                     if _Concurrency.Task.isCancelled {
-                        SuperLog.d("debug-here 4")
                         continuation.resume(returning: Backend.canceledRequestResult())
                         cancellable?.cancel()
                         return
                     }
                     // ----------------------------------------------------------------
 
-                    finishedWithoutValue = false
                     continuation.resume(returning: .success(response: response))
                 }
         }
@@ -203,7 +221,6 @@ public extension Backend {
                     GeneralResponse.self,
                     from: data
                 )
-
                 return errorResponse.getMessage()
             } catch {
                 SuperLog.v(error)
@@ -235,6 +252,19 @@ public extension Backend {
 }
 
 public enum AsyncError: Error {
-    case finishedWithoutValue
     case requestCancelled
 }
+
+#if DEBUG
+
+extension Backend {
+    func public_parseResponseErrorMessage(from error: MoyaError) -> String? {
+        parseResponseErrorMessage(from: error)
+    }
+
+    func public_getErrorMessage(for error: MoyaError) -> String {
+        getErrorMessage(for: error)
+    }
+}
+
+#endif
