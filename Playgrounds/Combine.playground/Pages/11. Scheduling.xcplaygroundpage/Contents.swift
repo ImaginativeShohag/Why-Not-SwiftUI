@@ -11,7 +11,19 @@ import Foundation
  - ... lets you determine the execution context for subscription and value delivery
  */
 
+/// A semaphore used to signal completion of the first step in the operation.
+///
+/// - Note: `firstStepDone` is initialized with a value of `0`, meaning that `wait()` will block
+///         until `signal()` is called. This is used to control the flow of asynchronous code in the example,
+///         ensuring that the main thread waits for all expected values to be received before proceeding.
 let firstStepDone = DispatchSemaphore(value: 0)
+
+/// A counter that tracks the number of values received from the `publisher`.
+///
+/// - Note: `count` is incremented each time a value is received in the `sink` subscriber.
+///         When `count` reaches 4, the `firstStepDone` semaphore is signaled, allowing
+///         the main thread to proceed. This ensures that exactly four values have been processed.
+var count = 0
 
 /*:
  ## `receive(on:)`
@@ -27,7 +39,10 @@ let subscription = publisher
     .receive(on: receivingQueue)
     .sink { value in
         print("Received value: \(value) on thread \(Thread.current)")
-        if value == "Four" {
+        
+        // Check to unlock the main thread.
+        count += 1
+        if count == 4 {
             firstStepDone.signal()
         }
     }
@@ -38,6 +53,7 @@ for string in ["One", "Two", "Three", "Four"] {
     }
 }
 
+// Lock the main thread.
 firstStepDone.wait()
 
 /*:

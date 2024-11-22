@@ -21,24 +21,27 @@ let subject = PassthroughSubject<String, ExampleError>()
 /*:
  The `handleEvents` operator lets you intercept all stages of a subscription lifecycle.
  */
-let cancellable = subject.handleEvents(
+let subscriber1 = subject.handleEvents(
     receiveSubscription: { _ in
-        print("New subscription!")
+        print("⚡️ Event: New subscription!")
     },
     receiveOutput: { _ in
-        print("Received new value!")
+        print("⚡️ Event: Received new value!")
     },
-    receiveCompletion: { _ in
-        print("A subscription completed")
+    receiveCompletion: { completion in
+        print("⚡️ Event: A subscription completed with \(completion)")
     },
     receiveCancel: {
-        print("A subscription cancelled")
+        print("⚡️ Event: A subscription cancelled")
+    },
+    receiveRequest: { demand in
+        print("⚡️ Event: received demand: \(demand.description)")
     }
 )
 //: Replaces any errors in the stream with the provided element.
 .replaceError(with: "Failure")
 .sink { value in
-    print("Subscriber received value: \(value)")
+    print("Subscriber 1 received value: \(value)")
 }
 
 subject.send("Hello!")
@@ -54,12 +57,19 @@ subject.send("Hello?? :(")
 
 /*:
  ## Check cancellable
-
- Comment out `send(completion: .failure(...)` code and try the following code to try cancel event.
  */
 
-cancellable.cancel()
-subject.send("Hello?? :(")
+let subscriber2 = subject.sink { completion in
+    print("Subscriber 2 received completion: \(completion)")
+} receiveValue: { value in
+    print("Subscriber 2 received value: \(value)")
+}
 
-//:
+//: ⚠️ Note: Comment out `send(completion: .failure(...)` code and try the following code to try "cancel" event.
+
+// subscriber1.cancel()
+// subject.send("Hello?? :(")
+
+//: The `cancel()` will cancel the `subscriber1` and won't affect `subscriber2`.
+
 //: [Next](@next)

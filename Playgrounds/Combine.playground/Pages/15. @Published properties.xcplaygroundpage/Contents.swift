@@ -5,7 +5,7 @@ import Foundation
 import UIKit
 
 /*:
- # @Published properties
+ # `@Published` properties
 
  A [Property Wrapper](https://www.avanderlee.com/swift/property-wrappers/) that adds a `Publisher` to any property.
 
@@ -39,7 +39,7 @@ formViewController.viewModel.isSubmitAllowed = false
 print("Button enabled is \(formViewController.submitButton.isEnabled)")
 
 /*:
- ## ObservableObject
+ ## `ObservableObject`
 
  - a class inheriting from `ObservableObject` automagically synthesizes an observable
  - ... which fires whenever any of the `@Published` properties of the class change
