@@ -14,6 +14,6 @@ public struct GeneralResponse: Codable {
     }
 
     public func getMessage(orDefault message: String = "Something went wrong. Try again.") -> String {
-        return self.message.isBlank ? message : self.message!
+        return self.message == nil || self.message?.isEmpty == true ? message : self.message!
     }
 }

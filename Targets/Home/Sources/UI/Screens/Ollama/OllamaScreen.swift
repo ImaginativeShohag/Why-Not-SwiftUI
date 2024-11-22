@@ -4,6 +4,7 @@
 
 import Core
 import MarkdownUI
+import NavigationKit
 import SwiftUI
 
 // MARK: - Destination

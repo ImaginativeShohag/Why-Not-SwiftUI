@@ -3,10 +3,11 @@
 //
 
 import Core
+import NavigationKit
 import SwiftUI
 
 public struct HomeScreen: View {
-    @StateObject private var viewModel = HomeViewModel()
+    @State private var viewModel = HomeViewModel()
 
     public init() {}
 
@@ -51,9 +52,6 @@ public struct HomeScreen: View {
         }
         .fontStyle(size: 16)
         .navigationTitle("Why Not SwiftUI!")
-        .onAppear {
-            // viewModel.getPosts()
-        }
     }
 }
 
