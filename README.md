@@ -149,7 +149,7 @@ Install `mise` CLI:
 
 ```bash
 # Install CLI
-$ curl https://mise.jdx.dev/install.sh | sh
+$ curl https://mise.run | sh
 
 # Check mise version
 $ ~/.local/bin/mise --version
@@ -290,7 +290,6 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [ ] Custom Sidebar: Finalize it (WIP)
 - [ ] Custom Build variant
 - [ ] Add documentation to the extensions
-- [ ] Moya finalize
 - [ ] Home list multiple accent color
 - [ ] Use system font styles
 - [ ] CMS Module
