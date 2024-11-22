@@ -302,10 +302,9 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [x] Migrate to Tuist 4.0
 - [ ] Fix a freeze issue in `NavigationView` inside `NavigationStack`
 - [x] Add `ShimmerUI`
-- [ ] Update `Backend`
+- [x] Update `Backend`
 - [ ] Update `ShimmerUI`
 - [ ] Update Tuist docs ("Access Assets" section etc.)
-- [ ] Move version to xconfig file
 
 ## Extensions
 
