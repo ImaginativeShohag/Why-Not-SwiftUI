@@ -4,6 +4,7 @@
 
 import Core
 import Foundation
+import NavigationKit
 import SwiftUI
 import WebKit
 
@@ -32,7 +33,7 @@ struct WebViewScreen: View {
     @State private var error: String? = nil
 
     private let webView = WKWebView()
-    
+
     init(
         url: String = "https://github.com/ImaginativeShohag"
     ) {
@@ -115,7 +116,7 @@ struct WebViewScreen: View {
                         VStack(spacing: 16) {
                             Image(systemName: "exclamationmark.triangle")
                                 .font(.title)
-                            
+
                             Text(error)
                                 .multilineTextAlignment(.center)
                         }
@@ -266,7 +267,7 @@ private struct WebView: UIViewRepresentable {
             updateUrl(webView)
             updateNavigationButtons(webView)
         }
-        
+
         func webView(
             _ webView: WKWebView,
             didFailProvisionalNavigation navigation: WKNavigation!,
@@ -278,14 +279,14 @@ private struct WebView: UIViewRepresentable {
             updateUrl(webView)
             updateNavigationButtons(webView)
         }
-        
+
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
             return .allow
         }
-        
+
         func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
             parent.isLoading = false
-            
+
             if let response = navigationResponse.response as? HTTPURLResponse {
                 if response.statusCode == 401 {
                     parent.error = "(404) Page not found!"
@@ -294,7 +295,7 @@ private struct WebView: UIViewRepresentable {
 
             updateUrl(webView)
             updateNavigationButtons(webView)
-            
+
             return .allow
         }
 

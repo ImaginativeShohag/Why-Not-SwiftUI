@@ -4,6 +4,7 @@
 
 import Core
 import Home
+import NavigationKit
 import SuperLog
 import SwiftUI
 

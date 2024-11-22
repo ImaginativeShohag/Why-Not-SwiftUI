@@ -4,6 +4,7 @@
 
 import CommonUI
 import Core
+import NavigationKit
 import PhotosUI
 import SwiftUI
 

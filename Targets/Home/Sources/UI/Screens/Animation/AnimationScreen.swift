@@ -4,6 +4,7 @@
 
 import Core
 import Foundation
+import NavigationKit
 import SwiftUI
 
 // For iOS 18:

@@ -3,6 +3,7 @@
 //
 
 import Core
+import NavigationKit
 import SwiftUI
 
 public struct HomeScreen: View {
