@@ -32,6 +32,21 @@ public extension String {
     func addingPercentEncodingForQueryParameter() -> String {
         return addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
     }
+    
+    func toMarkdown() -> AttributedString {
+        do {
+          return try AttributedString(
+            markdown: self,
+            options: AttributedString.MarkdownParsingOptions(
+                allowsExtendedAttributes: true,
+                interpretedSyntax: .full
+            )
+          )
+        } catch {
+          print("Error parsing Markdown for string \(self): \(error)")
+          return AttributedString(self)
+        }
+      }
 }
 
 extension Optional where Wrapped == String {

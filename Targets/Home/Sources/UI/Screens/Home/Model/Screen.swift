@@ -3,6 +3,7 @@
 //
 
 import Core
+import News
 import SwiftUI
 import Todo
 
@@ -80,5 +81,39 @@ struct Screen: Identifiable, Sendable {
             name: "Todo App",
             destination: Destination.TodoHome()
         ),
-    ].sorted(by: \.name)
+        Screen(
+            name: "🥭 News App",
+            destination: Destination.NewsHome()
+        ),
+        Screen(
+            name: "Network: `URLSession` Example",
+            destination: Destination.URLSession()
+        ),
+        Screen(
+            name: "Network: `Alamofire` Example",
+            destination: Destination.Alamofire()
+        ),
+        Screen(
+            name: "`@AppStorage` Example",
+            destination: Destination.AppStorage()
+        ),
+        Screen(
+            name: "`Realm` Example",
+            destination: Destination.RealmDB()
+        ),
+        Screen(
+            name: "Animation Example",
+            destination: Destination.Animation()
+        ),
+        Screen(
+            name: "`WebView` Example",
+            destination: Destination.WebView()
+        ),
+        Screen(
+            name: "`Ollama` Example",
+            destination: Destination.Ollama()
+        ),
+    ].sorted { old, new in
+        old.name.filter { $0.isLetter || $0.isNumber } <  new.name.filter { $0.isLetter || $0.isNumber }
+    }
 }

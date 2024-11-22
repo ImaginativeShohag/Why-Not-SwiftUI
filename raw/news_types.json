@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "message": "success",
+  "data": [
+    {
+      "id": 1,
+      "name": "Breaking News"
+    },
+    {
+      "id": 2,
+      "name": "Sports Update"
+    },
+    {
+      "id": 3,
+      "name": "Weather Alert"
+    },
+    {
+      "id": 4,
+      "name": "Technology"
+    },
+    {
+      "id": 5,
+      "name": "Health"
+    },
+    {
+      "id": 6,
+      "name": "Entertainment"
+    },
+    {
+      "id": 7,
+      "name": "Politics"
+    },
+    {
+      "id": 8,
+      "name": "Economy"
+    },
+    {
+      "id": 9,
+      "name": "Science"
+    },
+    {
+      "id": 10,
+      "name": "Travel"
+    }
+  ]
+}

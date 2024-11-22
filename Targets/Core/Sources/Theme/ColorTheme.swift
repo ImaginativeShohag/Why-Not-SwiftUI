@@ -4,6 +4,7 @@
 
 import SwiftUI
 
+@MainActor
 public extension Color {
     static let theme = ColorTheme()
 }

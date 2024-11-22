@@ -6,6 +6,7 @@ import Core
 import Home
 import SwiftUI
 
+@MainActor
 struct MainContainerScreen: View {
     @Bindable private var navController = NavController.shared
 

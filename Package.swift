@@ -19,7 +19,9 @@ import PackageDescription
             "Kingfisher": .framework,
             "DGCharts": .framework,
             "Lottie": .framework,
-            "Shimmer": .framework
+            "Shimmer": .framework,
+            "RealmSwift": .framework,
+            "MarkdownUI": .framework,
         ],
         baseSettings: Settings.settings(
             configurations: BuildEnvironment.getConfigurations(for: .target)
@@ -36,6 +38,8 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Kingfisher", from: "7.0.0"),
         .package(url: "https://github.com/danielgindi/Charts", from: "5.0.0"),
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.3.0"),
-        .package(url: "https://github.com/markiv/SwiftUI-Shimmer", from: "1.4.2")
+        .package(url: "https://github.com/markiv/SwiftUI-Shimmer", from: "1.4.2"),
+        .package(url: "https://github.com/realm/realm-swift", from: "10.52.3"),
+        .package(url: "https://github.com/gonzalezreal/swift-markdown-ui", from: "2.4.0")
     ]
 )

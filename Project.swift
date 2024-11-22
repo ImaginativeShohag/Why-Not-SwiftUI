@@ -90,10 +90,16 @@ let project = Project.app(
             name: "Home",
             hasUnitTest: true,
             hasUITest: true,
-            dependencies: ["Core", "CommonUI", "Todo"]
+            dependencies: ["Core", "CommonUI", "Todo", "News"]
         ),
         Module(
             name: "Todo",
+            dependencies: ["Core", "CommonUI"]
+        ),
+        Module(
+            name: "News",
+            hasResources: true,
+            hasUITest: true,
             dependencies: ["Core", "CommonUI"]
         )
     ],
@@ -105,7 +111,11 @@ let project = Project.app(
         .external(name: "Kingfisher"),
         .external(name: "DGCharts"),
         .external(name: "Lottie"),
-        .external(name: "Shimmer")
+        .external(name: "Shimmer"),
+        // We need both "RealmSwift" and "Realm" to solve the "Undefined symbol" issue.
+        .external(name: "RealmSwift"),
+        .external(name: "Realm"),
+        .external(name: "MarkdownUI"),
     ],
     coreDataModels: []
 )

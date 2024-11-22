@@ -3,6 +3,7 @@
 //
 
 import Core
+import SwiftData
 import SwiftUI
 
 // MARK: - Destination
@@ -17,11 +18,19 @@ public extension Destination {
 
 // MARK: - UI
 
+@MainActor
 struct TodoHomeScreen: View {
-    @State var viewModel = TodoHomeViewModel()
+    @State private var viewModel: TodoHomeViewModel
+    @State private var showAddSheet = false
+    @State private var editItem: Todo? = nil
 
-    @State var showAddSheet = false
-    @State var editItem: Todo? = nil
+    init(
+        viewModel: TodoHomeViewModel = TodoHomeViewModel(
+            modelContainer: TodoDataSource.shared.modelContainer
+        )
+    ) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         VStack {
@@ -126,61 +135,27 @@ struct TodoHomeScreen: View {
 #if DEBUG
 
 #Preview {
-    NavigationStack {
-        TodoHomeScreen(
-            viewModel: TodoHomeViewModel(forPreview: true)
-        )
+    MainActor.assumeIsolated {
+        NavigationStack {
+            TodoHomeScreen(
+                viewModel: TodoHomeViewModel(
+                    modelContainer: PreviewSampleData.container
+                )
+            )
+        }
     }
 }
 
 #endif
 
-//struct TodoItemViewWrapped: View {
-//    var todo: Todo
-//    let onClick: () -> Void
-//    let onEditClick: () -> Void
-//    let onCompleteClick: () -> Void
-//
-//    var body: some View {
-//        TodoItemView(
-//            title: todo.title,
-//            notes: todo.notes,
-//            priority: todo.priority,
-//            isCompleted: todo.isCompleted
-//        ) {
-//            onClick()
-//        }
-//        .swipeActions(edge: .leading) {
-//            Button {
-//                onEditClick()
-//            } label: {
-//                Label(
-//                    "Edit",
-//                    systemImage: "square.and.pencil"
-//                )
-//            }
-//            .tint(Color.blue)
-//        }
-//        .swipeActions(edge: .trailing) {
-//            Button {
-//                onCompleteClick()
-//            } label: {
-//                Label(
-//                    todo.isCompleted ? "Incomplete" : "Complete",
-//                    systemImage: todo.isCompleted ? "minus.square" : "checkmark.square"
-//                )
-//            }
-//            .tint(todo.isCompleted ? Color.red : Color.green)
-//        }
-//    }
-//}
+// MARK: - Components
 
 struct TodoItemView: View {
     let title: String
     let notes: String
     let priority: TodoPriority
     let isCompleted: Bool
-    
+
     let onClick: () -> Void
     let onEditClick: () -> Void
     let onCompleteClick: () -> Void

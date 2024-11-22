@@ -6,6 +6,7 @@ import SwiftUI
 
 #if DEBUG
 
+@MainActor
 struct NavigationDemo: View {
     @Bindable var navController = NavController.shared
 
@@ -22,9 +23,10 @@ struct NavigationDemo: View {
     }
 }
 
+@MainActor
 struct NavigationDemoScreen: View {
     @Environment(\.dismiss) private var dismiss
-    @Bindable var navController = NavController.shared
+    let navController = NavController.shared
 
     private let title: String
 

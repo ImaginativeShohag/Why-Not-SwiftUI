@@ -5,28 +5,19 @@
 import Foundation
 import SwiftData
 
-@DataActor
-final class TodoDataSource {
+final actor TodoDataSource {
     static let shared = TodoDataSource()
 
-    private var _database: IDatabase?
-
     let container: ModelContainer = try! ModelContainer(for: Todo.self)
-    var database: any IDatabase {
-        if let task = _database {
-            return task
+    nonisolated lazy var modelContainer: ModelContainer = {
+        let modelContainer: ModelContainer
+        do {
+            modelContainer = try ModelContainer(for: Todo.self)
+        } catch {
+            fatalError("Failed to create the model container: \(error)")
         }
-
-        let task = makeDatabase()
-
-        _database = task
-
-        return task
-    }
-
-    private func makeDatabase() -> any IDatabase {
-        return Database(modelContainer: container)
-    }
+        return modelContainer
+    }()
 
     private init() {}
 }

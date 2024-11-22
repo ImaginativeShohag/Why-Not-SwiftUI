@@ -25,10 +25,22 @@ public extension Destination {
 
 // MARK: - UI
 
+@MainActor
 struct TodoDetailScreen: View {
-    @State var viewModel = TodoDetailViewModel()
+    @State private var viewModel: TodoDetailViewModel
 
-    let id: Int
+    private let id: Int
+
+    @MainActor
+    init(
+        viewModel: TodoDetailViewModel = TodoDetailViewModel(
+            modelContainer: TodoDataSource.shared.modelContainer
+        ),
+        id: Int
+    ) {
+        self.viewModel = viewModel
+        self.id = id
+    }
 
     var body: some View {
         ScrollView {
@@ -103,8 +115,10 @@ struct TodoDetailScreen: View {
 #Preview {
     NavigationStack {
         TodoDetailScreen(
-            viewModel: TodoDetailViewModel(forPreview: true),
-            id: UUID().hashValue
+            viewModel: TodoDetailViewModel(
+                modelContainer: PreviewSampleData.container
+            ),
+            id: 1
         )
     }
 }

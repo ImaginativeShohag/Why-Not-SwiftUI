@@ -6,22 +6,21 @@ import Core
 import Foundation
 import SwiftData
 
-@globalActor actor DataActor {
-    static var shared = DataActor()
-}
-
-@DataActor
 final class TodoRepository {
-    private lazy var database: any IDatabase = TodoDataSource.shared.database
+    private var database: any IDatabase
     
-    nonisolated init() {
-        SuperLog.d("Thread: \(Thread.current)")
+    init(
+        modelContainer: ModelContainer
+    ) {
+        self.database = Database(modelContainer: modelContainer)
     }
 
     func getAll() async -> [Todo] {
         let descriptor = FetchDescriptor<Todo>()
         
         let data = try? await database.fetch(descriptor)
+        
+        SuperLog.d("data: \(String(describing: data))")
         
         return data ?? []
     }

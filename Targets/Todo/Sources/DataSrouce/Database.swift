@@ -27,5 +27,3 @@ public actor Database: IDatabase {
         return try modelContext.fetch(descriptor)
     }
 }
-
-extension FetchDescriptor: @unchecked Sendable {}

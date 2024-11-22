@@ -13,20 +13,20 @@ import SwiftUI
 
 struct AXRotorScreen: View {
     let flowers = [
-        Flower(name: "Rose", color: .red),
-        Flower(name: "Sunflower", color: .yellow),
-        Flower(name: "Carnation", color: .red),
-        Flower(name: "Poinsettia", color: .red),
-        Flower(name: "Marigold", color: .yellow),
-        Flower(name: "Amaryllis", color: .red),
-        Flower(name: "Poppy", color: .red),
-        Flower(name: "Bluebell", color: .blue),
-        Flower(name: "Buttercup", color: .yellow),
-        Flower(name: "Tulip", color: .yellow),
-        Flower(name: "Iris", color: .blue),
-        Flower(name: "Hyacinth", color: .blue),
-        Flower(name: "Daffodil", color: .yellow),
-        Flower(name: "Jonquil", color: .yellow)
+        FlowerModel(name: "Rose", color: .red),
+        FlowerModel(name: "Sunflower", color: .yellow),
+        FlowerModel(name: "Carnation", color: .red),
+        FlowerModel(name: "Poinsettia", color: .red),
+        FlowerModel(name: "Marigold", color: .yellow),
+        FlowerModel(name: "Amaryllis", color: .red),
+        FlowerModel(name: "Poppy", color: .red),
+        FlowerModel(name: "Bluebell", color: .blue),
+        FlowerModel(name: "Buttercup", color: .yellow),
+        FlowerModel(name: "Tulip", color: .yellow),
+        FlowerModel(name: "Iris", color: .blue),
+        FlowerModel(name: "Hyacinth", color: .blue),
+        FlowerModel(name: "Daffodil", color: .yellow),
+        FlowerModel(name: "Jonquil", color: .yellow)
     ]
 
     var body: some View {
@@ -84,7 +84,7 @@ struct AXRotorScreen: View {
     }
 }
 
-struct Flower: Identifiable {
+struct FlowerModel: Identifiable {
     let id = UUID()
     let name: String
     let color: Color
