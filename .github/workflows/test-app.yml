@@ -7,21 +7,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
 
       - name: Get swift version
         run: swift --version
-
-      - name: Install mise
-        run: curl https://mise.run | sh
-
-      - name: Check mise version
-        run: ~/.local/bin/mise --version
-
-      - name: Activate mise
-        run: ~/.local/bin/mise activate
-
-      - name: Install Tuist
-        run: mise install tuist
 
       - name: Install app dependencies
         run: tuist install
