@@ -18,8 +18,10 @@ public extension String {
         return URL(fileURLWithPath: self).deletingPathExtension().lastPathComponent
     }
 
+    /// Tested: `FileExtensionTests`
     func fileExtension() -> String {
-        return URL(fileURLWithPath: self).pathExtension
+        guard let url = URLComponents(string: self)?.url else { return "" }
+        return url.pathExtension
     }
 
     func isValidEmail() -> Bool {
@@ -28,28 +30,28 @@ public extension String {
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
         return emailPredicate.evaluate(with: self)
     }
-    
+
     func addingPercentEncodingForQueryParameter() -> String {
         return addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
     }
-    
+
     func toMarkdown() -> AttributedString {
         do {
-          return try AttributedString(
-            markdown: self,
-            options: AttributedString.MarkdownParsingOptions(
-                allowsExtendedAttributes: true,
-                interpretedSyntax: .full
+            return try AttributedString(
+                markdown: self,
+                options: AttributedString.MarkdownParsingOptions(
+                    allowsExtendedAttributes: true,
+                    interpretedSyntax: .full
+                )
             )
-          )
         } catch {
-          print("Error parsing Markdown for string \(self): \(error)")
-          return AttributedString(self)
+            print("Error parsing Markdown for string \(self): \(error)")
+            return AttributedString(self)
         }
-      }
+    }
 }
 
-extension Optional where Wrapped == String {
+public extension Optional where Wrapped == String {
     /// Return `true` only if it is not `nil` or empty.
     var isBlank: Bool {
         return self?.isEmpty ?? true

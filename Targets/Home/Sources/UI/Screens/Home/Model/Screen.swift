@@ -3,6 +3,7 @@
 //
 
 import Core
+import NavigationKit
 import News
 import SwiftUI
 import Todo
@@ -114,6 +115,6 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.Ollama()
         ),
     ].sorted { old, new in
-        old.name.filter { $0.isLetter || $0.isNumber } <  new.name.filter { $0.isLetter || $0.isNumber }
+        old.name.filter { $0.isLetter || $0.isNumber } < new.name.filter { $0.isLetter || $0.isNumber }
     }
 }

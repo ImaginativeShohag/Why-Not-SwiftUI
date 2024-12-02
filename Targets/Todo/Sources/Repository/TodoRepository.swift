@@ -4,6 +4,7 @@
 
 import Core
 import Foundation
+import SuperLog
 import SwiftData
 
 final class TodoRepository {

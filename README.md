@@ -103,11 +103,17 @@ A collection of animation related SwiftUI features.
 
 <img src="images/animation.gif" width=250/>
 
+### UI Testing with Mock data
+
+Checkout the "News" module to get an example for how to run an UI test using mock data.
+
 ## Playground Books
 
 Check `Playgrounds` directory for the books.
 
 ### **GCD and Structured Concurrency Model:** A quick guide about the GCD (`DispatchQueue` etc.) and Structured Concurrency Model (`Task`, `actor`, `Sendable` etc.)
+
+### **Combine:** An introduction guide for the Combine framework.
 
 <img src="images/GCD and Structured Concurrency Model.png" width=300/>
 
@@ -143,7 +149,7 @@ Install `mise` CLI:
 
 ```bash
 # Install CLI
-$ curl https://mise.jdx.dev/install.sh | sh
+$ curl https://mise.run | sh
 
 # Check mise version
 $ ~/.local/bin/mise --version
@@ -284,21 +290,20 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [ ] Custom Sidebar: Finalize it (WIP)
 - [ ] Custom Build variant
 - [ ] Add documentation to the extensions
-- [ ] Moya finalize
 - [ ] Home list multiple accent color
 - [ ] Use system font styles
 - [ ] CMS Module
 - [ ] System UI Components Collection
-    - [ ] [https://developer.apple.com/documentation/swiftui/grid](Grid)
+    - [ ] (Grid)[https://developer.apple.com/documentation/swiftui/grid]
 - [x] Navigation system update
 - [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
 - [x] Migrate to Tuist
 - [x] Migrate to Tuist 4.0
 - [ ] Fix a freeze issue in `NavigationView` inside `NavigationStack`
 - [x] Add `ShimmerUI`
-- [ ] Update `Backend`
+- [x] Update `Backend`
 - [ ] Update `ShimmerUI`
-- [ ] Update Tuist docs ("Access Assets" section etc.)
+- [ ] Update `Tuist` docs ("Access Assets" section etc.)
 
 ## Extensions
 

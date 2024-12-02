@@ -2,8 +2,8 @@
 //  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-@testable import Core
 import Foundation
+@testable import NavigationKit
 import XCTest
 
 private extension NavController {

@@ -4,6 +4,7 @@
 
 import Core
 import Kingfisher
+import NavigationKit
 import SwiftUI
 
 // MARK: - Destination

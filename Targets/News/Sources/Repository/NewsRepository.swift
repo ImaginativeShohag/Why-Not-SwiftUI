@@ -4,6 +4,7 @@
 
 import Core
 import Foundation
+import NetworkKit
 
 class NewsRepository {
     func getAllNews() async -> ApiResult<AllNewsResponse> {

@@ -3,6 +3,7 @@
 //
 
 @testable import Core
+import NetworkKit
 @testable import News
 import XCTest
 
