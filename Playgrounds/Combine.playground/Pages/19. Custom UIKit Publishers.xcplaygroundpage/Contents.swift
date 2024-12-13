@@ -117,6 +117,7 @@ submitButton.publisher(for: \.isEnabled)
  As the `isOn` property is not sending out `valueChanged` events itself, we need to do this manually here.
  This is the same behavior as it would be if the user switches the `UISwitch` in-app.
  */
+
 switcher.isOn = true
 switcher.sendActions(for: .valueChanged)
 

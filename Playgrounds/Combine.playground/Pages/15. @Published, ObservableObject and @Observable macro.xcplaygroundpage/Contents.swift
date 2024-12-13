@@ -2,6 +2,7 @@
 
 import Combine
 import Foundation
+import Observation
 import PlaygroundSupport
 import SwiftUI
 import UIKit
@@ -43,6 +44,8 @@ print("Button enabled is \(formViewController.submitButton.isEnabled)")
 formViewController.viewModel.isSubmitAllowed = false
 print("Button enabled is \(formViewController.submitButton.isEnabled)")
 
+//: ----------------------------------------------------------------
+
 /*:
  ## `ObservableObject`
 
@@ -56,30 +59,9 @@ class ObservableObjectViewModel: ObservableObject {
     @Published var isSubmitAllowed: Bool = true
     @Published var username: String = ""
     @Published var password: String = ""
+    @Published var roles: [String] = []
     var somethingElse: Int = 10
-
-//    init(isSubmitAllowed: Bool, username: String, password: String, somethingElse: Int) {
-//        self.isSubmitAllowed = isSubmitAllowed
-//        self.username = username
-//        self.password = password
-//        self.somethingElse = somethingElse
-//
-//        objectWillChange.sink { _ in
-//            print("Value changed: \(isSubmitAllowed) \"\(username)\" \"\(password)\"")
-//        }
-//    }
 }
-
-// var form = ObservableObjectViewModel()
-//
-// let formSubscription = form.objectWillChange.sink { _ in
-//    print("Form changed: \(form.isSubmitAllowed) \"\(form.username)\" \"\(form.password)\"")
-// }
-//
-// form.isSubmitAllowed = false
-// form.username = "ImaginativeShohag"
-// form.password = "AwesomePassword"
-// form.somethingElse = 0 // note that this doesn't output anything
 
 struct ObservableObjectContentView: View {
     @StateObject var viewModel = ObservableObjectViewModel()
@@ -92,6 +74,8 @@ struct ObservableObjectContentView: View {
             KeyValueSectionView(key: "Username", value: viewModel.username)
 
             KeyValueSectionView(key: "Password", value: viewModel.password)
+            
+            KeyValueSectionView(key: "Roles", value: viewModel.roles.joined(separator: ", "))
 
             ButtonSectionView(label: "Change username") {
                 viewModel.username = "ImaginativeShohag \(Int.random(in: 1...10))"
@@ -99,6 +83,10 @@ struct ObservableObjectContentView: View {
 
             ButtonSectionView(label: "Change password") {
                 viewModel.password = "AwesomePassword \(Int.random(in: 1...10))"
+            }
+            
+            ButtonSectionView(label: "Add role") {
+                viewModel.roles.append("Role \(Int.random(in: 1...10))")
             }
 
             ButtonSectionView(label: "Change isSubmitAllowed") {
@@ -114,7 +102,7 @@ struct ObservableObjectContentView: View {
             }
             .disabled(!viewModel.isSubmitAllowed)
         }
-        .frame(width: 300, height: 500)
+        .frame(width: 300, height: 700)
         .onAppear {
             // `objectWillChange` is a publisher, that emits before the object (here viewModel) has changed.
             cancellable = viewModel.objectWillChange.sink { _ in
@@ -127,20 +115,35 @@ struct ObservableObjectContentView: View {
 let contentView1 = ObservableObjectContentView()
 PlaygroundPage.current.setLiveView(contentView1)
 
-//: ## `@Observable` macro
+//: ----------------------------------------------------------------
+
+/*:
+ ## `@Observable` macro
+ 
+ This is not a part of `Combine` framework, but a part of `Observation` framework.
+ `Observation` framework is a Swift-specific implementation of the observer design pattern.
+ 
+ ### Benefits:
+ 
+ - Tracking optionals and collections of objects, which isn’t possible when using `ObservableObject`.
+ - Using existing data flow primitives like `State` and `Environment` instead of object-based equivalents such as `StateObject` and `EnvironmentObject`.
+ - Updating views based on changes to the observable properties that a view’s body reads instead of any property changes that occur to an observable object, which can help improve your app’s performance 🔥.
+ */
 
 print("\n* Demonstrating @Observable")
+
+struct User {
+    var username: String = ""
+    var password: String = ""
+    var roles: [String] = []
+}
 
 @Observable
 class ObservableMacroViewModel {
     var isSubmitAllowed: Bool = false
-    var username: String = ""
-    var password: String = ""
+    var user: User = .init()
     @ObservationIgnored var somethingElse: Int = 10
 }
-
-// 🔴 does it deep observe
-// 🔴 did the array use diff
 
 struct ObservableMacroContentView: View {
     @State var viewModel = ObservableMacroViewModel()
@@ -149,16 +152,22 @@ struct ObservableMacroContentView: View {
         VStack {
             Text("`@Observable` macro example")
 
-            KeyValueSectionView(key: "Username", value: viewModel.username)
+            KeyValueSectionView(key: "Username", value: viewModel.user.username)
 
-            KeyValueSectionView(key: "Password", value: viewModel.password)
+            KeyValueSectionView(key: "Password", value: viewModel.user.password)
+
+            KeyValueSectionView(key: "Roles", value: viewModel.user.roles.joined(separator: ", "))
 
             ButtonSectionView(label: "Change username") {
-                viewModel.username = "ImaginativeShohag \(Int.random(in: 1...10))"
+                viewModel.user.username = "ImaginativeShohag \(Int.random(in: 1...10))"
             }
 
             ButtonSectionView(label: "Change password") {
-                viewModel.password = "AwesomePassword \(Int.random(in: 1...10))"
+                viewModel.user.password = "AwesomePassword \(Int.random(in: 1...10))"
+            }
+
+            ButtonSectionView(label: "Add role") {
+                viewModel.user.roles.append("Role \(Int.random(in: 1...10))")
             }
 
             ButtonSectionView(label: "Change isSubmitAllowed") {
@@ -174,7 +183,7 @@ struct ObservableMacroContentView: View {
             }
             .disabled(!viewModel.isSubmitAllowed)
         }
-        .frame(width: 300, height: 500)
+        .frame(width: 300, height: 700)
     }
 }
 

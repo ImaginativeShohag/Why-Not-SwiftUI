@@ -39,6 +39,8 @@ usernamePublisher.send("ImaginativeShohag")
 passwordPublisher.send("weakpass")
 passwordPublisher.send("verystrongpassword")
 
+//: ----------------------------------------------------------------
+
 /*:
  ## `Merge`
  
@@ -50,10 +52,36 @@ print("\n* Demonstrating Merge")
 let publisher1 = [1, 2, 3, 4, 5].publisher
 let publisher2 = [300, 400, 500].publisher
 
-let mergedPublishersSubscription = Publishers
+let mergeSubscription = Publishers
     .Merge(publisher1, publisher2)
     .sink { value in
-        print("Merge: subscription received value \(value)")
+        print("Merge: Received value \(value)")
     }
+
+//: ----------------------------------------------------------------
+
+/*:
+ ## `Zip`
+ 
+ The `Zip` operator combines the values from multiple publishers and emits a tuple containing values from each publisher when all of them have emitted at least one value. It synchronizes their emissions based on the number of events emitted by each.
+ 
+ - It waits until all involved publishers emit a value.
+ - When each publisher has produced a value, it emits a tuple containing those values.
+ - If one publisher emits more values than others, it waits until all have an equal number of values before emitting the next tuple.
+ */
+
+let publisher3 = PassthroughSubject<String, Never>()
+let publisher4 = PassthroughSubject<Int, Never>()
+
+let zipSubscription = Publishers.Zip(publisher3, publisher4)
+    .sink { combinedValue in
+        print("Zip: Received value: \(combinedValue)")
+    }
+
+publisher3.send("A")
+publisher4.send(1)
+
+publisher3.send("B")
+publisher4.send(2)
 
 //: [Next](@next)

@@ -213,6 +213,13 @@ tuist edit
 
 Please see the [Tuist documentation](https://docs.tuist.io) for details.
 
+## Run Tests
+
+```bash
+tuist test 'WhyNotSwiftUI Development' \
+    --skip-test-targets NetworkKitTests/NetworkProdTests
+```
+
 ## Project Map
 
 ![Project Map](graph.png)

@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - Extensions
+
 public extension Color {
     static var random: Color {
         return Color(
@@ -9,6 +11,8 @@ public extension Color {
         )
     }
 }
+
+// MARK: - Components
 
 public struct KeyValueSectionView: View {
     let key: String
