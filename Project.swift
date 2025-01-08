@@ -5,7 +5,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-private let deploymentTargetVersion = "17.0"
+private let deploymentTargetVersion = "18.0"
 
 let project = Project.app(
     name: Constants.projectName,
@@ -68,8 +68,9 @@ let project = Project.app(
         "UIFileSharingEnabled": "TRUE",
         "UIApplicationSupportsIndirectInputEvents": "TRUE",
 
-        "NSCameraUsageDescription": "Record video",
-        "NSMicrophoneUsageDescription": "Record audio"
+        "NSCameraUsageDescription": "Camera permission is needed to record video.",
+        "NSMicrophoneUsageDescription": "Microphone permission is needed to record audio.",
+        "NSLocationWhenInUseUsageDescription": "Location permission is needed to show your current location."
     ],
     configInfoPlist: [
         "CONF_HOST_URL": "$(XCC_HOST_URL)"

@@ -302,15 +302,11 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [ ] CMS Module
 - [ ] System UI Components Collection
     - [ ] (Grid)[https://developer.apple.com/documentation/swiftui/grid]
-- [x] Navigation system update
 - [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
-- [x] Migrate to Tuist
-- [x] Migrate to Tuist 4.0
 - [ ] Fix a freeze issue in `NavigationView` inside `NavigationStack`
-- [x] Add `ShimmerUI`
-- [x] Update `Backend`
 - [ ] Update `ShimmerUI`
 - [ ] Update `Tuist` docs ("Access Assets" section etc.)
+- [ ] Add map example with current location access
 
 ## Extensions
 
