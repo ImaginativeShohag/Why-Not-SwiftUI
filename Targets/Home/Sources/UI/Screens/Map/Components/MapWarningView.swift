@@ -8,7 +8,7 @@ struct MapWarningView<Content: View>: View {
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             content()
         }
         .multilineTextAlignment(.center)
