@@ -5,6 +5,7 @@
 @testable import Core
 import NetworkKit
 @testable import News
+import TestUtils
 import XCTest
 
 #if DEBUG
@@ -37,6 +38,7 @@ class NewsDetailsUITests: XCTestCase {
         // Click first news item
         let firstNewsItem = app.buttons["news_item_1"]
         XCTAssertTrue(firstNewsItem.waitForExistence(timeout: 5))
+        firstNewsItem.isLoading()
 
         let newsTitleLabel = firstNewsItem.staticTexts["title"].label
         let newsPublishedDateLabel = firstNewsItem.staticTexts["published_date"].label

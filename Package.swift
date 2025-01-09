@@ -22,6 +22,7 @@ import PackageDescription
             "Shimmer": .framework,
             "RealmSwift": .framework,
             "MarkdownUI": .framework,
+            "TestUtils": .framework
         ],
         baseSettings: Settings.settings(
             configurations: BuildEnvironment.getConfigurations(for: .target)
@@ -33,6 +34,7 @@ let package = Package(
     name: "PackageName",
     dependencies: [
         .package(path: "packages/SwiftMacros"),
+        .package(path: "packages/TestUtils"),
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.0.0"),
         .package(url: "https://github.com/Moya/Moya", from: "15.0.0"),
         .package(url: "https://github.com/onevcat/Kingfisher", from: "7.0.0"),
