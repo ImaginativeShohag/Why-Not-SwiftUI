@@ -24,11 +24,11 @@ struct ShimmerUIDemo1: View {
                             
                     ShimmerUI.TextBlock(size: Int.random(in: 20 ... 30), line: 2)
                             
-                    ShimmerUI.RectangleBlock(ratio: 1.77)
+                    ShimmerUI.FilledRectangleBlock(ratio: 1.77)
                                     
                     ShimmerUI.ForEachBlock(count: Int.random(in: 2 ... 3)) {
                         ShimmerUI.HStackBlock(spacing: 12) {
-                            ShimmerUI.SquireBlock(size: 25)
+                            ShimmerUI.FilledSquareBlock(size: 25)
                                     
                             ShimmerUI.TextBlock(size: Int.random(in: 25 ... 35))
                                     
@@ -38,12 +38,12 @@ struct ShimmerUIDemo1: View {
                             
                     ShimmerUI.TextBlock(size: 15)
                             
-                    ShimmerUI.RectangleBlock(width: nil, height: 80)
+                    ShimmerUI.FilledRectangleBlock(width: nil, height: 80)
                             
                     ShimmerUI.TextBlock(size: 15)
                             
                     ShimmerUI.HStackBlock {
-                        ShimmerUI.RectangleBlock(ratio: 1.77)
+                        ShimmerUI.FilledRectangleBlock(ratio: 1.77)
                             .frame(width: 120)
                                 
                         Spacer()
