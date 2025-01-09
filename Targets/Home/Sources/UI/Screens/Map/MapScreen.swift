@@ -6,6 +6,8 @@ import MapKit
 import NavigationKit
 import SwiftUI
 
+// todo: route form current user location
+
 // MARK: - Destination
 
 public extension Destination {
@@ -23,45 +25,49 @@ public extension Destination {
 /// - WWDCNotes: https://wwdcnotes.com/documentation/wwdcnotes/wwdc23-10043-meet-mapkit-fo
 
 struct MapScreen: View {
+    @Namespace private var mapScope
+
     @State private var viewModel = MapViewModel()
     @State private var position: MapCameraPosition = .automatic
     @State private var selection: MapPlace?
     @State private var showPreLocationAuthorizationSection: Bool = false
 
-    @Namespace var mapScope
+    @State private var visibleRegion: MKCoordinateRegion?
+    @State private var route: MKRoute?
+    @State private var selectedResult: MKMapItem?
+    @State private var searchResults: [MKMapItem] = MapPlace.places
+        .map { $0.toMapItem() }
+
+    @State private var showCustomMarker = false
 
     var body: some View {
-        Map(position: $position, selection: $selection, scope: mapScope) {
-            // Districts of Bangladesh
-            ForEach(viewModel.places, id: \.name) { place in
-                Marker(
-                    place.name,
-                    systemImage: "mappin.and.ellipse",
-                    coordinate: place.location
-                )
-                .tag(place)
+        Map(position: $position, selection: $selectedResult, scope: mapScope) {
+            ForEach(searchResults, id: \.self) { result in
+                if showCustomMarker {
+                    Annotation(
+                        result.name ?? "Unknown",
+                        coordinate: result.placemark.coordinate
+                    ) {
+                        Image(systemName: "mappin.and.ellipse")
+                            .padding(4)
+                            .foregroundStyle(.white)
+                            .background(Color.red)
+                            .cornerRadius(4)
+                            .scaleEffect(
+                                selectedResult == result ? 1.5 : 1,
+                                anchor: .bottom
+                            )
+                            .animation(.default, value: selectedResult)
+                    }
+                } else {
+                    Marker(item: result)
+                }
             }
 
-            // Cox's Bazar
-            Annotation(
-                "Cox's Bazar",
-                coordinate: CLLocationCoordinate2D(
-                    latitude: 21.5164985,
-                    longitude: 91.8819745
-                )
-            ) {
-                Image(systemName: "beach.umbrella")
-                    .padding(4)
-                    .foregroundStyle(.white)
-                    .background(Color.blue)
-                    .cornerRadius(4)
-                    .scaleEffect(
-                        selection == MapPlace.coxsBazarMapPlace ? 1.5 : 1,
-                        anchor: .bottom
-                    )
-                    .animation(.default, value: selection)
+            if let route {
+                MapPolyline(route)
+                    .stroke(.blue, lineWidth: 5)
             }
-            .tag(MapPlace.coxsBazarMapPlace)
         }
         .mapControls {
             MapScaleView()
@@ -95,30 +101,30 @@ struct MapScreen: View {
                     }
                 } else if viewModel.locationAuthorizationStatus == .denied {
                     MapWarningView {
-                        Text("Cannot access your location. Please allow locaiton access in the settings.")
+                        Text("Cannot access your location. Please allow location access in the settings.")
                             .multilineTextAlignment(.center)
                     }
                 }
 
-                Button {
-                    position = .automatic
-                } label: {
-                    Image(systemName: "map")
-                    Text("Show All Locations")
+                if let selectedResult {
+                    ItemInfoView(selectedResult: $selectedResult, route: $route)
+                        .frame(height: 128)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(position == .automatic)
+
+                ActionButtons(
+                    position: $position,
+                    searchResults: $searchResults,
+                    showCustomMarker: $showCustomMarker,
+                    visibleRegion: visibleRegion
+                )
             }
             .padding()
             .frame(maxWidth: .infinity)
             .animation(.default, value: viewModel.locationAuthorizationStatus)
             .animation(.default, value: position)
+            .animation(.default, value: selectedResult)
             .background(.thinMaterial)
-        }
-        .sheet(item: $selection) { mapPlace in
-            MapPlaceDetailsSheet(item: mapPlace)
-                .presentationDragIndicator(.visible)
-                .presentationDetents([.medium])
         }
         .fullScreenCover(isPresented: $showPreLocationAuthorizationSection) {
             LocationAuthorizationPreAlertSection(
@@ -129,9 +135,149 @@ struct MapScreen: View {
                 }
             )
         }
+        .onChange(of: selectedResult) {
+            getDirections()
+        }
+        .onMapCameraChange { context in
+            visibleRegion = context.region
+        }
+    }
+
+    func getDirections() {
+        route = nil
+        guard let visibleRegion else { return }
+        guard let selectedResult else { return }
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: visibleRegion.center))
+        request.destination = selectedResult
+
+        Task {
+            let directions = MKDirections(request: request)
+            let response = try? await directions.calculate()
+            route = response?.routes.first
+        }
     }
 }
 
 #Preview {
     MapScreen()
+}
+
+struct ItemInfoView: View {
+    @Binding var selectedResult: MKMapItem?
+    @Binding var route: MKRoute?
+
+    @State private var lookAroundScene: MKLookAroundScene?
+
+    private var travelTime: String? {
+        guard let route else { return nil }
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        formatter.allowedUnits = [.hour, .minute]
+        return formatter.string(from: route.expectedTravelTime)
+    }
+
+    var body: some View {
+        LookAroundPreview(initialScene: lookAroundScene)
+            .overlay(alignment: .bottomTrailing) {
+                HStack {
+                    Text("\(selectedResult?.name ?? "")")
+                    if let travelTime {
+                        Text(travelTime)
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(.white)
+                .padding(10)
+            }
+            .onAppear {
+                getLookAroundScene()
+            }
+            .onChange(of: selectedResult) {
+                getLookAroundScene()
+            }
+    }
+
+    func getLookAroundScene() {
+        guard let selectedResult else { return }
+
+        lookAroundScene = nil
+        Task {
+            let request = MKLookAroundSceneRequest(mapItem: selectedResult)
+            lookAroundScene = try? await request.scene
+        }
+    }
+}
+
+struct ActionButtons: View {
+    @Binding var position: MapCameraPosition
+    @Binding var searchResults: [MKMapItem]
+    @Binding var showCustomMarker: Bool
+    var visibleRegion: MKCoordinateRegion?
+
+    @State private var isLoading = false
+
+    var body: some View {
+        ZStack {
+            VStack {
+                HStack {
+                    Button {
+                        position = .automatic
+                    } label: {
+                        Label("Show All", systemImage: "map")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(position == .automatic)
+
+                    Toggle(
+                        "Custom marker",
+                        systemImage: "mappin.and.ellipse",
+                        isOn: $showCustomMarker
+                    )
+                    .toggleStyle(.button)
+                }
+
+                HStack {
+                    Button {
+                        search(for: "playground")
+                    } label: {
+                        Label("Playgrounds", systemImage: "figure.and.child.holdinghands")
+                    }
+
+                    Button {
+                        search(for: "beach")
+                    } label: {
+                        Label("Beaches", systemImage: "beach.umbrella")
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            .disabled(isLoading)
+            .opacity(isLoading ? 0 : 1)
+
+            if isLoading {
+                ProgressView()
+            }
+        }
+        .animation(.default, value: isLoading)
+    }
+
+    private func search(for query: String) {
+        guard let visibleRegion else { return }
+
+        isLoading = true
+
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = query
+        request.resultTypes = .pointOfInterest
+        request.region = visibleRegion
+
+        Task {
+            let search = MKLocalSearch(request: request)
+            let response = try? await search.start()
+            searchResults = response?.mapItems ?? []
+
+            isLoading = false
+        }
+    }
 }

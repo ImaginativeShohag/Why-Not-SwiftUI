@@ -4,12 +4,13 @@
 
 import CoreLocation
 import SwiftUI
+import MapKit
 
 @Observable
 class MapViewModel: NSObject {
     var locationAuthorizationStatus = LocationAuthorizationStatus.noDetermined
 
-    let places: [MapPlace] = MapPlace.places
+    let places: [MKMapItem] = MapPlace.places.map { $0.toMapItem() }
     let locationManager = CLLocationManager()
 
     override init() {

@@ -3,8 +3,7 @@
 //
 
 import CoreLocation
-
-import CoreLocation
+import MapKit
 
 struct MapPlace: Identifiable, Hashable, Equatable {
     var id: String {
@@ -28,6 +27,12 @@ struct MapPlace: Identifiable, Hashable, Equatable {
             lhs.location.latitude == rhs.location.latitude &&
             lhs.location.longitude == rhs.location.longitude &&
             lhs.description == rhs.description
+    }
+
+    func toMapItem() -> MKMapItem {
+        var mapItem = MKMapItem(placemark: MKPlacemark(coordinate: location))
+        mapItem.name = name
+        return mapItem
     }
 }
 

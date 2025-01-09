@@ -11,6 +11,7 @@ struct MapWarningView<Content: View>: View {
         VStack(spacing: 8) {
             content()
         }
+        .font(.callout)
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity)
         .padding()
