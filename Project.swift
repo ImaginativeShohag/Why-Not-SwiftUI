@@ -12,6 +12,9 @@ let project = Project.app(
     deploymentTargets: .iOS(deploymentTargetVersion),
     destinations: [.iPhone, .iPad, .macWithiPadDesign, .appleVisionWithiPadDesign],
     baseSettings: [
+        // Project supported platforms
+        "SUPPORTED_PLATFORMS": "iphonesimulator iphoneos",
+
         // Signing
         "CODE_SIGN_STYLE": "Automatic",
         "DEVELOPMENT_TEAM": "UT4XSTUQLU",
