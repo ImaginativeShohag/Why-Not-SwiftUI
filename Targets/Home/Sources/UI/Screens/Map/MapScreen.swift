@@ -72,6 +72,8 @@ struct MapScreen: View {
                     .stroke(.red, lineWidth: 5)
             }
         }
+        .navigationTitle("Map")
+        .toolbarTitleDisplayMode(.inline)
         .mapControls {
             MapScaleView()
         }
@@ -122,7 +124,7 @@ struct MapScreen: View {
                     visibleRegion: visibleRegion
                 )
             }
-            .padding()
+            .padding([.top, .horizontal])
             .frame(maxWidth: .infinity)
             .animation(.default, value: viewModel.locationAuthorizationStatus)
             .animation(.default, value: position)

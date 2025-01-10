@@ -26,7 +26,7 @@ struct MapActionButtons: View {
                     .disabled(position == .automatic)
 
                     Toggle(
-                        "Custom marker",
+                        "Toggle Marker UI",
                         systemImage: "mappin.and.ellipse",
                         isOn: $showCustomMarker
                     )
@@ -34,6 +34,8 @@ struct MapActionButtons: View {
                 }
 
                 HStack {
+                    Image(systemName: "magnifyingglass")
+
                     Button {
                         search(for: "playground")
                     } label: {
@@ -47,6 +49,11 @@ struct MapActionButtons: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
+                .padding(8)
+                .background {
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.label.opacity(0.25), lineWidth: 1)
+                }
             }
             .disabled(isLoading)
             .opacity(isLoading ? 0 : 1)
@@ -72,7 +79,7 @@ struct MapActionButtons: View {
             let search = MKLocalSearch(request: request)
             let response = try? await search.start()
             searchResults = response?.mapItems ?? []
-            
+
             print(searchResults)
 
             isLoading = false
