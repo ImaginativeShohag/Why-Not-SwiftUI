@@ -32,8 +32,7 @@ struct MapScreen: View {
     @State private var visibleRegion: MKCoordinateRegion?
     @State private var route: MKRoute?
     @State private var selectedResult: MKMapItem?
-    @State private var searchResults: [MKMapItem] = MapPlace.places
-        .map { $0.toMapItem() }
+    @State private var searchResults: [MKMapItem] = MapPlace.places.map { $0.toMapItem() }
 
     var body: some View {
         Map(position: $position, selection: $selectedResult, scope: mapScope) {

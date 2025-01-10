@@ -11,8 +11,6 @@ class MapViewModel: NSObject {
     var locationAuthorizationStatus = LocationAuthorizationStatus.noDetermined
     var userCurrentLocation: CLLocation?
     
-    let places: [MKMapItem] = MapPlace.places.map { $0.toMapItem() }
-    
     private let locationManager = CLLocationManager()
 
     override init() {
