@@ -9,9 +9,11 @@ import MapKit
 @Observable
 class MapViewModel: NSObject {
     var locationAuthorizationStatus = LocationAuthorizationStatus.noDetermined
-
+    var userCurrentLocation: CLLocation?
+    
     let places: [MKMapItem] = MapPlace.places.map { $0.toMapItem() }
-    let locationManager = CLLocationManager()
+    
+    private let locationManager = CLLocationManager()
 
     override init() {
         super.init()
@@ -25,9 +27,13 @@ class MapViewModel: NSObject {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse: // Location services are available.
             locationAuthorizationStatus = .authorized
+            
+            startLocationUpdate()
 
         case .restricted, .denied: // Location services currently unavailable.
             locationAuthorizationStatus = .denied
+            
+            startLocationUpdate()
 
         case .notDetermined: // Authorization not determined yet.
             locationAuthorizationStatus = .noDetermined
@@ -40,6 +46,12 @@ class MapViewModel: NSObject {
     func requestLocationAuthorization() {
         locationManager.requestWhenInUseAuthorization()
     }
+    
+    private func startLocationUpdate() {
+        if locationManager.authorizationStatus != .denied {
+            locationManager.startUpdatingLocation()
+        }
+    }
 }
 
 // MARK: - Delegates
@@ -47,6 +59,13 @@ class MapViewModel: NSObject {
 extension MapViewModel: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         updateAuthorizationStatus(manager)
+    }
+    
+    func locationManager(
+        _ manager: CLLocationManager,
+        didUpdateLocations locations: [CLLocation]
+    ) {
+        userCurrentLocation = locations.last
     }
 }
 

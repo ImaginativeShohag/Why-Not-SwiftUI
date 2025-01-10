@@ -6,8 +6,6 @@ import MapKit
 import NavigationKit
 import SwiftUI
 
-// todo: route form current user location
-
 // MARK: - Destination
 
 public extension Destination {
@@ -29,16 +27,13 @@ struct MapScreen: View {
 
     @State private var viewModel = MapViewModel()
     @State private var position: MapCameraPosition = .automatic
-    @State private var selection: MapPlace?
     @State private var showPreLocationAuthorizationSection: Bool = false
-
+    @State private var showCustomMarker = false
     @State private var visibleRegion: MKCoordinateRegion?
     @State private var route: MKRoute?
     @State private var selectedResult: MKMapItem?
     @State private var searchResults: [MKMapItem] = MapPlace.places
         .map { $0.toMapItem() }
-
-    @State private var showCustomMarker = false
 
     var body: some View {
         Map(position: $position, selection: $selectedResult, scope: mapScope) {
@@ -51,8 +46,16 @@ struct MapScreen: View {
                         Image(systemName: "mappin.and.ellipse")
                             .padding(4)
                             .foregroundStyle(.white)
-                            .background(Color.red)
-                            .cornerRadius(4)
+                            .background(
+                                Gradient(
+                                    colors: [
+                                        Color.pink,
+                                        Color.purple,
+                                        Color.indigo
+                                    ]
+                                )
+                            )
+                            .cornerRadius(8)
                             .scaleEffect(
                                 selectedResult == result ? 1.5 : 1,
                                 anchor: .bottom
@@ -66,7 +69,7 @@ struct MapScreen: View {
 
             if let route {
                 MapPolyline(route)
-                    .stroke(.blue, lineWidth: 5)
+                    .stroke(.red, lineWidth: 5)
             }
         }
         .mapControls {
@@ -106,13 +109,13 @@ struct MapScreen: View {
                     }
                 }
 
-                if let selectedResult {
-                    ItemInfoView(selectedResult: $selectedResult, route: $route)
+                if selectedResult != nil {
+                    MapItemInfoView(selectedResult: $selectedResult, route: $route)
                         .frame(height: 128)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
 
-                ActionButtons(
+                MapActionButtons(
                     position: $position,
                     searchResults: $searchResults,
                     showCustomMarker: $showCustomMarker,
@@ -143,12 +146,18 @@ struct MapScreen: View {
         }
     }
 
-    func getDirections() {
+    private func getDirections() {
         route = nil
+
         guard let visibleRegion else { return }
         guard let selectedResult else { return }
+
         let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: visibleRegion.center))
+        request.source = MKMapItem(
+            placemark: MKPlacemark(
+                coordinate: viewModel.userCurrentLocation?.coordinate ?? visibleRegion.center
+            )
+        )
         request.destination = selectedResult
 
         Task {
@@ -161,123 +170,4 @@ struct MapScreen: View {
 
 #Preview {
     MapScreen()
-}
-
-struct ItemInfoView: View {
-    @Binding var selectedResult: MKMapItem?
-    @Binding var route: MKRoute?
-
-    @State private var lookAroundScene: MKLookAroundScene?
-
-    private var travelTime: String? {
-        guard let route else { return nil }
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .abbreviated
-        formatter.allowedUnits = [.hour, .minute]
-        return formatter.string(from: route.expectedTravelTime)
-    }
-
-    var body: some View {
-        LookAroundPreview(initialScene: lookAroundScene)
-            .overlay(alignment: .bottomTrailing) {
-                HStack {
-                    Text("\(selectedResult?.name ?? "")")
-                    if let travelTime {
-                        Text(travelTime)
-                    }
-                }
-                .font(.caption)
-                .foregroundStyle(.white)
-                .padding(10)
-            }
-            .onAppear {
-                getLookAroundScene()
-            }
-            .onChange(of: selectedResult) {
-                getLookAroundScene()
-            }
-    }
-
-    func getLookAroundScene() {
-        guard let selectedResult else { return }
-
-        lookAroundScene = nil
-        Task {
-            let request = MKLookAroundSceneRequest(mapItem: selectedResult)
-            lookAroundScene = try? await request.scene
-        }
-    }
-}
-
-struct ActionButtons: View {
-    @Binding var position: MapCameraPosition
-    @Binding var searchResults: [MKMapItem]
-    @Binding var showCustomMarker: Bool
-    var visibleRegion: MKCoordinateRegion?
-
-    @State private var isLoading = false
-
-    var body: some View {
-        ZStack {
-            VStack {
-                HStack {
-                    Button {
-                        position = .automatic
-                    } label: {
-                        Label("Show All", systemImage: "map")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(position == .automatic)
-
-                    Toggle(
-                        "Custom marker",
-                        systemImage: "mappin.and.ellipse",
-                        isOn: $showCustomMarker
-                    )
-                    .toggleStyle(.button)
-                }
-
-                HStack {
-                    Button {
-                        search(for: "playground")
-                    } label: {
-                        Label("Playgrounds", systemImage: "figure.and.child.holdinghands")
-                    }
-
-                    Button {
-                        search(for: "beach")
-                    } label: {
-                        Label("Beaches", systemImage: "beach.umbrella")
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-            }
-            .disabled(isLoading)
-            .opacity(isLoading ? 0 : 1)
-
-            if isLoading {
-                ProgressView()
-            }
-        }
-        .animation(.default, value: isLoading)
-    }
-
-    private func search(for query: String) {
-        guard let visibleRegion else { return }
-
-        isLoading = true
-
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = query
-        request.resultTypes = .pointOfInterest
-        request.region = visibleRegion
-
-        Task {
-            let search = MKLocalSearch(request: request)
-            let response = try? await search.start()
-            searchResults = response?.mapItems ?? []
-
-            isLoading = false
-        }
-    }
 }

@@ -306,7 +306,7 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [ ] Fix a freeze issue in `NavigationView` inside `NavigationStack`
 - [ ] Update `ShimmerUI`
 - [ ] Update `Tuist` docs ("Access Assets" section etc.)
-- [ ] Add map example with current location access
+- [x] Add map example with current location access
 
 ## Extensions
 
