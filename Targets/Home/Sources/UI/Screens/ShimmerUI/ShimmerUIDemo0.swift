@@ -11,6 +11,11 @@ struct ShimmerUIDemo0: View {
             VStack(spacing: 16) {
                 Header("Containers")
                 
+                Text("All items inside the container will be shimmering.")
+                    .multilineTextAlignment(.center)
+                
+                Divider()
+                
                 SubHeader("VContainer()")
                 
                 ShimmerUI.VContainer {
@@ -20,6 +25,8 @@ struct ShimmerUIDemo0: View {
                     
                     Text("Lorem Ipsum")
                 }
+                
+                Divider()
                 
                 SubHeader("HContainer()")
                 
@@ -35,23 +42,42 @@ struct ShimmerUIDemo0: View {
                 
                 Header("Blocks")
                 
+                Text("Use following ready-to-use blocks inside the above containers to add shimmer effect.")
+                    .multilineTextAlignment(.center)
+                
+                Divider()
+                
                 SubHeader("TextBlock()")
                 
                 ShimmerUI.TextBlock(size: 20)
                 
                 Divider()
                 
-                SubHeader("SquireBlock()")
+                SubHeader("FilledSquareBlock()")
                 
-                ShimmerUI.SquireBlock(size: 48)
+                ShimmerUI.FilledSquareBlock(size: 48)
                 
                 Divider()
                 
-                SubHeader("RectangleBlock()")
+                SubHeader("BorderedSquareBlock()")
                 
-                ShimmerUI.RectangleBlock(ratio: 1.77)
+                ShimmerUI.BorderedSquareBlock(size: 48)
                 
-                ShimmerUI.RectangleBlock(width: 64, height: 96)
+                Divider()
+                
+                SubHeader("FilledRectangleBlock()")
+                
+                ShimmerUI.FilledRectangleBlock(ratio: 1.77)
+                
+                ShimmerUI.FilledRectangleBlock(width: 64, height: 96)
+                
+                Divider()
+                
+                SubHeader("BorderedRectangleBlock()")
+                
+                ShimmerUI.BorderedRectangleBlock(ratio: 1.77)
+                
+                ShimmerUI.BorderedRectangleBlock(width: 64, height: 96)
                 
                 Divider()
                 
@@ -61,18 +87,18 @@ struct ShimmerUIDemo0: View {
                 
                 Divider()
                 
-                SubHeader("OutlineCircleBlock()")
+                SubHeader("BorderedCircleBlock()")
                 
-                ShimmerUI.OutlineCircleBlock(size: 64)
+                ShimmerUI.BorderedCircleBlock(size: 64)
                 
                 Divider()
                 
                 SubHeader("VCardBlock()")
                 
                 ShimmerUI.VCardBlock {
-                    ShimmerUI.SquireBlock(size: 48)
-                    ShimmerUI.SquireBlock(size: 48)
-                    ShimmerUI.SquireBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
                 }
                 
                 Divider()
@@ -80,9 +106,9 @@ struct ShimmerUIDemo0: View {
                 SubHeader("HCardBlock()")
                 
                 ShimmerUI.HCardBlock {
-                    ShimmerUI.SquireBlock(size: 48)
-                    ShimmerUI.SquireBlock(size: 48)
-                    ShimmerUI.SquireBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
                 }
                 
                 Divider()
@@ -90,9 +116,9 @@ struct ShimmerUIDemo0: View {
                 SubHeader("VStackBlock()")
                 
                 ShimmerUI.VStackBlock {
-                    ShimmerUI.SquireBlock(size: 48)
-                    ShimmerUI.SquireBlock(size: 48)
-                    ShimmerUI.SquireBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
                 }
                 
                 Divider()
@@ -100,9 +126,9 @@ struct ShimmerUIDemo0: View {
                 SubHeader("HStackBlock()")
                 
                 ShimmerUI.HStackBlock {
-                    ShimmerUI.SquireBlock(size: 48)
-                    ShimmerUI.SquireBlock(size: 48)
-                    ShimmerUI.SquireBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
+                    ShimmerUI.FilledSquareBlock(size: 48)
                 }
                 
                 Divider()
@@ -111,7 +137,7 @@ struct ShimmerUIDemo0: View {
                 
                 ShimmerUI.VGridBlock {
                     ShimmerUI.ForEachBlock(count: 3) {
-                        ShimmerUI.RectangleBlock(height: 48)
+                        ShimmerUI.FilledRectangleBlock(height: 48)
                     }
                 }
             }
@@ -138,6 +164,7 @@ private struct Header: View {
     var body: some View {
         Text(label)
             .font(.title)
+            .fontWeight(.bold)
     }
 }
 

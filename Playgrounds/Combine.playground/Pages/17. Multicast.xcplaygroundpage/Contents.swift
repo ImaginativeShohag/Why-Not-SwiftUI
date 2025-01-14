@@ -5,8 +5,10 @@ import Foundation
 
 /*: # `multicast(_:)`
 
- Use a multicast publisher when you have multiple downstream subscribers, but you want upstream publishers to only process one receive(_:) call per event. This is useful when upstream publishers are doing expensive work you don’t want to duplicate, like performing network requests.
+ Use a multicast publisher when you have multiple downstream subscribers, but you want upstream publishers to only process one `receive(_:)` call per event[1]. This is useful when upstream publishers are doing expensive work you don’t want to duplicate, like performing network requests.
 
+ [1] "Only process one `receive(_:)` call per event" means it will behave as if only one subscriber is subscribed, even though multiple subscribers can subscribe.
+ 
  The multicast publisher is a `ConnectablePublisher`, publishing only begins after a call to `connect()`.
  */
 
@@ -40,6 +42,8 @@ let subscriber2 = multicastPublisher1
 //: Connect the multicast publisher to start sending values to all subscribers
 let cancellable = multicastPublisher1.connect()
 
+//: ----------------------------------------------------------------
+
 /*: ## Example 2
  
  ### `Deferred`
@@ -56,7 +60,7 @@ let regularPublisher = Deferred {
 }
 .print("Example 2 Publisher")
 
-print("Without multicast")
+print("\nWithout multicast")
 
 var cancellables = Set<AnyCancellable>()
 
@@ -74,14 +78,13 @@ regularPublisher
     }
     .store(in: &cancellables)
 
-print("")
-print("With multicast")
+//: ----------------------------------------------------------------
+
+print("\nWith multicast")
 
 // Multicasting the publisher to share the upstream work
 let multicastPublisher2 = regularPublisher
     .multicast { PassthroughSubject<Int, Never>() }
-
-// var cancellables = Set<AnyCancellable>()
 
 // Subscriber 1
 multicastPublisher2

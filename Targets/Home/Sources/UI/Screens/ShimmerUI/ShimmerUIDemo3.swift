@@ -22,7 +22,7 @@ struct ShimmerUIDemo3: View {
 
                             Spacer()
 
-                            ShimmerUI.OutlineCircleBlock(size: 50)
+                            ShimmerUI.BorderedCircleBlock(size: 50)
                         }
                     }
                 }

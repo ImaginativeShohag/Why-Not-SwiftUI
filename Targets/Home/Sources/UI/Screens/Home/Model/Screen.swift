@@ -115,6 +115,10 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.Ollama()
         ),
         Screen(
+            name: "Map Example",
+            destination: Destination.Map()
+        ),
+        Screen(
             name: "`TestUtils` UI Tests Demo",
             destination: Destination.TestUtilsUITestsDemo()
         ),

@@ -12,7 +12,7 @@ struct ShimmerUIDemo2: View {
                 ShimmerUI.VGridBlock {
                     ShimmerUI.ForEachBlock(count: Int.random(in: 4 ... 5)) {
                         ShimmerUI.HCardBlock {
-                            ShimmerUI.SquireBlock(size: 25)
+                            ShimmerUI.FilledSquareBlock(size: 25)
                                 
                             ShimmerUI.TextBlock(size: Int.random(in: 25 ... 32))
                                 
@@ -28,7 +28,7 @@ struct ShimmerUIDemo2: View {
                 ShimmerUI.VGridBlock {
                     ShimmerUI.ForEachBlock(count: Int.random(in: 3 ... 5)) {
                         ShimmerUI.HCardBlock {
-                            ShimmerUI.SquireBlock(size: 25)
+                            ShimmerUI.FilledSquareBlock(size: 25)
                                 
                             ShimmerUI.TextBlock(size: Int.random(in: 25 ... 32))
                                 
@@ -46,13 +46,13 @@ struct ShimmerUIDemo2: View {
                 ShimmerUI.VGridBlock {
                     ShimmerUI.ForEachBlock(count: Int.random(in: 3 ... 5)) {
                         ShimmerUI.HCardBlock {
-                            ShimmerUI.SquireBlock(size: 25)
+                            ShimmerUI.FilledSquareBlock(size: 25)
                                 
                             ShimmerUI.TextBlock(size: Int.random(in: 25 ... 32))
                                 
                             Spacer()
                                 
-                            ShimmerUI.SquireBlock(size: 15)
+                            ShimmerUI.FilledSquareBlock(size: 15)
                         }
                     }
                 }

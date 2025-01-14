@@ -5,13 +5,16 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-private let deploymentTargetVersion = "17.0"
+private let deploymentTargetVersion = "18.0"
 
 let project = Project.app(
     name: Constants.projectName,
     deploymentTargets: .iOS(deploymentTargetVersion),
     destinations: [.iPhone, .iPad, .macWithiPadDesign, .appleVisionWithiPadDesign],
     baseSettings: [
+        // Project supported platforms
+        "SUPPORTED_PLATFORMS": "iphonesimulator iphoneos",
+
         // Signing
         "CODE_SIGN_STYLE": "Automatic",
         "DEVELOPMENT_TEAM": "UT4XSTUQLU",
@@ -68,8 +71,9 @@ let project = Project.app(
         "UIFileSharingEnabled": "TRUE",
         "UIApplicationSupportsIndirectInputEvents": "TRUE",
 
-        "NSCameraUsageDescription": "Record video",
-        "NSMicrophoneUsageDescription": "Record audio"
+        "NSCameraUsageDescription": "Camera permission is needed to record video.",
+        "NSMicrophoneUsageDescription": "Microphone permission is needed to record audio.",
+        "NSLocationWhenInUseUsageDescription": "Location permission is needed to show your current location."
     ],
     configInfoPlist: [
         "CONF_HOST_URL": "$(XCC_HOST_URL)"
