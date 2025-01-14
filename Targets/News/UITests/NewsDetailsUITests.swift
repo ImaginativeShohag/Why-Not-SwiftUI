@@ -38,7 +38,6 @@ class NewsDetailsUITests: XCTestCase {
         // Click first news item
         let firstNewsItem = app.buttons["news_item_1"]
         XCTAssertTrue(firstNewsItem.waitForExistence(timeout: 5))
-        firstNewsItem.isLoading()
 
         let newsTitleLabel = firstNewsItem.staticTexts["title"].label
         let newsPublishedDateLabel = firstNewsItem.staticTexts["published_date"].label
@@ -59,8 +58,7 @@ class NewsDetailsUITests: XCTestCase {
         XCTAssertTrue(publishedDate.waitForExistence(timeout: 5))
         XCTAssertTrue(publishedDate.label == newsPublishedDateLabel)
 
-        let details = app.staticTexts["details"]
-        XCTAssertTrue(details.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.findAndWait(staticText: "details", timeout: 5))
     }
 
     func runAppAndGoToModule() {
