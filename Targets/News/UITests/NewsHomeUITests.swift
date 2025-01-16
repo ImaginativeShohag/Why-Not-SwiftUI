@@ -78,9 +78,9 @@ class NewsHomeUITests: XCTestCase {
         runAppAndGoToModule()
 
         let errorContainer = app.staticTexts["error_container"]
-        XCTAssertTrue(errorContainer.waitForExistence(timeout: 5))
+        XCTAssertTrue(errorContainer.waitForExistence(timeout: 5), "Error container should be visible")
 
-        XCTAssertTrue(app.staticTexts["Server error."].exists)
+        XCTAssertTrue(app.staticTexts["Server error."].exists, "Error message should be visible")
     }
 
     func test_whenFailure_shouldShowError() async throws {
