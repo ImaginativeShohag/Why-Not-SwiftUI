@@ -36,6 +36,7 @@ public extension Project {
         configInfoPlist: [String: Plist.Value],
         modules: [Module],
         externalDependencies: [TargetDependency],
+        testDependencies: [TargetDependency],
         coreDataModels: [Path]
     ) -> Project {
         let appMainTarget: ProjectDescription.TargetReference = "\(name)"
@@ -45,13 +46,14 @@ public extension Project {
         dependencies.append(contentsOf: externalDependencies)
         dependencies.append(contentsOf: appExtensions.map { TargetDependency.target(name: $0.name) })
 
-        var finalInfoPlist = infoPlist.merging(configInfoPlist) { _, new in new }
+        let finalInfoPlist = infoPlist.merging(configInfoPlist) { _, new in new }
 
         var targets = makeAppTargets(
             name: name,
             destinations: destinations,
             deploymentTargets: deploymentTargets,
             dependencies: dependencies,
+            testDependencies: testDependencies,
             infoPlist: finalInfoPlist,
             coreDataModels: coreDataModels
         )
@@ -62,6 +64,7 @@ public extension Project {
                 destinations: destinations,
                 deploymentTargets: deploymentTargets,
                 externalDependencies: externalDependencies,
+                testDependencies: testDependencies,
                 infoPlist: configInfoPlist
             )
         }
@@ -146,6 +149,7 @@ public extension Project {
         destinations: Destinations,
         deploymentTargets: DeploymentTargets,
         externalDependencies: [TargetDependency],
+        testDependencies: [TargetDependency],
         infoPlist: [String: Plist.Value]
     ) -> [Target] {
         let name = module.name
@@ -202,7 +206,7 @@ public extension Project {
                 infoPlist: .extendingDefault(with: infoPlist),
                 sources: ["Targets/\(name)/Tests/**"],
                 resources: resources,
-                dependencies: [.target(name: appTargetName), .target(name: name)],
+                dependencies: [.target(name: appTargetName), .target(name: name)] + testDependencies,
                 settings: .settings(
                     configurations: BuildEnvironment.getConfigurations(for: .unitTest)
                 )
@@ -230,7 +234,7 @@ public extension Project {
                 resources: resources,
                 // Here the target will be the main app target.
                 // Because UI test will run on the app itself.
-                dependencies: [.target(name: appTargetName)],
+                dependencies: [.target(name: appTargetName)] + testDependencies,
                 settings: .settings(
                     configurations: BuildEnvironment.getConfigurations(for: .target)
                 )
@@ -246,6 +250,7 @@ public extension Project {
         destinations: Destinations,
         deploymentTargets: DeploymentTargets,
         dependencies: [TargetDependency],
+        testDependencies: [TargetDependency],
         infoPlist: [String: Plist.Value],
         coreDataModels: [Path]
     ) -> [Target] {
@@ -276,9 +281,7 @@ public extension Project {
             deploymentTargets: deploymentTargets,
             infoPlist: .extendingDefault(with: infoPlist),
             sources: ["Targets/\(name)/Tests/**"],
-            dependencies: [
-                .target(name: name)
-            ],
+            dependencies: [.target(name: name)] + testDependencies,
             settings: .settings(
                 configurations: BuildEnvironment.getConfigurations(for: .unitTest)
             )
@@ -292,9 +295,7 @@ public extension Project {
             deploymentTargets: deploymentTargets,
             infoPlist: .extendingDefault(with: infoPlist),
             sources: ["Targets/\(name)/UITests/**"],
-            dependencies: [
-                .target(name: name)
-            ],
+            dependencies: [.target(name: name)] + testDependencies,
             settings: .settings(
                 configurations: BuildEnvironment.getConfigurations(for: .target)
             )
