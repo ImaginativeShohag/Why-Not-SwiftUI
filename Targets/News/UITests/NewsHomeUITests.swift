@@ -101,9 +101,9 @@ class NewsHomeUITests: XCTestCase {
         runAppAndGoToModule()
 
         let errorContainer = app.staticTexts["error_container"]
-        XCTAssertTrue(errorContainer.waitForExistence(timeout: 5))
+        XCTAssertTrue(errorContainer.waitForExistence(timeout: 5), "Error container should be visible")
 
-        XCTAssertTrue(errorContainer.label.contains("500"))
+        XCTAssertTrue(errorContainer.label.contains("500"), "Error container should contain error message")
     }
 
     func runAppAndGoToModule() {
