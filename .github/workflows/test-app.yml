@@ -30,4 +30,4 @@ jobs:
         run: tuist install
 
       - name: Run tests
-        run: tuist test 'WhyNotSwiftUI Development' --skip-test-targets NetworkKitTests/NetworkProdTests
+        run: tuist test 'WhyNotSwiftUI Development' --skip-test-targets NetworkKitTests/NetworkProdTests --verbose
