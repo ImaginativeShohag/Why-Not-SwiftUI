@@ -21,6 +21,9 @@ jobs:
         if: runner.os == 'macOS'
         run: xcrun --toolchain ${{ env.TOOLCHAINS }} swift --version
 
+      - name: Installed simulators
+        run: xcrun simctl list
+
       - name: Install app dependencies
         run: tuist install
 
