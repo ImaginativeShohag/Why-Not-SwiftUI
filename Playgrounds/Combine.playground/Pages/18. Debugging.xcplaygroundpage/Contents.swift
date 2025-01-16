@@ -57,6 +57,7 @@ subscription.cancel()
  Receive cancel
  ```
   */
+
 // subject.send(completion: .finished)
 
 /*:

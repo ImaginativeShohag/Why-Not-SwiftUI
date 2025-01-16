@@ -1,6 +1,6 @@
 # Why Not SwiftUI!
 
-A collection of Swift, SwiftUI and iOS goodies.
+A showcase of Swift, SwiftUI, and iOS goodies.
 
 Feel free to request features or suggestions for improvements.
 
@@ -8,11 +8,11 @@ Feel free to request features or suggestions for improvements.
 [![Developer](https://img.shields.io/badge/-buy_me_a_coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/ImShohag)
 [![Tuist badge](https://img.shields.io/badge/Powered%20by-Tuist-blue)](https://tuist.io)
 
-## What we have hare!
+## What we have here!
 
 ### Jailbroken checker
 
-Check for device is jail-broken status.
+Check for device jail-broken status.
 
 <img src="images/jailbroken-checker.png" width=250/>
 
@@ -32,7 +32,7 @@ Example of common accessibility modifiers.
 
 ### Bottom Nav vs Side Bar
 
-A simple example to demonstrate separate views for iPhone and iPad. Users will see the bottom nav on iPhone and Sidebar on iPad.
+A simple example to demonstrate separate views for iPhone and iPad. Users will see the bottom nav on iPhone and a Sidebar on iPad.
 
 | <img src="images/bottom-nav.png" width=165/> | <img src="images/side-bar.png" width=250/> |
 | :-: | :-: |
@@ -49,19 +49,19 @@ A cool "Android Toast" like implementation for SwiftUI.
 
 ### Component: `ImageViewCapturer`: Media Capture & Select Example
 
-Example for capturing image, recording video and selecting media from library.
+Examples are capturing images, recording video, and selecting media from the library.
 
 <img src="images/media-capture-select.gif" width=250/>
 
 ### Component: `LabelToggle`
 
-A custom Toggle like component with inside label support.
+A custom Toggle component with inside label support.
 
 <img src="images/label-toggle.gif" width=250/>
 
 ### MetricKit crash report example
 
-On going...
+Ongoing...
 
 ### Component: `NativeAlert`
 
@@ -85,51 +85,57 @@ Add fonts to the [project](https://github.com/ImaginativeShohag/Why-Not-SwiftUI/
 
 ### Date Format Playground
 
-Total 3 playground related to date formatting. Inspired by [NSDateFormatter.com](https://nsdateformatter.com).
+Total 3 playgrounds related to date formatting. Inspired by [NSDateFormatter.com](https://nsdateformatter.com).
 
 | <img src="images/date-format-1.png" width=250/> | <img src="images/date-format-2.png" width=250/> | <img src="images/date-format-3.png" width=250/> |
 | :-: | :-: | :-: |
 
 ### `ShimmerUI`
 
-A ready to use wrapper for [SwiftUI-Shimmer](https://github.com/markiv/SwiftUI-Shimmer).
+A ready-to-use wrapper for [SwiftUI-Shimmer](https://github.com/markiv/SwiftUI-Shimmer).
 
 | <img src="images/shimmer-ui-1.gif" width=250/> | <img src="images/shimmer-ui-2.gif" width=250/> | <img src="images/shimmer-ui-3.gif" width=250/> |
 | :-: | :-: | :-: |
 
 ### Animation Examples
 
-A collection of animation related SwiftUI features.
+A collection of animation-related SwiftUI features.
 
 <img src="images/animation.gif" width=250/>
 
+### Map Example
+
+A beginner example for Maps in SwiftUI.
+
+<video src="https://github.com/user-attachments/assets/1c86cbe6-ece4-4faf-a894-90a862ee1c6f"></video>
+
 ### UI Testing with Mock data
 
-Checkout the "News" module to get an example for how to run an UI test using mock data.
+Check out the "News" module to get an example of how to run a UI test using mock data.
 
 ## Playground Books
 
 Check `Playgrounds` directory for the books.
 
-### **GCD and Structured Concurrency Model:** A quick guide about the GCD (`DispatchQueue` etc.) and Structured Concurrency Model (`Task`, `actor`, `Sendable` etc.)
+### 1. **GCD and Structured Concurrency Model:** A quick guide about the GCD (`DispatchQueue` etc.) and Structured Concurrency Model (`Task`, `actor`, `Sendable` etc.)
 
-### **Combine:** An introduction guide for the Combine framework.
+### 2. **Combine:** An introduction guide for the Combine framework.
 
-<img src="images/GCD and Structured Concurrency Model.png" width=300/>
+<img src="images/GCD and Structured Concurrency Model.png"/>
 
 ## Others
 
-- Example to create preview with mock Models and ViewModels (`ObservableObject`). (See **Media Capture & Select** Example)
+- Example to create a preview with mock Models and ViewModels (`ObservableObject`). (See **Media Capture & Select** Example)
 - Macro example (see `packages/URLMacro` directory)
     - Resources
         - [Swift Macros: Extend Swift with New Kinds of Expressions](https://www.avanderlee.com/swift/macros/)
-- This project is using [Tuist](https://tuist.io). Current `Tuist` implementation has following examples:
+- This project is using [Tuist](https://tuist.io). Current `Tuist` implementation has the following examples:
     - Quick module add using `Module` model
     - Custom Schema
     - Custom `xcconfig`
     - Custom Build Config
     - Custom InfoPlist
-- `NavController`: A ready to use navigation wrapper on top of `NavigationStack`.
+- `NavController`: A ready-to-use navigation wrapper on top of `NavigationStack`.
 - Basic example for `URLSession`
 - Basic example for `Alamofire`
 - Basic example for `@AppStorage`
@@ -168,7 +174,7 @@ Install `Tuist` using the following command:
 mise install tuist
 ```
 
-### Step 3: Clone repository and change directory to the repository
+### Step 3: Clone the repository and change the directory to the repository
 
 ```bash
 git clone git@github.com:ImaginativeShohag/Why-Not-SwiftUI.git
@@ -212,6 +218,13 @@ tuist edit
 - Please don't use Xcode Source Control. ([Issue](https://github.com/tuist/tuist/issues/4630))
 
 Please see the [Tuist documentation](https://docs.tuist.io) for details.
+
+## Run Tests
+
+```bash
+tuist test 'WhyNotSwiftUI Development' \
+    --skip-test-targets NetworkKitTests/NetworkProdTests
+```
 
 ## Project Map
 
@@ -295,15 +308,11 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [ ] CMS Module
 - [ ] System UI Components Collection
     - [ ] (Grid)[https://developer.apple.com/documentation/swiftui/grid]
-- [x] Navigation system update
 - [ ] SF Symbol animation ((How to animate SF Symbols)[https://www.hackingwithswift.com/quick-start/swiftui/how-to-animate-sf-symbols])
-- [x] Migrate to Tuist
-- [x] Migrate to Tuist 4.0
 - [ ] Fix a freeze issue in `NavigationView` inside `NavigationStack`
-- [x] Add `ShimmerUI`
-- [x] Update `Backend`
 - [ ] Update `ShimmerUI`
 - [ ] Update `Tuist` docs ("Access Assets" section etc.)
+- [x] Add map example with current location access
 
 ## Extensions
 

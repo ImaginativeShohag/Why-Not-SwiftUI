@@ -114,6 +114,10 @@ struct Screen: Identifiable, Sendable {
             name: "`Ollama` Example",
             destination: Destination.Ollama()
         ),
+        Screen(
+            name: "Map Example",
+            destination: Destination.Map()
+        ),
     ].sorted { old, new in
         old.name.filter { $0.isLetter || $0.isNumber } < new.name.filter { $0.isLetter || $0.isNumber }
     }
