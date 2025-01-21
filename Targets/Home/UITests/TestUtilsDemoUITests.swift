@@ -24,8 +24,8 @@ final class TestUtilsDemoUITests: XCTestCase {
         // Tap on the "TestUtils UI Tests Demo" button to navigate to the demo screen.
         demoScreenBtn.tap()
         
-        // Verify that intially the "Welcome..." text does not exist.
-        XCTAssertFalse(app.findAndWait(staticText: "Welcome...", timeout: 2))
+        // Verify that initially the "Welcome" text does not exist.
+        XCTAssertFalse(app.findAndWait(staticText: "welcome_text", timeout: 2))
         
         // Tap the button that shows the text.
         app.buttons["text_show_button"].tap()
@@ -33,13 +33,13 @@ final class TestUtilsDemoUITests: XCTestCase {
         // Verify that the app is in a loading state after enabling the text.
         XCTAssertTrue(app.isLoading())
         
-        // Verify that the "Welcome..." text exists.
-        XCTAssertTrue(app.findAndWait(staticText: "Welcome...", timeout: 5))
+        // Verify that the "welcome_text" text exists.
+        XCTAssertTrue(app.findAndWait(staticText: "welcome_text", timeout: 5))
         
         // Tap the button that hides the text.
         app.buttons["text_hide_button"].tap()
         
-        // Verify that the "Welcome..." text no longer exists.
-        XCTAssertFalse(app.findAndWait(staticText: "Welcome...", timeout: 2))
+        // Verify that the "welcome_text" text no longer exists.
+        XCTAssertFalse(app.findAndWait(staticText: "welcome_text", timeout: 2))
     }
 }

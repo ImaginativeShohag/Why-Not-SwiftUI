@@ -34,7 +34,8 @@ struct TestUtilsUITestsDemoScreen: View {
 
                     VStack(spacing: 20) {
                         if showWelcomeText {
-                            Text("Welcome...")
+                            Text("Welcome Human...")
+                                .accessibilityIdentifier("welcome_text")
                         }
 
                         Button {
