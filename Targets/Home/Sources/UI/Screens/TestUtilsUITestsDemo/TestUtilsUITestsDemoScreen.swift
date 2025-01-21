@@ -26,7 +26,7 @@ struct TestUtilsUITestsDemoScreen: View {
                 ProgressView()
             } else {
                 VStack(spacing: 20) {
-                    Text("This screen is specifically designed for performing UI tests, utilizing extensions from the **TestUtils** target")
+                    Text("This screen is specifically designed for performing UI tests, utilizing extensions from the **TestUtils** target.")
                         .font(.footnote)
                         .multilineTextAlignment(.center)
 
@@ -59,6 +59,7 @@ struct TestUtilsUITestsDemoScreen: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 }
+                .padding()
             }
         }
         .navigationTitle("TestUtilsUITestsDemoScreen")
