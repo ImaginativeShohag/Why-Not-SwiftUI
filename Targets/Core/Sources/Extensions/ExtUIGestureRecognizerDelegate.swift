@@ -6,7 +6,7 @@ import Foundation
 import SwiftUI
 
 /// Magic code for enabling swipe back to dismiss a screen, when default back button set hidden (`navigationBarBackButtonHidden(true)`) on navigation.
-extension UINavigationController: UIGestureRecognizerDelegate {
+extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self

@@ -8,6 +8,7 @@ import SuperLog
 import SwiftData
 import SwiftUI
 
+@MainActor
 @Observable
 class TodoHomeViewModel {
     private(set) var todoList: [Todo] = []

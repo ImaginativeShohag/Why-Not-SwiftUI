@@ -313,6 +313,7 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [ ] Update `ShimmerUI`
 - [ ] Update `Tuist` docs ("Access Assets" section etc.)
 - [x] Add map example with current location access
+- [ ] Add example for FakeStoreAPI (https://fakestoreapi.com/)
 
 ## Extensions
 

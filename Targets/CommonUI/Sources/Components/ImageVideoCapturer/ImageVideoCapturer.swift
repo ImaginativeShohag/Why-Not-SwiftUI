@@ -65,17 +65,20 @@ public struct ImageVideoCapturer: UIViewControllerRepresentable {
                 let videoUrl = info[UIImagePickerController.InfoKey.mediaURL] as! URL
                     
                 // Help: https://www.swiftdevcenter.com/get-thumbnail-from-video-url-in-background-swift/
-                DispatchQueue.global().async {
-                    let asset = AVAsset(url: videoUrl)
-                    let avAssetImageGenerator = AVAssetImageGenerator(asset: asset)
-                    avAssetImageGenerator.appliesPreferredTrackTransform = true
+                Task.detached(priority: .userInitiated) {
+                    let asset = AVURLAsset(url: videoUrl)
+                    let assetImageGenerator = AVAssetImageGenerator(asset: asset)
+                    assetImageGenerator.appliesPreferredTrackTransform = true
                     
                     let thumbnailTime = CMTimeMake(value: 2, timescale: 1)
-                    let cgImage = try? avAssetImageGenerator.copyCGImage(at: thumbnailTime, actualTime: nil)
-                    if let cgImage = cgImage {
-                        let thumbnailImage = UIImage(cgImage: cgImage)
-                        
-                        self.parent.onSuccess(thumbnailImage, videoUrl)
+                    assetImageGenerator.generateCGImageAsynchronously(for: thumbnailTime) { cgImage, _, _ in
+                        if let cgImage = cgImage {
+                            let thumbnailImage = UIImage(cgImage: cgImage)
+                                    
+                            Task { @MainActor in
+                                self.parent.onSuccess(thumbnailImage, videoUrl)
+                            }
+                        }
                     }
                 }
               

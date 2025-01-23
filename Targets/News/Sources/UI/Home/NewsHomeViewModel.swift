@@ -5,6 +5,7 @@
 import Core
 import Foundation
 
+@MainActor
 @Observable
 class NewsHomeViewModel {
     var newsState: UIState<[News]> = .loading

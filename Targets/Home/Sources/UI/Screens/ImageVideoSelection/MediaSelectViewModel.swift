@@ -6,11 +6,12 @@ import PhotosUI
 import SwiftUI
 
 @MainActor
-public class MediaSelectViewModel: ObservableObject {
-    @Published var attachmentItems: [UIAttachment] = []
-    @Published var selectedItems: [PhotosPickerItem] = []
+@Observable
+final class MediaSelectViewModel {
+    var attachmentItems: [UIAttachment] = []
+    var selectedItems: [PhotosPickerItem] = []
 
-    @Published var showLoading: Bool = false
+    var showLoading: Bool = false
 
     public nonisolated init() {}
 
@@ -35,13 +36,13 @@ public class MediaSelectViewModel: ObservableObject {
 
         showLoading = true
 
-        Task {
-            for item in self.selectedItems {
+        Task.detached(priority: .userInitiated) { [selectedItems] in
+            for item in selectedItems {
                 do {
                     let data = try await item.loadTransferable(type: Data.self)
 
                     if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
+                        await MainActor.run {
                             self.attachmentItems.append(UIAttachment(
                                 id: UUID().hashValue,
                                 type: .selectedPhoto,
@@ -55,7 +56,7 @@ public class MediaSelectViewModel: ObservableObject {
                 }
             }
 
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.selectedItems.removeAll()
 
                 self.showLoading = false
@@ -70,11 +71,14 @@ public class MediaSelectViewModel: ObservableObject {
 
 #if DEBUG
 
-public extension MediaSelectViewModel {
-    convenience init(forPreview: Bool = true) {
+extension MediaSelectViewModel {
+    convenience init(
+        forPreview: Bool = true,
+        attachments: [UIAttachment]
+    ) {
         self.init()
 
-        self.attachmentItems = UIAttachment.examples
+        self.attachmentItems = attachments
     }
 }
 

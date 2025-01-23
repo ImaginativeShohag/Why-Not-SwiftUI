@@ -20,34 +20,38 @@ public extension Destination {
 
 // MARK: - UI
 
-public struct MediaSelectScreen: View {
-    @ObservedObject var viewModel = MediaSelectViewModel()
+struct MediaSelectScreen: View {
+    @State private var viewModel: MediaSelectViewModel
 
     @State private var showAttachmentAddDialog: Bool = false
     @State private var showImageCapturer: Bool = false
     @State private var showVideoCapturer: Bool = false
     @State private var showPhotoLibrary: Bool = false
 
-    public init(viewModel: MediaSelectViewModel = MediaSelectViewModel()) {
+    init(viewModel: MediaSelectViewModel = MediaSelectViewModel()) {
         self.viewModel = viewModel
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 0) {
-            ScrollView {
-                VStack {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3)) {
-                        ForEach(viewModel.attachmentItems) { item in
-                            ImageItemView(
-                                item: item,
-                                onDeleteClicked: {
-                                    viewModel.removeAttachment(item: item)
-                                }
-                            )
+            if viewModel.attachmentItems.isEmpty {
+                ContentUnavailableView("No attachment yet.", systemImage: "photo.on.rectangle.angled")
+            } else {
+                ScrollView {
+                    VStack {
+                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3)) {
+                            ForEach(viewModel.attachmentItems) { item in
+                                ImageItemView(
+                                    item: item,
+                                    onDeleteClicked: {
+                                        viewModel.removeAttachment(item: item)
+                                    }
+                                )
+                            }
                         }
                     }
+                    .padding()
                 }
-                .padding()
             }
 
             VStack {
@@ -94,7 +98,7 @@ public struct MediaSelectScreen: View {
 
             Button("Cancel", role: .cancel) {}
         }
-        .fullScreenCover(isPresented: $showImageCapturer) {
+        .fullScreenCover(isPresented: $showImageCapturer) { 
             ImageVideoCapturer(defaultCaptureMode: .photo) { image, videoUrl in
                 viewModel.addAttachment(image: image, videoUrl: videoUrl)
             }
@@ -114,17 +118,30 @@ public struct MediaSelectScreen: View {
         }
         .navigationTitle("Media Capture & Select")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            print("count: \(viewModel.attachmentItems.count)")
+        }
     }
 }
 
 #if DEBUG
 
-struct MediaSelectScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        MediaSelectScreen(
-            viewModel: MediaSelectViewModel(forPreview: true)
+#Preview("Empty view") {
+    MediaSelectScreen(
+        viewModel: MediaSelectViewModel(
+            forPreview: true,
+            attachments: []
         )
-    }
+    )
+}
+
+#Preview("With Items") {
+    MediaSelectScreen(
+        viewModel: MediaSelectViewModel(
+            forPreview: true,
+            attachments: UIAttachment.examples
+        )
+    )
 }
 
 #endif

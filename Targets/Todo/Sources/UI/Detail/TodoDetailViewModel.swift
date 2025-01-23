@@ -6,6 +6,7 @@ import Observation
 import SwiftData
 import SwiftUI
 
+@MainActor
 @Observable
 class TodoDetailViewModel {
     var todo: Todo?
