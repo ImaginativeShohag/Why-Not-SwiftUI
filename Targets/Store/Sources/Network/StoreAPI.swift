@@ -51,6 +51,9 @@ extension NewsAPI: ApiEndpoint {
     
     public var method: Moya.Method {
         switch self {
+        case .login:
+            return .post
+            
         default:
             return .get
         }
@@ -58,6 +61,15 @@ extension NewsAPI: ApiEndpoint {
     
     public var task: Moya.Task {
         switch self {
+        case .login(let username, let password):
+            return .requestParameters(
+                parameters: [
+                    "username": username,
+                    "password": password
+                ],
+                encoding: JSONEncoding()
+            )
+            
         default:
             return .requestPlain
         }

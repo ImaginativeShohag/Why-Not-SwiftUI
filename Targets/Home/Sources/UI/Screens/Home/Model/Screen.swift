@@ -121,7 +121,7 @@ struct Screen: Identifiable, Sendable {
         ),
         Screen(
             name: "🏬 Store Overflow",
-            destination: Destination.StoreHome()
+            destination: Destination.StoreLogin()
         ),
     ].sorted { old, new in
         old.name.filter { $0.isLetter || $0.isNumber } < new.name.filter { $0.isLetter || $0.isNumber }
