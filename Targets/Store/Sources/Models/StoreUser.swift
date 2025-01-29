@@ -4,13 +4,15 @@
 
 import Foundation
 
-// MARK: - UserDetailsResponse
+typealias UsersResponse = [StoreUser]
 
-struct UserDetailsResponse: Codable {
-    let address: Address
+// MARK: - UsersResponseElement
+
+struct StoreUser: Codable {
+    let address: UserAddress
     let id: Int
     let email, username, password: String
-    let name: Name
+    let name: UserName
     let phone: String
     let v: Int
 
@@ -22,8 +24,8 @@ struct UserDetailsResponse: Codable {
 
 // MARK: - Address
 
-struct Address: Codable {
-    let geolocation: Geolocation
+struct UserAddress: Codable {
+    let geolocation: AddressGeolocation
     let city, street: String
     let number: Int
     let zipcode: String
@@ -31,12 +33,12 @@ struct Address: Codable {
 
 // MARK: - Geolocation
 
-struct Geolocation: Codable {
+struct AddressGeolocation: Codable {
     let lat, long: String
 }
 
 // MARK: - Name
 
-struct Name: Codable {
+struct UserName: Codable {
     let firstname, lastname: String
 }
