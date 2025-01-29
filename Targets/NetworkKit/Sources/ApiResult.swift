@@ -21,7 +21,7 @@ import Moya
 ///     }
 /// }
 /// ```
-public enum ApiResult<T: Decodable> {
+public enum ApiResult<T: Decodable & Sendable>: Sendable {
     /// The API call was successful, and the associated value contains the result.
     case success(response: T)
 

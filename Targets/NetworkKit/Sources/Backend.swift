@@ -75,6 +75,13 @@ public extension Backend {
             statusCode: -1
         )
     }
+    
+    /// Request for an API call to the `endpoint` for a `T` response.
+    func request<T>(
+        on endpoint: API
+    ) async -> ApiResult<T> where T: Decodable {
+        return await request(T.self, on: endpoint)
+    }
 
     /// Request for an API call to the `endpoint` for a `resourceType` response.
     func request<T>(

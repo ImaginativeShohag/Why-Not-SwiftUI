@@ -108,7 +108,7 @@ let project = Project.app(
             name: "Home",
             hasUnitTest: true,
             hasUITest: true,
-            dependencies: ["Core", "CommonUI", "SuperLog", "Todo", "News"]
+            dependencies: ["Core", "CommonUI", "SuperLog", "Todo", "News", "Store"]
         ),
         Module(
             name: "Todo",
@@ -118,6 +118,10 @@ let project = Project.app(
             name: "News",
             hasResources: true,
             hasUITest: true,
+            dependencies: ["Core", "CommonUI", "SuperLog", "NetworkKit"]
+        ),
+        Module(
+            name: "Store",
             dependencies: ["Core", "CommonUI", "SuperLog", "NetworkKit"]
         )
     ],

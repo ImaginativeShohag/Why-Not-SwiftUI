@@ -7,6 +7,7 @@ import NavigationKit
 import News
 import SwiftUI
 import Todo
+import Store
 
 struct Screen: Identifiable, Sendable {
     let id = UUID().uuidString
@@ -117,6 +118,10 @@ struct Screen: Identifiable, Sendable {
         Screen(
             name: "Map Example",
             destination: Destination.Map()
+        ),
+        Screen(
+            name: "🏬 Store Overflow",
+            destination: Destination.StoreHome()
         ),
     ].sorted { old, new in
         old.name.filter { $0.isLetter || $0.isNumber } < new.name.filter { $0.isLetter || $0.isNumber }
