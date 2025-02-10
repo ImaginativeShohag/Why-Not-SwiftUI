@@ -2,6 +2,8 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Foundation
+
 typealias CartResponse = [CartItem]
 
 // MARK: - CartResponseElement
@@ -19,15 +21,14 @@ struct CartItem: Codable {
         case date, products
         case v = "__v"
     }
+    
+    func getOrderedAt() -> Date? {
+        date.isEmpty ? nil : date.toDate(dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSX")
+    }
 }
 
 // MARK: - Product
 
 struct CartProduct: Codable {
-    let productID, quantity: Int
-
-    enum CodingKeys: String, CodingKey {
-        case productID = "productId"
-        case quantity
-    }
+    let productId, quantity: Int
 }

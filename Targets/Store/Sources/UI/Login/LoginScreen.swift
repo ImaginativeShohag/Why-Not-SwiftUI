@@ -20,8 +20,8 @@ public extension Destination {
 struct LoginScreen: View {
     @State private var viewModel: LoginViewModel
 
-    @State private var username: String = "johnd"
-    @State private var password: String = "m38rmF$"
+    @State private var username: String = Constant.username
+    @State private var password: String = Constant.password
 
     init(viewModel: LoginViewModel = LoginViewModel()) {
         self.viewModel = viewModel
@@ -50,6 +50,7 @@ struct LoginScreen: View {
                 VStack(spacing: 16) {
                     if let errorMessage = viewModel.state?.getErrorMessage() {
                         Text(errorMessage)
+                            .multilineTextAlignment(.center)
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background {
@@ -120,7 +121,7 @@ struct LoginScreen: View {
             if let state = newState, state.getData() == true {
                 NavController.shared
                     .navigateTo(
-                        Destination.StoreHome(),
+                        Destination.Main(),
                         popUpTo: Destination.StoreLogin.self,
                         inclusive: true
                     )

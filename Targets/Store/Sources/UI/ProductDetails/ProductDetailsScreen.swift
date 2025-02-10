@@ -80,7 +80,7 @@ struct ProductDetailsScreen: View {
                             .clipShape(
                                 RoundedCorner(
                                     radius: 32,
-                                    corners: [.bottomLeft, .bottomRight]
+                                    corners: .allCorners
                                 )
                             )
 
@@ -97,9 +97,9 @@ struct ProductDetailsScreen: View {
                                     Image(systemName: "star.fill")
                                         .foregroundStyle(Color.yellow)
 
-                                    Text("\(String(format: "%.1f", product.rating.rate))")
+                                    Text("\(String(format: "%.1f", product.ratingRate))")
 
-                                    Text("(\(product.rating.count))")
+                                    Text("(\(product.ratingCount))")
                                 }
                                 .font(.footnote)
                                 .foregroundStyle(Color.gray)
@@ -130,17 +130,17 @@ struct ProductDetailsScreen: View {
 
                         HStack {
                             Button {
-                                //
+                                viewModel.increaseQuantity(for: product)
                             } label: {
                                 Image(systemName: "plus.square")
                             }
 
-                            Text("999")
+                            Text("\(product.quantity)")
                                 .lineLimit(1)
                                 .frame(maxWidth: .infinity)
 
                             Button {
-                                //
+                                viewModel.decreaseQuantity(for: product)
                             } label: {
                                 Image(systemName: "minus.square")
                             }

@@ -13,7 +13,7 @@ final class StoreRepository: Sendable {
         )
     }
     
-    func getUserDetails(userId: Int) async -> ApiResult<UserDetailsResponse> {
+    func getUserDetails(userId: Int) async -> ApiResult<StoreUser> {
         return await DataSource.Store.request(
             on: .userDetails(userId: userId)
         )

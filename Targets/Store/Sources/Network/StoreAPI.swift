@@ -8,10 +8,10 @@ import Moya
 import NetworkKit
 
 extension DataSource {
-    static let Store = Backend<NewsAPI>()
+    static let Store = Backend<StoreAPI>()
 }
 
-enum NewsAPI {
+enum StoreAPI {
     case login(username: String, password: String)
     case userDetails(userId: Int)
     case products
@@ -21,7 +21,7 @@ enum NewsAPI {
     case carts(userId: Int)
 }
 
-extension NewsAPI: ApiEndpoint {
+extension StoreAPI: ApiEndpoint {
     public var baseURL: URL { URL(string: "https://fakestoreapi.com")! }
     
     public var path: String {
@@ -44,8 +44,8 @@ extension NewsAPI: ApiEndpoint {
         case .categoryProducts(let categoryId):
             "/products/category/\(categoryId)"
             
-        case .carts(let userId):
-            "/carts?userId=\(userId)"
+        case .carts:
+            "/carts"
         }
     }
     
@@ -68,6 +68,14 @@ extension NewsAPI: ApiEndpoint {
                     "password": password
                 ],
                 encoding: JSONEncoding()
+            )
+            
+        case .carts(let userId):
+            return .requestParameters(
+                parameters: [
+                    "userId": userId
+                ],
+                encoding: URLEncoding()
             )
             
         default:

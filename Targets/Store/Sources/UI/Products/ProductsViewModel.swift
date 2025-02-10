@@ -7,16 +7,22 @@ import Foundation
 
 @MainActor
 @Observable
-class ProductsViewModel {
+class ProductsViewModel: ProductProcessActions {
     let categoryId: String
-    var productsState: UIState<[Product]> = .loading
+    var productsState: UIState<[UIStore.Product]> = .loading
 
     private var isPreview: Bool = false
-    nonisolated private let repository: StoreRepository
+    private nonisolated let repository: StoreRepository
 
-    init(categoryId: String, repository: StoreRepository = StoreRepository()) {
+    init(
+        categoryId: String,
+        repository: StoreRepository = StoreRepository(),
+        cartManager: CartManager = CartManager.shared
+    ) {
         self.repository = repository
         self.categoryId = categoryId
+
+        super.init(cartManager: cartManager)
     }
 
     func loadProducts(forced: Bool = false) async {
@@ -30,7 +36,8 @@ class ProductsViewModel {
 
         switch result {
         case .success(let productList):
-            productsState = .data(data: productList)
+            let finalProducts = await processProducts(productList)
+            productsState = .data(data: finalProducts)
 
         case .failure(_, let errorMessage, _):
             productsState = .error(message: errorMessage)
@@ -55,7 +62,7 @@ extension ProductsViewModel {
         } else if productsIsError {
             productsState = .error(message: "Something went wrong! Try again.")
         } else {
-            productsState = .data(data: Product.mockItems())
+            productsState = .data(data: UIStore.Product.mockItems())
         }
     }
 }

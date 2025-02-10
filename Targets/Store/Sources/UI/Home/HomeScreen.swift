@@ -6,62 +6,137 @@ import Core
 import Kingfisher
 import NavigationKit
 import SwiftUI
-
-// MARK: - Destination
-
-public extension Destination {
-    final class StoreHome: BaseDestination {
-        override public func getScreen() -> any View {
-            HomeScreen()
-        }
-    }
-}
-
-// MARK: - UI
+@_spi(Advanced) import SwiftUIIntrospect
 
 struct HomeScreen: View {
     @State var viewModel: HomeViewModel
+
+    @State private var showProfile = false
+    @State var showToolBar = true
+    @State private var lastHostingView: UIView!
+    @State private var showNav: Bool = false
+    @State private var navOffset: CGFloat = 0
 
     init(viewModel: HomeViewModel = HomeViewModel()) {
         self.viewModel = viewModel
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                CarouselSection()
+        NavigationViewStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    if let user = viewModel.user {
+                        HStack {
+                            Text("Welcome, **\(user.name.getFullName())**!")
+                                .font(.title)
+                                .lineLimit(1)
+                                .onTapGesture {
+                                    showToolBar.toggle()
+                                }
 
-                CategorySection(
-                    categoriesState: viewModel.categoriesState,
-                    onCategoryClick: { category in
-                        NavController.shared.navigateTo(
-                            Destination.Products(categoryId: category)
-                        )
+                            Spacer()
+
+                            Button {
+                                showProfile.toggle()
+                            } label: {
+                                ProfileView()
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.top)
                     }
-                )
 
-                ProductListSection(
-                    productsState: viewModel.productsState,
-                    onProductClick: { product in
-                        NavController.shared.navigateTo(
-                            Destination.ProductDetails(productId: product.id)
-                        )
+                    CarouselSection()
+
+                    CategorySection(
+                        categoriesState: viewModel.categoriesState,
+                        onCategoryClick: { category in
+                            NavController.shared.navigateTo(
+                                Destination.Products(categoryId: category)
+                            )
+                        },
+                        onRetryClick: {
+                            Task {
+                                await viewModel.loadCategories(forced: true)
+                            }
+                        }
+                    )
+
+                    ProductListSection(
+                        productsState: viewModel.productsState,
+                        onProductClick: { product in
+                            NavController.shared.navigateTo(
+                                Destination.ProductDetails(productId: product.id)
+                            )
+                        },
+                        onProductIncreaseClick: { product in
+                            viewModel.increaseQuantity(for: product)
+                        },
+                        onProductDecreaseClick: { product in
+                            viewModel.decreaseQuantity(for: product)
+                        },
+                        onRetryClick: {
+                            Task {
+                                await viewModel.loadProducts(forced: true)
+                            }
+                        }
+                    )
+                }
+                .background(
+                    GeometryReader { proxy in
+                        Color.clear
+                            .onChange(
+                                of: proxy.frame(
+                                    in: .named("ScrollView")
+                                ).minY
+                            ) { lastScrollOffset, newScrollOffset in
+                                print("lastScrollOffset: \(lastScrollOffset), newScrollOffset: \(newScrollOffset)")
+
+                                if newScrollOffset < -40 {
+                                    showNav = true
+                                } else if newScrollOffset >= -40 {
+                                    showNav = false
+                                }
+                                navOffset = newScrollOffset
+                            }
                     }
                 )
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.systemGroupedBackground)
+            .coordinateSpace(name: "ScrollView")
+            .introspect(.navigationStack, on: .iOS(.v18...), customize: { (navController: UINavigationController) in
+                let bar = navController.navigationBar
+
+                print("bar height: \(bar.frame.height)")
+            })
+            // .toolbarVisibility(showNav ? .visible : .hidden, for: .navigationBar)
+            // .animation(.default, value: showNav)
+            .refreshable {
+                await viewModel.loadCategories(forced: true)
+                await viewModel.loadProducts(forced: true)
+            }
+            .task {
+                async let categories: () = viewModel.loadCategories()
+                async let products: () = viewModel.loadProducts()
+
+                let _ = await (categories, products)
+            }
+            .sheet(isPresented: $showProfile) {
+                ProfileSheet()
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.systemGroupedBackground)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Store Overflow")
-        .refreshable {
-            await viewModel.loadCategories(forced: true)
-            await viewModel.loadProducts(forced: true)
-        }
-        .task {
-            await viewModel.loadCategories()
-            await viewModel.loadProducts()
-        }
+    }
+}
+
+struct ProfileView: View {
+    var body: some View {
+        Image(systemName: "person.crop.circle")
+            .resizable()
+            .foregroundStyle(Color.gray.gradient)
+            .scaledToFit()
+            .frame(width: 32, height: 32)
+            .clipShape(Circle())
     }
 }
 
@@ -69,15 +144,22 @@ struct HomeScreen: View {
 
 #Preview("With Data") {
     NavigationStack {
-        HomeScreen(
-            viewModel: HomeViewModel(
-                forPreview: true,
-                productsIsLoading: false,
-                productsIsError: false,
-                categoriesIsLoading: false,
-                categoriesIsError: false
+        TabView {
+            HomeScreen(
+                viewModel: HomeViewModel(
+                    forPreview: true,
+                    productsIsLoading: false,
+                    productsIsError: false,
+                    categoriesIsLoading: false,
+                    categoriesIsError: false
+                )
             )
-        )
+            .tabItem {
+                Label("Home", systemImage: "text.rectangle.page.fill")
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Welcome")
     }
 }
 
@@ -160,16 +242,21 @@ private struct CarouselSection: View {
 }
 
 private struct CategorySection: View {
-    var categoriesState: UIState<[Category]>
+    let categoriesState: UIState<[Category]>
     let onCategoryClick: (Category) -> Void
+    let onRetryClick: () -> Void
 
     var body: some View {
         switch categoriesState {
             case .loading:
-                ProgressView()
+                ZStack {
+                    ProgressView()
+                        .padding()
+                }
+                .frame(maxWidth: .infinity)
 
             case .error(let message):
-                Text(message)
+                ErrorView(message: message, onRetryClick: onRetryClick)
 
             case .data(let categories):
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -181,7 +268,7 @@ private struct CategorySection: View {
                                 HStack(spacing: 8) {
                                     Image(systemName: "shippingbox")
 
-                                    Text(category)
+                                    Text(category.capitalized)
                                 }
                                 .font(.system(.subheadline, weight: .semibold))
                                 .padding(8)
@@ -200,18 +287,23 @@ private struct CategorySection: View {
 }
 
 private struct ProductListSection: View {
-    var productsState: UIState<[Product]>
-    let onProductClick: (Product) -> Void
+    let productsState: UIState<[UIStore.Product]>
+    let onProductClick: (UIStore.Product) -> Void
+    let onProductIncreaseClick: (UIStore.Product) -> Void
+    let onProductDecreaseClick: (UIStore.Product) -> Void
+    let onRetryClick: () -> Void
 
     var body: some View {
         switch productsState {
             case .loading:
-                HStack {
+                ZStack {
                     ProgressView()
+                        .padding()
                 }
+                .frame(maxWidth: .infinity)
 
             case .error(let message):
-                Text(message)
+                ErrorView(message: message, onRetryClick: onRetryClick)
 
             case .data(let products):
                 LazyVGrid(
@@ -226,11 +318,15 @@ private struct ProductListSection: View {
                                 title: product.title,
                                 price: product.price,
                                 image: product.image,
-                                rating: product.rating.rate,
-                                ratingCount: product.rating.count,
-                                quantity: 999,
-                                onPlusClick: {},
-                                onMinusClick: {}
+                                rating: product.ratingRate,
+                                ratingCount: product.ratingCount,
+                                quantity: product.quantity,
+                                onPlusClick: {
+                                    onProductIncreaseClick(product)
+                                },
+                                onMinusClick: {
+                                    onProductDecreaseClick(product)
+                                }
                             )
                         }
                         .buttonStyle(.plain)

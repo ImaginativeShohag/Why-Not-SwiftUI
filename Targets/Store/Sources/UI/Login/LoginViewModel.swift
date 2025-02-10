@@ -13,7 +13,7 @@ class LoginViewModel {
     private var isPreview: Bool = false
     private nonisolated let repository: StoreRepository
 
-    init( repository: StoreRepository = StoreRepository()) {
+    init(repository: StoreRepository = StoreRepository()) {
         self.repository = repository
     }
 
@@ -28,7 +28,30 @@ class LoginViewModel {
         )
 
         switch result {
-        case .success:
+        case .success(let response):
+            if response.token.isEmpty {
+                state = .error(message: "Invalid credentials")
+                return
+            }
+
+            await getUserDetails()
+
+        case .failure(_, let errorMessage, _):
+            state = .error(message: errorMessage)
+        }
+    }
+
+    private func getUserDetails() async {
+        state = .loading
+
+        let result = await repository.getUserDetails(
+            userId: Constant.userId
+        )
+
+        switch result {
+        case .success(let user):
+            Preferences.user = user
+
             state = .data(data: true)
 
         case .failure(_, let errorMessage, _):
@@ -60,4 +83,3 @@ extension LoginViewModel {
 }
 
 #endif
-

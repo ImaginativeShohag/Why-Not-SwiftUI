@@ -18,6 +18,21 @@ struct Product: Codable, Identifiable {
     let rating: Rating
 }
 
+extension Product {
+    nonisolated func toUIModel() -> UIStore.Product {
+        UIStore.Product(
+            id: id,
+            title: title,
+            price: price,
+            description: description,
+            category: category,
+            image: image,
+            ratingRate: rating.rate,
+            ratingCount: rating.count
+        )
+    }
+}
+
 #if DEBUG
 
 extension Product {

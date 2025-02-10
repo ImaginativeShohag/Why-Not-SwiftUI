@@ -4,21 +4,35 @@
 
 import Foundation
 
-typealias UsersResponse = [StoreUser]
-
-// MARK: - UsersResponseElement
+// MARK: - StoreUser
 
 struct StoreUser: Codable {
-    let address: UserAddress
+    let address: UserAddress?
     let id: Int
     let email, username, password: String
     let name: UserName
     let phone: String
-    let v: Int
 
     enum CodingKeys: String, CodingKey {
         case address, id, email, username, password, name, phone
-        case v = "__v"
+    }
+
+    init(
+        id: Int,
+        email: String,
+        username: String,
+        password: String,
+        name: UserName,
+        phone: String,
+        address: UserAddress?
+    ) {
+        self.address = address
+        self.id = id
+        self.email = email
+        self.username = username
+        self.password = password
+        self.name = name
+        self.phone = phone
     }
 }
 
@@ -29,6 +43,10 @@ struct UserAddress: Codable {
     let city, street: String
     let number: Int
     let zipcode: String
+
+    func getAddress() -> String {
+        return "\(street), \(city)"
+    }
 }
 
 // MARK: - Geolocation
@@ -41,4 +59,32 @@ struct AddressGeolocation: Codable {
 
 struct UserName: Codable {
     let firstname, lastname: String
+
+    func getFullName() -> String {
+        return "\(firstname) \(lastname)"
+    }
 }
+
+#if DEBUG
+
+extension StoreUser {
+    static func mockItem() -> StoreUser {
+        StoreUser(
+            id: 1,
+            email: "lorem@example.com",
+            username: "loremipsum",
+            password: "123456",
+            name: UserName(firstname: "Lorem", lastname: "Ipsum"),
+            phone: "0123456789",
+            address: UserAddress(
+                geolocation: AddressGeolocation(lat: "0.0", long: "0.0"),
+                city: "Center Mars",
+                street: "Fast Lane",
+                number: 1234,
+                zipcode: "123-456"
+            )
+        )
+    }
+}
+
+#endif

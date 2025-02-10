@@ -7,16 +7,22 @@ import Foundation
 
 @MainActor
 @Observable
-class ProductDetailsViewModel {
+class ProductDetailsViewModel: ProductProcessActions {
     let productId: Int
-    var productState: UIState<Product> = .loading
+    var productState: UIState<UIStore.Product> = .loading
 
     private var isPreview: Bool = false
-    nonisolated private let repository: StoreRepository
+    private nonisolated let repository: StoreRepository
 
-    init(productId: Int, repository: StoreRepository = StoreRepository()) {
+    init(
+        productId: Int,
+        repository: StoreRepository = StoreRepository(),
+        cartManager: CartManager = CartManager.shared
+    ) {
         self.repository = repository
         self.productId = productId
+
+        super.init(cartManager: cartManager)
     }
 
     func loadProduct(forced: Bool = false) async {
@@ -30,7 +36,8 @@ class ProductDetailsViewModel {
 
         switch result {
         case .success(let product):
-            productState = .data(data: product)
+            let finalProduct = await processProduct(product)
+            productState = .data(data: finalProduct)
 
         case .failure(_, let errorMessage, _):
             productState = .error(message: errorMessage)
@@ -46,7 +53,10 @@ extension ProductDetailsViewModel {
         productsIsLoading: Bool,
         productsIsError: Bool
     ) {
-        self.init(productId: 0)
+        self.init(
+            productId: 0,
+            cartManager: CartManager.mock
+        )
 
         isPreview = true
 
@@ -55,7 +65,7 @@ extension ProductDetailsViewModel {
         } else if productsIsError {
             productState = .error(message: "Something went wrong! Try again.")
         } else {
-            productState = .data(data: Product.mockItems().first!)
+            productState = .data(data: UIStore.Product.mockItems().first!)
         }
     }
 }

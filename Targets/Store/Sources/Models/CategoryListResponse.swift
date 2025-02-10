@@ -11,7 +11,7 @@ typealias CategoryListResponse = [Category]
 
 extension Category {
     static func mockItems() -> [Category] {
-        return ["Electronics", "Clothing", "Books", "Home & Kitchen", "Sports"]
+        return ["electronics", "clothing", "books", "home & kitchen", "sports"]
     }
 }
 

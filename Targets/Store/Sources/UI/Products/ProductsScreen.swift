@@ -33,46 +33,66 @@ struct ProductsScreen: View {
     }
 
     var body: some View {
-        ScrollView {
+        ZStack {
             switch viewModel.productsState {
                 case .loading:
                     ProgressView()
 
                 case .error(let message):
-                    Text(message)
+                    ContentUnavailableView(
+                        label: {
+                            Label(message, systemImage: "exclamationmark.triangle")
+                        },
+                        actions: {
+                            Button("Retry") {
+                                Task {
+                                    await viewModel.loadProducts(forced: true)
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .padding(.top)
+                        }
+                    )
 
                 case .data(let products):
-                    LazyVGrid(
-                        columns: Array(repeating: .init(spacing: 8), count: 2),
-                        spacing: 8
-                    ) {
-                        ForEach(products) { product in
-                            Button {
-                                NavController.shared.navigateTo(
-                                    Destination.ProductDetails(productId: product.id)
-                                )
-                            } label: {
-                                ProductView(
-                                    title: product.title,
-                                    price: product.price,
-                                    image: product.image,
-                                    rating: product.rating.rate,
-                                    ratingCount: product.rating.count,
-                                    quantity: 999,
-                                    onPlusClick: {},
-                                    onMinusClick: {}
-                                )
+                    ScrollView {
+                        LazyVGrid(
+                            columns: Array(repeating: .init(spacing: 8), count: 2),
+                            spacing: 8
+                        ) {
+                            ForEach(products) { product in
+                                Button {
+                                    NavController.shared.navigateTo(
+                                        Destination.ProductDetails(productId: product.id)
+                                    )
+                                } label: {
+                                    ProductView(
+                                        title: product.title,
+                                        price: product.price,
+                                        image: product.image,
+                                        rating: product.ratingRate,
+                                        ratingCount: product.ratingCount,
+                                        quantity: product.quantity,
+                                        onPlusClick: {
+                                            viewModel.increaseQuantity(for: product)
+                                        },
+                                        onMinusClick: {
+                                            viewModel.decreaseQuantity(for: product)
+                                        }
+                                    )
+                                }
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
+                        .padding()
                     }
-                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.systemGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Category: \(viewModel.categoryId)")
+        .navigationTitle("Category: \(viewModel.categoryId.capitalized)")
         .refreshable {
             await viewModel.loadProducts(forced: true)
         }
@@ -82,7 +102,9 @@ struct ProductsScreen: View {
     }
 }
 
-#Preview {
+#if DEBUG
+
+#Preview("With Data") {
     NavigationStack {
         ProductsScreen(
             viewModel: .init(
@@ -93,3 +115,29 @@ struct ProductsScreen: View {
         )
     }
 }
+
+#Preview("With Error") {
+    NavigationStack {
+        ProductsScreen(
+            viewModel: .init(
+                forPreview: true,
+                productsIsLoading: false,
+                productsIsError: true
+            )
+        )
+    }
+}
+
+#Preview("Loading") {
+    NavigationStack {
+        ProductsScreen(
+            viewModel: .init(
+                forPreview: true,
+                productsIsLoading: true,
+                productsIsError: false
+            )
+        )
+    }
+}
+
+#endif

@@ -7,16 +7,30 @@ import Foundation
 
 @MainActor
 @Observable
-class HomeViewModel {
-    var productsState: UIState<[Product]> = .loading
+class HomeViewModel: ProductProcessActions {
+    var productsState: UIState<[UIStore.Product]> = .loading
     var categoriesState: UIState<[Category]> = .loading
+    var user: StoreUser?
 
     private var isPreview: Bool = false
 
-    nonisolated private let repository: StoreRepository
+    private nonisolated let repository: StoreRepository
 
-    init(repository: StoreRepository = StoreRepository()) {
+    init(
+        repository: StoreRepository = StoreRepository(),
+        cartManager: CartManager = CartManager.shared
+    ) {
         self.repository = repository
+
+        super.init(cartManager: cartManager)
+
+        initialize()
+    }
+
+    private func initialize() {
+        guard !isPreview else { return }
+
+        user = Preferences.user
     }
 
     func loadCategories(forced: Bool = false) async {
@@ -44,10 +58,36 @@ class HomeViewModel {
 
         switch result {
         case .success(let productList):
-            productsState = .data(data: productList)
+            let finalProducts = await processProducts(productList)
+            productsState = .data(data: finalProducts)
 
         case .failure(_, let errorMessage, _):
             productsState = .error(message: errorMessage)
+        }
+    }
+}
+
+class ProductProcessActions: CartActions {
+    func processProducts(_ products: [Product]) async -> [UIStore.Product] {
+        var finalProducts = [UIStore.Product]()
+
+        for product in products {
+            await finalProducts.append(
+                processProduct(product)
+            )
+        }
+
+        return finalProducts
+    }
+
+    func processProduct(_ product: Product) async -> UIStore.Product {
+        let cacheUiProduct = await ProductCache.shared.getProduct(product.id)
+        if let cacheUiProduct {
+            return cacheUiProduct
+        } else {
+            let uiModel = product.toUIModel()
+            await ProductCache.shared.updateProduct(uiModel)
+            return uiModel
         }
     }
 }
@@ -66,14 +106,16 @@ extension HomeViewModel {
 
         isPreview = true
 
+        user = StoreUser.mockItem()
+
         if productsIsLoading {
             productsState = .loading
         } else if productsIsError {
             productsState = .error(message: "Something went wrong! Try again.")
         } else {
-            productsState = .data(data: Product.mockItems())
+            productsState = .data(data: UIStore.Product.mockItems())
         }
-        
+
         if categoriesIsLoading {
             categoriesState = .loading
         } else if categoriesIsError {
@@ -81,7 +123,6 @@ extension HomeViewModel {
         } else {
             categoriesState = .data(data: Category.mockItems())
         }
-        
     }
 }
 
