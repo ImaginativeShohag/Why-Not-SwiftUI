@@ -57,8 +57,8 @@ struct ProductsScreen: View {
                 case .data(let products):
                     ScrollView {
                         LazyVGrid(
-                            columns: Array(repeating: .init(spacing: 8), count: 2),
-                            spacing: 8
+                            columns: Array(repeating: .init(spacing: 16), count: 2),
+                            spacing: 16
                         ) {
                             ForEach(products) { product in
                                 Button {
