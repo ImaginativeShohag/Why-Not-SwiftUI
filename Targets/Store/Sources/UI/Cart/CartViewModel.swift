@@ -8,7 +8,7 @@ import Foundation
 @MainActor
 @Observable
 class CartViewModel: CartActions {
-    var state: UIState<[Category]> = .loading
+    var orderSubmitState: UIState<Bool>?
 
     private var isPreview: Bool = false
     private nonisolated let repository: StoreRepository
@@ -22,45 +22,16 @@ class CartViewModel: CartActions {
         super.init(cartManager: cartManager)
     }
 
-    
-    #warning("remove this")
-    
-    func loadProducts(forced: Bool = false) async {
-        guard !isPreview, state.isLoading || forced else { return }
+    func submitOrder() async {
+        guard !isPreview else { return }
 
-        state = .loading
+        orderSubmitState = .loading
 
-        let result = await repository.getCategories()
+        try? await Task.sleep(for: .seconds(2))
 
-        switch result {
-        case .success(let categories):
-            state = .data(data: categories)
+        clearCart()
 
-        case .failure(_, let errorMessage, _):
-            state = .error(message: errorMessage)
-        }
-    }
-}
-
-#warning("Convert this to UseCase")
-@MainActor
-class CartActions {
-    let cartManager: CartManager
-
-    init(cartManager: CartManager) {
-        self.cartManager = cartManager
-    }
-
-    func increaseQuantity(for product: UIStore.Product) {
-        cartManager.increaseQuantity(for: product)
-    }
-
-    func decreaseQuantity(for product: UIStore.Product) {
-        cartManager.decreaseQuantity(for: product)
-    }
-
-    func totalPrice() -> Double {
-        return cartManager.totalPrice()
+        orderSubmitState = .data(data: true)
     }
 }
 
@@ -69,21 +40,28 @@ class CartActions {
 extension CartViewModel {
     convenience init(
         forPreview: Bool,
+        productIsEmpty: Bool,
         productsIsLoading: Bool,
         productsIsError: Bool
     ) {
-        self.init(
-            cartManager: CartManager.mock
-        )
+        if productIsEmpty {
+            self.init(
+                cartManager: CartManager.mockWithEmptyItem
+            )
+        } else {
+            self.init(
+                cartManager: CartManager.mock
+            )
+        }
 
         isPreview = true
 
         if productsIsLoading {
-            state = .loading
+            orderSubmitState = .loading
         } else if productsIsError {
-            state = .error(message: "Something went wrong! Try again.")
+            orderSubmitState = .error(message: "Something went wrong! Try again.")
         } else {
-            state = .data(data: Category.mockItems())
+            orderSubmitState = .data(data: true)
         }
     }
 }

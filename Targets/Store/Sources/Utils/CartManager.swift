@@ -32,6 +32,10 @@ class CartManager {
             items.remove(existingProduct)
         }
     }
+    
+    func clearCart() {
+        items.removeAll()
+    }
 
     func totalPrice() -> Double {
         items.reduce(0) { result, product in
@@ -53,6 +57,10 @@ extension CartManager {
         }
 
         return manager
+    }()
+    
+    static let mockWithEmptyItem: CartManager = {
+        return CartManager()
     }()
 }
 
