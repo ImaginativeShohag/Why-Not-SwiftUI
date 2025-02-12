@@ -22,6 +22,10 @@ class ProfileViewModel {
             state = .data(data: user)
         }
     }
+    
+    func signOut() {
+        Preferences.reset()
+    }
 }
 
 #if DEBUG

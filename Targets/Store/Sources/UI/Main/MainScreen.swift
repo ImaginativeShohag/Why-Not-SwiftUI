@@ -32,22 +32,32 @@ struct MainScreen: View {
     
     var body: some View {
         TabView(selection: $selection) {
-            Tab("Home", systemImage: "text.rectangle.page.fill", value: .home) {
+            Tab(
+                "Home",
+                systemImage: "text.rectangle.page.fill",
+                value: .home)
+            {
                 HomeScreen()
             }
 
-            Tab("Categories", systemImage: "shippingbox", value: .categories) {
+            Tab(
+                "Categories",
+                systemImage: "shippingbox",
+                value: .categories)
+            {
                 CategoriesScreen()
             }
                     
-            Tab("Bag", systemImage: "bag", value: .bag) {
+            Tab(
+                "Bag",
+                systemImage: "bag",
+                value: .bag)
+            {
                 CartScreen()
             }
         }
         .tabViewStyle(.sidebarAdaptable)
         .toolbarVisibility(.hidden, for: .navigationBar)
-        // .navigationTitle(selection.title())
-        // .toolbarTitleDisplayMode(.inline)
     }
 }
 

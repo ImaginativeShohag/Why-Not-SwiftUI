@@ -8,6 +8,7 @@ import Foundation
 /// This `enum` is contains the keys for the `Preferences`.
 extension Key {
     static let user: Key = "user"
+    static let address: Key = "address"
 }
 
 /// `Preferences` is a wrapper for `UserDefaults`.
@@ -28,11 +29,15 @@ extension Key {
 extension Preferences {
     @CodableUserDefault(key: .user)
     static var user: StoreUser?
+    
+    @CodableUserDefault(key: .address)
+    static var address: String?
 
     // MARK: - Reset
 
     static func reset() {
         // TODO: Try with `Mirror(reflection:)`.
         user = $user.defaultValue
+        address = $address.defaultValue
     }
 }

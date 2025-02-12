@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CartScreen: View {
     @State var viewModel: CartViewModel
+    @State var showSuccessAlert: Bool = false
 
     init(viewModel: CartViewModel = CartViewModel()) {
         self.viewModel = viewModel
@@ -25,7 +26,7 @@ struct CartScreen: View {
                     )
                 } else {
                     ScrollView {
-                        VStack(spacing: 8) {
+                        VStack(spacing: 16) {
                             ForEach(Array(viewModel.cartManager.items)) { product in
                                 CartItemView(
                                     title: product.title,
@@ -40,7 +41,6 @@ struct CartScreen: View {
                             }
                         }
                         .padding()
-                        .disabled(viewModel.orderSubmitState?.isLoading == true)
                     }
                 }
             }
@@ -63,27 +63,15 @@ struct CartScreen: View {
                     .padding(.vertical, 8)
 
                     Button {
-                        Task {
-                            await viewModel.submitOrder()
-                        }
+                        NavController.shared
+                            .navigateTo(Destination.PlaceOrder())
                     } label: {
-                        if viewModel.orderSubmitState == .loading {
-                            ProgressView()
-                            
-                            Text("Placing Order")
-                                .font(.title3)
-                                .frame(maxWidth: .infinity)
-                        } else {
-                            Text("Place Order")
-                                .font(.title3)
-                                .frame(maxWidth: .infinity)
-                        }
+                        Text("Check Out")
+                            .font(.title3)
+                            .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(
-                        viewModel.cartManager.items.isEmpty
-                            || viewModel.orderSubmitState?.isLoading == true
-                    )
+                    .disabled(viewModel.cartManager.items.isEmpty)
                     .padding(.horizontal)
                     .padding(.bottom)
                 }
@@ -112,9 +100,7 @@ struct CartScreen: View {
     CartScreen(
         viewModel: .init(
             forPreview: true,
-            productIsEmpty: false,
-            productsIsLoading: false,
-            productsIsError: false
+            productIsEmpty: false
         )
     )
 }
@@ -123,38 +109,14 @@ struct CartScreen: View {
     CartScreen(
         viewModel: .init(
             forPreview: true,
-            productIsEmpty: true,
-            productsIsLoading: false,
-            productsIsError: false
-        )
-    )
-}
-
-#Preview("With Error") {
-    CartScreen(
-        viewModel: .init(
-            forPreview: true,
-            productIsEmpty: false,
-            productsIsLoading: false,
-            productsIsError: true
-        )
-    )
-}
-
-#Preview("Loading") {
-    CartScreen(
-        viewModel: .init(
-            forPreview: true,
-            productIsEmpty: false,
-            productsIsLoading: true,
-            productsIsError: false
+            productIsEmpty: true
         )
     )
 }
 
 #endif
 
-struct CartItemView: View {
+private struct CartItemView: View {
     let title: String
     let price: Double
     let image: String

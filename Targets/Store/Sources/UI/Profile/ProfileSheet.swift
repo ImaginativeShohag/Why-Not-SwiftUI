@@ -4,11 +4,13 @@
 
 import Kingfisher
 import SwiftUI
+import NavigationKit
 
 struct ProfileSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var viewModel: ProfileViewModel
+    @State private var showSignOutAlert: Bool = false
 
     init(viewModel: ProfileViewModel = ProfileViewModel()) {
         self.viewModel = viewModel
@@ -68,6 +70,13 @@ struct ProfileSheet: View {
                                     value: user.address?.getAddress() ?? "-"
                                 )
                             }
+                            
+                            Section {
+                                Button("Sign Out") {
+                                    showSignOutAlert.toggle()
+                                }
+                                .tint(.red)
+                            }
                         }
                     }
                 }
@@ -90,6 +99,20 @@ struct ProfileSheet: View {
             .task {
                 await viewModel.getUserDetails()
             }
+            .alert(
+                "Signout from Store?",
+                isPresented: $showSignOutAlert) {
+                    Button("Sign Out", role: .destructive) {
+                        viewModel.signOut()
+                        
+                        NavController.shared.navigateTo(
+                            Destination.StoreLogin(),
+                            popUpTo: Destination.Main.self,
+                            inclusive: true
+                        )
+                    }
+                    .tint(.red)
+                }
         }
     }
 }

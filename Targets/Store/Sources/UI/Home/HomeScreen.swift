@@ -126,12 +126,17 @@ struct HomeScreen: View {
 
 struct ProfileView: View {
     var body: some View {
-        Image(systemName: "person.crop.circle")
+        KFImage(URL(string: "https://picsum.photos/id/42/200/200"))
+            .placeholder {
+                Image(systemName: "person.crop.circle")
+                    .resizable()
+                    .foregroundStyle(Color(.label).opacity(0.5))
+            }
             .resizable()
-            .foregroundStyle(Color.gray.gradient)
-            .scaledToFit()
+            .scaledToFill()
             .frame(width: 32, height: 32)
             .clipShape(Circle())
+            .clipped()
     }
 }
 

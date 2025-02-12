@@ -32,8 +32,14 @@ class CartManager {
             items.remove(existingProduct)
         }
     }
-    
+
     func clearCart() {
+        // Reset quantity
+        for item in items {
+            item.quantity = 0
+        }
+
+        // Remove all items
         items.removeAll()
     }
 
@@ -58,10 +64,8 @@ extension CartManager {
 
         return manager
     }()
-    
-    static let mockWithEmptyItem: CartManager = {
-        return CartManager()
-    }()
+
+    static let mockWithEmptyItem: CartManager = .init()
 }
 
 #endif
