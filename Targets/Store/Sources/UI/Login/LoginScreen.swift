@@ -8,7 +8,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    final class StoreLogin: BaseDestination {
+    final class Login: BaseDestination {
         override public func getScreen() -> any View {
             LoginScreen()
         }
@@ -122,7 +122,7 @@ struct LoginScreen: View {
                 NavController.shared
                     .navigateTo(
                         Destination.Main(),
-                        popUpTo: Destination.StoreLogin.self,
+                        popUpTo: Destination.Login.self,
                         inclusive: true
                     )
             }
@@ -170,7 +170,7 @@ struct LoginScreen: View {
 
 #endif
 
-struct BackgroundView: View {
+private struct BackgroundView: View {
     var body: some View {
         ZStack {
             // Background layer

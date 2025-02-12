@@ -74,7 +74,7 @@ class OrdersViewModel {
             )
         }
 
-        return uiOrders
+        return uiOrders.reversed()
     }
 
     private func getProduct(for productId: Int) async throws -> UIStore.Product {

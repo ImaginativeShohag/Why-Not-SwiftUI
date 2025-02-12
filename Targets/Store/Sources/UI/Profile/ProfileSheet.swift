@@ -72,6 +72,16 @@ struct ProfileSheet: View {
                             }
                             
                             Section {
+                                Button("Orders") {
+                                    dismiss()
+                                    
+                                    NavController.shared.navigateTo(
+                                        Destination.Orders()
+                                    )
+                                }
+                            }
+                            
+                            Section {
                                 Button("Sign Out") {
                                     showSignOutAlert.toggle()
                                 }
@@ -106,7 +116,7 @@ struct ProfileSheet: View {
                         viewModel.signOut()
                         
                         NavController.shared.navigateTo(
-                            Destination.StoreLogin(),
+                            Destination.Login(),
                             popUpTo: Destination.Main.self,
                             inclusive: true
                         )

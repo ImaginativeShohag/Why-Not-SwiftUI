@@ -9,14 +9,10 @@ import Foundation
 @Observable
 class CartViewModel: CartActions {
     private var isPreview: Bool = false
-    private nonisolated let repository: StoreRepository
 
-    init(
-        repository: StoreRepository = StoreRepository(),
+    override init(
         cartManager: CartManager = CartManager.shared
     ) {
-        self.repository = repository
-
         super.init(cartManager: cartManager)
     }
 }
