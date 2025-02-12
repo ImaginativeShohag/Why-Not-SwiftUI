@@ -31,16 +31,36 @@ struct PlaceOrderScreen: View {
         VStack(spacing: 0) {
             if viewModel.cartManager.items.isEmpty {
                 ContentUnavailableView(
-                    "Your PlaceOrder is Empty.",
+                    "Checkout is completed.",
                     systemImage: "shippingbox",
-                    description: Text("Add some products to continue.")
+                    description: Text("Add some products to continue again.")
                 )
             } else {
                 ScrollView {
                     VStack(spacing: 16) {
                         HStack {
                             Image(systemName: "map")
-                            Text("Address")
+                            Text("Shipping Address")
+                        }
+
+                        TextField(
+                            "Your name...",
+                            text: $viewModel.nameText
+                        )
+                        .padding()
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray, lineWidth: 1)
+                        }
+
+                        TextField(
+                            "Phone number...",
+                            text: $viewModel.phoneNumberText
+                        )
+                        .padding()
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray, lineWidth: 1)
                         }
 
                         TextField(
@@ -128,8 +148,6 @@ struct PlaceOrderScreen: View {
         .onChange(of: viewModel.orderSubmitState) { _, newState in
             if let newState, let isSuccess = newState.getData(), isSuccess {
                 showSuccessAlert = true
-
-                NavController.shared.popBackStack()
             }
         }
         .alert(
@@ -137,7 +155,7 @@ struct PlaceOrderScreen: View {
             isPresented: $showSuccessAlert
         ) {
             Button {
-                showSuccessAlert.toggle()
+                NavController.shared.popBackStack()
             } label: {
                 Text("Ok")
             }

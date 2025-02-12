@@ -8,6 +8,8 @@ import Foundation
 /// This `enum` is contains the keys for the `Preferences`.
 extension Key {
     static let user: Key = "user"
+    static let name: Key = "name"
+    static let phoneNumber: Key = "phoneNumber"
     static let address: Key = "address"
 }
 
@@ -30,6 +32,12 @@ extension Preferences {
     @CodableUserDefault(key: .user)
     static var user: StoreUser?
     
+    @CodableUserDefault(key: .name)
+    static var name: String?
+    
+    @CodableUserDefault(key: .phoneNumber)
+    static var phoneNumber: String?
+    
     @CodableUserDefault(key: .address)
     static var address: String?
 
@@ -38,6 +46,8 @@ extension Preferences {
     static func reset() {
         // TODO: Try with `Mirror(reflection:)`.
         user = $user.defaultValue
+        name = $name.defaultValue
+        phoneNumber = $phoneNumber.defaultValue
         address = $address.defaultValue
     }
 }

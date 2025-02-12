@@ -50,8 +50,13 @@ class LoginViewModel {
 
         switch result {
         case .success(let user):
+            // Store initial information about logged in person.
             Preferences.user = user
+            Preferences.name = user.name.getFullName()
+            Preferences.phoneNumber = user.phone
+            Preferences.address = user.address?.getAddress() ?? ""
 
+            // Update state.
             state = .data(data: true)
 
         case .failure(_, let errorMessage, _):

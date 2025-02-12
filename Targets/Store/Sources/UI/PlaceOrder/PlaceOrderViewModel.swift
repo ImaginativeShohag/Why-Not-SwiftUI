@@ -9,6 +9,8 @@ import Foundation
 @Observable
 class PlaceOrderViewModel: CartActions {
     var orderSubmitState: UIState<Bool>?
+    var nameText: String = ""
+    var phoneNumberText: String = ""
     var addressText: String = ""
 
     private var isPreview: Bool = false
@@ -22,6 +24,8 @@ class PlaceOrderViewModel: CartActions {
 
         super.init(cartManager: cartManager)
 
+        nameText = Preferences.name ?? ""
+        phoneNumberText = Preferences.phoneNumber ?? ""
         addressText = Preferences.address ?? ""
     }
 
@@ -33,6 +37,8 @@ class PlaceOrderViewModel: CartActions {
         try? await Task.sleep(for: .seconds(2))
 
         // Save the address
+        Preferences.name = nameText
+        Preferences.phoneNumber = phoneNumberText
         Preferences.address = addressText
 
         // Reset the cart
