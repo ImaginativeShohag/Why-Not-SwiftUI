@@ -40,7 +40,19 @@ struct HomeScreen: View {
                             .padding()
                         }
 
-                        CarouselSection()
+                        CarouselSection(
+                            productsState: viewModel.productsState,
+                            onProductClick: { product in
+                                NavController.shared.navigateTo(
+                                    Destination.ProductDetails(productId: product.id)
+                                )
+                            },
+                            onRetryClick: {
+                                Task {
+                                    await viewModel.loadProducts(forced: true)
+                                }
+                            }
+                        )
 
                         CategorySection(
                             categoriesState: viewModel.categoriesState,
@@ -202,50 +214,140 @@ struct ProfileView: View {
 #endif
 
 private struct CarouselSection: View {
-    private var colorsForCarousel: [Color] = [.red, .green, .yellow, .blue, .orange, .accentColor, .cyan, .brown, .indigo]
+    let productsState: UIState<[UIStore.Product]>
+    let onProductClick: (UIStore.Product) -> Void
+    let onRetryClick: () -> Void
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(alignment: .center, spacing: 16) {
-                ForEach(0 ..< colorsForCarousel.count, id: \.self) { index in
-                    let color = colorsForCarousel[index]
+        switch productsState {
+            case .loading:
+                ZStack {
+                    ProgressView()
+                        .padding()
+                }
+                .frame(maxWidth: .infinity)
 
-                    Button {
-                        //
-                    } label: {
-                        GeometryReader { geo in
-                            KFImage(URL(string: "https://picsum.photos/seed/\(index)/300/300"))
-                                .placeholder {
-                                    Image(systemName: "photo")
-                                        .foregroundStyle(Color(.label).opacity(0.5))
-                                }
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: geo.size.width, height: geo.size.height)
-                        }
-                        .background(.gray)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(color, lineWidth: 4)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .shadow(radius: 4, x: 1, y: 1)
-                        .frame(width: UIScreen.main.bounds.width - 64, height: 150)
-                        .scrollTransition { content, phase in
-                            content
-                                .opacity(phase.isIdentity ? 1 : 0.5)
-                                .scaleEffect(y: phase.isIdentity ? 1 : 0.9)
+            case .error(let message):
+                ErrorView(message: message, onRetryClick: onRetryClick)
+
+            case .data(let products):
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(alignment: .center, spacing: 16) {
+                        ForEach(products) { product in
+                            Button {
+                                onProductClick(product)
+                            } label: {
+                                CarouselItem(
+                                    title: product.title,
+                                    image: product.image,
+                                    price: product.price
+                                )
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
-                    .buttonStyle(.plain)
+                    .frame(maxWidth: .infinity)
+                    .scrollTargetLayout()
                 }
-            }
-            .frame(maxWidth: .infinity)
-            .scrollTargetLayout()
+                .contentMargins(16, for: .scrollContent)
+                .scrollTargetBehavior(.viewAligned)
         }
-        .contentMargins(16, for: .scrollContent)
-        .scrollTargetBehavior(.viewAligned)
+    }
+}
+
+struct CarouselItem: View {
+    let title: String
+    let image: String
+    let price: Double
+
+    @State private var dominantColor: Color = .gray
+
+    var body: some View {
+        GeometryReader { geo in
+            ZStack(alignment: .bottomTrailing) {
+                ZStack {
+                    KFImage(URL(string: image))
+                        .placeholder {
+                            Image(systemName: "photo")
+                                .foregroundStyle(Color(.label).opacity(0.5))
+                        }
+                        .resizable()
+                        .onSuccess { result in
+                            if let uiImage = result.image.cgImage {
+                                DispatchQueue.global(qos: .userInitiated).async {
+                                    let color = UIImage(cgImage: uiImage).dominantColor()
+                                    DispatchQueue.main.async {
+                                        dominantColor = Color(color ?? .clear)
+                                    }
+                                }
+                            }
+                        }
+                        .scaledToFit()
+                        .padding(4)
+                        .frame(width: 100, height: 100)
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .padding()
+                }
+                .frame(
+                    width: geo.size.width,
+                    height: geo.size.height,
+                    alignment: .topLeading
+                )
+
+                Text(title)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .lineLimit(2)
+                    .shadow(color: .black, radius: 2, x: 1, y: 1)
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .padding(.leading, 32)
+                    .padding()
+
+                ZStack {
+                    Text("$\(String(format: "%.2f", price))")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .lineLimit(1)
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.center)
+                        .padding(8)
+                        .background(.red)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .padding()
+                }
+                .frame(
+                    width: geo.size.width,
+                    height: geo.size.height,
+                    alignment: .topTrailing
+                )
+            }
+            .frame(width: geo.size.width, height: geo.size.height)
+        }
+        .background {
+            KFImage(URL(string: image))
+                .resizable()
+                .scaledToFill()
+                .blur(radius: 32, opaque: true)
+                .overlay(.background.opacity(0.4))
+        }
+        .background(.gray)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(dominantColor, lineWidth: 2)
+        }
+        .frame(maxWidth: .infinity)
+        .shadow(radius: 4, x: 1, y: 1)
+        .frame(width: UIScreen.main.bounds.width - 64, height: 150)
+        .scrollTransition { content, phase in
+            content
+                .opacity(phase.isIdentity ? 1 : 0.5)
+                .scaleEffect(y: phase.isIdentity ? 1 : 0.9)
+        }
     }
 }
 
