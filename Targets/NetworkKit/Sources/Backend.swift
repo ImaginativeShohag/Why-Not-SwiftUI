@@ -16,7 +16,7 @@ import SuperLog
 /// - Parameter API: The generic type representing the API endpoints conforming to ApiEndpoint.
 ///
 /// - Note: Tested with `BackendTest`.
-public class Backend<API>: MoyaProvider<API> where API: ApiEndpoint {
+public final class Backend<API: Sendable>: MoyaProvider<API>, @unchecked Sendable where API: ApiEndpoint {
     private let onError: (_ route: String, _ code: Int) -> ()
 
     /// Initializes the provider for network calls.
@@ -75,7 +75,7 @@ public extension Backend {
             statusCode: -1
         )
     }
-    
+
     /// Request for an API call to the `endpoint` for a `T` response.
     func request<T>(
         on endpoint: API
@@ -115,9 +115,7 @@ public extension Backend {
 
                         let statusCode: Int = error.response?.statusCode ?? -1
 
-                        DispatchQueue.main.async {
-                            self.onError(endpoint.path, statusCode)
-                        }
+                        self.onError(endpoint.path, statusCode)
 
                         // ----------------------------------------------------------------
                         // Handle `Empty` model

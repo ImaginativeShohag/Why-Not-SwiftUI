@@ -32,13 +32,13 @@ extension Preferences {
     @CodableUserDefault(key: .user)
     static var user: StoreUser?
     
-    @CodableUserDefault(key: .name)
+    @UserDefault(key: .name)
     static var name: String?
     
-    @CodableUserDefault(key: .phoneNumber)
+    @UserDefault(key: .phoneNumber)
     static var phoneNumber: String?
     
-    @CodableUserDefault(key: .address)
+    @UserDefault(key: .address)
     static var address: String?
 
     // MARK: - Reset

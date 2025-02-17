@@ -11,22 +11,20 @@ public extension UIImage {
         guard let imageData = jpegData(compressionQuality: 1) else { return 0 }
         return imageData.count / 1000
     }
-    
-    // Shared instance to improve performance
-    private static let ciContext = CIContext()
        
     func dominantColor() -> UIColor? {
         guard let inputImage = CIImage(image: self) else { return nil }
-           
+            
         let filter = CIFilter.areaAverage()
         filter.setValue(inputImage, forKey: kCIInputImageKey)
         filter.setValue(CIVector(cgRect: inputImage.extent), forKey: kCIInputExtentKey)
-           
+            
         guard let outputImage = filter.outputImage else { return nil }
-           
+            
+        let context = CIContext(options: nil)
         var bitmap = [UInt8](repeating: 0, count: 4) // RGBA format
-        let ciContext = CIContext()
-        ciContext.render(
+            
+        context.render(
             outputImage,
             toBitmap: &bitmap,
             rowBytes: 4,
@@ -34,9 +32,9 @@ public extension UIImage {
             format: .RGBA8,
             colorSpace: CGColorSpaceCreateDeviceRGB()
         )
-           
+            
         let alpha = max(CGFloat(bitmap[3]) / 255.0, 1.0) // Prevent zero alpha
-           
+            
         return UIColor(
             red: CGFloat(bitmap[0]) / 255.0 / alpha,
             green: CGFloat(bitmap[1]) / 255.0 / alpha,

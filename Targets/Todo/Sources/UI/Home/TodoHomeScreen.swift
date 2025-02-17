@@ -136,14 +136,12 @@ struct TodoHomeScreen: View {
 #if DEBUG
 
 #Preview {
-    MainActor.assumeIsolated {
-        NavigationStack {
-            TodoHomeScreen(
-                viewModel: TodoHomeViewModel(
-                    modelContainer: PreviewSampleData.container
-                )
+    NavigationStack {
+        TodoHomeScreen(
+            viewModel: TodoHomeViewModel(
+                modelContainer: PreviewSampleData.container
             )
-        }
+        )
     }
 }
 

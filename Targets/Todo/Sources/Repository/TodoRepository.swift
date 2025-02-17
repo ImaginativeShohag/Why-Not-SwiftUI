@@ -7,8 +7,8 @@ import Foundation
 import SuperLog
 import SwiftData
 
-final class TodoRepository {
-    private var database: any IDatabase
+final class TodoRepository: Sendable {
+    private let database: any IDatabase
     
     init(
         modelContainer: ModelContainer

@@ -4,13 +4,13 @@
 
 import Foundation
 
-extension BaseDestination: Hashable {
+extension BaseDestination: @preconcurrency Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.route)
     }
 }
 
-extension BaseDestination: Equatable {
+extension BaseDestination: @preconcurrency Equatable {
     public static func == (lhs: BaseDestination, rhs: BaseDestination) -> Bool {
         return lhs.route == rhs.route
     }

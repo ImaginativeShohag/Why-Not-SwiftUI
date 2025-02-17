@@ -7,7 +7,7 @@ import SwiftUI
 // MARK: - Animatable custom font
 
 // A modifier that animates a font through various sizes.
-struct AnimatableCustomFontModifier: ViewModifier, Animatable {
+struct AnimatableCustomFontModifier: ViewModifier, @preconcurrency Animatable {
     var name: String
     var size: Double
 
@@ -32,7 +32,7 @@ extension View {
 
 // MARK: - Animatable system font
 
-struct AnimatableSystemFontModifier: ViewModifier, Animatable {
+struct AnimatableSystemFontModifier: ViewModifier, @preconcurrency Animatable {
     var size: Double
     var weight: Font.Weight
     var design: Font.Design

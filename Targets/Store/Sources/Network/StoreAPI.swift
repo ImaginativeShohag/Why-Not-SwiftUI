@@ -84,7 +84,14 @@ extension StoreAPI: ApiEndpoint {
     }
     
     public var headers: [String: String]? {
-        return [:]
+        switch self {
+        case .login:
+            return [:]
+            
+        default:
+            // Note: No header is needed in the API end used in this app. This is only for demo.
+            return Header.getAuthHeaders()
+        }
     }
     
     public var stubResponseType: StubResponseType {

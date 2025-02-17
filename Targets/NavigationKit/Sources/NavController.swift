@@ -21,6 +21,10 @@ import SuperLog
 ///         - Tight coupling issue. Have to add all destination to one `enum`.
 ///         - We have to give default blank values for `popUpTo`.
 ///
+/// - `protocol` as Destination ❌
+///     - Cons:
+///         - The error “Type ‘any BaseDestination’ cannot conform to ‘Equatable’” occurs because Swift does not allow existential types (`any BaseDestination`) to conform to `Equatable` directly.     
+///
 /// - `BaseDestination` `Class` ✅
 ///     - Pros:
 ///         - It is decoupled way. Every module/screen can have there separate navigation destination objects.
