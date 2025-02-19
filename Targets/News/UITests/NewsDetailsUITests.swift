@@ -58,7 +58,7 @@ class NewsDetailsUITests: XCTestCase {
         XCTAssertTrue(publishedDate.waitForExistence(timeout: 5))
         XCTAssertTrue(publishedDate.label == newsPublishedDateLabel)
 
-        XCTAssertTrue(app.findAndWait(staticText: "details", timeout: 5))
+        XCTAssertTrue(app.waitForElement(matching: "details", timeout: 5))
     }
 
     func runAppAndGoToModule() {

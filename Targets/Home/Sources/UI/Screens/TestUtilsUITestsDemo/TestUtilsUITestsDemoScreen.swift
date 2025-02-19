@@ -21,17 +21,17 @@ struct TestUtilsUITestsDemoScreen: View {
     @State var showWelcomeText: Bool = false
     @State var showLoading: Bool = false
     var body: some View {
-        ZStack {
-            if showLoading {
-                ProgressView()
-            } else {
-                VStack(spacing: 20) {
-                    Text("This screen is specifically designed for performing UI tests, utilizing extensions from the **TestUtils** target.")
-                        .font(.footnote)
-                        .multilineTextAlignment(.center)
+        VStack(spacing: 20) {
+            Text("This screen is specifically designed for performing UI tests, utilizing extensions from the **`TestUtils`** target.")
+                .font(.footnote)
+                .multilineTextAlignment(.center)
 
-                    Divider()
-
+            Divider()
+            
+            ZStack {
+                if showLoading {
+                    ProgressView()
+                } else {
                     VStack(spacing: 20) {
                         if showWelcomeText {
                             Text("Welcome Human...")
@@ -58,13 +58,15 @@ struct TestUtilsUITestsDemoScreen: View {
                         .disabled(!showWelcomeText)
                         .accessibilityIdentifier("text_hide_button")
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 }
-                .padding()
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .padding()
         }
-        .navigationTitle("TestUtilsUITestsDemoScreen")
+        .navigationTitle("`TestUtils` UI Tests Demo")
         .navigationBarTitleDisplayMode(.inline)
+        .animation(.default, value: showLoading)
+        .animation(.default, value: showWelcomeText)
     }
 }
 

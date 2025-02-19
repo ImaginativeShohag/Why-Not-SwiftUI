@@ -5,14 +5,13 @@
 import XCTest
 
 public extension XCUIElement {
-    /// Extension to provide a loading state check for XCUIElement.
+    /// Checks if a loading indicator is present within the current UI hierarchy.
     ///
-    /// This method checks if any activity indicator exists within the current UI hierarchy, often used to determine if a loading process is in progress.
+    /// This method detects any activity indicator, which is often used to determine if a loading process is in progress.
     ///
-    /// - Returns: Boolean value indicating if loading is in progress.
+    /// - Returns: `true` if any activity indicator exists, otherwise `false`.
     ///
-    /// Example usage:
-    ///
+    /// ## Example Usage:
     /// ```swift
     /// let app = XCUIApplication()
     /// if app.isLoading() {
@@ -22,28 +21,39 @@ public extension XCUIElement {
     /// }
     /// ```
     func isLoading() -> Bool {
-        activityIndicators["1"].exists
+        return activityIndicators.count > 0
     }
-
-    /// An extension to `XCUIElement` to find and wait for a static text element to appear within a specified timeout period.
-    /// Finds and waits for a static text element to exist within the given timeout.
+    
+    /// Waits for an element with the specified identifier to appear within the given timeout.
     ///
-    /// This function checks whether a static text element with the specified label exists in the UI
-    /// within the specified timeout duration. It uses the `waitForExistence` method to perform this operation.
+    /// This function searches for any descendant element that matches the provided identifier
+    /// and waits until it becomes visible or the timeout expires.
     ///
     /// - Parameters:
-    ///   - staticText: A `String` representing the label of the static text element to find.
-    ///   - timeout: A `TimeInterval` specifying the maximum amount of time to wait for the element to appear.
-    /// - Returns: A `Bool` value indicating whether the element exists (`true`) or not (`false`) within the timeout period.
+    ///   - identifier: The accessibility identifier or label of the element to wait for.
+    ///   - timeout: The maximum time (in seconds) to wait for the element to appear.
+    /// - Returns: `true` if the element appears within the timeout, otherwise `false`.
     ///
-    /// Example usage:
+    /// ## Example Usage:
     ///
     /// ```swift
     /// let app = XCUIApplication()
     /// app.launch()
-    /// XCTAssertTrue(app.findAndWait(staticText: "Welcome", timeout: 5))
+    ///
+    /// // Wait for a button with identifier "submitButton"
+    /// let didAppear = app.waitForElement(matching: "submitButton", timeout: 5)
+    ///
+    /// // Verify if the element appeared
+    /// XCTAssertTrue(didAppear, "Submit button should appear within 5 seconds")
     /// ```
-    func findAndWait(staticText: String, timeout: TimeInterval) -> Bool {
-        return staticTexts[staticText].waitForExistence(timeout: timeout)
+    ///
+    /// ```swift
+    /// // Wait for a label with text "Welcome"
+    /// let welcomeLabelExists = app.staticTexts["Welcome"].waitForElement(matching: "Welcome", timeout: 3)
+    ///
+    /// XCTAssertTrue(welcomeLabelExists, "Welcome text should appear within 3 seconds")
+    /// ```
+    func waitForElement(matching identifier: String, timeout: TimeInterval) -> Bool {
+        return descendants(matching: .any)[identifier].waitForExistence(timeout: timeout)
     }
 }
