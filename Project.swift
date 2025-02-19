@@ -135,5 +135,6 @@ let project = Project.app(
         .external(name: "Realm"),
         .external(name: "MarkdownUI")
     ],
+    testDependencies: [.external(name: "TestUtils")],
     coreDataModels: []
 )
