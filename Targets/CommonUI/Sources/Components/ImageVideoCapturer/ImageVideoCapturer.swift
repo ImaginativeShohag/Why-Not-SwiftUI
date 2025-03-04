@@ -3,25 +3,43 @@
 //
 
 import AVFoundation
+import Core
 import Foundation
 import MobileCoreServices
+import SuperLog
 import SwiftUI
 import UniformTypeIdentifiers
 
+#warning("Add support for .video. Restrict limited capture mode.")
+#warning("Add max duration as parameter")
+
 public struct ImageVideoCapturer: UIViewControllerRepresentable {
-    private let defaultCaptureMode: UIImagePickerController.CameraCaptureMode // .video or .photo
+    private let defaultCaptureMode: UIImagePickerController.CameraCaptureMode // .movie or .photo
+    private let allowedMediaType: [String]
+    private let maxImageSize: CGSize?
     private let onSuccess: (UIImage, URL?) -> Void
     
-    public init(defaultCaptureMode: UIImagePickerController.CameraCaptureMode, onSuccess: @escaping (UIImage, URL?) -> Void) {
+    public init(
+        defaultCaptureMode: UIImagePickerController.CameraCaptureMode,
+        allowedMediaType: [UTType] = [UTType.movie, UTType.image],
+        maxImageSize: CGSize? = nil,
+        onSuccess: @escaping (UIImage, URL?) -> Void
+    ) {
         self.defaultCaptureMode = defaultCaptureMode
+        self.allowedMediaType = allowedMediaType.map { $0.identifier }
+        self.maxImageSize = maxImageSize
         self.onSuccess = onSuccess
     }
     
     public func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.sourceType = .camera
-        picker.mediaTypes = [UTType.movie.identifier, UTType.image.identifier]
+        picker.mediaTypes = allowedMediaType
         picker.cameraCaptureMode = defaultCaptureMode
+        // picker.videoMaximumDuration = 60 * 10 // Seconds
+        
+        SuperLog.v("picker.videoMaximumDuration: \(picker.videoMaximumDuration) seconds")
+        SuperLog.v("picker.videoQuality: \(picker.videoQuality)")
         
         picker.delegate = context.coordinator
         
@@ -53,9 +71,27 @@ public struct ImageVideoCapturer: UIViewControllerRepresentable {
                 print("Selected media is image")
                     
                 if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-                    parent.onSuccess(editedImage, nil)
+                    if let maxImageSize = parent.maxImageSize {
+                        let resizedImage = editedImage.resizeIfNeeded(
+                            width: Int(maxImageSize.width),
+                            height: Int(maxImageSize.height)
+                        )
+                        
+                        parent.onSuccess(resizedImage, nil)
+                    } else {
+                        parent.onSuccess(editedImage, nil)
+                    }
                 } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                    parent.onSuccess(originalImage, nil)
+                    if let maxImageSize = parent.maxImageSize {
+                        let resizedImage = originalImage.resizeIfNeeded(
+                            width: Int(maxImageSize.width),
+                            height: Int(maxImageSize.height)
+                        )
+                        
+                        parent.onSuccess(resizedImage, nil)
+                    } else {
+                        parent.onSuccess(originalImage, nil)
+                    }
                 }
 
             case UTType.movie.identifier:

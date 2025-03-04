@@ -8,6 +8,9 @@ import NavigationKit
 import PhotosUI
 import SwiftUI
 
+// TODO: #1: Add preview (https://nilcoalescing.com/blog/PreviewFilesWithQuickLookInSwiftUI/)
+// TODO: #2: Fix error image in items
+
 // MARK: - Destination
 
 public extension Destination {
@@ -20,19 +23,20 @@ public extension Destination {
 
 // MARK: - UI
 
-struct MediaSelectScreen: View {
+public struct MediaSelectScreen: View {
     @State private var viewModel: MediaSelectViewModel
 
     @State private var showAttachmentAddDialog: Bool = false
     @State private var showImageCapturer: Bool = false
     @State private var showVideoCapturer: Bool = false
     @State private var showPhotoLibrary: Bool = false
+    @State private var selectedImage: IdentifiableImage? = nil
 
-    init(viewModel: MediaSelectViewModel = MediaSelectViewModel()) {
+    public init(viewModel: MediaSelectViewModel = MediaSelectViewModel()) {
         self.viewModel = viewModel
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0) {
             if viewModel.attachmentItems.isEmpty {
                 ContentUnavailableView("No attachment yet.", systemImage: "photo.on.rectangle.angled")
@@ -68,6 +72,8 @@ struct MediaSelectScreen: View {
             .shadow(color: Color.black.opacity(0.1), radius: 5)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .navigationTitle("Media Capture & Select")
+        .navigationBarTitleDisplayMode(.inline)
         .overlay {
             OverlayLoadingView(isPresented: viewModel.showLoading)
         }
@@ -98,14 +104,45 @@ struct MediaSelectScreen: View {
 
             Button("Cancel", role: .cancel) {}
         }
-        .fullScreenCover(isPresented: $showImageCapturer) { 
-            ImageVideoCapturer(defaultCaptureMode: .photo) { image, videoUrl in
-                viewModel.addAttachment(image: image, videoUrl: videoUrl)
+        .fullScreenCover(isPresented: $showImageCapturer) {
+            ImageVideoCapturer(
+                defaultCaptureMode: .photo,
+                maxImageSize: CGSize(width: 1024, height: 1024)
+            ) { image, videoUrl in
+                if videoUrl == nil {
+                    Task { @MainActor in
+                        showImageCapturer = false
+                        
+                        selectedImage = image.toIdentifiable()
+                    }
+                } else {
+                    viewModel.addAttachment(image: image, videoUrl: videoUrl)
+                }
             }
         }
         .fullScreenCover(isPresented: $showVideoCapturer) {
-            ImageVideoCapturer(defaultCaptureMode: .video) { image, videoUrl in
-                viewModel.addAttachment(image: image, videoUrl: videoUrl)
+            ImageVideoCapturer(
+                defaultCaptureMode: .video,
+                maxImageSize: CGSize(width: 1024, height: 1024)
+            ) { image, videoUrl in
+                if videoUrl == nil {
+                    Task { @MainActor in
+                        showImageCapturer = false
+                        
+                        selectedImage = image.toIdentifiable()
+                    }
+                } else {
+                    viewModel.addAttachment(image: image, videoUrl: videoUrl)
+                }
+            }
+        }
+        .fullScreenCover(item: $selectedImage) { image in
+            ImageMarkupScreen(
+                image: image.image
+            ) { image in
+                Task { @MainActor in
+                    viewModel.addAttachment(image: image, videoUrl: nil)
+                }
             }
         }
         .photosPicker(
@@ -116,11 +153,20 @@ struct MediaSelectScreen: View {
         .onChange(of: viewModel.selectedItems) {
             viewModel.addAttachments()
         }
-        .navigationTitle("Media Capture & Select")
-        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             print("count: \(viewModel.attachmentItems.count)")
         }
+    }
+}
+
+public struct IdentifiableImage: Identifiable {
+    public let id = UUID()
+    public let image: UIImage
+}
+
+public extension UIImage {
+    func toIdentifiable() -> IdentifiableImage {
+        IdentifiableImage(image: self)
     }
 }
 
@@ -152,55 +198,69 @@ private struct ImageItemView: View {
     let item: UIAttachment
     let onDeleteClicked: () -> Void
 
+    @State private var showPreview = false
+
+    private var image: UIImage {
+        item.image ?? UIImage(systemName: "exclamationmark.triangle.fill")!
+    }
+
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Image(uiImage: item.image ?? UIImage(named: "jean-philippe-delberghe-75xPHEQBmvA-unsplash")!)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: geometry.size.width)
-            }
-        }
-        .clipped()
-        .aspectRatio(1, contentMode: .fit)
-        .background(Color.systemGroupedBackground)
-        .cornerRadius(16)
-        .overlay {
-            ZStack {
-                Button {
-                    onDeleteClicked()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 24))
-                        .foregroundColor(Color.systemRed)
-                }
-                .background(Color.white)
-                .cornerRadius(24)
-                .padding(4)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-        }
-        .overlay {
-            ZStack {
-                if item.type == .capturedPhoto {
-                    Image(systemName: "camera.fill")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color.white)
-                        .padding(8)
-                } else if item.type == .recordedVideo {
-                    Image(systemName: "video.fill")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color.white)
-                        .padding(8)
-                } else {
-                    Image(systemName: "photo.fill")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color.white)
-                        .padding(8)
+        Button {
+            showPreview.toggle()
+        } label: {
+            GeometryReader { geometry in
+                ZStack {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: geometry.size.width)
                 }
             }
-            .shadow(radius: 2)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+            .clipped()
+            .aspectRatio(1, contentMode: .fit)
+            .background(Color.systemGroupedBackground)
+            .cornerRadius(16)
+            .overlay {
+                ZStack {
+                    Button {
+                        onDeleteClicked()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(Color.systemRed)
+                    }
+                    .background(Color.white)
+                    .cornerRadius(24)
+                    .padding(4)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            }
+            .overlay {
+                ZStack {
+                    if item.type == .capturedPhoto {
+                        Image(systemName: "camera.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(Color.white)
+                            .padding(8)
+                    } else if item.type == .recordedVideo {
+                        Image(systemName: "video.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(Color.white)
+                            .padding(8)
+                    } else {
+                        Image(systemName: "photo.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(Color.white)
+                            .padding(8)
+                    }
+                }
+                .shadow(radius: 2)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+            }
+        }
+        .fullScreenCover(isPresented: $showPreview) {
+            ImagePreviewScreen(image: image)
+                .edgesIgnoringSafeArea(.all)
         }
     }
 }

@@ -7,7 +7,7 @@ import SwiftUI
 
 @MainActor
 @Observable
-final class MediaSelectViewModel {
+public final class MediaSelectViewModel {
     var attachmentItems: [UIAttachment] = []
     var selectedItems: [PhotosPickerItem] = []
 
