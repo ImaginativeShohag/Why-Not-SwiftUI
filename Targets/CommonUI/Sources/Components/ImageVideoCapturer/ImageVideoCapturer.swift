@@ -111,8 +111,19 @@ public struct ImageVideoCapturer: UIViewControllerRepresentable {
                         if let cgImage = cgImage {
                             let thumbnailImage = UIImage(cgImage: cgImage)
                                     
-                            Task { @MainActor in
-                                self.parent.onSuccess(thumbnailImage, videoUrl)
+                            if let maxImageSize = self.parent.maxImageSize {
+                                let resizedImage = thumbnailImage.resizeIfNeeded(
+                                    width: Int(maxImageSize.width),
+                                    height: Int(maxImageSize.height)
+                                )
+                                
+                                Task { @MainActor in
+                                    self.parent.onSuccess(resizedImage, videoUrl)
+                                }
+                            } else {
+                                Task { @MainActor in
+                                    self.parent.onSuccess(thumbnailImage, videoUrl)
+                                }
                             }
                         }
                     }

@@ -120,7 +120,7 @@ public struct MediaSelectScreen: View {
                 if videoUrl == nil {
                     Task { @MainActor in
                         showImageCapturer = false
-                        
+
                         selectedImageForMarkup = image.toIdentifiable()
                     }
                 } else {
@@ -136,7 +136,7 @@ public struct MediaSelectScreen: View {
                 if videoUrl == nil {
                     Task { @MainActor in
                         showImageCapturer = false
-                        
+
                         selectedImageForMarkup = image.toIdentifiable()
                     }
                 } else {
@@ -149,6 +149,8 @@ public struct MediaSelectScreen: View {
                 image: image.image
             ) { image in
                 Task { @MainActor in
+                    selectedImageForMarkup = nil
+
                     viewModel.addAttachment(image: image, videoUrl: nil)
                 }
             }
@@ -170,7 +172,7 @@ public struct MediaSelectScreen: View {
             if viewModel.selectedItem?.supportedContentTypes.contains(where: { $0.conforms(to: .image) }) == true {
                 Task {
                     let image = try? await viewModel.selectedItem?.toUIImage()
-                    
+
                     await MainActor.run {
                         selectedImageForMarkup = image?.toIdentifiable()
                     }
@@ -182,17 +184,6 @@ public struct MediaSelectScreen: View {
         .onAppear {
             print("count: \(viewModel.attachmentItems.count)")
         }
-    }
-}
-
-public struct IdentifiableImage: Identifiable {
-    public let id = UUID()
-    public let image: UIImage
-}
-
-public extension UIImage {
-    func toIdentifiable() -> IdentifiableImage {
-        IdentifiableImage(image: self)
     }
 }
 
