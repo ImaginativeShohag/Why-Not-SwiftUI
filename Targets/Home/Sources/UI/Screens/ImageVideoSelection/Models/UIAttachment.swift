@@ -8,7 +8,7 @@ struct UIAttachment: Identifiable {
     let id: Int
     let type: UIAttachmentType
     let image: UIImage?
-    let videoUrl: String?
+    let videoUrl: URL?
 }
 
 // MARK: - Enums

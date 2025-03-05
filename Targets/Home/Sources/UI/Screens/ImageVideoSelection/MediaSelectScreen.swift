@@ -29,8 +29,9 @@ public struct MediaSelectScreen: View {
     @State private var showAttachmentAddDialog: Bool = false
     @State private var showImageCapturer: Bool = false
     @State private var showVideoCapturer: Bool = false
-    @State private var showPhotoLibrary: Bool = false
-    @State private var selectedImage: IdentifiableImage? = nil
+    @State private var showPhotoLibraryForSingle: Bool = false
+    @State private var showPhotoLibraryForMultiple: Bool = false
+    @State private var selectedImageForMarkup: IdentifiableImage? = nil
 
     public init(viewModel: MediaSelectViewModel = MediaSelectViewModel()) {
         self.viewModel = viewModel
@@ -96,9 +97,16 @@ public struct MediaSelectScreen: View {
             }
 
             Button {
-                showPhotoLibrary = true
+                showPhotoLibraryForSingle = true
             } label: {
-                Text("Choose Photo")
+                Text("Choose from Library (Single)")
+                    .foregroundColor(Color.label)
+            }
+
+            Button {
+                showPhotoLibraryForMultiple = true
+            } label: {
+                Text("Choose from Library (Multiple)")
                     .foregroundColor(Color.label)
             }
 
@@ -113,7 +121,7 @@ public struct MediaSelectScreen: View {
                     Task { @MainActor in
                         showImageCapturer = false
                         
-                        selectedImage = image.toIdentifiable()
+                        selectedImageForMarkup = image.toIdentifiable()
                     }
                 } else {
                     viewModel.addAttachment(image: image, videoUrl: videoUrl)
@@ -129,14 +137,14 @@ public struct MediaSelectScreen: View {
                     Task { @MainActor in
                         showImageCapturer = false
                         
-                        selectedImage = image.toIdentifiable()
+                        selectedImageForMarkup = image.toIdentifiable()
                     }
                 } else {
                     viewModel.addAttachment(image: image, videoUrl: videoUrl)
                 }
             }
         }
-        .fullScreenCover(item: $selectedImage) { image in
+        .fullScreenCover(item: $selectedImageForMarkup) { image in
             ImageMarkupScreen(
                 image: image.image
             ) { image in
@@ -146,12 +154,30 @@ public struct MediaSelectScreen: View {
             }
         }
         .photosPicker(
-            isPresented: $showPhotoLibrary,
+            isPresented: $showPhotoLibraryForMultiple,
             selection: $viewModel.selectedItems,
             matching: .any(of: [.images, .videos])
         )
         .onChange(of: viewModel.selectedItems) {
             viewModel.addAttachments()
+        }
+        .photosPicker(
+            isPresented: $showPhotoLibraryForSingle,
+            selection: $viewModel.selectedItem,
+            matching: .any(of: [.images, .videos])
+        )
+        .onChange(of: viewModel.selectedItem) {
+            if viewModel.selectedItem?.supportedContentTypes.contains(where: { $0.conforms(to: .image) }) == true {
+                Task {
+                    let image = try? await viewModel.selectedItem?.toUIImage()
+                    
+                    await MainActor.run {
+                        selectedImageForMarkup = image?.toIdentifiable()
+                    }
+                }
+            } else {
+                viewModel.addAttachment()
+            }
         }
         .onAppear {
             print("count: \(viewModel.attachmentItems.count)")

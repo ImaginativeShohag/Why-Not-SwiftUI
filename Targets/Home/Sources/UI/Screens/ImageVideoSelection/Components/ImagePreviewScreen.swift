@@ -5,6 +5,8 @@
 import QuickLook
 import SwiftUI
 
+// TODO: #1: Add video url support
+
 struct ImagePreviewScreen: View {
     let image: UIImage
     
@@ -44,6 +46,7 @@ struct QuickLookController: UIViewControllerRepresentable {
     
     func makeUIViewController(context: Context) -> QLPreviewController {
         let controller = QLPreviewController()
+        controller.title = previewItem.previewItemTitle ?? ""
         controller.dataSource = context.coordinator
         return controller
     }

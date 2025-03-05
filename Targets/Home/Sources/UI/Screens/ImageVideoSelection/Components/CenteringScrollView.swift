@@ -116,6 +116,7 @@ private struct ZoomableScrollViewImpl<Content: View>: UIViewControllerRepresenta
         }
 
         override func updateViewConstraints() {
+            print("debug1: 4444")
             super.updateViewConstraints()
             let hostedContentSize = coordinator.hostingController.sizeThatFits(in: view.bounds.size)
             contentSizeConstraints = [
@@ -125,19 +126,29 @@ private struct ZoomableScrollViewImpl<Content: View>: UIViewControllerRepresenta
         }
 
         override func viewDidAppear(_ animated: Bool) {
+            print("debug1: 1111")
             scrollView.zoom(to: hostedView.bounds, animated: false)
+            
+            // Initial centering.
+//            Task { @MainActor in
+//                try? await Task.sleep(for: .seconds(1))
+//                scrollView.centerContent()
+//            }
         }
 
         override func viewDidLayoutSubviews() {
             super.viewDidLayoutSubviews()
+            print("debug1: 3333")
 
             let hostedContentSize = coordinator.hostingController.sizeThatFits(in: view.bounds.size)
             scrollView.minimumZoomScale = min(
                 scrollView.bounds.width / hostedContentSize.width,
-                scrollView.bounds.height / hostedContentSize.height)
+                scrollView.bounds.height / hostedContentSize.height
+            )
         }
 
         func scrollViewDidZoom(_ scrollView: UIScrollView) {
+            print("debug1: 2222")
             // For some reason this is needed in both didZoom and layoutSubviews, thanks to https://medium.com/@ssamadgh/designing-apps-with-scroll-views-part-i-8a7a44a5adf7
             // Sometimes this seems to work (view animates size and position simultaneously from current position to center) and sometimes it does not (position snaps to center immediately, size change animates)
             self.scrollView.centerContent()

@@ -13,8 +13,30 @@ struct CanvasViewWrapper: View {
     var body: some View {
         ZoomableScrollView {
             GeometryReader { proxy in
-                let width = proxy.size.width
-                let height = width * (image.size.height / image.size.width)
+                let containerSize = proxy.size
+                let imageAspectRatio = image.size.width / image.size.height
+                let containerAspectRatio = containerSize.width / containerSize.height
+
+                // Calculate the appropriate width and height to fit the image entirely inside the container
+                var width: CGFloat {
+                    if containerAspectRatio > imageAspectRatio {
+                        // Container is wider than the image's aspect ratio, limit by height
+                        height * imageAspectRatio
+                    } else {
+                        // Container is narrower, limit by width
+                        containerSize.width
+                    }
+                }
+
+                var height: CGFloat {
+                    if containerAspectRatio > imageAspectRatio {
+                        // Container is wider than the image's aspect ratio, limit by height
+                        containerSize.height
+                    } else {
+                        // Container is narrower, limit by width
+                        width / imageAspectRatio
+                    }
+                }
 
                 ZStack(alignment: .center) {
                     Image(uiImage: image)

@@ -5,8 +5,8 @@
 import PencilKit
 import SwiftUI
 
-// TODO: #1: Pass image through parameter and finalize the flow from image select/capture to markup and add to the main view.
 // TODO: #2: Finalize CanvasViewWrapper code.
+// TODO: #3: Fix on dismiss reset photos library selection
 
 public struct ImageMarkupScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -17,6 +17,7 @@ public struct ImageMarkupScreen: View {
     @State private var canUndo = false
     @State private var canRedo = false
     @State private var isProcessing = false
+    @State private var canDraw = false
 
     private var image: UIImage
     private var onSuccess: @Sendable (UIImage) -> Void
@@ -32,75 +33,101 @@ public struct ImageMarkupScreen: View {
     public var body: some View {
         NavigationStack {
             ZStack {
-                CanvasViewWrapper(
-                    image: image,
-                    canvasView: canvasView,
-                    toolPicker: toolPicker
-                )
-
-                if isProcessing {
-                    ZStack {
-                        ProgressView()
-                    }
+                if canDraw {
+                    CanvasViewWrapper(
+                        image: image,
+                        canvasView: canvasView,
+                        toolPicker: toolPicker
+                    )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .allowsHitTesting(true)
+                } else {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .navigationTitle("Markup")
+            .navigationTitle(canDraw ? "Markup" : "Preview")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    HStack(spacing: 8) {
-                        Button("Cancel", role: .cancel) {
-                            dismiss()
-                        }
-
-                        if UIDevice.current.isPhone {
-                            Button("Undo", systemImage: "arrow.uturn.backward.circle") {
-                                undoManager?.undo()
-                            }
-                            .disabled(!canUndo)
-
-                            Button("Redo", systemImage: "arrow.uturn.forward.circle") {
-                                undoManager?.redo()
-                            }
-                            .disabled(!canRedo)
+            .overlay {
+                if isProcessing {
+                    ZStack {
+                        ProgressView {
+                            Text("Processing...")
                         }
                     }
-                    .disabled(isProcessing)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(.regularMaterial)
+                    .allowsHitTesting(true)
                 }
-
-                ToolbarItem(placement: .topBarTrailing) {
-                    HStack(spacing: 8) {
-                        Button("Clear") {
-                            // Without undoing using UndoManager, the buttons are not working correctly.
-
-                            // Manually undo all drawings.
-                            for _ in 0 ..< undoManager.undoCount {
-                                undoManager.undo()
+            }
+            .toolbar {
+                if canDraw {
+                    ToolbarItem(placement: .topBarLeading) {
+                        HStack(spacing: 8) {
+                            Button("Cancel", role: .cancel) {
+                                dismiss()
                             }
 
-                            // Finally reset all actions.
-                            undoManager.removeAllActions()
-                        }
-
-                        Button("Done") {
-                            Task.detached(priority: .userInitiated) {
-                                await MainActor.run {
-                                    isProcessing = true
+                            if UIDevice.current.isPhone {
+                                Button("Undo", systemImage: "arrow.uturn.backward.circle") {
+                                    undoManager?.undo()
                                 }
+                                .disabled(!canUndo)
 
-                                let finalImage = await canvasView.renderedImage(onto: image)
-
-                                onSuccess(finalImage)
-
-                                await dismiss()
+                                Button("Redo", systemImage: "arrow.uturn.forward.circle") {
+                                    undoManager?.redo()
+                                }
+                                .disabled(!canRedo)
                             }
                         }
-                        .fontWeight(.medium)
+                        .disabled(isProcessing)
                     }
-                    .disabled(isProcessing)
+
+                    ToolbarItem(placement: .topBarTrailing) {
+                        HStack(spacing: 8) {
+                            Button("Clear") {
+                                clearDrawing()
+                            }
+
+                            Button("Done") {
+                                processAndDismiss()
+                            }
+                            .fontWeight(.medium)
+                        }
+                        .disabled(isProcessing)
+                    }
+                } else {
+                    ToolbarItem(placement: .bottomBar) {
+                        HStack(spacing: 8) {
+                            Button {
+                                dismiss()
+                            } label: {
+                                Text("Cancel")
+                            }
+
+                            Spacer()
+                            Button {
+                                canDraw.toggle()
+                            } label: {
+                                HStack {
+                                    Image(systemName: "pencil.tip.crop.circle")
+                                    Text("Markup")
+                                }
+                            }
+
+                            Spacer()
+
+                            Button {
+                                onSuccess(image)
+
+                                dismiss()
+                            } label: {
+                                Text("Add")
+                                    .fontWeight(.medium)
+                            }
+                        }
+                    }
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: .NSUndoManagerDidCloseUndoGroup)) { _ in
@@ -112,12 +139,47 @@ public struct ImageMarkupScreen: View {
             .onReceive(NotificationCenter.default.publisher(for: .NSUndoManagerDidRedoChange)) { _ in
                 updateUndoRedoControls()
             }
+            .task {
+                try? await Task.sleep(for: .seconds(0.1))
+
+                toolPicker.setVisible(false, forFirstResponder: canvasView)
+            }
         }
+        // Note: This fix the top app bar transparent issue.
+        .background(Color.systemBackground)
     }
 
     func updateUndoRedoControls() {
         canUndo = undoManager.canUndo
         canRedo = undoManager.canRedo
+    }
+
+    func clearDrawing() {
+        // Without undoing using UndoManager, the buttons are not working correctly.
+
+        // Manually undo all drawings.
+        for _ in 0 ..< undoManager.undoCount {
+            undoManager.undo()
+        }
+
+        // Finally reset all actions.
+        undoManager.removeAllActions()
+    }
+
+    func processAndDismiss() {
+        Task.detached(priority: .userInitiated) {
+            await MainActor.run {
+                toolPicker.setVisible(false, forFirstResponder: canvasView)
+
+                isProcessing = true
+            }
+
+            let finalImage = await canvasView.renderedImage(onto: image)
+
+            onSuccess(finalImage)
+
+            await dismiss()
+        }
     }
 }
 
@@ -149,13 +211,16 @@ extension PKCanvasView {
 }
 
 #Preview {
-    ZStack {}
-        .fullScreenCover(isPresented: .constant(true)) {
-            ImageMarkupScreen(
-                image: UIImage(named: "boliviainteligente-llyebZWmLM0-unsplash")!,
-                onSuccess: { _ in
-                    //
-                }
-            )
-        }
+    NavigationStack {
+        ZStack {}
+            .navigationTitle("Demo Screen")
+            .fullScreenCover(isPresented: .constant(true)) {
+                ImageMarkupScreen(
+                    image: UIImage(named: "boliviainteligente-llyebZWmLM0-unsplash")!,
+                    onSuccess: { _ in
+                        //
+                    }
+                )
+            }
+    }
 }
