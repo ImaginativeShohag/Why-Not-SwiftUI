@@ -107,8 +107,11 @@ public struct ImageMarkupScreen: View {
                             }
 
                             Spacer()
+                            
                             Button {
-                                canDraw.toggle()
+                                withAnimation {
+                                    canDraw.toggle()
+                                }
                             } label: {
                                 HStack {
                                     Image(systemName: "pencil.tip.crop.circle")
@@ -138,11 +141,6 @@ public struct ImageMarkupScreen: View {
             }
             .onReceive(NotificationCenter.default.publisher(for: .NSUndoManagerDidRedoChange)) { _ in
                 updateUndoRedoControls()
-            }
-            .task {
-                try? await Task.sleep(for: .seconds(0.1))
-
-                toolPicker.setVisible(false, forFirstResponder: canvasView)
             }
         }
         // Note: This fix the top app bar transparent issue.
