@@ -7,7 +7,6 @@ import PencilKit
 import SwiftUI
 
 // TODO: #4: Update image generation code, before offset, now position
-// TODO: #5: LIMIT the move to match the bound of the content
 // TODO: #6: on draw unselect the text
 // TODO: #7: on clear remove the text also
 // TODO: #8: Add text to the undo manager
@@ -20,8 +19,7 @@ struct CanvasViewWrapper: View {
 
     @State private var viewModel = CanvasViewViewModel()
     @State private var keyboardObserver = KeyboardObserver()
-    @State private var contentWidth: CGFloat = 0
-    @State private var contentHeight: CGFloat = 0
+    @State private var contentSize: CGSize = .zero
 
     var body: some View {
         ZoomableScrollView {
@@ -29,7 +27,7 @@ struct CanvasViewWrapper: View {
                 ZStack(alignment: .center) {
                     Image(uiImage: image)
                         .resizable()
-                        .frame(width: contentWidth, height: contentHeight)
+                        .frame(width: contentSize.width, height: contentSize.height)
 
                     CanvasView(
                         canvasView: canvasView,
@@ -37,7 +35,7 @@ struct CanvasViewWrapper: View {
                         onAddTextClick: {
                             Task { @MainActor in
                                 let newBox = TextBox(
-                                    position: CGPoint(x: contentWidth / 2, y: contentHeight / 2)
+                                    position: CGPoint(x: contentSize.width / 2, y: contentSize.height / 2)
                                 )
                                 textBoxes.append(newBox)
 
@@ -45,7 +43,7 @@ struct CanvasViewWrapper: View {
                             }
                         }
                     )
-                    .frame(width: contentWidth, height: contentHeight)
+                    .frame(width: contentSize.width, height: contentSize.height)
                     .disabled(keyboardObserver.isKeyboardVisible)
 
                     ZStack(alignment: .center) {
@@ -53,6 +51,7 @@ struct CanvasViewWrapper: View {
                             TextBoxView(
                                 box: $box,
                                 isSelected: box.id == viewModel.selectedTextBoxId,
+                                contentSize: contentSize,
                                 onClick: {
                                     viewModel.selectedTextBoxId = box.id
                                 },
@@ -62,7 +61,7 @@ struct CanvasViewWrapper: View {
                             )
                         }
                     }
-                    .frame(width: contentWidth, height: contentHeight)
+                    .frame(width: contentSize.width, height: contentSize.height)
                 }
                 .frame(width: proxy.size.width, height: proxy.size.height)
                 .onAppear {
@@ -91,17 +90,11 @@ struct CanvasViewWrapper: View {
                         }
                     }
 
-                    self.contentWidth = width
-                    self.contentHeight = height
+                    self.contentSize = CGSize(width: width, height: height)
                 }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        // .onTapGesture {
-        //    UIApplication.shared.hideKeyboard()
-//
-        //    viewModel.selectedTextBox = nil
-        // }
         .onChange(of: keyboardObserver.isKeyboardVisible) { _, isKeyboardVisible in
             print("debug2: keyboardVisible: \(isKeyboardVisible)")
             Task { @MainActor in
@@ -126,25 +119,12 @@ struct CanvasViewWrapper: View {
         )
         .toolbarVisibility(keyboardObserver.isKeyboardVisible ? .hidden : .visible, for: .automatic)
     }
-
-    private func clearDrawing() {
-        guard let undoManager = canvasView.undoManager else { return }
-
-        // Note: Without first undoing using UndoManager, the buttons are not working correctly.
-
-        // Manually undo all drawings.
-        for _ in 0 ..< undoManager.undoCount {
-            undoManager.undo()
-        }
-
-        // Finally reset all actions.
-        undoManager.removeAllActions()
-    }
 }
 
 struct TextBoxView: View {
     @Binding var box: TextBox
     let isSelected: Bool
+    let contentSize: CGSize
     let onClick: () -> Void
     let onRemoveClick: () -> Void
 
@@ -189,6 +169,7 @@ struct TextBoxView: View {
                                     .overlay(Circle().stroke(Color.white, lineWidth: 2))
                                     .frame(width: 16, height: 16)
                                     .frame(height: proxy.size.height)
+                                    // Note: Recommended minimum tappable area is 44x44.
                                     .frame(width: 44)
                                     .contentShape(Rectangle())
                                     .gesture(
@@ -207,6 +188,7 @@ struct TextBoxView: View {
                                     .overlay(Circle().stroke(Color.white, lineWidth: 2))
                                     .frame(width: 16, height: 16)
                                     .frame(height: proxy.size.height)
+                                    // Note: Recommended minimum tappable area is 44x44.
                                     .frame(width: 44)
                                     .contentShape(Rectangle())
                                     .gesture(
@@ -244,8 +226,13 @@ struct TextBoxView: View {
                     dragOffset = value.translation
                 }
                 .onEnded { value in
-                    box.position.x += value.translation.width
-                    box.position.y += value.translation.height
+                    let newX = box.position.x + value.translation.width
+                    let newY = box.position.y + value.translation.height
+
+                    // Clamp the position within allowed bounds
+                    box.position.x = min(max(newX, 0), contentSize.width)
+                    box.position.y = min(max(newY, 0), contentSize.height)
+
                     dragOffset = .zero
                 }
         )

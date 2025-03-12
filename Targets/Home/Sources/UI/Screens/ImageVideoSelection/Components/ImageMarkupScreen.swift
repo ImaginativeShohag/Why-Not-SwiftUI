@@ -118,7 +118,10 @@ public struct ImageMarkupScreen: View {
     }
 
     func clearDrawing() {
-        // Without undoing using UndoManager, the buttons are not working correctly.
+        // Remove the text blocks
+        textBoxes.removeAll()
+        
+        // Note: Without first undoing using UndoManager, the buttons are not working correctly.
 
         // Manually undo all drawings.
         for _ in 0 ..< undoManager.undoCount {
