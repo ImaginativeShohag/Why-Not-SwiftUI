@@ -40,9 +40,6 @@ struct CanvasViewWrapper: View {
 
                                 viewModel.selectedTextBoxId = newBox.id
                             }
-                        },
-                        onClearClick: {
-                            clearDrawing()
                         }
                     )
                     .frame(width: contentWidth, height: contentHeight)
@@ -187,12 +184,13 @@ struct TextBoxView: View {
                                     .overlay(Circle().stroke(Color.white, lineWidth: 2))
                                     .frame(width: 16, height: 16)
                                     .frame(height: proxy.size.height)
+                                    .frame(width: 44)
                                     .contentShape(Rectangle())
                                     .gesture(
                                         DragGesture()
                                             .onChanged { value in
                                                 let newWidth = box.width - value.translation.width
-                                                box.width = max(50, newWidth)
+                                                box.width = max(100, newWidth)
                                             }
                                     )
                                     .padding(.trailing, 4)
@@ -204,19 +202,20 @@ struct TextBoxView: View {
                                     .overlay(Circle().stroke(Color.white, lineWidth: 2))
                                     .frame(width: 16, height: 16)
                                     .frame(height: proxy.size.height)
+                                    .frame(width: 44)
                                     .contentShape(Rectangle())
                                     .gesture(
                                         DragGesture()
                                             .onChanged { value in
                                                 let newWidth = box.width + value.translation.width
-                                                box.width = max(50, newWidth)
+                                                box.width = max(100, newWidth)
                                             }
                                     )
                                     .padding(.leading, 4)
                             }
                             .frame(height: proxy.size.height)
                         }
-                        .padding(.horizontal, -12)
+                        .padding(.horizontal, -26)
                     }
                 }
             }
@@ -382,7 +381,6 @@ struct CanvasView: UIViewRepresentable {
     let canvasView: PKCanvasView
     let toolPicker: PKToolPicker
     let onAddTextClick: () -> Void
-    let onClearClick: () -> Void
 
     func makeUIView(context: Context) -> PKCanvasView {
         canvasView.drawingPolicy = .anyInput
@@ -418,10 +416,7 @@ extension CanvasView {
         let addTextAction = UIAction(title: "Add Text", image: UIImage(systemName: "character.textbox")) { _ in
             onAddTextClick()
         }
-        let clearAction = UIAction(title: "Clear All Markup", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-            onClearClick()
-        }
-        let menu = UIMenu(children: [addTextAction, clearAction])
+        let menu = UIMenu(children: [addTextAction])
         toolPicker.accessoryItem = UIBarButtonItem(systemItem: .add, menu: menu)
 
         // Bind with canvas

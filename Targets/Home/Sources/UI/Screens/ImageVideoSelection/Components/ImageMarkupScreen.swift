@@ -22,8 +22,6 @@ public struct ImageMarkupScreen: View {
     @State private var canDraw = true // TODO: change to false
 
     @State var textBoxes: [TextBox] = []
-    @State var addNewTextBox: Bool = false
-    @State var currentIndex: Int = 0
 
     private var image: UIImage
     private var onSuccess: @Sendable (UIImage) -> Void
@@ -49,88 +47,10 @@ public struct ImageMarkupScreen: View {
                         toolPicker: toolPicker
                     )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-//                    ForEach(textBoxes) { box in
-//                        Text(textBoxes[currentIndex].id == box.id && addNewTextBox ? "" : box.text)
-//                            .font(.system(size: 35, weight: textBoxes[currentIndex].isBold ? .bold : .regular))
-//                            .fontWeight(box.isBold ? .bold : .none)
-//                            .foregroundColor(box.textColor)
-//                            .offset(box.offset)
-//                            .gesture(DragGesture().onChanged { value in
-//                                let current = value.translation
-//                                let lastOffset = box.lastOffset
-//                                let newTranslation = CGSize(
-//                                    width: lastOffset.width + current.width,
-//                                    height: lastOffset.height + current.height
-//                                )
-//
-//                                textBoxes[getIndex(textBox: box)].offset = newTranslation
-//                            }.onEnded { value in
-//                                textBoxes[getIndex(textBox: box)].lastOffset = value.translation
-//                            })
-//                    }
                 } else {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
-                }
-
-                if addNewTextBox {
-                    Color.black.opacity(0.75)
-                        .ignoresSafeArea()
-
-                    TextField("Type Here", text: $textBoxes[currentIndex].text)
-                        .font(.system(size: 35))
-                        .colorScheme(.dark)
-                        .foregroundColor(textBoxes[currentIndex].textColor)
-                        .padding()
-
-                    HStack {
-                        Button {
-                            toolPicker.setVisible(true, forFirstResponder: canvasView)
-                            canvasView.becomeFirstResponder()
-
-                            withAnimation {
-                                addNewTextBox = false
-                            }
-                        } label: {
-                            Text("Add")
-                                .fontWeight(.heavy)
-                                .foregroundColor(.white)
-                                .padding()
-                        }
-
-                        Spacer()
-
-                        Button {
-                            toolPicker.setVisible(true, forFirstResponder: canvasView)
-                            canvasView.becomeFirstResponder()
-
-                            withAnimation {
-                                addNewTextBox = false
-                            }
-
-                            textBoxes.removeLast()
-                        } label: {
-                            Text("Cancel")
-                                .fontWeight(.heavy)
-                                .foregroundColor(.white)
-                                .padding()
-                        }
-                    }
-                    .overlay {
-                        ColorPicker("", selection: $textBoxes[currentIndex].textColor)
-                            .labelsHidden()
-
-                        Button {
-                            textBoxes[currentIndex].isBold.toggle()
-                        } label: {
-                            Text(textBoxes[currentIndex].isBold ? "Normal" : "Bold")
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .frame(maxHeight: .infinity, alignment: .top)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -175,19 +95,6 @@ public struct ImageMarkupScreen: View {
                         HStack(spacing: 8) {
                             Button("Clear", systemImage: "trash") {
                                 clearDrawing()
-                            }
-
-                            Button("Add text", systemImage: "character.textbox") {
-                                textBoxes.append(TextBox())
-
-                                currentIndex = textBoxes.count - 1
-
-                                withAnimation {
-                                    addNewTextBox.toggle()
-                                }
-
-                                toolPicker.setVisible(false, forFirstResponder: canvasView)
-                                canvasView.resignFirstResponder()
                             }
 
                             Button("Done") {
@@ -278,14 +185,6 @@ public struct ImageMarkupScreen: View {
 
             await dismiss()
         }
-    }
-
-    func getIndex(textBox: TextBox) -> Int {
-        let index = textBoxes.firstIndex { box -> Bool in
-            return textBox.id == box.id
-        } ?? 0
-
-        return index
     }
 }
 
@@ -397,12 +296,6 @@ struct TextBox: Identifiable, Equatable {
     var fontSize: CGFloat = 24
     var textColor: Color = .black
 
-    var width: CGFloat = 64
+    var width: CGFloat = 100
     var position: CGPoint = .zero
 }
-
-//extension TextBox: Equatable {
-//    static func == (lhs: Self, rhs: Self) -> Bool {
-//        lhs.id == rhs.id
-//    }
-//}
