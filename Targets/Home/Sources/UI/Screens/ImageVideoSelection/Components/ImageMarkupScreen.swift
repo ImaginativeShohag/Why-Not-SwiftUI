@@ -8,7 +8,6 @@ import SwiftUI
 // TODO: #2: Finalize CanvasViewWrapper code.
 // TODO: #3: Fix on dismiss reset photos library selection
 // TODO: #4: process to scale down the image (also add parameter  maxImageSize: CGSize? = nil,)
-// No need: we should process this from outside and pass it.
 
 public struct ImageMarkupScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -19,7 +18,6 @@ public struct ImageMarkupScreen: View {
     @State private var canUndo = false
     @State private var canRedo = false
     @State private var isProcessing = false
-    @State private var canDraw = true // TODO: change to false
 
     @State var textBoxes: [TextBox] = []
 
@@ -39,22 +37,18 @@ public struct ImageMarkupScreen: View {
     public var body: some View {
         NavigationStack {
             ZStack(alignment: .center) {
-                if canDraw {
-                    CanvasViewWrapper(
-                        image: image,
-                        textBoxes: $textBoxes,
-                        canvasView: canvasView,
-                        toolPicker: toolPicker
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
-                }
+                CanvasViewWrapper(
+                    image: image,
+                    textBoxes: $textBoxes,
+                    canvasView: canvasView,
+                    toolPicker: toolPicker
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                // Note: This will fix keyboard focus jumping.
+                .ignoresSafeArea(.all)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .navigationTitle(canDraw ? "Markup" : "Preview")
+            .navigationTitle("Markup")
             .navigationBarTitleDisplayMode(.inline)
             .overlay {
                 if isProcessing {
@@ -69,75 +63,39 @@ public struct ImageMarkupScreen: View {
                 }
             }
             .toolbar {
-                if canDraw {
-                    ToolbarItem(placement: .topBarLeading) {
-                        HStack(spacing: 8) {
-                            Button("Cancel", role: .cancel) {
-                                dismiss()
-                            }
-
-                            if UIDevice.current.isPhone {
-                                Button("Undo", systemImage: "arrow.uturn.backward.circle") {
-                                    undoManager?.undo()
-                                }
-                                .disabled(!canUndo)
-
-                                Button("Redo", systemImage: "arrow.uturn.forward.circle") {
-                                    undoManager?.redo()
-                                }
-                                .disabled(!canRedo)
-                            }
+                ToolbarItem(placement: .topBarLeading) {
+                    HStack(spacing: 8) {
+                        Button("Cancel", role: .cancel) {
+                            dismiss()
                         }
-                        .disabled(isProcessing)
-                    }
 
-                    ToolbarItem(placement: .topBarTrailing) {
-                        HStack(spacing: 8) {
-                            Button("Clear", systemImage: "trash") {
-                                clearDrawing()
+                        if UIDevice.current.isPhone {
+                            Button("Undo", systemImage: "arrow.uturn.backward.circle") {
+                                undoManager?.undo()
                             }
+                            .disabled(!canUndo)
 
-                            Button("Done") {
-                                processAndDismiss()
+                            Button("Redo", systemImage: "arrow.uturn.forward.circle") {
+                                undoManager?.redo()
                             }
-                            .fontWeight(.medium)
-                        }
-                        .disabled(isProcessing)
-                    }
-                } else {
-                    ToolbarItem(placement: .bottomBar) {
-                        HStack(spacing: 8) {
-                            Button {
-                                dismiss()
-                            } label: {
-                                Text("Cancel")
-                            }
-
-                            Spacer()
-
-                            Button {
-                                withAnimation {
-                                    canDraw.toggle()
-                                }
-                            } label: {
-                                HStack {
-                                    Image(systemName: "pencil.tip.crop.circle")
-                                    Text("Markup")
-                                }
-                            }
-
-                            Spacer()
-
-                            Button {
-                                onSuccess(image)
-
-                                dismiss()
-                            } label: {
-                                Text("Add")
-                                    .fontWeight(.medium)
-                            }
+                            .disabled(!canRedo)
                         }
                     }
+                    .disabled(isProcessing)
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack(spacing: 8) {
+                        Button("Clear", systemImage: "trash") {
+                            clearDrawing()
+                        }
+
+                        Button("Done") {
+                            processAndDismiss()
+                        }
+                        .fontWeight(.medium)
+                    }
+                    .disabled(isProcessing)
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: .NSUndoManagerDidCloseUndoGroup)) { _ in

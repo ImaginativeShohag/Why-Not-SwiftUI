@@ -8,6 +8,9 @@ import SwiftUI
 
 // TODO: #4: Update image generation code, before offset, now position
 // TODO: #5: LIMIT the move to match the bound of the content
+// TODO: #6: on draw unselect the text
+// TODO: #7: on clear remove the text also
+// TODO: #8: Add text to the undo manager
 
 struct CanvasViewWrapper: View {
     let image: UIImage
@@ -103,8 +106,8 @@ struct CanvasViewWrapper: View {
             print("debug2: keyboardVisible: \(isKeyboardVisible)")
             Task { @MainActor in
                 if !isKeyboardVisible {
-                    print("debug2: enable toolpicker")
                     toolPicker.setVisible(true, forFirstResponder: canvasView)
+                    canvasView.becomeFirstResponder()
                 }
             }
         }
@@ -115,10 +118,6 @@ struct CanvasViewWrapper: View {
                 if keyboardObserver.isKeyboardVisible {
                     UIApplication.shared.hideKeyboard()
                 } else {
-                    if !toolPicker.isVisible {
-                        toolPicker.setVisible(true, forFirstResponder: canvasView)
-                    }
-
                     viewModel.selectedTextBoxId = nil
                 }
 
