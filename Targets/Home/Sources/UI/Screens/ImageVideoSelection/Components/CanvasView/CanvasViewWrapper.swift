@@ -6,10 +6,11 @@ import Core
 import PencilKit
 import SwiftUI
 
-// TODO: #4: Update image generation code, before offset, now position
-// TODO: #6: on draw unselect the text
-// TODO: #7: on clear remove the text also
 // TODO: #8: Add text to the undo manager
+// TODO: #9: Auto width change on text input; only if user didn't change the width
+// TODO: #10: Duplicate text
+// TODO: #11: BUG: if the popover too top, its height not looks ok
+// TODO: #12: BUG: if alignment is left/right the text selection make the text jump, remove the text and disable the textfield if not selected.
 
 struct CanvasViewWrapper: View {
     let image: UIImage
@@ -41,6 +42,9 @@ struct CanvasViewWrapper: View {
 
                                 viewModel.selectedTextBoxId = newBox.id
                             }
+                        },
+                        onDrawingDidChange: {
+                            viewModel.selectedTextBoxId = nil
                         }
                     )
                     .frame(width: contentSize.width, height: contentSize.height)
@@ -338,7 +342,7 @@ struct TextFormatPopoverView: View {
                     Text("\(Int(box.fontSize)) pt")
                         .foregroundColor(.label)
                         .padding(.horizontal, 8)
-                        .padding(.vertical, 3.8)
+                        .padding(.vertical, UIDevice.current.isPhone ? 3.8 : 3.9)
                         .background(Color.tertiarySystemFill)
                         .cornerRadius(8)
                 }
@@ -373,6 +377,7 @@ struct CanvasView: UIViewRepresentable {
     let canvasView: PKCanvasView
     let toolPicker: PKToolPicker
     let onAddTextClick: () -> Void
+    let onDrawingDidChange: ()->Void
 
     func makeUIView(context: Context) -> PKCanvasView {
         canvasView.drawingPolicy = .anyInput
@@ -398,6 +403,10 @@ struct CanvasView: UIViewRepresentable {
 
         init(_ parent: CanvasView) {
             self.parent = parent
+        }
+        
+        func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
+            parent.onDrawingDidChange()
         }
     }
 }

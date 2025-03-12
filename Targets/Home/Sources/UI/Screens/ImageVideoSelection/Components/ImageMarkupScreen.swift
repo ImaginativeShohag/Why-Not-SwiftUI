@@ -185,9 +185,47 @@ extension PKCanvasView {
 
             // do benchmark for speed and memory usage
             for box in textBoxes {
+                var traits: UIFontDescriptor.SymbolicTraits = []
+
+                if box.isBold {
+                    traits.insert(.traitBold)
+                }
+
+                if box.isItalic {
+                    traits.insert(.traitItalic)
+                }
+
+                let baseFont = UIFont.systemFont(ofSize: box.fontSize)
+                var fontDescriptor = baseFont.fontDescriptor
+
+                if !traits.isEmpty, let descriptorWithTraits = fontDescriptor.withSymbolicTraits(traits) {
+                    fontDescriptor = descriptorWithTraits
+                }
+
+                let font = UIFont(descriptor: fontDescriptor, size: box.fontSize)
+
+                // Underline and Strikethrough styles
+                let underlineStyle: NSUnderlineStyle = box.isUnderline ? .single : []
+                let strikethroughStyle: NSUnderlineStyle = box.isStrikethrough ? .single : []
+
+                // Paragraph style with text alignment
+                let paragraphStyle = NSMutableParagraphStyle()
+
+                switch box.alignment {
+                case .leading:
+                    paragraphStyle.alignment = .left
+                case .center:
+                    paragraphStyle.alignment = .center
+                case .trailing:
+                    paragraphStyle.alignment = .right
+                }
+
                 let attributes: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.systemFont(ofSize: 35, weight: box.isBold ? .bold : .regular),
-                    .foregroundColor: UIColor(box.textColor)
+                    .font: font,
+                    .foregroundColor: UIColor(box.textColor),
+                    .underlineStyle: underlineStyle.rawValue,
+                    .strikethroughStyle: strikethroughStyle.rawValue,
+                    .paragraphStyle: paragraphStyle
                 ]
 
                 let attributedText = NSAttributedString(string: box.text, attributes: attributes)
@@ -200,11 +238,19 @@ extension PKCanvasView {
                 ).size
 
                 // Convert center-relative offset to top-left coordinate system
-                let centerX = bounds.width / 2
-                let centerY = bounds.height / 2
+//                let centerX = bounds.width / 2
+//                let centerY = bounds.height / 2
 
-                let adjustedX = centerX + box.position.x - (textSize.width / 2)
-                let adjustedY = centerY + box.position.y - (textSize.height / 2)
+//                let adjustedX = centerX + box.position.x - (textSize.width / 2)
+//                let adjustedY = centerY + box.position.y - (textSize.height / 2)
+
+//                let textRect = CGRect(
+//                    origin: CGPoint(x: adjustedX, y: adjustedY),
+//                    size: textSize
+//                )
+
+                let adjustedX =  box.position.x - (textSize.width / 2)
+                let adjustedY =  box.position.y - (textSize.height / 2)
 
                 let textRect = CGRect(
                     origin: CGPoint(x: adjustedX, y: adjustedY),
