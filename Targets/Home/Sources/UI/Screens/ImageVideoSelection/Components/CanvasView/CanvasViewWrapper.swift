@@ -49,7 +49,7 @@ struct CanvasViewWrapper: View {
                         ForEach($textBoxes) { $box in
                             TextBoxView(
                                 box: $box,
-                                isSelected: true, // box.id == viewModel.selectedTextBoxId,
+                                isSelected: box.id == viewModel.selectedTextBoxId,
                                 onClick: {
                                     viewModel.selectedTextBoxId = box.id
                                 },
@@ -101,21 +101,27 @@ struct CanvasViewWrapper: View {
         // }
         .onChange(of: keyboardObserver.isKeyboardVisible) { _, isKeyboardVisible in
             print("debug2: keyboardVisible: \(isKeyboardVisible)")
-            if !isKeyboardVisible {
-                toolPicker.setVisible(true, forFirstResponder: canvasView)
+            Task { @MainActor in
+                if !isKeyboardVisible {
+                    print("debug2: enable toolpicker")
+                    toolPicker.setVisible(true, forFirstResponder: canvasView)
+                }
             }
         }
         .simultaneousGesture(
             TapGesture().onEnded {
-                print("debug2: tap on canvas: \(keyboardObserver.isKeyboardVisible)")
+                print("debug2: tap on canvas: \(keyboardObserver.isKeyboardVisible) | toolPicker.isVisible: \(toolPicker.isVisible)")
 
                 if keyboardObserver.isKeyboardVisible {
                     UIApplication.shared.hideKeyboard()
-                } else if !toolPicker.isVisible {
-                    toolPicker.setVisible(true, forFirstResponder: canvasView)
+                } else {
+                    if !toolPicker.isVisible {
+                        toolPicker.setVisible(true, forFirstResponder: canvasView)
+                    }
+
+                    viewModel.selectedTextBoxId = nil
                 }
 
-                viewModel.selectedTextBoxId = nil
             },
             including: .gesture
         )
@@ -255,7 +261,7 @@ struct TextBoxView: View {
 #Preview {
     @Previewable @State var textBoxes: [TextBox] = [
         TextBox(text: "Text", width: 100, position: CGPoint(x: 100, y: 100)),
-//        TextBox(text: "A\nMultiline\nText", position: CGPoint(x: 200, y: 200))
+        TextBox(text: "A\nMultiline\nText", position: CGPoint(x: 200, y: 200))
     ]
 
     CanvasViewWrapper(
@@ -270,7 +276,7 @@ struct TextBoxToolbar: View {
     @Binding var box: TextBox
     let onRemoveClick: () -> Void
 
-    @State private var showTextFormatPopover: Bool = true
+    @State private var showTextFormatPopover: Bool = false
 
     var body: some View {
         HStack(spacing: 0) {
@@ -343,12 +349,12 @@ struct TextFormatPopoverView: View {
                         }
                     }
                 } label: {
-                       Text("\(Int(box.fontSize)) pt")
-                           .foregroundColor(.label)
-                           .padding(.horizontal, 8)
-                           .padding(.vertical, 3.8)
-                           .background(Color.tertiarySystemFill)
-                           .cornerRadius(8)
+                    Text("\(Int(box.fontSize)) pt")
+                        .foregroundColor(.label)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3.8)
+                        .background(Color.tertiarySystemFill)
+                        .cornerRadius(8)
                 }
 
                 ControlGroup {
