@@ -7,6 +7,8 @@ import SwiftUI
 
 // TODO: #2: Finalize CanvasViewWrapper code.
 // TODO: #3: Fix on dismiss reset photos library selection
+// TODO: #4: process to scale down the image (also add parameter  maxImageSize: CGSize? = nil,)
+// No need: we should process this from outside and pass it.
 
 public struct ImageMarkupScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -17,7 +19,11 @@ public struct ImageMarkupScreen: View {
     @State private var canUndo = false
     @State private var canRedo = false
     @State private var isProcessing = false
-    @State private var canDraw = false
+    @State private var canDraw = true // TODO: change to false
+
+    @State var textBoxes: [TextBox] = []
+    @State var addNewTextBox: Bool = false
+    @State var currentIndex: Int = 0
 
     private var image: UIImage
     private var onSuccess: @Sendable (UIImage) -> Void
@@ -28,22 +34,103 @@ public struct ImageMarkupScreen: View {
     ) {
         self.image = image
         self.onSuccess = onSuccess
+
+        print("debug1: init: imagesize: \(image.size)")
     }
 
     public var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack(alignment: .center) {
                 if canDraw {
                     CanvasViewWrapper(
                         image: image,
+                        textBoxes: $textBoxes,
                         canvasView: canvasView,
                         toolPicker: toolPicker
                     )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+//                    ForEach(textBoxes) { box in
+//                        Text(textBoxes[currentIndex].id == box.id && addNewTextBox ? "" : box.text)
+//                            .font(.system(size: 35, weight: textBoxes[currentIndex].isBold ? .bold : .regular))
+//                            .fontWeight(box.isBold ? .bold : .none)
+//                            .foregroundColor(box.textColor)
+//                            .offset(box.offset)
+//                            .gesture(DragGesture().onChanged { value in
+//                                let current = value.translation
+//                                let lastOffset = box.lastOffset
+//                                let newTranslation = CGSize(
+//                                    width: lastOffset.width + current.width,
+//                                    height: lastOffset.height + current.height
+//                                )
+//
+//                                textBoxes[getIndex(textBox: box)].offset = newTranslation
+//                            }.onEnded { value in
+//                                textBoxes[getIndex(textBox: box)].lastOffset = value.translation
+//                            })
+//                    }
                 } else {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
+                }
+
+                if addNewTextBox {
+                    Color.black.opacity(0.75)
+                        .ignoresSafeArea()
+
+                    TextField("Type Here", text: $textBoxes[currentIndex].text)
+                        .font(.system(size: 35))
+                        .colorScheme(.dark)
+                        .foregroundColor(textBoxes[currentIndex].textColor)
+                        .padding()
+
+                    HStack {
+                        Button {
+                            toolPicker.setVisible(true, forFirstResponder: canvasView)
+                            canvasView.becomeFirstResponder()
+
+                            withAnimation {
+                                addNewTextBox = false
+                            }
+                        } label: {
+                            Text("Add")
+                                .fontWeight(.heavy)
+                                .foregroundColor(.white)
+                                .padding()
+                        }
+
+                        Spacer()
+
+                        Button {
+                            toolPicker.setVisible(true, forFirstResponder: canvasView)
+                            canvasView.becomeFirstResponder()
+
+                            withAnimation {
+                                addNewTextBox = false
+                            }
+
+                            textBoxes.removeLast()
+                        } label: {
+                            Text("Cancel")
+                                .fontWeight(.heavy)
+                                .foregroundColor(.white)
+                                .padding()
+                        }
+                    }
+                    .overlay {
+                        ColorPicker("", selection: $textBoxes[currentIndex].textColor)
+                            .labelsHidden()
+
+                        Button {
+                            textBoxes[currentIndex].isBold.toggle()
+                        } label: {
+                            Text(textBoxes[currentIndex].isBold ? "Normal" : "Bold")
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .frame(maxHeight: .infinity, alignment: .top)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -86,8 +173,21 @@ public struct ImageMarkupScreen: View {
 
                     ToolbarItem(placement: .topBarTrailing) {
                         HStack(spacing: 8) {
-                            Button("Clear") {
+                            Button("Clear", systemImage: "trash") {
                                 clearDrawing()
+                            }
+
+                            Button("Add text", systemImage: "character.textbox") {
+                                textBoxes.append(TextBox())
+
+                                currentIndex = textBoxes.count - 1
+
+                                withAnimation {
+                                    addNewTextBox.toggle()
+                                }
+
+                                toolPicker.setVisible(false, forFirstResponder: canvasView)
+                                canvasView.resignFirstResponder()
                             }
 
                             Button("Done") {
@@ -107,7 +207,7 @@ public struct ImageMarkupScreen: View {
                             }
 
                             Spacer()
-                            
+
                             Button {
                                 withAnimation {
                                     canDraw.toggle()
@@ -172,12 +272,20 @@ public struct ImageMarkupScreen: View {
                 isProcessing = true
             }
 
-            let finalImage = await canvasView.renderedImage(onto: image)
+            let finalImage = await canvasView.renderedImage(onto: image, textBoxes: textBoxes)
 
             onSuccess(finalImage)
 
             await dismiss()
         }
+    }
+
+    func getIndex(textBox: TextBox) -> Int {
+        let index = textBoxes.firstIndex { box -> Bool in
+            return textBox.id == box.id
+        } ?? 0
+
+        return index
     }
 }
 
@@ -185,7 +293,7 @@ extension PKCanvasView {
     /// Combines the current PKCanvasView drawing with a given UIImage and returns the resulting UIImage.
     /// - Parameter image: The UIImage you want to combine with the current drawing.
     /// - Returns: A new UIImage that includes the original image and the canvas drawing.
-    func renderedImage(onto image: UIImage) -> UIImage {
+    func renderedImage(onto image: UIImage, textBoxes: [TextBox]) -> UIImage {
         let imageSize = image.size
 
         // Render the combined image
@@ -200,9 +308,60 @@ extension PKCanvasView {
             let scaleY = imageSize.height / bounds.height
             context.cgContext.scaleBy(x: scaleX, y: scaleY)
 
+            // Text blocks
+//            let swiftUIView = ZStack {
+//                ForEach(textBoxes) { box in
+//                    Text(box.text)
+//                        .font(.system(size: 35, weight: box.isBold ? .bold : .regular))
+//                        .fontWeight(box.isBold ? .bold : .none)
+//                        .foregroundColor(box.textColor)
+//                        .offset(box.offset)
+//                }
+//            }
+//            let controller = UIHostingController(rootView: swiftUIView).view!
+//            controller.frame = CGRect(origin: .zero, size: bounds.size)
+//            controller.backgroundColor = .clear
+//            controller.drawHierarchy(in: bounds, afterScreenUpdates: true)
+
+            // do benchmark for speed and memory usage
+            for box in textBoxes {
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .font: UIFont.systemFont(ofSize: 35, weight: box.isBold ? .bold : .regular),
+                    .foregroundColor: UIColor(box.textColor)
+                ]
+
+                let attributedText = NSAttributedString(string: box.text, attributes: attributes)
+
+                // Calculate text size
+                let textSize = attributedText.boundingRect(
+                    with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude),
+                    options: [.usesLineFragmentOrigin, .usesFontLeading],
+                    context: nil
+                ).size
+
+                // Convert center-relative offset to top-left coordinate system
+                let centerX = bounds.width / 2
+                let centerY = bounds.height / 2
+
+                let adjustedX = centerX + box.position.x - (textSize.width / 2)
+                let adjustedY = centerY + box.position.y - (textSize.height / 2)
+
+                let textRect = CGRect(
+                    origin: CGPoint(x: adjustedX, y: adjustedY),
+                    size: textSize
+                )
+
+                attributedText.draw(in: textRect)
+            }
+
             // Render the canvasView drawing
-            drawHierarchy(in: bounds, afterScreenUpdates: true)
+            // drawHierarchy(in: bounds, afterScreenUpdates: true) // do benchmark
+
+            drawing.image(from: bounds, scale: UIScreen.main.scale)
+                .draw(in: bounds)
         }
+
+        print("debug1: imagesize: \(combinedImage.size)")
 
         return combinedImage
     }
@@ -222,3 +381,28 @@ extension PKCanvasView {
             }
     }
 }
+
+// MARK: - Text Box
+
+struct TextBox: Identifiable, Equatable {
+    var id = UUID().uuidString
+    var text: String = "Text\nAnother\nLine"
+
+    var isBold: Bool = false
+    var isItalic: Bool = false
+    var isUnderline: Bool = false
+    var isStrikethrough: Bool = false
+    var alignment: TextAlignment = .center
+
+    var fontSize: CGFloat = 24
+    var textColor: Color = .black
+
+    var width: CGFloat = 64
+    var position: CGPoint = .zero
+}
+
+//extension TextBox: Equatable {
+//    static func == (lhs: Self, rhs: Self) -> Bool {
+//        lhs.id == rhs.id
+//    }
+//}

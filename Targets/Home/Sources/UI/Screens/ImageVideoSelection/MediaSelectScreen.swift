@@ -66,6 +66,40 @@ public struct MediaSelectScreen: View {
                     Text("Add Attachment")
                 }
                 .buttonStyle(.borderedProminent)
+                .confirmationDialog(
+                    "Add Attachment",
+                    isPresented: $showAttachmentAddDialog
+                ) {
+                    Button {
+                        showImageCapturer = true
+                    } label: {
+                        Text("Take New Photo")
+                            .foregroundColor(Color.label)
+                    }
+
+                    Button {
+                        showVideoCapturer = true
+                    } label: {
+                        Text("Take New Video")
+                            .foregroundColor(Color.label)
+                    }
+
+                    Button {
+                        showPhotoLibraryForSingle = true
+                    } label: {
+                        Text("Choose from Library (Single)")
+                            .foregroundColor(Color.label)
+                    }
+
+                    Button {
+                        showPhotoLibraryForMultiple = true
+                    } label: {
+                        Text("Choose from Library (Multiple)")
+                            .foregroundColor(Color.label)
+                    }
+
+                    Button("Cancel", role: .cancel) {}
+                }
                 .padding()
             }
             .frame(maxWidth: .infinity)
@@ -77,40 +111,6 @@ public struct MediaSelectScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
             OverlayLoadingView(isPresented: viewModel.showLoading)
-        }
-        .confirmationDialog(
-            "Add Attachment",
-            isPresented: $showAttachmentAddDialog
-        ) {
-            Button {
-                showImageCapturer = true
-            } label: {
-                Text("Take New Photo")
-                    .foregroundColor(Color.label)
-            }
-
-            Button {
-                showVideoCapturer = true
-            } label: {
-                Text("Take New Video")
-                    .foregroundColor(Color.label)
-            }
-
-            Button {
-                showPhotoLibraryForSingle = true
-            } label: {
-                Text("Choose from Library (Single)")
-                    .foregroundColor(Color.label)
-            }
-
-            Button {
-                showPhotoLibraryForMultiple = true
-            } label: {
-                Text("Choose from Library (Multiple)")
-                    .foregroundColor(Color.label)
-            }
-
-            Button("Cancel", role: .cancel) {}
         }
         .fullScreenCover(isPresented: $showImageCapturer) {
             ImageVideoCapturer(
