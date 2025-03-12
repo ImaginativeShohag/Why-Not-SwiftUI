@@ -52,7 +52,7 @@ struct CanvasViewWrapper: View {
                         ForEach($textBoxes) { $box in
                             TextBoxView(
                                 box: $box,
-                                isSelected: true, //box.id == viewModel.selectedTextBoxId,
+                                isSelected: true, // box.id == viewModel.selectedTextBoxId,
                                 onClick: {
                                     viewModel.selectedTextBoxId = box.id
                                 },
@@ -103,12 +103,15 @@ struct CanvasViewWrapper: View {
         //    viewModel.selectedTextBox = nil
         // }
         .onChange(of: keyboardObserver.isKeyboardVisible) { _, isKeyboardVisible in
+            print("debug2: keyboardVisible: \(isKeyboardVisible)")
             if !isKeyboardVisible {
                 toolPicker.setVisible(true, forFirstResponder: canvasView)
             }
         }
         .simultaneousGesture(
             TapGesture().onEnded {
+                print("debug2: tap on canvas: \(keyboardObserver.isKeyboardVisible)")
+
                 if keyboardObserver.isKeyboardVisible {
                     UIApplication.shared.hideKeyboard()
                 } else if !toolPicker.isVisible {
@@ -153,7 +156,7 @@ struct TextBoxView: View {
                     TextField("Enter text", text: $box.text, axis: .vertical)
                         .textFieldStyle(.plain)
                         .scrollDisabled(true) // TODO: doesn't do anything!
-                        
+
                 } else {
                     Text(box.text)
                 }
@@ -177,34 +180,41 @@ struct TextBoxView: View {
                     }
                     .padding(.horizontal, -4)
                     .overlay {
-                        HStack {
-                            Circle()
-                                .fill(Color.blue)
-                                .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                                .frame(width: 16, height: 16)
-                                .gesture(
-                                    DragGesture()
-                                        .onChanged { value in
-                                            let newWidth = box.width - value.translation.width
-                                            box.width = max(50, newWidth)
-                                        }
-                                )
-                                .padding(.trailing, 4)
+                        GeometryReader { proxy in
+                            HStack {
+                                Circle()
+                                    .fill(Color.blue)
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                    .frame(width: 16, height: 16)
+                                    .frame(height: proxy.size.height)
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newWidth = box.width - value.translation.width
+                                                box.width = max(50, newWidth)
+                                            }
+                                    )
+                                    .padding(.trailing, 4)
 
-                            Spacer()
+                                Spacer()
 
-                            Circle()
-                                .fill(Color.blue)
-                                .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                                .frame(width: 16, height: 16)
-                                .gesture(
-                                    DragGesture()
-                                        .onChanged { value in
-                                            let newWidth = box.width + value.translation.width
-                                            box.width = max(50, newWidth)
-                                        }
-                                )
-                                .padding(.leading, 4)
+                                Circle()
+                                    .fill(Color.blue)
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                    .frame(width: 16, height: 16)
+                                    .frame(height: proxy.size.height)
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newWidth = box.width + value.translation.width
+                                                box.width = max(50, newWidth)
+                                            }
+                                    )
+                                    .padding(.leading, 4)
+                            }
+                            .frame(height: proxy.size.height)
                         }
                         .padding(.horizontal, -12)
                     }
@@ -246,7 +256,7 @@ struct TextBoxView: View {
 #Preview {
     @Previewable @State var textBoxes: [TextBox] = [
         TextBox(text: "Text", width: 100, position: CGPoint(x: 100, y: 100)),
-        TextBox(text: "A\nMultiline\nText", position: CGPoint(x: 200, y: 200))
+//        TextBox(text: "A\nMultiline\nText", position: CGPoint(x: 200, y: 200))
     ]
 
     CanvasViewWrapper(
@@ -261,7 +271,7 @@ struct TextBoxToolbar: View {
     @Binding var box: TextBox
     let onRemoveClick: () -> Void
 
-    @State private var showTextFormatPopover: Bool = false
+    @State private var showTextFormatPopover: Bool = true
 
     var body: some View {
         HStack(spacing: 0) {
@@ -334,11 +344,13 @@ struct TextFormatPopoverView: View {
                         }
                     }
                 } label: {
-                    ControlGroup {
-                        Text("\(Int(box.fontSize)) pt")
-                    }
+                       Text("\(Int(box.fontSize)) pt")
+                           .foregroundColor(.label)
+                           .padding(.horizontal, 8)
+                           .padding(.vertical, 3.8)
+                           .background(Color.tertiarySystemFill)
+                           .cornerRadius(8)
                 }
-                .tint(.white)
 
                 ControlGroup {
                     Button(action: {
@@ -424,7 +436,7 @@ struct ToggleButtonStyle: ToggleStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         let highlightColor: Color = colorScheme == .light ? .white : Color(uiColor: UIColor.tertiaryLabel)
-        let foregroundColor: Color = colorScheme == .light ? Color(UIColor.secondaryLabel) : Color(UIColor.label)
+        let foregroundColor = Color(UIColor.label)
 
         configuration.label
             .symbolRenderingMode(.monochrome)
@@ -436,6 +448,10 @@ struct ToggleButtonStyle: ToggleStyle {
                 configuration.isOn.toggle()
             }
             .background(configuration.isOn ? highlightColor : .clear)
+            .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+            .shadow(color: configuration.isOn ? Color.black.opacity(0.15) : Color.clear,
+                    radius: configuration.isOn ? 4 : 0,
+                    x: 0, y: 2)
     }
 }
 
@@ -450,5 +466,6 @@ struct ControlGroupNoneSeparatorStyle: ControlGroupStyle {
         }
         .frame(maxWidth: .infinity)
         .background(bgColor, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 }
