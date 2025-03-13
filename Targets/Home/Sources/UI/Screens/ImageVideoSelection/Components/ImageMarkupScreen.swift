@@ -306,3 +306,33 @@ struct TextBox: Identifiable, Equatable {
     var width: CGFloat = 100
     var position: CGPoint = .zero
 }
+
+extension TextBox {
+    func copy(
+        id: String? = UUID().uuidString,
+        text: String? = nil,
+        isBold: Bool? = nil,
+        isItalic: Bool? = nil,
+        isUnderline: Bool? = nil,
+        isStrikethrough: Bool? = nil,
+        alignment: TextAlignment? = nil,
+        fontSize: CGFloat? = nil,
+        textColor: Color? = nil,
+        width: CGFloat? = nil,
+        position: CGPoint? = nil
+    ) -> TextBox {
+        return TextBox(
+            id: id ?? self.id,
+            text: text ?? self.text,
+            isBold: isBold ?? self.isBold,
+            isItalic: isItalic ?? self.isItalic,
+            isUnderline: isUnderline ?? self.isUnderline,
+            isStrikethrough: isStrikethrough ?? self.isStrikethrough,
+            alignment: alignment ?? self.alignment,
+            fontSize: fontSize ?? self.fontSize,
+            textColor: textColor ?? self.textColor,
+            width: width ?? self.width,
+            position: position ?? self.position
+        )
+    }
+}

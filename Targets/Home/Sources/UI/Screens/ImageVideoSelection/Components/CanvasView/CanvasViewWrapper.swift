@@ -8,8 +8,8 @@ import SwiftUI
 
 // TODO: #8: Add text to the undo manager
 // TODO: #9: Auto width change on text input; only if user didn't change the width
-// TODO: #10: Duplicate text
 // TODO: #11: BUG: if the popover too top, its height not looks ok
+// TODO: #12: move the text toolbox to bottom if the text is too top
 
 struct CanvasViewWrapper: View {
     let image: UIImage
@@ -33,14 +33,7 @@ struct CanvasViewWrapper: View {
                         canvasView: canvasView,
                         toolPicker: toolPicker,
                         onAddTextClick: {
-                            Task { @MainActor in
-                                let newBox = TextBox(
-                                    position: CGPoint(x: contentSize.width / 2, y: contentSize.height / 2)
-                                )
-                                textBoxes.append(newBox)
-
-                                viewModel.selectedTextBoxId = newBox.id
-                            }
+                            addNewTextBox()
                         },
                         onDrawingDidChange: {
                             viewModel.selectedTextBoxId = nil
@@ -57,6 +50,9 @@ struct CanvasViewWrapper: View {
                                 contentSize: contentSize,
                                 onClick: {
                                     viewModel.selectedTextBoxId = box.id
+                                },
+                                onDuplicateClick: {
+                                    addDuplicateTextBox(box: box)
                                 },
                                 onRemoveClick: {
                                     textBoxes.remove(at: textBoxes.firstIndex(of: $box.wrappedValue)!)
@@ -122,6 +118,26 @@ struct CanvasViewWrapper: View {
         )
         .toolbarVisibility(keyboardObserver.isKeyboardVisible ? .hidden : .visible, for: .automatic)
     }
+
+    @MainActor
+    private func addNewTextBox() {
+        let newBox = TextBox(
+            position: CGPoint(x: contentSize.width / 2, y: contentSize.height / 2)
+        )
+        textBoxes.append(newBox)
+
+        viewModel.selectedTextBoxId = newBox.id
+    }
+
+    @MainActor
+    private func addDuplicateTextBox(box: TextBox) {
+        let newBox = box.copy(
+            position: CGPoint(x: contentSize.width / 2, y: contentSize.height / 2)
+        )
+        textBoxes.append(newBox)
+
+        viewModel.selectedTextBoxId = newBox.id
+    }
 }
 
 struct TextBoxView: View {
@@ -129,6 +145,7 @@ struct TextBoxView: View {
     let isSelected: Bool
     let contentSize: CGSize
     let onClick: () -> Void
+    let onDuplicateClick: () -> Void
     let onRemoveClick: () -> Void
 
     @FocusState private var isFocused: Bool
@@ -209,6 +226,7 @@ struct TextBoxView: View {
                         GeometryReader { proxy in
                             TextBoxToolbar(
                                 box: $box,
+                                onDuplicateClick: onDuplicateClick,
                                 onRemoveClick: onRemoveClick
                             )
                             .position(x: proxy.size.width / 2, y: -32)
@@ -258,6 +276,7 @@ struct TextBoxView: View {
 
 struct TextBoxToolbar: View {
     @Binding var box: TextBox
+    let onDuplicateClick: () -> Void
     let onRemoveClick: () -> Void
 
     @State private var showTextFormatPopover: Bool = false
@@ -280,6 +299,14 @@ struct TextBoxToolbar: View {
                 .frame(height: 20)
 
             Button {
+                onDuplicateClick()
+            } label: {
+                Image(systemName: "plus.square.on.square")
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+            }
+
+            Button {
                 onRemoveClick()
             } label: {
                 Image(systemName: "trash")
@@ -293,6 +320,7 @@ struct TextBoxToolbar: View {
         .padding(.vertical, 0)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 50))
+        .shadow(color: .black.opacity(0.2), radius: 8)
         .colorScheme(.light)
     }
 }
@@ -408,7 +436,10 @@ struct CanvasView: UIViewRepresentable {
 extension CanvasView {
     func initToolPicker() {
         // Init menu
-        let addTextAction = UIAction(title: "Add Text", image: UIImage(systemName: "character.textbox")) { _ in
+        let addTextAction = UIAction(
+            title: "Add Text",
+            image: UIImage(systemName: "character.textbox")
+        ) { _ in
             onAddTextClick()
         }
         let menu = UIMenu(children: [addTextAction])
