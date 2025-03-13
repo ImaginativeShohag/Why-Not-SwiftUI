@@ -170,6 +170,9 @@ struct TextBoxView: View {
                 .underline(box.isUnderline, color: box.textColor)
                 .strikethrough(box.isStrikethrough, color: box.textColor)
                 .foregroundColor(box.textColor)
+                // .onChange(of: box.text) { _, _ in
+                //    calculateTextWidth()
+                // }
                 .padding(5)
                 .frame(width: box.width)
                 // Note: This makes the content clickable even when the TextField is disabled.
@@ -180,6 +183,7 @@ struct TextBoxView: View {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.systemBlue, lineWidth: 2)
                         }
+                        // .animation(.default, value: box.width)
                         .padding(.horizontal, -4)
                         .overlay {
                             GeometryReader { proxy in
@@ -227,6 +231,7 @@ struct TextBoxView: View {
                                 .frame(height: proxy.size.height)
                             }
                             .padding(.horizontal, -26)
+                            // .animation(.default, value: box.width)
                         }
                     }
                 }
@@ -243,6 +248,7 @@ struct TextBoxView: View {
                     }
                 }
         }
+        // .animation(.default, value: box.width)
         .position(box.position)
         .offset(dragOffset)
         .gesture(
@@ -267,6 +273,59 @@ struct TextBoxView: View {
             }
         )
     }
+
+//    private func calculateTextWidth() {
+//        var traits: UIFontDescriptor.SymbolicTraits = []
+//
+//        if box.isBold {
+//            traits.insert(.traitBold)
+//        }
+//
+//        if box.isItalic {
+//            traits.insert(.traitItalic)
+//        }
+//
+//        let baseFont = UIFont.systemFont(ofSize: box.fontSize)
+//        var fontDescriptor = baseFont.fontDescriptor
+//
+//        if !traits.isEmpty, let descriptorWithTraits = fontDescriptor.withSymbolicTraits(traits) {
+//            fontDescriptor = descriptorWithTraits
+//        }
+//
+//        let font = UIFont(descriptor: fontDescriptor, size: box.fontSize)
+//
+//        // Underline and Strikethrough styles
+//        let underlineStyle: NSUnderlineStyle = box.isUnderline ? .single : []
+//        let strikethroughStyle: NSUnderlineStyle = box.isStrikethrough ? .single : []
+//
+//        // Paragraph style with text alignment
+//        let paragraphStyle = NSMutableParagraphStyle()
+//
+//        switch box.alignment {
+//        case .leading:
+//            paragraphStyle.alignment = .left
+//        case .center:
+//            paragraphStyle.alignment = .center
+//        case .trailing:
+//            paragraphStyle.alignment = .right
+//        }
+//
+//        let attributes: [NSAttributedString.Key: Any] = [
+//            .font: font,
+//            .foregroundColor: UIColor(box.textColor),
+//            .underlineStyle: underlineStyle.rawValue,
+//            .strikethroughStyle: strikethroughStyle.rawValue,
+//            .paragraphStyle: paragraphStyle
+//        ]
+//        let size = (box.text as NSString).size(withAttributes: attributes)
+//
+//        // Update the width
+//        withAnimation {
+//            box.width = min(max(size.width + 32, 100), textBoxMaxWidth)
+//            textBoxHeight = size.height + 32
+//            print("debug3: calculateTextWidth: size: \(size)")
+//        }
+//    }
 }
 
 #Preview {
