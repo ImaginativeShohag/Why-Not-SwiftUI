@@ -9,7 +9,8 @@ import SwiftUI
 // TODO: #8: Add text to the undo manager
 // TODO: #9: Auto width change on text input; only if user didn't change the width
 // TODO: #11: BUG: if the popover too top, its height not looks ok
-// TODO: #12: move the text toolbox to bottom if the text is too top
+// TODO: #13: BUG: image jump issue on load
+// TODO: #14: BUG: first time width change jumping issue
 
 struct CanvasViewWrapper: View {
     let image: UIImage
@@ -151,9 +152,14 @@ struct TextBoxView: View {
     @FocusState private var isFocused: Bool
     @State private var dragOffset: CGSize = .zero // Track drag offset separately
 
+    var textBoxMaxWidth: CGFloat {
+        return contentSize.width - 32
+    }
+
     var body: some View {
         ZStack {
             TextField("Enter text", text: $box.text, axis: .vertical)
+                .focused($isFocused)
                 .textFieldStyle(.plain)
                 .disabled(!isSelected)
                 .multilineTextAlignment(box.alignment)
@@ -164,7 +170,6 @@ struct TextBoxView: View {
                 .underline(box.isUnderline, color: box.textColor)
                 .strikethrough(box.isStrikethrough, color: box.textColor)
                 .foregroundColor(box.textColor)
-                .focused($isFocused)
                 .padding(5)
                 .frame(width: box.width)
                 // Note: This makes the content clickable even when the TextField is disabled.
@@ -191,7 +196,9 @@ struct TextBoxView: View {
                                             DragGesture()
                                                 .onChanged { value in
                                                     let newWidth = box.width - value.translation.width
-                                                    box.width = max(100, newWidth)
+                                                    box.width = min(max(100, newWidth), textBoxMaxWidth)
+
+                                                    isFocused = false
                                                 }
                                         )
                                         .padding(.trailing, 4)
@@ -210,7 +217,9 @@ struct TextBoxView: View {
                                             DragGesture()
                                                 .onChanged { value in
                                                     let newWidth = box.width + value.translation.width
-                                                    box.width = max(100, newWidth)
+                                                    box.width = min(max(100, newWidth), textBoxMaxWidth)
+
+                                                    isFocused = false
                                                 }
                                         )
                                         .padding(.leading, 4)
