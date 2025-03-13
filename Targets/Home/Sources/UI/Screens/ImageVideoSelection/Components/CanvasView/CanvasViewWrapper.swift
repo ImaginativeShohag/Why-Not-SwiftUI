@@ -10,7 +10,6 @@ import SwiftUI
 // TODO: #9: Auto width change on text input; only if user didn't change the width
 // TODO: #10: Duplicate text
 // TODO: #11: BUG: if the popover too top, its height not looks ok
-// TODO: #12: BUG: if alignment is left/right the text selection make the text jump, remove the text and disable the textfield if not selected.
 
 struct CanvasViewWrapper: View {
     let image: UIImage
@@ -137,90 +136,85 @@ struct TextBoxView: View {
 
     var body: some View {
         ZStack {
-            Group {
-                if isSelected {
-                    TextField("Enter text", text: $box.text, axis: .vertical)
-                        .textFieldStyle(.plain)
-                        .scrollDisabled(true) // TODO: doesn't do anything!
-
-                } else {
-                    Text(box.text)
-                }
-            }
-            .multilineTextAlignment(box.alignment)
-            .submitLabel(.return)
-            .font(.system(size: box.fontSize))
-            .bold(box.isBold)
-            .italic(box.isItalic)
-            .underline(box.isUnderline, color: box.textColor)
-            .strikethrough(box.isStrikethrough, color: box.textColor)
-            .foregroundColor(box.textColor)
-            .focused($isFocused)
-            .padding(5)
-            .frame(width: box.width)
-            .overlay {
-                if isSelected {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.systemBlue, lineWidth: 2)
-                    }
-                    .padding(.horizontal, -4)
-                    .overlay {
-                        GeometryReader { proxy in
-                            HStack {
-                                Circle()
-                                    .fill(Color.blue)
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                                    .frame(width: 16, height: 16)
-                                    .frame(height: proxy.size.height)
-                                    // Note: Recommended minimum tappable area is 44x44.
-                                    .frame(width: 44)
-                                    .contentShape(Rectangle())
-                                    .gesture(
-                                        DragGesture()
-                                            .onChanged { value in
-                                                let newWidth = box.width - value.translation.width
-                                                box.width = max(100, newWidth)
-                                            }
-                                    )
-                                    .padding(.trailing, 4)
-
-                                Spacer()
-
-                                Circle()
-                                    .fill(Color.blue)
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                                    .frame(width: 16, height: 16)
-                                    .frame(height: proxy.size.height)
-                                    // Note: Recommended minimum tappable area is 44x44.
-                                    .frame(width: 44)
-                                    .contentShape(Rectangle())
-                                    .gesture(
-                                        DragGesture()
-                                            .onChanged { value in
-                                                let newWidth = box.width + value.translation.width
-                                                box.width = max(100, newWidth)
-                                            }
-                                    )
-                                    .padding(.leading, 4)
-                            }
-                            .frame(height: proxy.size.height)
+            TextField("Enter text", text: $box.text, axis: .vertical)
+                .textFieldStyle(.plain)
+                .disabled(!isSelected)
+                .multilineTextAlignment(box.alignment)
+                .submitLabel(.return)
+                .font(.system(size: box.fontSize))
+                .bold(box.isBold)
+                .italic(box.isItalic)
+                .underline(box.isUnderline, color: box.textColor)
+                .strikethrough(box.isStrikethrough, color: box.textColor)
+                .foregroundColor(box.textColor)
+                .focused($isFocused)
+                .padding(5)
+                .frame(width: box.width)
+                // Note: This makes the content clickable even when the TextField is disabled.
+                .contentShape(Rectangle())
+                .overlay {
+                    if isSelected {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.systemBlue, lineWidth: 2)
                         }
-                        .padding(.horizontal, -26)
+                        .padding(.horizontal, -4)
+                        .overlay {
+                            GeometryReader { proxy in
+                                HStack {
+                                    Circle()
+                                        .fill(Color.blue)
+                                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                        .frame(width: 16, height: 16)
+                                        .frame(height: proxy.size.height)
+                                        // Note: Recommended minimum tappable area is 44x44.
+                                        .frame(width: 44)
+                                        .contentShape(Rectangle())
+                                        .gesture(
+                                            DragGesture()
+                                                .onChanged { value in
+                                                    let newWidth = box.width - value.translation.width
+                                                    box.width = max(100, newWidth)
+                                                }
+                                        )
+                                        .padding(.trailing, 4)
+
+                                    Spacer()
+
+                                    Circle()
+                                        .fill(Color.blue)
+                                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                        .frame(width: 16, height: 16)
+                                        .frame(height: proxy.size.height)
+                                        // Note: Recommended minimum tappable area is 44x44.
+                                        .frame(width: 44)
+                                        .contentShape(Rectangle())
+                                        .gesture(
+                                            DragGesture()
+                                                .onChanged { value in
+                                                    let newWidth = box.width + value.translation.width
+                                                    box.width = max(100, newWidth)
+                                                }
+                                        )
+                                        .padding(.leading, 4)
+                                }
+                                .frame(height: proxy.size.height)
+                            }
+                            .padding(.horizontal, -26)
+                        }
                     }
                 }
-            }
-            .overlay {
-                if isSelected {
-                    GeometryReader { proxy in
-                        TextBoxToolbar(
-                            box: $box,
-                            onRemoveClick: onRemoveClick
-                        )
-                        .position(x: proxy.size.width / 2, y: -32)
+                .overlay {
+                    if isSelected {
+                        GeometryReader { proxy in
+                            TextBoxToolbar(
+                                box: $box,
+                                onRemoveClick: onRemoveClick
+                            )
+                            .position(x: proxy.size.width / 2, y: -32)
+                        }
                     }
                 }
-            }
         }
         .position(box.position)
         .offset(dragOffset)
@@ -377,7 +371,7 @@ struct CanvasView: UIViewRepresentable {
     let canvasView: PKCanvasView
     let toolPicker: PKToolPicker
     let onAddTextClick: () -> Void
-    let onDrawingDidChange: ()->Void
+    let onDrawingDidChange: () -> Void
 
     func makeUIView(context: Context) -> PKCanvasView {
         canvasView.drawingPolicy = .anyInput
@@ -404,7 +398,7 @@ struct CanvasView: UIViewRepresentable {
         init(_ parent: CanvasView) {
             self.parent = parent
         }
-        
+
         func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
             parent.onDrawingDidChange()
         }
