@@ -20,6 +20,7 @@ public struct ImageMarkupScreen: View {
     @State private var isProcessing = false
 
     @State var textBoxes: [TextBox] = []
+    @State var shapes: [ShapeBlock] = []
 
     private var image: UIImage
     private var onSuccess: @Sendable (UIImage) -> Void
@@ -40,6 +41,7 @@ public struct ImageMarkupScreen: View {
                 CanvasViewWrapper(
                     image: image,
                     textBoxes: $textBoxes,
+                    shapes: $shapes,
                     canvasView: canvasView,
                     toolPicker: toolPicker
                 )
@@ -292,7 +294,7 @@ extension PKCanvasView {
 
 struct TextBox: Identifiable, Equatable {
     var id = UUID().uuidString
-    var text: String = "Text\nAnother\nLine"
+    var text: String = "Text"
 
     var isBold: Bool = false
     var isItalic: Bool = false
