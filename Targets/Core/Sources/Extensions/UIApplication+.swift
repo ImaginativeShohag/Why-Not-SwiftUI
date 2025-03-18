@@ -18,7 +18,7 @@ public extension UIApplication {
     }
 
     /// Returns  `rootViewController`.
-    var rootViewControllerAs: UIViewController? {
+    var rootViewController: UIViewController? {
         let scene = self.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene
 
         return scene?.keyWindow?.rootViewController

@@ -24,200 +24,208 @@ struct ShapeBlockView: View {
 
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: block.cornerRadius)
-                .stroke(block.borderColor, lineWidth: block.borderSize)
-                .fill(block.backgroundColor)
-                // .opacity(block.opacity)
-                .disabled(!isSelected)
-                .padding(5)
-                .frame(width: block.size.width, height: block.size.height)
-                // Note: This makes the content clickable even when the TextField is disabled.
-                .contentShape(Rectangle())
-                .overlay {
-                    if isSelected {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.systemBlue, lineWidth: 2)
-                        }
-                        .padding(-4)
-                        .overlay {
-                            GeometryReader { proxy in
-                                // Horizontal control
-                                HStack {
-                                    DragIndicatorView()
-                                        // Note: Removing the corner tappable areas.
-                                        .frame(height: proxy.size.height - 88)
-                                        // Note: Recommended minimum tappable area is 44x44.
-                                        .frame(width: 44)
-                                        // .background(.red.opacity(0.25))
-                                        .contentShape(Rectangle())
-                                        .gesture(
-                                            DragGesture()
-                                                .onChanged { value in
-                                                    let newWidth = block.size.width - value.translation.width
-                                                    block.size.width = min(max(minSize.width, newWidth), textBoxMaxSize.width)
-                                                }
-                                        )
-
-                                    Spacer()
-
-                                    DragIndicatorView()
-                                        // Note: Removing the corner tappable areas.
-                                        .frame(height: proxy.size.height - 88)
-                                        // Note: Recommended minimum tappable area is 44x44.
-                                        .frame(width: 44)
-                                        // .background(.red.opacity(0.25))
-                                        .contentShape(Rectangle())
-                                        .gesture(
-                                            DragGesture()
-                                                .onChanged { value in
-                                                    let newWidth = block.size.width + value.translation.width
-                                                    block.size.width = min(max(minSize.width, newWidth), textBoxMaxSize.width)
-                                                }
-                                        )
-                                }
-                                .frame(height: proxy.size.height)
-
-                                // Vertical control
-                                VStack {
-                                    DragIndicatorView()
-                                        // Note: Removing the corner tappable areas.
-                                        .frame(width: proxy.size.width - 88)
-                                        // Note: Recommended minimum tappable area is 44x44.
-                                        .frame(height: 44)
-                                        // .background(.red.opacity(0.25))
-                                        .contentShape(Rectangle())
-                                        .gesture(
-                                            DragGesture()
-                                                .onChanged { value in
-                                                    let newHeight = block.size.height - value.translation.height
-                                                    block.size.height = min(max(minSize.height, newHeight), textBoxMaxSize.height)
-                                                }
-                                        )
-
-                                    Spacer()
-
-                                    DragIndicatorView()
-                                        // Note: Removing the corner tappable areas.
-                                        .frame(width: proxy.size.width - 88)
-                                        // Note: Recommended minimum tappable area is 44x44.
-                                        .frame(height: 44)
-                                        // .background(.red.opacity(0.25))
-                                        .contentShape(Rectangle())
-                                        .gesture(
-                                            DragGesture()
-                                                .onChanged { value in
-                                                    let newHeight = block.size.height + value.translation.height
-                                                    block.size.height = min(max(minSize.height, newHeight), textBoxMaxSize.height)
-                                                }
-                                        )
-                                }
-                                .frame(width: proxy.size.width)
-
-                                // Top-Corner control
-                                HStack {
-                                    DragIndicatorView()
-                                        // Note: Recommended minimum tappable area is 44x44.
-                                        .frame(width: 44, height: 44)
-                                        // .background(.green.opacity(0.25))
-                                        .contentShape(Rectangle())
-                                        .gesture(
-                                            DragGesture()
-                                                .onChanged { value in
-                                                    let newWidth = block.size.width - value.translation.width
-                                                    let newHeight = block.size.height - value.translation.height
-
-                                                    block.size = CGSize(
-                                                        width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
-                                                        height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
-                                                    )
-                                                }
-                                        )
-
-                                    Spacer()
-
-                                    DragIndicatorView()
-                                        // Note: Recommended minimum tappable area is 44x44.
-                                        .frame(width: 44, height: 44)
-                                        // .background(.green.opacity(0.25))
-                                        .contentShape(Rectangle())
-                                        .gesture(
-                                            DragGesture()
-                                                .onChanged { value in
-                                                    let newWidth = block.size.width + value.translation.width
-                                                    let newHeight = block.size.height - value.translation.height
-
-                                                    block.size = CGSize(
-                                                        width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
-                                                        height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
-                                                    )
-                                                }
-                                        )
-                                }
-                                .frame(height: proxy.size.height, alignment: .top)
-
-                                // Bottom-Corner control
-                                HStack {
-                                    DragIndicatorView()
-                                        // Note: Recommended minimum tappable area is 44x44.
-                                        .frame(width: 44, height: 44)
-                                        // .background(.green.opacity(0.25))
-                                        .contentShape(Rectangle())
-                                        .gesture(
-                                            DragGesture()
-                                                .onChanged { value in
-                                                    let newWidth = block.size.width - value.translation.width
-                                                    let newHeight = block.size.height + value.translation.height
-
-                                                    block.size = CGSize(
-                                                        width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
-                                                        height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
-                                                    )
-                                                }
-                                        )
-
-                                    Spacer()
-
-                                    DragIndicatorView()
-                                        // Note: Recommended minimum tappable area is 44x44.
-                                        .frame(width: 44, height: 44)
-                                        // .background(.green.opacity(0.25))
-                                        .contentShape(Rectangle())
-                                        .gesture(
-                                            DragGesture()
-                                                .onChanged { value in
-                                                    let newWidth = block.size.width + value.translation.width
-                                                    let newHeight = block.size.height + value.translation.height
-
-                                                    block.size = CGSize(
-                                                        width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
-                                                        height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
-                                                    )
-                                                }
-                                        )
-                                }
-                                .frame(height: proxy.size.height, alignment: .bottom)
-                            }
-                            .padding(-26)
-                        }
-                    } else if block.backgroundColor == .clear && block.borderColor == .clear {
-                        // Note: This is need to give a outline for the shape when there is no background and border.
-                        Rectangle()
-                            .stroke(lineWidth: 1)
-                    }
+            Group {
+                if block.type == .circle {
+                    Circle()
+                        .stroke(block.borderColor, lineWidth: block.borderSize)
+                        .fill(block.backgroundColor)
+                } else {
+                    RoundedRectangle(cornerRadius: block.cornerRadius)
+                        .stroke(block.borderColor, lineWidth: block.borderSize)
+                        .fill(block.backgroundColor)
                 }
-                .overlay {
-                    if isSelected {
+            }
+            .opacity(block.opacity)
+            .disabled(!isSelected)
+            .padding(5)
+            .frame(width: block.size.width, height: block.size.height)
+            // Note: This makes the content clickable even when the TextField is disabled.
+            .contentShape(Rectangle())
+            .overlay {
+                if isSelected {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.systemBlue, lineWidth: 2)
+                    }
+                    .padding(-4)
+                    .overlay {
                         GeometryReader { proxy in
-                            BlockToolbarView(
-                                block: $block,
-                                onDuplicateClick: onDuplicateClick,
-                                onRemoveClick: onRemoveClick
-                            )
-                            .position(x: proxy.size.width / 2, y: -44)
+                            // Horizontal control
+                            HStack {
+                                DragIndicatorView()
+                                    // Note: Removing the corner tappable areas.
+                                    .frame(height: proxy.size.height - 88)
+                                    // Note: Recommended minimum tappable area is 44x44.
+                                    .frame(width: 44)
+                                    // .background(.red.opacity(0.25))
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newWidth = block.size.width - value.translation.width
+                                                block.size.width = min(max(minSize.width, newWidth), textBoxMaxSize.width)
+                                            }
+                                    )
+
+                                Spacer()
+
+                                DragIndicatorView()
+                                    // Note: Removing the corner tappable areas.
+                                    .frame(height: proxy.size.height - 88)
+                                    // Note: Recommended minimum tappable area is 44x44.
+                                    .frame(width: 44)
+                                    // .background(.red.opacity(0.25))
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newWidth = block.size.width + value.translation.width
+                                                block.size.width = min(max(minSize.width, newWidth), textBoxMaxSize.width)
+                                            }
+                                    )
+                            }
+                            .frame(height: proxy.size.height)
+
+                            // Vertical control
+                            VStack {
+                                DragIndicatorView()
+                                    // Note: Removing the corner tappable areas.
+                                    .frame(width: proxy.size.width - 88)
+                                    // Note: Recommended minimum tappable area is 44x44.
+                                    .frame(height: 44)
+                                    // .background(.red.opacity(0.25))
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newHeight = block.size.height - value.translation.height
+                                                block.size.height = min(max(minSize.height, newHeight), textBoxMaxSize.height)
+                                            }
+                                    )
+
+                                Spacer()
+
+                                DragIndicatorView()
+                                    // Note: Removing the corner tappable areas.
+                                    .frame(width: proxy.size.width - 88)
+                                    // Note: Recommended minimum tappable area is 44x44.
+                                    .frame(height: 44)
+                                    // .background(.red.opacity(0.25))
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newHeight = block.size.height + value.translation.height
+                                                block.size.height = min(max(minSize.height, newHeight), textBoxMaxSize.height)
+                                            }
+                                    )
+                            }
+                            .frame(width: proxy.size.width)
+
+                            // Top-Corner control
+                            HStack {
+                                DragIndicatorView()
+                                    // Note: Recommended minimum tappable area is 44x44.
+                                    .frame(width: 44, height: 44)
+                                    // .background(.green.opacity(0.25))
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newWidth = block.size.width - value.translation.width
+                                                let newHeight = block.size.height - value.translation.height
+
+                                                block.size = CGSize(
+                                                    width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
+                                                    height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
+                                                )
+                                            }
+                                    )
+
+                                Spacer()
+
+                                DragIndicatorView()
+                                    // Note: Recommended minimum tappable area is 44x44.
+                                    .frame(width: 44, height: 44)
+                                    // .background(.green.opacity(0.25))
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newWidth = block.size.width + value.translation.width
+                                                let newHeight = block.size.height - value.translation.height
+
+                                                block.size = CGSize(
+                                                    width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
+                                                    height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
+                                                )
+                                            }
+                                    )
+                            }
+                            .frame(height: proxy.size.height, alignment: .top)
+
+                            // Bottom-Corner control
+                            HStack {
+                                DragIndicatorView()
+                                    // Note: Recommended minimum tappable area is 44x44.
+                                    .frame(width: 44, height: 44)
+                                    // .background(.green.opacity(0.25))
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newWidth = block.size.width - value.translation.width
+                                                let newHeight = block.size.height + value.translation.height
+
+                                                block.size = CGSize(
+                                                    width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
+                                                    height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
+                                                )
+                                            }
+                                    )
+
+                                Spacer()
+
+                                DragIndicatorView()
+                                    // Note: Recommended minimum tappable area is 44x44.
+                                    .frame(width: 44, height: 44)
+                                    // .background(.green.opacity(0.25))
+                                    .contentShape(Rectangle())
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged { value in
+                                                let newWidth = block.size.width + value.translation.width
+                                                let newHeight = block.size.height + value.translation.height
+
+                                                block.size = CGSize(
+                                                    width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
+                                                    height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
+                                                )
+                                            }
+                                    )
+                            }
+                            .frame(height: proxy.size.height, alignment: .bottom)
                         }
+                        .padding(-26)
+                    }
+                } else if block.backgroundColor == .clear && block.borderColor == .clear {
+                    // Note: This is need to give a outline for the shape when there is no background and border.
+                    Rectangle()
+                        .stroke(lineWidth: 1)
+                }
+            }
+            .overlay {
+                if isSelected {
+                    GeometryReader { proxy in
+                        BlockToolbarView(
+                            block: $block,
+                            onDuplicateClick: onDuplicateClick,
+                            onRemoveClick: onRemoveClick
+                        )
+                        .position(x: proxy.size.width / 2, y: -44)
                     }
                 }
+            }
         }
         .position(block.position)
         .offset(dragOffset)
@@ -246,16 +254,32 @@ struct ShapeBlockView: View {
 }
 
 #Preview {
-    @Previewable @State var shape = ShapeBlock(
+    @Previewable @State var shape1 = ShapeBlock(
         position: CGPoint(
-            x: UIScreen.main.bounds.size.width / 2,
-            y: UIScreen.main.bounds.size.height / 2
+            x: 200,
+            y: 150
+        )
+    )
+    @Previewable @State var shape2 = ShapeBlock(
+        type: .circle,
+        position: CGPoint(
+            x: 200,
+            y: 400
         )
     )
 
     ZStack {
         ShapeBlockView(
-            block: $shape,
+            block: $shape1,
+            isSelected: true,
+            contentSize: UIScreen.main.bounds.size,
+            onClick: {},
+            onDuplicateClick: {},
+            onRemoveClick: {}
+        )
+
+        ShapeBlockView(
+            block: $shape2,
             isSelected: true,
             contentSize: UIScreen.main.bounds.size,
             onClick: {},
@@ -263,6 +287,7 @@ struct ShapeBlockView: View {
             onRemoveClick: {}
         )
     }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
 }
 
 private struct BlockToolbarView: View {
@@ -541,7 +566,7 @@ private struct BorderOptionPopoverView: View {
                         } label: {
                             Label("Decrease", systemImage: "minus")
                         }
-                        
+
                         Button {
                             // Note: This button need to fix the UI issue with ControlGroup.
                         } label: {
