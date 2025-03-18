@@ -50,24 +50,7 @@ struct CanvasViewWrapper: View {
                     .frame(width: contentSize.width, height: contentSize.height)
                     .disabled(keyboardObserver.isKeyboardVisible)
 
-                    ZStack(alignment: .center) {
-                        ForEach($textBoxes) { $box in
-                            TextBoxView(
-                                box: $box,
-                                isSelected: box.id == viewModel.selectedTextBoxId,
-                                contentSize: contentSize,
-                                onClick: {
-                                    viewModel.selectedTextBoxId = box.id
-                                },
-                                onDuplicateClick: {
-                                    addDuplicateTextBox(box: box)
-                                },
-                                onRemoveClick: {
-                                    textBoxes.remove(at: textBoxes.firstIndex(of: $box.wrappedValue)!)
-                                }
-                            )
-                        }
-
+                    ZStack {
                         ForEach($shapes) { $shape in
                             ShapeBlockView(
                                 block: $shape,
@@ -81,6 +64,23 @@ struct CanvasViewWrapper: View {
                                 },
                                 onRemoveClick: {
                                     shapes.remove(at: shapes.firstIndex(of: $shape.wrappedValue)!)
+                                }
+                            )
+                        }
+
+                        ForEach($textBoxes) { $box in
+                            TextBoxView(
+                                box: $box,
+                                isSelected: box.id == viewModel.selectedTextBoxId,
+                                contentSize: contentSize,
+                                onClick: {
+                                    viewModel.selectedTextBoxId = box.id
+                                },
+                                onDuplicateClick: {
+                                    addDuplicateTextBox(box: box)
+                                },
+                                onRemoveClick: {
+                                    textBoxes.remove(at: textBoxes.firstIndex(of: $box.wrappedValue)!)
                                 }
                             )
                         }
@@ -167,13 +167,11 @@ struct CanvasViewWrapper: View {
 
     private func addNewShapeBox(of type: ShapeBlockType) {
         let newBlock: ShapeBlock
-        
+
         switch type {
-            
         case .square:
             newBlock = ShapeBlock(
                 type: type,
-                borderSize: 0,
                 borderColor: .clear,
                 cornerRadius: 0,
                 position: CGPoint(x: contentSize.width / 2, y: contentSize.height / 2)
@@ -182,16 +180,18 @@ struct CanvasViewWrapper: View {
             newBlock = ShapeBlock(
                 type: type,
                 borderSize: 5,
+                borderColor: .clear,
                 cornerRadius: 16,
                 position: CGPoint(x: contentSize.width / 2, y: contentSize.height / 2)
             )
         case .circle:
             newBlock = ShapeBlock(
                 type: type,
+                cornerRadius: 0,
                 position: CGPoint(x: contentSize.width / 2, y: contentSize.height / 2)
             )
         }
-        
+
         shapes.append(newBlock)
 
         viewModel.selectedTextBoxId = nil
@@ -233,7 +233,7 @@ struct CanvasView: UIViewRepresentable {
     let onAddTextClick: () -> Void
     let onAddShapeClick: (ShapeBlockType) -> Void
     let onDrawingDidChange: () -> Void
-    
+
     private let popoverPresenterDelegate = PopoverPresenter()
 
     func makeUIView(context: Context) -> PKCanvasView {
@@ -266,13 +266,12 @@ struct CanvasView: UIViewRepresentable {
             parent.onDrawingDidChange()
         }
     }
-    
+
     private class PopoverPresenter: NSObject, UIPopoverPresentationControllerDelegate {
         func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
             return .none // Forces popover style even on iPhone
         }
     }
-
 }
 
 extension CanvasView {
@@ -355,7 +354,7 @@ struct ShapePickerView: View {
                                 Button {
                                     onClick(item)
                                     dismiss()
-                                }label: {
+                                } label: {
                                     Image(systemName: item.rawValue)
                                         .resizable()
                                         .scaledToFit()
@@ -373,7 +372,7 @@ struct ShapePickerView: View {
                     }
                 }
             }
-            .padding(8) // Set height as needed to avoid scroll behavior
+            .padding(8)
         }
     }
 

@@ -122,7 +122,8 @@ public struct ImageMarkupScreen: View {
     func clearDrawing() {
         // Remove the text blocks
         textBoxes.removeAll()
-        
+        shapes.removeAll()
+
         // Note: Without first undoing using UndoManager, the buttons are not working correctly.
 
         // Manually undo all drawings.
@@ -142,7 +143,11 @@ public struct ImageMarkupScreen: View {
                 isProcessing = true
             }
 
-            let finalImage = await canvasView.renderedImage(onto: image, textBoxes: textBoxes)
+            let finalImage = await canvasView.renderedImage(
+                onto: image,
+                textBoxes: textBoxes,
+                shapeBlocks: shapes
+            )
 
             onSuccess(finalImage)
 
@@ -155,7 +160,11 @@ extension PKCanvasView {
     /// Combines the current PKCanvasView drawing with a given UIImage and returns the resulting UIImage.
     /// - Parameter image: The UIImage you want to combine with the current drawing.
     /// - Returns: A new UIImage that includes the original image and the canvas drawing.
-    func renderedImage(onto image: UIImage, textBoxes: [TextBox]) -> UIImage {
+    func renderedImage(
+        onto image: UIImage,
+        textBoxes: [TextBox],
+        shapeBlocks: [ShapeBlock]
+    ) -> UIImage {
         let imageSize = image.size
 
         // Render the combined image
@@ -170,7 +179,100 @@ extension PKCanvasView {
             let scaleY = imageSize.height / bounds.height
             context.cgContext.scaleBy(x: scaleX, y: scaleY)
 
-            // Text blocks
+            // MARK: Render the canvasView drawing
+
+            // drawHierarchy(in: bounds, afterScreenUpdates: true) // do benchmark
+
+            drawing.image(from: bounds, scale: UIScreen.main.scale)
+                .draw(in: bounds)
+
+            // MARK: Shapes
+
+            // Create a SwiftUI ZStack for shapes
+            let swiftUIView = ZStack {
+                ForEach(shapeBlocks) { block in
+                    switch block.type {
+                    case .square:
+                        Rectangle()
+                            .stroke(block.borderColor, lineWidth: block.borderSize)
+                            .fill(block.backgroundColor)
+                            .frame(width: block.size.width, height: block.size.height)
+                            .cornerRadius(block.cornerRadius)
+                            .opacity(block.opacity)
+                            .position(CGPoint(x: block.position.x, y: block.position.y - (block.size.width / 2)))
+
+                    case .roundedSquare:
+                        RoundedRectangle(cornerRadius: block.cornerRadius)
+                            .stroke(block.borderColor, lineWidth: block.borderSize)
+                            .fill(block.backgroundColor)
+                            .frame(width: block.size.width, height: block.size.height)
+                            .opacity(block.opacity)
+                            .position(CGPoint(x: block.position.x, y: block.position.y - (block.size.width / 2)))
+
+                    case .circle:
+                        Circle()
+                            .stroke(block.borderColor, lineWidth: block.borderSize)
+                            .fill(block.backgroundColor)
+                            .frame(width: block.size.width, height: block.size.height)
+                            .opacity(block.opacity)
+                            .position(CGPoint(x: block.position.x, y: block.position.y - (block.size.width / 2)))
+                    }
+                }
+            }
+
+            // Create the UIHostingController to render the SwiftUI view
+            let controller = UIHostingController(rootView: swiftUIView).view!
+            controller.frame = CGRect(origin: .zero, size: bounds.size)
+            controller.backgroundColor = .clear
+            controller.drawHierarchy(in: bounds, afterScreenUpdates: true)
+
+//            for shape in shapeBlocks {
+//                let ctx = context.cgContext
+//                ctx.saveGState()
+//
+//                // Convert center-relative offset to top-left coordinate system
+//                let adjustedX = shape.position.x - (shape.size.width / 2)
+//                let adjustedY = shape.position.y - (shape.size.height / 2)
+//
+//                let rect = CGRect(
+//                    origin: CGPoint(x: adjustedX, y: adjustedY),
+//                    size: shape.size
+//                )
+//
+//                ctx.setFillColor(
+//                    UIColor(shape.backgroundColor)
+//                        .withAlphaComponent(shape.opacity)
+//                        .cgColor
+//                )
+//                ctx.setStrokeColor(
+//                    UIColor(shape.borderColor)
+//                        .cgColor
+//                )
+//                ctx.setLineWidth(shape.borderSize)
+//
+//                switch shape.type {
+//                case .square:
+//                    ctx.fill(rect)
+//                    if shape.borderSize > 0 {
+//                        ctx.stroke(rect)
+//                    }
+//
+//                case .roundedSquare:
+//                    let path = UIBezierPath(roundedRect: rect, cornerRadius: shape.cornerRadius)
+//                    ctx.addPath(path.cgPath)
+//                    ctx.drawPath(using: .fillStroke)
+//
+//                case .circle:
+//                    let path = UIBezierPath(ovalIn: rect)
+//                    ctx.addPath(path.cgPath)
+//                    ctx.drawPath(using: .fillStroke)
+//                }
+//
+//                ctx.restoreGState()
+//            }
+
+            // MARK: Text blocks
+
 //            let swiftUIView = ZStack {
 //                ForEach(textBoxes) { box in
 //                    Text(box.text)
@@ -240,19 +342,8 @@ extension PKCanvasView {
                 ).size
 
                 // Convert center-relative offset to top-left coordinate system
-//                let centerX = bounds.width / 2
-//                let centerY = bounds.height / 2
-
-//                let adjustedX = centerX + box.position.x - (textSize.width / 2)
-//                let adjustedY = centerY + box.position.y - (textSize.height / 2)
-
-//                let textRect = CGRect(
-//                    origin: CGPoint(x: adjustedX, y: adjustedY),
-//                    size: textSize
-//                )
-
-                let adjustedX =  box.position.x - (textSize.width / 2)
-                let adjustedY =  box.position.y - (textSize.height / 2)
+                let adjustedX = box.position.x - (textSize.width / 2)
+                let adjustedY = box.position.y - (textSize.height / 2)
 
                 let textRect = CGRect(
                     origin: CGPoint(x: adjustedX, y: adjustedY),
@@ -261,12 +352,6 @@ extension PKCanvasView {
 
                 attributedText.draw(in: textRect)
             }
-
-            // Render the canvasView drawing
-            // drawHierarchy(in: bounds, afterScreenUpdates: true) // do benchmark
-
-            drawing.image(from: bounds, scale: UIScreen.main.scale)
-                .draw(in: bounds)
         }
 
         print("debug1: imagesize: \(combinedImage.size)")

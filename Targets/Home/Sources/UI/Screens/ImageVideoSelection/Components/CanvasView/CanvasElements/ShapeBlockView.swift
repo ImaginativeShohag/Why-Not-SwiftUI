@@ -37,8 +37,8 @@ struct ShapeBlockView: View {
             }
             .opacity(block.opacity)
             .disabled(!isSelected)
-            .padding(5)
             .frame(width: block.size.width, height: block.size.height)
+            .padding(5)
             // Note: This makes the content clickable even when the TextField is disabled.
             .contentShape(Rectangle())
             .overlay {
