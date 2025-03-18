@@ -12,6 +12,11 @@ class CanvasViewViewModel {
             print("debug2: didSet selectedTextBox")
         }
     }
+    var selectedShapeId: String? {
+        didSet {
+            print("debug2: didSet selectedTextBox")
+        }
+    }
 
     init() {
         print("debug2: init CanvasViewViewModel")

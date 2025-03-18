@@ -14,7 +14,6 @@ struct ShapeBlockView: View {
     let onDuplicateClick: () -> Void
     let onRemoveClick: () -> Void
 
-    @FocusState private var isFocused: Bool
     @State private var dragOffset: CGSize = .zero // Track drag offset separately
 
     let minSize: CGSize = .init(width: 80, height: 80)
@@ -28,7 +27,7 @@ struct ShapeBlockView: View {
             RoundedRectangle(cornerRadius: block.cornerRadius)
                 .stroke(block.borderColor, lineWidth: block.borderSize)
                 .fill(block.backgroundColor)
-                .focused($isFocused)
+                // .opacity(block.opacity)
                 .disabled(!isSelected)
                 .padding(5)
                 .frame(width: block.size.width, height: block.size.height)
@@ -50,15 +49,13 @@ struct ShapeBlockView: View {
                                         .frame(height: proxy.size.height - 88)
                                         // Note: Recommended minimum tappable area is 44x44.
                                         .frame(width: 44)
-                                        .background(.red.opacity(0.25))
+                                        // .background(.red.opacity(0.25))
                                         .contentShape(Rectangle())
                                         .gesture(
                                             DragGesture()
                                                 .onChanged { value in
                                                     let newWidth = block.size.width - value.translation.width
                                                     block.size.width = min(max(minSize.width, newWidth), textBoxMaxSize.width)
-
-                                                    isFocused = false
                                                 }
                                         )
 
@@ -69,15 +66,13 @@ struct ShapeBlockView: View {
                                         .frame(height: proxy.size.height - 88)
                                         // Note: Recommended minimum tappable area is 44x44.
                                         .frame(width: 44)
-                                        .background(.red.opacity(0.25))
+                                        // .background(.red.opacity(0.25))
                                         .contentShape(Rectangle())
                                         .gesture(
                                             DragGesture()
                                                 .onChanged { value in
                                                     let newWidth = block.size.width + value.translation.width
                                                     block.size.width = min(max(minSize.width, newWidth), textBoxMaxSize.width)
-
-                                                    isFocused = false
                                                 }
                                         )
                                 }
@@ -90,15 +85,13 @@ struct ShapeBlockView: View {
                                         .frame(width: proxy.size.width - 88)
                                         // Note: Recommended minimum tappable area is 44x44.
                                         .frame(height: 44)
-                                        .background(.red.opacity(0.25))
+                                        // .background(.red.opacity(0.25))
                                         .contentShape(Rectangle())
                                         .gesture(
                                             DragGesture()
                                                 .onChanged { value in
                                                     let newHeight = block.size.height - value.translation.height
                                                     block.size.height = min(max(minSize.height, newHeight), textBoxMaxSize.height)
-
-                                                    isFocused = false
                                                 }
                                         )
 
@@ -109,15 +102,13 @@ struct ShapeBlockView: View {
                                         .frame(width: proxy.size.width - 88)
                                         // Note: Recommended minimum tappable area is 44x44.
                                         .frame(height: 44)
-                                        .background(.red.opacity(0.25))
+                                        // .background(.red.opacity(0.25))
                                         .contentShape(Rectangle())
                                         .gesture(
                                             DragGesture()
                                                 .onChanged { value in
                                                     let newHeight = block.size.height + value.translation.height
                                                     block.size.height = min(max(minSize.height, newHeight), textBoxMaxSize.height)
-
-                                                    isFocused = false
                                                 }
                                         )
                                 }
@@ -128,7 +119,7 @@ struct ShapeBlockView: View {
                                     DragIndicatorView()
                                         // Note: Recommended minimum tappable area is 44x44.
                                         .frame(width: 44, height: 44)
-                                        .background(.green.opacity(0.25))
+                                        // .background(.green.opacity(0.25))
                                         .contentShape(Rectangle())
                                         .gesture(
                                             DragGesture()
@@ -140,8 +131,6 @@ struct ShapeBlockView: View {
                                                         width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
                                                         height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
                                                     )
-
-                                                    isFocused = false
                                                 }
                                         )
 
@@ -150,7 +139,7 @@ struct ShapeBlockView: View {
                                     DragIndicatorView()
                                         // Note: Recommended minimum tappable area is 44x44.
                                         .frame(width: 44, height: 44)
-                                        .background(.green.opacity(0.25))
+                                        // .background(.green.opacity(0.25))
                                         .contentShape(Rectangle())
                                         .gesture(
                                             DragGesture()
@@ -162,8 +151,6 @@ struct ShapeBlockView: View {
                                                         width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
                                                         height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
                                                     )
-
-                                                    isFocused = false
                                                 }
                                         )
                                 }
@@ -174,7 +161,7 @@ struct ShapeBlockView: View {
                                     DragIndicatorView()
                                         // Note: Recommended minimum tappable area is 44x44.
                                         .frame(width: 44, height: 44)
-                                        .background(.green.opacity(0.25))
+                                        // .background(.green.opacity(0.25))
                                         .contentShape(Rectangle())
                                         .gesture(
                                             DragGesture()
@@ -186,8 +173,6 @@ struct ShapeBlockView: View {
                                                         width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
                                                         height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
                                                     )
-
-                                                    isFocused = false
                                                 }
                                         )
 
@@ -196,7 +181,7 @@ struct ShapeBlockView: View {
                                     DragIndicatorView()
                                         // Note: Recommended minimum tappable area is 44x44.
                                         .frame(width: 44, height: 44)
-                                        .background(.green.opacity(0.25))
+                                        // .background(.green.opacity(0.25))
                                         .contentShape(Rectangle())
                                         .gesture(
                                             DragGesture()
@@ -208,8 +193,6 @@ struct ShapeBlockView: View {
                                                         width: min(max(minSize.width, newWidth), textBoxMaxSize.width),
                                                         height: min(max(minSize.height, newHeight), textBoxMaxSize.height)
                                                     )
-
-                                                    isFocused = false
                                                 }
                                         )
                                 }
@@ -217,20 +200,24 @@ struct ShapeBlockView: View {
                             }
                             .padding(-26)
                         }
+                    } else if block.backgroundColor == .clear && block.borderColor == .clear {
+                        // Note: This is need to give a outline for the shape when there is no background and border.
+                        Rectangle()
+                            .stroke(lineWidth: 1)
                     }
                 }
-            // .overlay {
-            //    if isSelected {
-            //        GeometryReader { proxy in
-            //            TextBoxToolbar(
-            //                box: $box,
-            //                onDuplicateClick: onDuplicateClick,
-            //                onRemoveClick: onRemoveClick
-            //            )
-            //            .position(x: proxy.size.width / 2, y: -32)
-            //        }
-            //    }
-            // }
+                .overlay {
+                    if isSelected {
+                        GeometryReader { proxy in
+                            BlockToolbarView(
+                                block: $block,
+                                onDuplicateClick: onDuplicateClick,
+                                onRemoveClick: onRemoveClick
+                            )
+                            .position(x: proxy.size.width / 2, y: -44)
+                        }
+                    }
+                }
         }
         .position(block.position)
         .offset(dragOffset)
@@ -256,59 +243,6 @@ struct ShapeBlockView: View {
             }
         )
     }
-
-//    private func calculateTextWidth() {
-//        var traits: UIFontDescriptor.SymbolicTraits = []
-//
-//        if block.isBold {
-//            traits.insert(.traitBold)
-//        }
-//
-//        if block.isItalic {
-//            traits.insert(.traitItalic)
-//        }
-//
-//        let baseFont = UIFont.systemFont(ofSize: block.fontSize)
-//        var fontDescriptor = baseFont.fontDescriptor
-//
-//        if !traits.isEmpty, let descriptorWithTraits = fontDescriptor.withSymbolicTraits(traits) {
-//            fontDescriptor = descriptorWithTraits
-//        }
-//
-//        let font = UIFont(descriptor: fontDescriptor, size: block.fontSize)
-//
-//        // Underline and Strikethrough styles
-//        let underlineStyle: NSUnderlineStyle = block.isUnderline ? .single : []
-//        let strikethroughStyle: NSUnderlineStyle = block.isStrikethrough ? .single : []
-//
-//        // Paragraph style with text alignment
-//        let paragraphStyle = NSMutableParagraphStyle()
-//
-//        switch block.alignment {
-//        case .leading:
-//            paragraphStyle.alignment = .left
-//        case .center:
-//            paragraphStyle.alignment = .center
-//        case .trailing:
-//            paragraphStyle.alignment = .right
-//        }
-//
-//        let attributes: [NSAttributedString.Key: Any] = [
-//            .font: font,
-//            .foregroundColor: UIColor(block.textColor),
-//            .underlineStyle: underlineStyle.rawValue,
-//            .strikethroughStyle: strikethroughStyle.rawValue,
-//            .paragraphStyle: paragraphStyle
-//        ]
-//        let size = (block.text as NSString).size(withAttributes: attributes)
-//
-//        // Update the width
-//        withAnimation {
-//            block.width = min(max(size.width + 32, minSize.), textBoxMaxWidth)
-//            textBoxHeight = size.height + 32
-//            print("debug3: calculateTextWidth: size: \(size)")
-//        }
-//    }
 }
 
 #Preview {
@@ -331,126 +265,315 @@ struct ShapeBlockView: View {
     }
 }
 
-// struct TextBoxToolbar: View {
-//    @Binding var box: TextBox
-//    let onDuplicateClick: () -> Void
-//    let onRemoveClick: () -> Void
-//
-//    @State private var showTextFormatPopover: Bool = false
-//
-//    var body: some View {
-//        HStack(spacing: 0) {
-//            Button {
-//                showTextFormatPopover.toggle()
-//            } label: {
-//                Image(systemName: "textformat")
-//                    .padding(.horizontal, 16)
-//                    .padding(.vertical, 8)
-//            }
-//            .popover(isPresented: $showTextFormatPopover, arrowEdge: .bottom) {
-//                TextFormatPopoverView(box: $box)
-//                    .presentationCompactAdaptation(.none)
-//            }
-//
-//            Divider()
-//                .frame(height: 20)
-//
-//            Button {
-//                onDuplicateClick()
-//            } label: {
-//                Image(systemName: "plus.square.on.square")
-//                    .padding(.horizontal, 16)
-//                    .padding(.vertical, 8)
-//            }
-//
-//            Button {
-//                onRemoveClick()
-//            } label: {
-//                Image(systemName: "trash")
-//                    .padding(.horizontal, 16)
-//                    .padding(.vertical, 8)
-//            }
-//            .tint(.red)
-//        }
-//        .tint(.black)
-//        .padding(.horizontal, 0)
-//        .padding(.vertical, 0)
-//        .background(.regularMaterial)
-//        .clipShape(RoundedRectangle(cornerRadius: 50))
-//        .shadow(color: .black.opacity(0.2), radius: 8)
-//        .colorScheme(.light)
-//    }
-// }
-//
-// struct TextFormatPopoverView: View {
-//    @Binding var box: TextBox
-//
-//    private let fontSizes: [Int] = [10, 12, 14, 18, 24, 36, 48, 64, 72, 96, 144]
-//
-//    var body: some View {
-//        VStack {
-//            HStack {
-//                ControlGroup {
-//                    Toggle(isOn: $block.isBold) {
-//                        Label("Bold", systemImage: "bold")
-//                    }
-//                    Toggle(isOn: $block.isItalic) {
-//                        Label("Italic", systemImage: "italic")
-//                    }
-//                    Toggle(isOn: $block.isUnderline) {
-//                        Label("Underline", systemImage: "underline")
-//                    }
-//                    Toggle(isOn: $block.isStrikethrough) {
-//                        Label("Strikethrough", systemImage: "strikethrough")
-//                    }
-//                }
-//                .controlGroupStyle(ControlGroupNoneSeparatorStyle())
-//
-//                ColorPicker("", selection: $block.textColor)
-//                    .labelsHidden()
-//            }
-//
-//            HStack {
-//                SwiftUI.Menu {
-//                    ForEach(fontSizes, id: \.self) { size in
-//                        Button("\(size) pt") {
-//                            block.fontSize = CGFloat(size)
-//                        }
-//                    }
-//                } label: {
-//                    Text("\(Int(block.fontSize)) pt")
-//                        .foregroundColor(.label)
-//                        .padding(.horizontal, 8)
-//                        .padding(.vertical, UIDevice.current.isPhone ? 3.8 : 3.9)
-//                        .background(Color.tertiarySystemFill)
-//                        .cornerRadius(8)
-//                }
-//
-//                ControlGroup {
-//                    Button(action: {
-//                        block.fontSize -= 1
-//                    }) {
-//                        Label("Decrease", systemImage: "minus")
-//                    }
-//
-//                    Button(action: {
-//                        block.fontSize += 1
-//                    }) {
-//                        Label("Increase", systemImage: "plus")
-//                    }
-//                }
-//            }
-//
-//            Picker("", selection: $block.alignment) {
-//                Image(systemName: "text.alignleft").tag(TextAlignment.leading)
-//                Image(systemName: "text.aligncenter").tag(TextAlignment.center)
-//                Image(systemName: "text.alignright").tag(TextAlignment.trailing)
-//            }
-//            .pickerStyle(.segmented)
-//        }
-//        .padding(8)
-//    }
-// }
+private struct BlockToolbarView: View {
+    @Binding var block: ShapeBlock
+    let onDuplicateClick: () -> Void
+    let onRemoveClick: () -> Void
+
+    @State private var showBGOptionPopover: Bool = false
+    @State private var showBorderOptionPopover: Bool = false
+    @State private var showOpacityPopover: Bool = false
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Button {
+                showBGOptionPopover.toggle()
+            } label: {
+                Circle()
+                    .fill(block.backgroundColor)
+                    .frame(width: 24, height: 24)
+                    .background {
+                        if block.backgroundColor == .clear {
+                            Circle()
+                                .stroke(.gray.opacity(0.5), lineWidth: 1)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .popover(isPresented: $showBGOptionPopover, arrowEdge: .bottom) {
+                        BackgroundOptionPopoverView(block: $block)
+                            .presentationCompactAdaptation(.none)
+                    }
+            }
+
+            Button {
+                showBorderOptionPopover.toggle()
+            } label: {
+                ZStack {
+                    if block.borderColor == .clear {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.white)
+                            .stroke(.gray, lineWidth: 1)
+                            .frame(width: 4, height: 24)
+                            .rotationEffect(.degrees(45))
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.red)
+                            .frame(width: 4, height: 24)
+                            .rotationEffect(.degrees(-45))
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                    } else {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(block.borderColor)
+                            .frame(width: 4, height: 24)
+                            .rotationEffect(.degrees(45))
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                    }
+                }
+                .popover(isPresented: $showBorderOptionPopover, arrowEdge: .bottom) {
+                    BorderOptionPopoverView(block: $block)
+                        .presentationCompactAdaptation(.none)
+                }
+            }
+
+            Button {
+                showOpacityPopover.toggle()
+            } label: {
+                Image(systemName: "circle.dotted")
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .popover(isPresented: $showOpacityPopover, arrowEdge: .bottom) {
+                        OpacityPopoverView(block: $block)
+                            .presentationCompactAdaptation(.none)
+                    }
+            }
+
+            Divider()
+                .frame(height: 20)
+
+            Button {
+                onDuplicateClick()
+            } label: {
+                Image(systemName: "plus.square.on.square")
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+            }
+
+            Button {
+                onRemoveClick()
+            } label: {
+                Image(systemName: "trash")
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+            }
+            .tint(.red)
+        }
+        .tint(.black)
+        .padding(.horizontal, 0)
+        .padding(.vertical, 0)
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 50))
+        .shadow(color: .black.opacity(0.2), radius: 8)
+        .dynamicTypeSize(.large)
+        .colorScheme(.light)
+    }
+}
+
+private struct BackgroundOptionPopoverView: View {
+    @Binding var block: ShapeBlock
+
+    var body: some View {
+        VStack {
+            ColorSelectSection(
+                selectedColor: $block.backgroundColor
+            )
+
+            HStack {
+                Button {
+                    block.backgroundColor = .clear
+                } label: {
+                    Text("No Fill")
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(.label)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, UIDevice.current.isPhone ? 3.8 : 3.9)
+                        .background(Color.tertiarySystemFill)
+                        .cornerRadius(8)
+                }
+
+                ColorPicker("", selection: $block.backgroundColor)
+                    .labelsHidden()
+            }
+        }
+        .padding(8)
+        .animation(.default, value: block.backgroundColor)
+    }
+}
+
+struct ColorSelectSection: View {
+    @Binding var selectedColor: Color
+
+    private let colorSection1: [Color] = [.white, .gray, .black, .mint, .pink, .purple]
+    private let colorSection2: [Color] = [.red, .orange, .yellow, .green, .cyan, .indigo]
+
+    var body: some View {
+        HStack {
+            ForEach(colorSection1, id: \.self) { color in
+                if color != colorSection1.first {
+                    Spacer()
+                }
+
+                Button {
+                    selectedColor = color
+                } label: {
+                    Circle()
+                        .fill(color)
+                        .stroke(color == .white ? .gray : .clear, lineWidth: 1)
+                        .frame(width: 32, height: 32)
+                        .overlay {
+                            if selectedColor == color {
+                                Circle()
+                                    .stroke(selectedColor == .white ? .black : .white, lineWidth: 2)
+                                    .padding(4)
+                            }
+                        }
+                }
+            }
+        }
+
+        HStack {
+            ForEach(colorSection2, id: \.self) { color in
+                if color != colorSection2.first {
+                    Spacer()
+                }
+
+                Button {
+                    selectedColor = color
+                } label: {
+                    Circle()
+                        .fill(color)
+                        .frame(width: 32, height: 32)
+                        .overlay {
+                            if selectedColor == color {
+                                Circle()
+                                    .stroke(selectedColor == .white ? .black : .white, lineWidth: 2)
+                                    .padding(4)
+                            }
+                        }
+                }
+            }
+        }
+    }
+}
+
+private struct BorderOptionPopoverView: View {
+    @Binding var block: ShapeBlock
+
+    private let colorSection1: [Color] = [.white, .gray, .black, .mint, .pink, .purple]
+    private let colorSection2: [Color] = [.red, .orange, .yellow, .green, .cyan, .indigo]
+    private let maxLineWidth: CGFloat = 30
+    private let maxCornerRadius: CGFloat = 30
+
+    var body: some View {
+        VStack {
+            ColorSelectSection(
+                selectedColor: $block.borderColor
+            )
+
+            HStack {
+                Button {
+                    block.borderColor = .clear
+                } label: {
+                    Text("No Stroke")
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(.label)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, UIDevice.current.isPhone ? 3.8 : 3.9)
+                        .background(Color.tertiarySystemFill)
+                        .cornerRadius(8)
+                }
+
+                ColorPicker("", selection: $block.borderColor)
+                    .labelsHidden()
+            }
+
+            if block.borderColor != .clear {
+                HStack {
+                    Image(systemName: "lineweight")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .foregroundStyle(Color.label)
+
+                    ControlGroup {
+                        Button {
+                            if block.borderSize > 1 {
+                                block.borderSize -= 1
+                            }
+                        } label: {
+                            Label("Decrease", systemImage: "minus")
+                        }
+
+                        Button {
+                            // Note: This button need to fix the UI issue with ControlGroup.
+                        } label: {
+                            Text("\(Int(block.borderSize)) pt")
+                        }
+
+                        Button {
+                            if block.borderSize < maxLineWidth {
+                                block.borderSize += 1
+                            }
+                        } label: {
+                            Label("Increase", systemImage: "plus")
+                        }
+                    }
+                }
+            }
+
+            if block.cornerRadius != 0 {
+                HStack {
+                    Image(systemName: "capsule")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .foregroundStyle(Color.label)
+
+                    ControlGroup {
+                        Button {
+                            if block.cornerRadius > 1 {
+                                block.cornerRadius -= 1
+                            }
+                        } label: {
+                            Label("Decrease", systemImage: "minus")
+                        }
+                        
+                        Button {
+                            // Note: This button need to fix the UI issue with ControlGroup.
+                        } label: {
+                            Text("\(Int(block.cornerRadius)) pt")
+                        }
+
+                        Button {
+                            if block.cornerRadius < maxCornerRadius {
+                                block.cornerRadius += 1
+                            }
+                        } label: {
+                            Label("Increase", systemImage: "plus")
+                        }
+                    }
+                }
+            }
+        }
+        .padding(8)
+    }
+}
+
+private struct OpacityPopoverView: View {
+    @Binding var block: ShapeBlock
+
+    var body: some View {
+        VStack {
+            OpacitySlider(opacity: $block.opacity)
+        }
+        .frame(width: 200)
+        .padding(8)
+    }
+}
 
 struct DragIndicatorView: View {
     var body: some View {

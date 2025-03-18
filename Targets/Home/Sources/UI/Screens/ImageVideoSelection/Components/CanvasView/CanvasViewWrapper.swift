@@ -43,6 +43,7 @@ struct CanvasViewWrapper: View {
                         },
                         onDrawingDidChange: {
                             viewModel.selectedTextBoxId = nil
+                            viewModel.selectedShapeId = nil
                         }
                     )
                     .frame(width: contentSize.width, height: contentSize.height)
@@ -69,16 +70,16 @@ struct CanvasViewWrapper: View {
                         ForEach($shapes) { $shape in
                             ShapeBlockView(
                                 block: $shape,
-                                isSelected: true, // shape.id == viewModel.selectedTextBoxId,
+                                isSelected: shape.id == viewModel.selectedShapeId,
                                 contentSize: contentSize,
                                 onClick: {
-                                    // viewModel.selectedTextBoxId = box.id
+                                     viewModel.selectedShapeId = shape.id
                                 },
                                 onDuplicateClick: {
-                                    // addDuplicateTextBox(box: box)
+                                    addDuplicateShape(shape: shape)
                                 },
                                 onRemoveClick: {
-                                    // textBoxes.remove(at: textBoxes.firstIndex(of: $box.wrappedValue)!)
+                                    shapes.remove(at: shapes.firstIndex(of: $shape.wrappedValue)!)
                                 }
                             )
                         }
@@ -134,6 +135,7 @@ struct CanvasViewWrapper: View {
                     UIApplication.shared.hideKeyboard()
                 } else {
                     viewModel.selectedTextBoxId = nil
+                    viewModel.selectedShapeId = nil
                 }
 
             },
@@ -149,6 +151,7 @@ struct CanvasViewWrapper: View {
         textBoxes.append(newBox)
 
         viewModel.selectedTextBoxId = newBox.id
+        viewModel.selectedShapeId = nil
     }
 
     private func addDuplicateTextBox(box: TextBox) {
@@ -158,6 +161,7 @@ struct CanvasViewWrapper: View {
         textBoxes.append(newBox)
 
         viewModel.selectedTextBoxId = newBox.id
+        viewModel.selectedShapeId = nil
     }
     
     private func addNewShapeBox() {
@@ -167,7 +171,17 @@ struct CanvasViewWrapper: View {
         shapes.append(newBlock)
 
         viewModel.selectedTextBoxId = nil
-        //viewModel.selectedTextBoxId = newBlock.id
+        viewModel.selectedShapeId = newBlock.id
+    }
+    
+    private func addDuplicateShape(shape: ShapeBlock) {
+        let newShape = shape.copy(
+            position: CGPoint(x: contentSize.width / 2, y: contentSize.height / 2)
+        )
+        shapes.append(newShape)
+
+        viewModel.selectedTextBoxId = nil
+        viewModel.selectedShapeId = newShape.id
     }
 }
 
@@ -255,11 +269,36 @@ extension CanvasView {
 
 struct ShapeBlock: Identifiable, Equatable {
     var id = UUID().uuidString
-    var backgroundColor: Color = .white
-    var borderSize: CGFloat = 8
-    var borderColor: Color = .yellow
+    var backgroundColor: Color = .gray
+    var borderSize: CGFloat = 5
+    var borderColor: Color = .red
     var cornerRadius: CGFloat = 10
+    var opacity: Double = 1
 
     var size: CGSize = CGSize(width: 100, height: 100)
     var position: CGPoint = .zero
+}
+
+extension ShapeBlock {
+    func copy(
+        id: String? = UUID().uuidString,
+        backgroundColor: Color? = nil,
+        borderSize: CGFloat? = nil,
+        borderColor: Color? = nil,
+        cornerRadius: CGFloat? = nil,
+        opacity: Double? = nil,
+        size: CGSize? = nil,
+        position: CGPoint? = nil
+    ) -> ShapeBlock {
+        ShapeBlock(
+            id: id ?? self.id,
+            backgroundColor: backgroundColor ?? self.backgroundColor,
+            borderSize: borderSize ?? self.borderSize,
+            borderColor: borderColor ?? self.borderColor,
+            cornerRadius: cornerRadius ?? self.cornerRadius,
+            opacity: opacity ?? self.opacity,
+            size: size ?? self.size,
+            position: position ?? self.position
+        )
+    }
 }
