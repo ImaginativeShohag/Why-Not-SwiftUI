@@ -14,7 +14,7 @@ struct MainContainerScreen: View {
 
     var body: some View {
         NavigationStack(path: $navController.navStack) {
-            MediaSelectScreen()
+            HomeScreen()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .navigationDestination(for: BaseDestination.self) { destination in
                     AnyView(destination.getScreen())
