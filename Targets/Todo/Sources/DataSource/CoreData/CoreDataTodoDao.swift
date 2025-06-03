@@ -11,7 +11,7 @@ final class CoreDataTodoDao: ITodoDao {
     typealias TodoEntity = CDTodo
     typealias PriorityEntity = CDTodoPriority
     
-    private let database: ICoreDataDatabase
+    private let database: CoreDataDatabase
     private let context: NSManagedObjectContext
     
     init(container: NSPersistentContainer = CoreDataDataSource.shared.persistentContainer) {

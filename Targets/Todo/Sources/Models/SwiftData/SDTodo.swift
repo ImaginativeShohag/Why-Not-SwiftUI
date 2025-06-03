@@ -6,11 +6,11 @@ import SwiftData
 import SwiftUI
 
 @Model
-final class Todo: Sendable {
+final class SDTodo: Sendable {
     @Attribute(.unique) var id: Int
     var title: String
     var notes: String
-    var priority: Priority
+    var priority: SDPriority
     var createdAt: Date
     var isCompleted: Bool
 
@@ -18,7 +18,7 @@ final class Todo: Sendable {
         id: Int = UUID().hashValue,
         title: String,
         notes: String,
-        priority: Priority,
+        priority: SDPriority,
         createdAt: Date = Date(),
         isCompleted: Bool = false
     ) {
@@ -33,7 +33,7 @@ final class Todo: Sendable {
 
 // MARK: - Extensions
 
-extension Todo {
+extension SDTodo {
     func toUIModel() async -> UITodo.Todo {
         await .init(
             id: id,

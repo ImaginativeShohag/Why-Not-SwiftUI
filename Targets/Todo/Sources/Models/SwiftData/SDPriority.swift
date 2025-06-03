@@ -2,13 +2,13 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-enum Priority: Codable {
+enum SDPriority: Codable {
     case none, low, medium, high
 }
 
 // MARK: - Extensions
 
-extension Priority {
+extension SDPriority {
     func toUIModel() -> UITodo.Priority {
         switch self {
         case .none:
@@ -22,7 +22,7 @@ extension Priority {
         }
     }
 
-    static func fromUIModel(_ priority: UITodo.Priority) -> Priority {
+    static func fromUIModel(_ priority: UITodo.Priority) -> SDPriority {
         switch priority {
         case .none:
             return .none

@@ -68,7 +68,7 @@ final class TodoRepository: ITodoRepository {
                 try await coreDataTodoDao.insert(title: todo.title, notes: todo.notes, priority: CDTodoPriority.fromUIModel(todo.priority))
             
             case .swiftData:
-                try await swiftDataTodoDao.insert(title: todo.title, notes: todo.notes, priority: Priority.fromUIModel(todo.priority))
+                try await swiftDataTodoDao.insert(title: todo.title, notes: todo.notes, priority: SDPriority.fromUIModel(todo.priority))
         }
     }
     
@@ -104,7 +104,7 @@ final class TodoRepository: ITodoRepository {
         
                 guard let dbTodo else { return }
         
-                try await swiftDataTodoDao.update(entity: dbTodo, title: todo.title, notes: todo.notes, priority: Priority.fromUIModel(todo.priority))
+                try await swiftDataTodoDao.update(entity: dbTodo, title: todo.title, notes: todo.notes, priority: SDPriority.fromUIModel(todo.priority))
         }
     }
 }

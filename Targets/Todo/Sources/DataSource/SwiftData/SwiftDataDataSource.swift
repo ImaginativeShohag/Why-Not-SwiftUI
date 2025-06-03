@@ -8,7 +8,7 @@ import SwiftData
 final actor SwiftDataDataSource {
     static let shared = SwiftDataDataSource()
 
-    let container: ModelContainer = try! ModelContainer(for: Todo.self)
+    let container: ModelContainer = try! ModelContainer(for: SDTodo.self)
 
     private init() {}
 }

@@ -54,7 +54,10 @@ struct IntroScreen: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.blue.opacity(0.4), lineWidth: 1)
+                            .stroke(
+                                (selectedDataSource == option ? Color.blue : Color.gray).opacity(0.4),
+                                lineWidth: 1
+                            )
                     )
                 }
             }
@@ -68,11 +71,9 @@ struct IntroScreen: View {
             } label: {
                 Text("Start")
                     .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
+                    .padding(4)
             }
+            .buttonStyle(.borderedProminent)
         }
         .padding()
         .navigationTitle("Todo Data Storage")
