@@ -36,7 +36,7 @@ public extension Project {
         configInfoPlist: [String: Plist.Value],
         modules: [Module],
         externalDependencies: [TargetDependency],
-        coreDataModels: [Path]
+        coreDataModels: [CoreDataModel]
     ) -> Project {
         let appMainTarget: ProjectDescription.TargetReference = "\(name)"
 
@@ -165,7 +165,7 @@ public extension Project {
         }
 
         // Core Data
-        let coreDataModels = module.coreDataModels.map { CoreDataModel.coreDataModel($0) }
+        let coreDataModels = module.coreDataModels
 
         let sources = Target.target(
             name: name,
@@ -247,10 +247,8 @@ public extension Project {
         deploymentTargets: DeploymentTargets,
         dependencies: [TargetDependency],
         infoPlist: [String: Plist.Value],
-        coreDataModels: [Path]
+        coreDataModels: [CoreDataModel]
     ) -> [Target] {
-        let coreDataModels = coreDataModels.map { CoreDataModel.coreDataModel($0) }
-
         let mainTarget = Target.target(
             name: name,
             destinations: destinations,

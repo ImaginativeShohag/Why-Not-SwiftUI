@@ -5,7 +5,7 @@
 import Foundation
 import SwiftData
 
-public protocol IDatabase: Sendable {
+public protocol ISwiftDataDatabase: Sendable {
     func delete<T>(_ model: T) async where T: PersistentModel, T: Sendable
     func insert<T>(_ model: T) async where T: PersistentModel, T: Sendable
     func save() async throws
@@ -16,7 +16,8 @@ public protocol IDatabase: Sendable {
     ) async throws
 }
 
-public extension IDatabase {
+#warning("rethink this")
+public extension ISwiftDataDatabase {
     func fetch<T: PersistentModel & Sendable>(
         where predicate: Predicate<T>?,
         sortBy: [SortDescriptor<T>]

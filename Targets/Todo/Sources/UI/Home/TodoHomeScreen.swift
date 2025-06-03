@@ -19,16 +19,13 @@ public extension Destination {
 
 // MARK: - UI
 
-@MainActor
 struct TodoHomeScreen: View {
     @State private var viewModel: TodoHomeViewModel
     @State private var showAddSheet = false
-    @State private var editItem: Todo? = nil
+    @State private var editItem: UITodo.Todo? = nil
 
     init(
-        viewModel: TodoHomeViewModel = TodoHomeViewModel(
-            modelContainer: TodoDataSource.shared.modelContainer
-        )
+        viewModel: TodoHomeViewModel = TodoHomeViewModel()
     ) {
         self.viewModel = viewModel
     }
@@ -139,7 +136,7 @@ struct TodoHomeScreen: View {
     NavigationStack {
         TodoHomeScreen(
             viewModel: TodoHomeViewModel(
-                modelContainer: PreviewSampleData.container
+                repository: MockTodoRepository()
             )
         )
     }
@@ -152,7 +149,7 @@ struct TodoHomeScreen: View {
 struct TodoItemView: View {
     let title: String
     let notes: String
-    let priority: TodoPriority
+    let priority: UITodo.Priority
     let isCompleted: Bool
 
     let onClick: () -> Void

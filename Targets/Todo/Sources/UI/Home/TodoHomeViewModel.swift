@@ -11,20 +11,20 @@ import SwiftUI
 @MainActor
 @Observable
 class TodoHomeViewModel {
-    private(set) var todoList: [Todo] = []
+    private(set) var todoList: [UITodo.Todo] = []
     private(set) var showCompletedItems = false
     private(set) var sortToShowLatestFirst = true
 
-    private let repository: TodoRepository
+    private let repository: ITodoRepository
 
     private var isPreview = false
 
-    private var sourceTodoList: [Todo] = []
+    private var sourceTodoList: [UITodo.Todo] = []
 
     init(
-        modelContainer: ModelContainer
+        repository: ITodoRepository = TodoRepository()
     ) {
-        self.repository = TodoRepository(modelContainer: modelContainer)
+        self.repository = repository
     }
 
     func load() async {
@@ -36,12 +36,12 @@ class TodoHomeViewModel {
         updateList()
     }
 
-    func add(title: String, notes: String, priority: TodoPriority) async {
+    func add(title: String, notes: String, priority: UITodo.Priority) async {
         if title.isEmpty, notes.isEmpty {
             return
         }
 
-        let todo = Todo(
+        let todo = UITodo.Todo(
             title: title,
             notes: notes,
             priority: priority
@@ -58,7 +58,7 @@ class TodoHomeViewModel {
         updateList()
     }
 
-    func save(todo: Todo, title: String, notes: String, priority: TodoPriority) async {
+    func save(todo: UITodo.Todo, title: String, notes: String, priority: UITodo.Priority) async {
         if title.isEmpty, notes.isEmpty {
             return
         }
@@ -87,7 +87,7 @@ class TodoHomeViewModel {
         updateList()
     }
 
-    func toggleTodoCompleteStatus(for todo: Todo) {
+    func toggleTodoCompleteStatus(for todo: UITodo.Todo) {
         todo.isCompleted.toggle()
 
         if todo.isCompleted, !showCompletedItems, let index = todoList.firstIndex(of: todo) {
@@ -117,15 +117,13 @@ class TodoHomeViewModel {
 extension TodoHomeViewModel {
     convenience init(forPreview: Bool) {
         self.init(
-            modelContainer: PreviewSampleData.container
+            repository: MockTodoRepository()
         )
-
-        SuperLog.d("hi")
 
         self.isPreview = true
 
         self.sourceTodoList = (1 ... 100).map {
-            Todo(
+            UITodo.Todo(
                 title: "Task \($0)",
                 notes: "Notes \($0)",
                 priority: $0 % 2 == 0 ? .none : .medium,

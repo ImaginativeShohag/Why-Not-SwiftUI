@@ -5,24 +5,20 @@
 import SwiftData
 import SwiftUI
 
-enum TodoPriority: Codable {
-    case none, low, medium, high
-}
-
 @Model
 final class Todo: Sendable {
-    @Attribute(.unique) let id: Int
+    @Attribute(.unique) var id: Int
     var title: String
     var notes: String
-    var priority: TodoPriority
-    let createdAt: Date
+    var priority: Priority
+    var createdAt: Date
     var isCompleted: Bool
 
     init(
         id: Int = UUID().hashValue,
         title: String,
         notes: String,
-        priority: TodoPriority,
+        priority: Priority,
         createdAt: Date = Date(),
         isCompleted: Bool = false
     ) {
@@ -32,5 +28,20 @@ final class Todo: Sendable {
         self.priority = priority
         self.createdAt = createdAt
         self.isCompleted = isCompleted
+    }
+}
+
+// MARK: - Extensions
+
+extension Todo {
+    func toUIModel() async -> UITodo.Todo {
+        await .init(
+            id: id,
+            title: title,
+            notes: notes,
+            priority: priority.toUIModel(),
+            createdAt: createdAt,
+            isCompleted: isCompleted
+        )
     }
 }

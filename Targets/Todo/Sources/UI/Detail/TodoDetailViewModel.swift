@@ -9,16 +9,16 @@ import SwiftUI
 @MainActor
 @Observable
 class TodoDetailViewModel {
-    var todo: Todo?
+    var todo: UITodo.Todo?
 
-    private let repository: TodoRepository
+    private let repository: ITodoRepository
 
     private var isPreview = false
 
     init(
-        modelContainer: ModelContainer
+        repository: ITodoRepository = TodoRepository()
     ) {
-        self.repository = TodoRepository(modelContainer: modelContainer)
+        self.repository = repository
     }
 
     func getTodo(id: Int) async {

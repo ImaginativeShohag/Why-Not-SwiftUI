@@ -34,9 +34,7 @@ struct TodoDetailScreen: View {
 
     @MainActor
     init(
-        viewModel: TodoDetailViewModel = TodoDetailViewModel(
-            modelContainer: TodoDataSource.shared.modelContainer
-        ),
+        viewModel: TodoDetailViewModel = TodoDetailViewModel(),
         id: Int
     ) {
         self.viewModel = viewModel
@@ -117,7 +115,7 @@ struct TodoDetailScreen: View {
     NavigationStack {
         TodoDetailScreen(
             viewModel: TodoDetailViewModel(
-                modelContainer: PreviewSampleData.container
+                repository: MockTodoRepository()
             ),
             id: 1
         )

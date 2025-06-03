@@ -7,6 +7,7 @@ import Home
 import NavigationKit
 import SuperLog
 import SwiftUI
+import Todo
 
 @MainActor
 struct MainContainerScreen: View {
@@ -22,6 +23,9 @@ struct MainContainerScreen: View {
                 .onChange(of: navController.navStack) {
                     SuperLog.v("navStack: \(navController.navStack)")
                 }
+        }
+        .onAppear {
+            navController.navigateTo(Destination.TodoIntro())
         }
     }
 }

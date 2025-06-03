@@ -106,14 +106,25 @@ let project = Project.app(
         ),
         Module(
             name: "Home",
+            hasResources: true,
             hasUnitTest: true,
             hasUITest: true,
             dependencies: ["Core", "CommonUI", "SuperLog", "Todo", "News", "Store"]
         ),
         Module(
             name: "Todo",
-            dependencies: ["Core", "CommonUI", "SuperLog"]
+            dependencies: ["Core", "CommonUI", "SuperLog"],
+            coreDataModels: [
+                .coreDataModel("CoreData/TodoDB.xcdatamodeld")
+            ]
         ),
+//        Module(
+//            name: "TodoWithCoreData",
+//            dependencies: ["Core", "CommonUI", "SuperLog"],
+//            coreDataModels: [
+//                .coreDataModel("CoreData/TodoDB.xcdatamodeld")
+//            ]
+//        ),
         Module(
             name: "News",
             hasResources: true,
@@ -138,7 +149,7 @@ let project = Project.app(
         .external(name: "RealmSwift"),
         .external(name: "Realm"),
         .external(name: "MarkdownUI"),
-        .external(name: "SwiftUIIntrospect"),
+        .external(name: "SwiftUIIntrospect")
     ],
     coreDataModels: []
 )

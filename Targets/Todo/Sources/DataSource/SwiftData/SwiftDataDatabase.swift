@@ -6,7 +6,7 @@ import Foundation
 import SwiftData
 
 @ModelActor
-public actor Database: IDatabase {
+public actor SwiftDataDatabase: ISwiftDataDatabase {
     public func delete<T>(_ model: T) async where T : Sendable, T : PersistentModel {
         modelContext.delete(model)
     }
