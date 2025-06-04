@@ -48,7 +48,7 @@ struct TodoEditSheet: View {
                     Button {
                         onSaveClick(title, notes, priority)
                     } label: {
-                        Text("Save")
+                        Text("Update")
                             .fontWeight(.bold)
                     }
                 }

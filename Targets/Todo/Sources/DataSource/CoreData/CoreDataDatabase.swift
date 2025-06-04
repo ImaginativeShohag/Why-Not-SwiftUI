@@ -7,6 +7,7 @@ import CoreData
 extension NSManagedObject: @retroactive @unchecked Sendable {}
 extension NSPredicate: @retroactive @unchecked Sendable {}
 extension NSFetchRequest: @retroactive @unchecked Sendable {}
+extension NSManagedObjectContext: @retroactive @unchecked Sendable {}
 
 public final actor CoreDataDatabase {
     private let context: NSManagedObjectContext
@@ -15,14 +16,14 @@ public final actor CoreDataDatabase {
         self.context = context
     }
 
-    public func delete<T: NSManagedObject>(_ model: T) async {
+    public func delete<T: NSManagedObject>(_ model: T) {
         self.context.delete(model)
     }
 
     public func delete<T: NSManagedObject>(
         ofType type: T.Type,
         where predicate: NSPredicate? = nil
-    ) async throws {
+    ) throws {
         let request = NSFetchRequest<T>(entityName: String(describing: T.self))
         request.predicate = predicate
 
@@ -32,13 +33,13 @@ public final actor CoreDataDatabase {
         }
     }
 
-    public func save() async throws {
+    public func save() throws {
         if self.context.hasChanges {
             try self.context.save()
         }
     }
 
-    public func fetch<T: NSManagedObject>(_ request: NSFetchRequest<T>) async throws -> [T] {
+    public func fetch<T: NSManagedObject>(_ request: NSFetchRequest<T>) throws -> [T] {
         try self.context.fetch(request)
     }
 }

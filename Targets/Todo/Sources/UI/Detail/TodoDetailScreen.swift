@@ -28,6 +28,7 @@ public extension Destination {
 
 @MainActor
 struct TodoDetailScreen: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var viewModel: TodoDetailViewModel
 
     private let id: Int
@@ -103,6 +104,20 @@ struct TodoDetailScreen: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .navigationTitle(viewModel.todo?.title ?? "Loading...")
+        .toolbar {
+            ToolbarItem {
+                Button {
+                    Task {
+                        await viewModel.delete()
+                        
+                        dismiss()
+                    }
+                } label: {
+                    Image(systemName: "trash")
+                }
+                .disabled(viewModel.todo == nil)
+            }
+        }
         .task {
             await viewModel.getTodo(id: id)
         }

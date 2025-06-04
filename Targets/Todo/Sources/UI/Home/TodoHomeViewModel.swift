@@ -29,14 +29,19 @@ class TodoHomeViewModel {
 
     func load() async {
         guard !isPreview else { return }
-        guard todoList.isEmpty else { return }
 
         sourceTodoList = await repository.getAll()
+
+        SuperLog.v(sourceTodoList)
 
         updateList()
     }
 
-    func add(title: String, notes: String, priority: UITodo.Priority) async {
+    func add(
+        title: String,
+        notes: String,
+        priority: UITodo.Priority
+    ) async {
         if title.isEmpty, notes.isEmpty {
             return
         }
@@ -55,10 +60,16 @@ class TodoHomeViewModel {
             SuperLog.d("error: \(error)")
         }
 
-        updateList()
+        // Reload Data
+        await load()
     }
 
-    func save(todo: UITodo.Todo, title: String, notes: String, priority: UITodo.Priority) async {
+    func update(
+        todo: UITodo.Todo,
+        title: String,
+        notes: String,
+        priority: UITodo.Priority
+    ) async {
         if title.isEmpty, notes.isEmpty {
             return
         }
@@ -70,6 +81,11 @@ class TodoHomeViewModel {
                 notes: notes,
                 priority: priority
             )
+
+            // Update the model
+            todo.title = title
+            todo.notes = notes
+            todo.priority = priority
         } catch {
             SuperLog.d("error: \(error)")
         }

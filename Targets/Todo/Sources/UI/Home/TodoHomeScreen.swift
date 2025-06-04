@@ -116,7 +116,7 @@ struct TodoHomeScreen: View {
                     editItem = nil
 
                     Task {
-                        await viewModel.save(
+                        await viewModel.update(
                             todo: todo,
                             title: title,
                             notes: notes,
@@ -146,7 +146,7 @@ struct TodoHomeScreen: View {
 
 // MARK: - Components
 
-struct TodoItemView: View {
+private struct TodoItemView: View {
     let title: String
     let notes: String
     let priority: UITodo.Priority

@@ -28,20 +28,20 @@ final class SwiftDataTodoDao: ITodoDao {
         return todos ?? []
     }
     
-    func getBy(id: Int) async -> SDTodo? {
+    func getBy(id: Int) async throws -> SDTodo? {
         let predicate = #Predicate<SDTodo> {
             $0.id == id
         }
         
         let descriptor = FetchDescriptor<SDTodo>(predicate: predicate)
-        let models = await (try? database.fetch(descriptor)) ?? []
+        let models = try await database.fetch(descriptor)
         
         return models.first
     }
     
     func insert(title: String, notes: String, priority: SDPriority) async throws {
         let todo = SDTodo(
-            id: UUID().hashValue,
+            id: Int(Date().timeIntervalSince1970 * 1000),
             title: title,
             notes: notes,
             priority: priority,

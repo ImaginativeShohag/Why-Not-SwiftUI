@@ -7,7 +7,7 @@ import Foundation
 
 protocol ITodoRepository: Sendable {
     func getAll() async -> [UITodo.Todo]
-    func getBy(id: Int) async -> UITodo.Todo?
+    func getBy(id: Int) async throws -> UITodo.Todo?
     func insert(todo: UITodo.Todo) async throws
     func delete(todo: UITodo.Todo) async throws
     func update(

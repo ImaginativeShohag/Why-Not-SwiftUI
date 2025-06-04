@@ -15,19 +15,21 @@ final actor CoreDataDataSource {
         let modelName = "TodoDB"
 
         persistentContainer = NSPersistentContainer.createContainer(modelName: modelName, bundle: .module)
-        persistentContainer.loadPersistentStores(completionHandler: { _, error in
+        persistentContainer.loadPersistentStores { _, error in
             guard let error = error as NSError? else { return }
             fatalError("###\(#function): Failed to load persistent stores:\(error)")
-        })
+        }
 
         persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
-
-        Task {
-            await generateSampleDataIfNeeded(context: persistentContainer.newBackgroundContext())
-        }
     }
 
-    /// `generateSampleDataIfNeeded(context: container.newBackgroundContext())`
+    /// Generate mock data.
+    ///
+    /// Usage:
+    ///
+    /// ```
+    /// generateSampleDataIfNeeded(context: container.newBackgroundContext())
+    /// ```
     func generateSampleDataIfNeeded(context: NSManagedObjectContext) {
         context.perform {
             guard let number = try? context.count(for: CDTodo.fetchRequest()), number == 0 else { return }

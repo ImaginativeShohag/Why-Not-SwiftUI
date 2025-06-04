@@ -5,9 +5,9 @@
 import CoreData
 
 extension CDTodo {
-    var priority: CDTodoPriority {
+    var priority: CDPriority {
         get {
-            CDTodoPriority(rawValue: self.priorityValue) ?? .medium
+            CDPriority(rawValue: self.priorityValue) ?? .medium
         }
         set {
             self.priorityValue = newValue.rawValue
@@ -21,7 +21,7 @@ extension CDTodo {
         id: Int = UUID().hashValue,
         title: String,
         notes: String,
-        priority: CDTodoPriority,
+        priority: CDPriority,
         isCompleted: Bool,
         createdAt: Date = Date()
     ) -> CDTodo {

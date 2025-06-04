@@ -2,14 +2,14 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-enum CDTodoPriority: Int16 {
+enum CDPriority: Int16 {
     case none = 0
     case low = 1
     case medium = 2
     case high = 3
 }
 
-extension CDTodoPriority {
+extension CDPriority {
     func toUIModel() -> UITodo.Priority {
         switch self {
         case .none:
@@ -23,7 +23,7 @@ extension CDTodoPriority {
         }
     }
     
-    static func fromUIModel(_ priority: UITodo.Priority) -> CDTodoPriority {
+    static func fromUIModel(_ priority: UITodo.Priority) -> CDPriority {
         switch priority {
         case .none:
             return .none

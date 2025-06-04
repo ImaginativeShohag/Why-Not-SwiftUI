@@ -3,17 +3,17 @@
 //
 
 import Observation
+import SuperLog
 import SwiftData
 import SwiftUI
+import SuperLog
 
 @MainActor
 @Observable
 class TodoDetailViewModel {
-    var todo: UITodo.Todo?
+    private(set) var todo: UITodo.Todo?
 
     private let repository: ITodoRepository
-
-    private var isPreview = false
 
     init(
         repository: ITodoRepository = TodoRepository()
@@ -22,8 +22,22 @@ class TodoDetailViewModel {
     }
 
     func getTodo(id: Int) async {
-        guard !isPreview else { return }
+        SuperLog.d("id: \(id)")
 
-        todo = await repository.getBy(id: id)
+        do {
+            todo = try await repository.getBy(id: id)
+        } catch {
+            SuperLog.e("error: \(error.localizedDescription)")
+        }
+    }
+
+    func delete() async {
+        guard let todo else { return }
+
+        do {
+            try await repository.delete(todo: todo)
+        } catch {
+            SuperLog.e("error: \(error.localizedDescription)")
+        }
     }
 }

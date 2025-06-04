@@ -18,7 +18,7 @@ public extension Destination {
 // MARK: - UI
 
 struct IntroScreen: View {
-    @State private var selectedDataSource: DataSourceType = .swiftData
+    @AppStorage("selectedDataSource") private var selectedDataSource: DataSourceType = .swiftData
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {

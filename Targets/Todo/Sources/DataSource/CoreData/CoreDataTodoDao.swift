@@ -3,20 +3,22 @@
 //
 
 import Core
+import CoreData
 import Foundation
 import SuperLog
-import CoreData
 
 final class CoreDataTodoDao: ITodoDao {
     typealias TodoEntity = CDTodo
-    typealias PriorityEntity = CDTodoPriority
-    
+    typealias PriorityEntity = CDPriority
+
     private let database: CoreDataDatabase
     private let context: NSManagedObjectContext
-    
+    private let container: NSPersistentContainer = CoreDataDataSource.shared.persistentContainer
+
     init(container: NSPersistentContainer = CoreDataDataSource.shared.persistentContainer) {
-        self.context = container.newBackgroundContext()
-        self.database = CoreDataDatabase(context: container.newBackgroundContext())
+        let newContext = container.viewContext
+        self.context = newContext
+        self.database = CoreDataDatabase(context: newContext)
     }
 
     func getAll() async -> [CDTodo] {
@@ -29,23 +31,25 @@ final class CoreDataTodoDao: ITodoDao {
         return data ?? []
     }
 
-    func getBy(id: Int) async -> CDTodo? {
+    func getBy(id: Int) async throws -> CDTodo? {
+        SuperLog.d("id: \(id)")
+
         let request = CDTodo.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %d", id)
+        request.predicate = NSPredicate(format: "id == %lld", id)
         request.fetchLimit = 1
 
-        let data = try? await database.fetch(request)
+        let data = try await database.fetch(request)
 
-        return data?.first
+        return data.first
     }
 
-    func insert(title: String, notes: String, priority: CDTodoPriority) async throws {
+    func insert(title: String, notes: String, priority: CDPriority) async throws {
         let todo = CDTodo(context: context)
-        todo.id = Int64(UUID().hashValue)
+        todo.id = Int64(Date().timeIntervalSince1970 * 1000)
         todo.title = title
         todo.notes = notes
         todo.priority = priority
-        
+
         try await database.save()
     }
 
@@ -54,7 +58,7 @@ final class CoreDataTodoDao: ITodoDao {
         try await database.save()
     }
 
-    func update(entity todo: CDTodo, title: String, notes: String, priority: CDTodoPriority) async throws {
+    func update(entity todo: CDTodo, title: String, notes: String, priority: CDPriority) async throws {
         todo.title = title
         todo.notes = notes
         todo.priority = priority
