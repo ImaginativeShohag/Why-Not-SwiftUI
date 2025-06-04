@@ -131,20 +131,25 @@ class TodoHomeViewModel {
 #if DEBUG
 
 extension TodoHomeViewModel {
-    convenience init(forPreview: Bool) {
+    convenience init(
+        forPreview: Bool,
+        isEmpty: Bool = false
+    ) {
         self.init(
             repository: MockTodoRepository()
         )
 
         self.isPreview = true
 
-        self.sourceTodoList = (1 ... 100).map {
-            UITodo.Todo(
-                title: "Task \($0)",
-                notes: "Notes \($0)",
-                priority: $0 % 2 == 0 ? .none : .medium,
-                isCompleted: $0 % 2 == 0 ? true : false
-            )
+        if !isEmpty {
+            self.sourceTodoList = (1 ... 100).map {
+                UITodo.Todo(
+                    title: "Task \($0)",
+                    notes: "Notes \($0)",
+                    priority: $0 % 2 == 0 ? .none : .medium,
+                    isCompleted: $0 % 2 == 0 ? true : false
+                )
+            }
         }
 
         updateList()

@@ -32,28 +32,36 @@ struct TodoHomeScreen: View {
 
     var body: some View {
         VStack {
-            List(viewModel.todoList, id: \.id) { todo in
-                TodoItemView(
-                    title: todo.title,
-                    notes: todo.notes,
-                    priority: todo.priority,
-                    isCompleted: todo.isCompleted,
-                    onClick: {
-                        NavController.shared.navigateTo(
-                            Destination.TodoDetail(
-                                id: todo.id
-                            )
-                        )
-                    },
-                    onEditClick: {
-                        editItem = todo
-                    },
-                    onCompleteClick: {
-                        viewModel.toggleTodoCompleteStatus(for: todo)
-                    }
+            if viewModel.todoList.isEmpty {
+                ContentUnavailableView(
+                    "Nothing here yet!",
+                    systemImage: "heart.text.clipboard",
+                    description: Text("Your todo will appear here.")
                 )
+            } else {
+                List(viewModel.todoList, id: \.id) { todo in
+                    TodoItemView(
+                        title: todo.title,
+                        notes: todo.notes,
+                        priority: todo.priority,
+                        isCompleted: todo.isCompleted,
+                        onClick: {
+                            NavController.shared.navigateTo(
+                                Destination.TodoDetail(
+                                    id: todo.id
+                                )
+                            )
+                        },
+                        onEditClick: {
+                            editItem = todo
+                        },
+                        onCompleteClick: {
+                            viewModel.toggleTodoCompleteStatus(for: todo)
+                        }
+                    )
+                }
+                .animation(.default, value: viewModel.todoList)
             }
-            .animation(.default, value: viewModel.todoList)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -136,7 +144,18 @@ struct TodoHomeScreen: View {
     NavigationStack {
         TodoHomeScreen(
             viewModel: TodoHomeViewModel(
-                repository: MockTodoRepository()
+                forPreview: true
+            )
+        )
+    }
+}
+
+#Preview("Empty") {
+    NavigationStack {
+        TodoHomeScreen(
+            viewModel: TodoHomeViewModel(
+                forPreview: true,
+                isEmpty: true
             )
         )
     }
