@@ -24,9 +24,6 @@ struct MainContainerScreen: View {
                     SuperLog.v("navStack: \(navController.navStack)")
                 }
         }
-        .onAppear {
-            navController.navigateTo(Destination.TodoIntro())
-        }
     }
 }
 

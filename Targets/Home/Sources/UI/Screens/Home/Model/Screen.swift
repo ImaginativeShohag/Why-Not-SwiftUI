@@ -80,8 +80,8 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.ShimmerUI()
         ),
         Screen(
-            name: "Todo App",
-            destination: Destination.TodoHome()
+            name: "📋 Todo App",
+            destination: Destination.TodoIntro()
         ),
         Screen(
             name: "🥭 News App",

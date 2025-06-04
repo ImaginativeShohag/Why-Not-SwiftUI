@@ -112,7 +112,7 @@ struct TodoHomeScreen: View {
             }
         }
         .navigationTitle("Todo")
-        .toolbarTitleDisplayMode(.inlineLarge)
+        .toolbarTitleDisplayMode(.inline)
         .task {
             await viewModel.load()
         }

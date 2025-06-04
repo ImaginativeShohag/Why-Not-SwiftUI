@@ -12,8 +12,8 @@ import SwiftUI
 @Observable
 class TodoHomeViewModel {
     private(set) var todoList: [UITodo.Todo] = []
-    private(set) var showCompletedItems = false
-    private(set) var sortToShowLatestFirst = true
+    private(set) var showCompletedItems = Preferences.showCompletedItems ?? false
+    private(set) var sortToShowLatestFirst = Preferences.sortToShowLatestFirst ?? true
     private(set) var selectedPriority: UITodo.Priority = .none
 
     private let repository: ITodoRepository
@@ -94,12 +94,16 @@ class TodoHomeViewModel {
 
     func changeShowCompletedItems() {
         showCompletedItems.toggle()
+        
+        Preferences.showCompletedItems = showCompletedItems
 
         updateList()
     }
 
     func changeSortToShowLatestFirst() {
         sortToShowLatestFirst.toggle()
+        
+        Preferences.sortToShowLatestFirst = sortToShowLatestFirst
 
         updateList()
     }
@@ -110,6 +114,12 @@ class TodoHomeViewModel {
         if todo.isCompleted, !showCompletedItems, let index = todoList.firstIndex(of: todo) {
             todoList.remove(at: index)
         }
+    }
+    
+    func updatePriorityFilter(priority: UITodo.Priority) {
+        selectedPriority = priority
+
+        updateList()
     }
 
     func updateList() {
@@ -132,12 +142,6 @@ class TodoHomeViewModel {
         } else {
             todoList = items
         }
-    }
-
-    func updatePriorityFilter(priority: UITodo.Priority) {
-        selectedPriority = priority
-
-        updateList()
     }
 }
 
