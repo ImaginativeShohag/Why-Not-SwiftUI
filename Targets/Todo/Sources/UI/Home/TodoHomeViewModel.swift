@@ -14,6 +14,7 @@ class TodoHomeViewModel {
     private(set) var todoList: [UITodo.Todo] = []
     private(set) var showCompletedItems = false
     private(set) var sortToShowLatestFirst = true
+    private(set) var selectedPriority: UITodo.Priority = .none
 
     private let repository: ITodoRepository
 
@@ -112,7 +113,7 @@ class TodoHomeViewModel {
     }
 
     func updateList() {
-        let items = sourceTodoList.filter { todo in
+        var items = sourceTodoList.filter { todo in
             if showCompletedItems {
                 true
             } else {
@@ -120,11 +121,23 @@ class TodoHomeViewModel {
             }
         }
 
+        // Filter by priority
+        if selectedPriority != .none {
+            items = items.filter { $0.priority == selectedPriority }
+        }
+
+        // Sort
         if sortToShowLatestFirst {
             todoList = items.reversed()
         } else {
             todoList = items
         }
+    }
+
+    func updatePriorityFilter(priority: UITodo.Priority) {
+        selectedPriority = priority
+
+        updateList()
     }
 }
 
@@ -146,8 +159,8 @@ extension TodoHomeViewModel {
                 UITodo.Todo(
                     title: "Task \($0)",
                     notes: "Notes \($0)",
-                    priority: $0 % 2 == 0 ? .none : .medium,
-                    isCompleted: $0 % 2 == 0 ? true : false
+                    priority: $0 % 2 == 0 ? .none : ($0 % 3 == 0 ? .medium : .high),
+                    isCompleted: Bool.random()
                 )
             }
         }

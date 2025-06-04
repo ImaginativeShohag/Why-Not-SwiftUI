@@ -31,7 +31,23 @@ struct TodoHomeScreen: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
+            HStack {
+                ForEach(UITodo.Priority.allCases, id: \.self) { priority in
+                    Button {
+                        viewModel.updatePriorityFilter(priority: priority)
+                    } label: {
+                        Text(priority == .none ? "All" : priority.description)
+                            .bold(viewModel.selectedPriority == priority)
+                            .padding(8)
+                            .frame(maxWidth: .infinity)
+                            .background(viewModel.selectedPriority == priority ? Color.blue.opacity(0.2) : Color.clear)
+                            .cornerRadius(8)
+                    }
+                }
+            }
+            .padding()
+
             if viewModel.todoList.isEmpty {
                 ContentUnavailableView(
                     "Nothing here yet!",
@@ -60,15 +76,15 @@ struct TodoHomeScreen: View {
                         }
                     )
                 }
-                .animation(.default, value: viewModel.todoList)
             }
         }
+        .animation(.default, value: viewModel.todoList)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     viewModel.changeSortToShowLatestFirst()
                 } label: {
-                    Image(systemName: "arrow.up.arrow.down")
+                    Image(systemName: viewModel.sortToShowLatestFirst ?  "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle")
                 }
             }
 
@@ -96,6 +112,7 @@ struct TodoHomeScreen: View {
             }
         }
         .navigationTitle("Todo")
+        .toolbarTitleDisplayMode(.inlineLarge)
         .task {
             await viewModel.load()
         }
@@ -140,7 +157,7 @@ struct TodoHomeScreen: View {
 
 #if DEBUG
 
-#Preview {
+#Preview("With Data") {
     NavigationStack {
         TodoHomeScreen(
             viewModel: TodoHomeViewModel(
