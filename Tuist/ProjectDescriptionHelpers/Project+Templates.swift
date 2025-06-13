@@ -77,7 +77,8 @@ public extension Project {
             name: name,
             organizationName: organizationName,
             options: .options(
-                automaticSchemesOptions: .disabled
+                automaticSchemesOptions: .disabled,
+                defaultKnownRegions: ["Base", "en", "bn"]
             ),
             settings: .settings(
                 base: baseSettings,

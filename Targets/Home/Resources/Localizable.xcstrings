@@ -8,7 +8,14 @@
 
     },
     " ipsum!" : {
-
+      "localizations" : {
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ইপসাম!"
+          }
+        }
+      }
     },
     "%@" : {
 
