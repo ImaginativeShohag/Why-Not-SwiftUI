@@ -13,7 +13,6 @@ final class CoreDataTodoDao: ITodoDao {
 
     private let database: CoreDataDatabase
     private let context: NSManagedObjectContext
-    private let container: NSPersistentContainer = CoreDataDataSource.shared.persistentContainer
 
     init(container: NSPersistentContainer = CoreDataDataSource.shared.persistentContainer) {
         let newContext = container.viewContext

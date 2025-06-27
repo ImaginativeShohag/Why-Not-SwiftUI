@@ -104,7 +104,12 @@ final class TodoRepository: ITodoRepository {
         }
     }
     
-    func update(todo: UITodo.Todo, title: String, notes: String, priority: UITodo.Priority) async throws {
+    func update(
+        todo: UITodo.Todo,
+        title: String,
+        notes: String,
+        priority: UITodo.Priority
+    ) async throws {
         switch source {
             case .coreData:
                 let dbTodo = try await coreDataTodoDao.getBy(id: todo.id)
