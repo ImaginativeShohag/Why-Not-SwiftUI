@@ -163,3 +163,7 @@ fabric.properties
 
 # We do not need anything from the .idea folder.
 .idea
+
+# We do not need anything from the .vscode folder.
+.vscode
+buildServer.json

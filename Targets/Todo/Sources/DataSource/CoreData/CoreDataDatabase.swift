@@ -55,6 +55,6 @@ public extension CoreDataDatabase {
         let request = NSFetchRequest<T>(entityName: String(describing: T.self))
         request.predicate = predicate
         request.sortDescriptors = sortBy
-        return try await self.fetch(request)
+        return try self.fetch(request)
     }
 }
