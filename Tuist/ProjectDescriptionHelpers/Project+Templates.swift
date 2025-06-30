@@ -82,7 +82,8 @@ public extension Project {
             ),
             settings: .settings(
                 base: baseSettings,
-                configurations: BuildEnvironment.getConfigurations(for: .app)
+                configurations: BuildEnvironment.getConfigurations(for: .app),
+                defaultConfiguration: "Debug Development"
             ),
             targets: targets,
             schemes: [
