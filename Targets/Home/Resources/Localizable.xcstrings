@@ -8,10 +8,10 @@
 
     },
     " ipsum!" : {
-
+      "shouldTranslate" : false
     },
     "%@" : {
-
+      "shouldTranslate" : false
     },
     "%@ (%@)" : {
       "localizations" : {
@@ -21,25 +21,26 @@
             "value" : "%1$@ (%2$@)"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%@ pt" : {
-
+      "shouldTranslate" : false
     },
     "%@%%" : {
-
+      "shouldTranslate" : false
     },
     "•" : {
-
+      "shouldTranslate" : false
     },
     "`.rotationEffect()`" : {
-
+      "shouldTranslate" : false
     },
     "`.scaleEffect()`" : {
-
+      "shouldTranslate" : false
     },
     "✿" : {
-
+      "shouldTranslate" : false
     },
     "1K" : {
 
@@ -165,7 +166,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Date: %1$@ | Time: %2$@"
           }
         }
@@ -299,10 +300,10 @@
 
     },
     "L" : {
-
+      "shouldTranslate" : false
     },
     "L\nO\nR\nE\nM" : {
-
+      "shouldTranslate" : false
     },
     "Large" : {
 
@@ -320,10 +321,10 @@
 
     },
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam" : {
-
+      "shouldTranslate" : false
     },
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." : {
-
+      "shouldTranslate" : false
     },
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit." : {
 
