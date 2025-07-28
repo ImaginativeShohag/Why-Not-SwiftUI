@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+      "shouldTranslate" : false
+    },
     " **Canvas Device Settings** to quickly understand the effects." : {
 
     },
@@ -8,7 +11,18 @@
 
     },
     " ipsum!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " ipsum!"
+          }
+        }
+      },
       "shouldTranslate" : false
+    },
+    "@AppStorage Example" : {
+
     },
     "%@" : {
       "shouldTranslate" : false
@@ -24,10 +38,24 @@
       },
       "shouldTranslate" : false
     },
-    "%@ pt" : {
+    "%lld" : {
       "shouldTranslate" : false
     },
-    "%@%%" : {
+    "%lld piece%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld piece%2$@"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "%lld pt" : {
+      "shouldTranslate" : false
+    },
+    "%lld%%" : {
       "shouldTranslate" : false
     },
     "•" : {
@@ -57,6 +85,12 @@
     "Accessibility Differentiate Without Color Example" : {
 
     },
+    "Accessibility Modifiers" : {
+
+    },
+    "Accessibility Preferences" : {
+
+    },
     "Accessibility Reduce Motion Example" : {
 
     },
@@ -69,6 +103,9 @@
     "Adjustable Action Example" : {
 
     },
+    "Alamofire Example" : {
+
+    },
     "All items inside the container will be shimmering." : {
 
     },
@@ -78,19 +115,52 @@
     "allowsDirectInteraction Trait" : {
 
     },
+    "Always Popover" : {
+
+    },
+    "Animation Example" : {
+
+    },
     "Anything" : {
+
+    },
+    "Ask anything!" : {
+
+    },
+    "Ask anything..." : {
+
+    },
+    "Awesome" : {
+
+    },
+    "Awesome Image %lld" : {
 
     },
     "Back" : {
 
     },
+    "Beaches" : {
+
+    },
     "Blue" : {
+
+    },
+    "Blue flowers" : {
 
     },
     "Body" : {
 
     },
+    "Bold" : {
+
+    },
+    "Broken" : {
+
+    },
     "Callout" : {
+
+    },
+    "Cancel" : {
 
     },
     "Cannot access your location. Please allow location access in the settings." : {
@@ -111,10 +181,16 @@
     "Checkmark" : {
 
     },
+    "Choose a locale" : {
+
+    },
     "Choose from Library (Multiple)" : {
 
     },
     "Choose from Library (Single)" : {
+
+    },
+    "Clear" : {
 
     },
     "Combine Complex Elements Example" : {
@@ -127,6 +203,9 @@
 
     },
     "Create Alert" : {
+
+    },
+    "Custom Accessibility Actions" : {
 
     },
     "Custom Actions Example" : {
@@ -166,11 +245,17 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "new",
             "value" : "Date: %1$@ | Time: %2$@"
           }
         }
       }
+    },
+    "Decrease" : {
+
+    },
+    "Decrement" : {
+
     },
     "Delete" : {
 
@@ -196,7 +281,25 @@
     "Do what you enjoy." : {
 
     },
+    "Do you want to delete this?" : {
+
+    },
+    "Done" : {
+
+    },
+    "Double tap to change the image." : {
+
+    },
+    "Double tap to increase the text size." : {
+
+    },
+    "Double tap to view preview." : {
+
+    },
     "Dynamic layout" : {
+
+    },
+    "Dynamic Type" : {
 
     },
     "Enjoy what you do." : {
@@ -208,7 +311,28 @@
     "Enter a valid email!" : {
 
     },
+    "Enter text" : {
+
+    },
+    "Enter url" : {
+
+    },
+    "Example Five" : {
+
+    },
     "Example for `@ScaledMetric`" : {
+
+    },
+    "Example Four" : {
+
+    },
+    "Example One" : {
+
+    },
+    "Example Three" : {
+
+    },
+    "Example Two" : {
 
     },
     "Failed to load preview." : {
@@ -256,6 +380,15 @@
     "Ignored Image Example" : {
 
     },
+    "Image" : {
+
+    },
+    "Increase" : {
+
+    },
+    "Increment" : {
+
+    },
     "isButton Trait" : {
 
     },
@@ -286,12 +419,15 @@
     "isToggle Trait" : {
 
     },
-    "Item: %@ piece%@" : {
+    "Italic" : {
+
+    },
+    "Item: %lld piece%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Item: %1$@ piece%2$@"
+            "value" : "Item: %1$lld piece%2$@"
           }
         }
       }
@@ -304,6 +440,9 @@
     },
     "L\nO\nR\nE\nM" : {
       "shouldTranslate" : false
+    },
+    "Label Toggle" : {
+
     },
     "Large" : {
 
@@ -321,12 +460,21 @@
 
     },
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam" : {
-      "shouldTranslate" : false
+
     },
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." : {
-      "shouldTranslate" : false
+
     },
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit." : {
+
+    },
+    "Map" : {
+
+    },
+    "Markup" : {
+
+    },
+    "Media Capture & Select" : {
 
     },
     "Medium" : {
@@ -335,7 +483,22 @@
     "Mentions" : {
 
     },
+    "MetricKit" : {
+
+    },
+    "Native Alert" : {
+
+    },
     "Native Toggle" : {
+
+    },
+    "New name" : {
+
+    },
+    "No" : {
+
+    },
+    "No attachment yet." : {
 
     },
     "No crash report found!" : {
@@ -344,19 +507,58 @@
     "No Fill" : {
 
     },
+    "No flower found." : {
+
+    },
+    "No fruit found." : {
+
+    },
     "No Stroke" : {
+
+    },
+    "Not Broken" : {
 
     },
     "Notifications" : {
 
     },
+    "Notify Me About" : {
+
+    },
+    "Ok" : {
+
+    },
+    "Ollama Example" : {
+
+    },
     "orem" : {
+
+    },
+    "Play notification sounds" : {
+
+    },
+    "Playgrounds" : {
 
     },
     "playsSound Trait" : {
 
     },
+    "Preparing preview..." : {
+
+    },
+    "Press here" : {
+
+    },
+    "Press Me" : {
+
+    },
+    "Preview dialog." : {
+
+    },
     "Processing..." : {
+
+    },
+    "Profile Image Size" : {
 
     },
     "Purple" : {
@@ -365,13 +567,37 @@
     "Push Notification 🔔" : {
 
     },
+    "Realm Example" : {
+
+    },
     "Red" : {
 
     },
-    "Report Size: %@" : {
+    "Red flowers" : {
+
+    },
+    "Redo" : {
+
+    },
+    "Reorder List" : {
+
+    },
+    "Report Size: %lld" : {
+
+    },
+    "Reset" : {
 
     },
     "Result" : {
+
+    },
+    "Ring Chart: Fitness" : {
+
+    },
+    "Ring Chart: Overview" : {
+
+    },
+    "Rotor Example" : {
 
     },
     "Select a date" : {
@@ -380,10 +606,19 @@
     "Select a time" : {
 
     },
+    "Send read receipts" : {
+
+    },
     "Set/Limit Dynamic Type Size" : {
 
     },
+    "ShimmerUI" : {
+
+    },
     "Show Alert" : {
+
+    },
+    "Show All" : {
 
     },
     "Show Toast 1" : {
@@ -407,6 +642,9 @@
     "startsMediaSession Trait" : {
 
     },
+    "Strikethrough" : {
+
+    },
     "Sub-Headline" : {
 
     },
@@ -419,6 +657,12 @@
     "Success Alert" : {
 
     },
+    "Super Progress" : {
+
+    },
+    "Super Toast" : {
+
+    },
     "SwiftUI Popover" : {
 
     },
@@ -426,6 +670,9 @@
 
     },
     "Take New Video" : {
+
+    },
+    "TextField Validation" : {
 
     },
     "The layout will be changed based on the `Dynamic Type`." : {
@@ -476,16 +723,40 @@
     "Toast Type Two: Show" : {
 
     },
+    "Toggle label (Custom Animation)" : {
+
+    },
+    "Toggle label (Default Animation)" : {
+
+    },
+    "Toggle Marker UI" : {
+
+    },
+    "Toggle Zoom" : {
+
+    },
     "Turn on location service to show your current location on the map." : {
 
     },
     "Type a URL and tap Go." : {
 
     },
+    "Typography" : {
+
+    },
     "UIKit Popover" : {
 
     },
+    "Underline" : {
+
+    },
+    "Undo" : {
+
+    },
     "updatesFrequently Trait" : {
+
+    },
+    "URLSession Example" : {
 
     },
     "Use " : {
@@ -503,6 +774,9 @@
     "User Profiles" : {
 
     },
+    "Value" : {
+
+    },
     "Variation 1" : {
 
     },
@@ -512,13 +786,28 @@
     "Variation 3" : {
 
     },
+    "Why Not SwiftUI!" : {
+
+    },
     "With: `.delay()`" : {
+
+    },
+    "Yellow flowers" : {
+
+    },
+    "Yes" : {
+
+    },
+    "You can toggle the checkmark" : {
 
     },
     "Your result is" : {
 
     },
     "Your score is" : {
+
+    },
+    "Your score is 1000" : {
 
     },
     "Zoom Text" : {
@@ -531,5 +820,5 @@
 
     }
   },
-  "version" : "1.1"
+  "version" : "1.0"
 }

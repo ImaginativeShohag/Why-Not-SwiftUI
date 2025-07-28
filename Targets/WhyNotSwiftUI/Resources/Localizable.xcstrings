@@ -1,16 +1,15 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@ (%@)" : {
+    "%@ (%lld)" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%1$@ (%2$@)"
+            "value" : "%1$@ (%2$lld)"
           }
         }
-      },
-      "shouldTranslate" : false
+      }
     },
     "Why Not SwiftUI!" : {
       "shouldTranslate" : false
