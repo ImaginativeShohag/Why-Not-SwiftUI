@@ -16,11 +16,11 @@ public struct HomeScreen: View {
             // MARK: Custom Menu
 
             HStack {
-                Text("jailbroken-status", bundle: .module)
+                Text(NSLocalizedString("jailbroken_status_label", bundle: .module, comment: ""), bundle: .module)
 
                 Spacer()
 
-                Text(viewModel.isJailBroken ? "Broken" : "Not Broken")
+                Text(viewModel.isJailBroken ? NSLocalizedString("jailbroken_status_broken", bundle: .module, comment: "") : NSLocalizedString("jailbroken_status_not_broken", bundle: .module, comment: ""))
                     .foregroundColor(viewModel.isJailBroken ? Color(.systemRed) : Color(.systemGreen))
             }
 
@@ -29,7 +29,7 @@ public struct HomeScreen: View {
             Button {
                 fatalError("Hello, Crashed!")
             } label: {
-                Text("Crash App 💥")
+                Text(NSLocalizedString("crash_app_button_title", bundle: .module, comment: ""))
             }
             .foregroundColor(Color.theme.black)
 
@@ -38,7 +38,7 @@ public struct HomeScreen: View {
             Button {
                 UNUserNotificationCenter.current().sendDummyNotification()
             } label: {
-                Text("Push Notification 🔔")
+                Text(NSLocalizedString("push_notification_button_label", bundle: .module, comment: ""))
             }
             .foregroundColor(Color.theme.black)
 
@@ -51,7 +51,7 @@ public struct HomeScreen: View {
             }
         }
         .fontStyle(size: 16)
-        .navigationTitle("Why Not SwiftUI!")
+        .navigationTitle(NSLocalizedString("home_screen_navigation_title", bundle: .module, comment: ""))
     }
 }
 

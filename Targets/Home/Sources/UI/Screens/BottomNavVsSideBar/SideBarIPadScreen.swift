@@ -25,7 +25,7 @@ struct SideBarIPadScreen: View {
                     }
 
                     SideBarIPadListItem(
-                        title: "Green",
+                        title: NSLocalizedString("tab_item_label_green", bundle: .module, comment: ""),
                         systemImage: "calendar",
                         color: .green,
                         isSelected: selection == 2
@@ -34,7 +34,7 @@ struct SideBarIPadScreen: View {
                     }
 
                     SideBarIPadListItem(
-                        title: "Blue",
+                        title: NSLocalizedString("tab_item_label_red", bundle: .module, comment: ""),
                         systemImage: "magnifyingglass",
                         color: .blue,
                         isSelected: selection == 3
@@ -43,7 +43,7 @@ struct SideBarIPadScreen: View {
                     }
 
                     SideBarIPadListItem(
-                        title: "Purple",
+                        title: NSLocalizedString("tab_item_label_purple", bundle: .module, comment: ""),
                         systemImage: "bell.fill",
                         color: .purple,
                         isSelected: selection == 4
@@ -55,7 +55,7 @@ struct SideBarIPadScreen: View {
                 }
             }
             .padding(.horizontal, 16)
-            .navigationTitle("Awesome")
+            .navigationTitle(NSLocalizedString("sidebar_navigation_title", bundle: .module, comment: ""))
 
             // MARK: Screens
 
@@ -68,17 +68,17 @@ struct SideBarIPadScreen: View {
 
                     case 2:
                         ColorScreen(color: .green)
-                            .navigationTitle("Green")
+                            .navigationTitle(NSLocalizedString("tab_item_label_green", bundle: .module, comment: ""))
                             .edgesIgnoringSafeArea(.top)
 
                     case 3:
                         ColorScreen(color: .blue)
-                            .navigationTitle("Blue")
+                            .navigationTitle(NSLocalizedString("tab_item_label_red", bundle: .module, comment: ""))
                             .edgesIgnoringSafeArea(.top)
 
                     default:
                         ColorScreen(color: .purple)
-                            .navigationTitle("Purple")
+                            .navigationTitle(NSLocalizedString("tab_item_label_purple", bundle: .module, comment: ""))
                             .edgesIgnoringSafeArea(.top)
                 }
             }
@@ -87,7 +87,7 @@ struct SideBarIPadScreen: View {
                     Button {
                         onDismissClicked()
                     } label: {
-                        Text("Back")
+                        Text(NSLocalizedString("tab_title_red", bundle: .module, comment: ""))
                     }
                 }
             }

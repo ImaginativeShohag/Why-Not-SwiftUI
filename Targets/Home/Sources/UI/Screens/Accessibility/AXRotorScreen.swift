@@ -31,7 +31,7 @@ struct AXRotorScreen: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("Use **VoiceOver** to check the custom Rotors.")
+            Text(NSLocalizedString("voiceover_rotor_instruction", bundle: .module, comment: ""))
                 .font(.footnote)
                 .multilineTextAlignment(.center)
             
@@ -50,7 +50,7 @@ struct AXRotorScreen: View {
                 }
             }
             /// Adding custom rotor shortcut to access `Red` flowers using rotor gesture.
-            .accessibilityRotor("Red flowers") {
+            .accessibilityRotor(NSLocalizedString("red_flowers_rotor_label", bundle: .module, comment: "")) {
                 ForEach(flowers, id: \.id) { flower in
                     if flower.color == .red {
                         AccessibilityRotorEntry(flower.name, id: flower.id)
@@ -58,7 +58,7 @@ struct AXRotorScreen: View {
                 }
             }
             /// Adding custom rotor shortcut to access `Yellow` flowers using rotor gesture.
-            .accessibilityRotor("Yellow flowers") {
+            .accessibilityRotor(NSLocalizedString("yellow_flowers_rotor_label", bundle: .module, comment: "")) {
                 ForEach(flowers, id: \.id) { flower in
                     if flower.color == .yellow {
                         AccessibilityRotorEntry(flower.name, id: flower.id)
@@ -66,7 +66,7 @@ struct AXRotorScreen: View {
                 }
             }
             /// Adding custom rotor shortcut to access `Blue` flowers using rotor gesture.
-            .accessibilityRotor("Blue flowers") {
+            .accessibilityRotor(NSLocalizedString("blue_flowers", bundle: .module, comment: "")) {
                 ForEach(flowers, id: \.id) { flower in
                     if flower.color == .blue {
                         AccessibilityRotorEntry(flower.name, id: flower.id)
@@ -74,7 +74,7 @@ struct AXRotorScreen: View {
                 }
             }
         }
-        .navigationTitle("Rotor Example")
+        .navigationTitle(NSLocalizedString("rotor_example_navigation_title", bundle: .module, comment: ""))
     }
 }
 

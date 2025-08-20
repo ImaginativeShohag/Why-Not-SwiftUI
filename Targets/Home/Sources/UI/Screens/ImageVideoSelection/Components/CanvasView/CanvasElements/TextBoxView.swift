@@ -21,7 +21,7 @@ struct TextBoxView: View {
 
     var body: some View {
         ZStack {
-            TextField("Enter text", text: $box.text, axis: .vertical)
+            TextField(NSLocalizedString("text_box_placeholder_enter_text", bundle: .module, comment: ""), text: $box.text, axis: .vertical)
                 .focused($isFocused)
                 .textFieldStyle(.plain)
                 .disabled(!isSelected)
@@ -252,16 +252,16 @@ struct TextFormatPopoverView: View {
             HStack {
                 ControlGroup {
                     Toggle(isOn: $box.isBold) {
-                        Label("Bold", systemImage: "bold")
+                        Label(NSLocalizedString("bold_text_format", bundle: .module, comment: ""), systemImage: "bold")
                     }
                     Toggle(isOn: $box.isItalic) {
-                        Label("Italic", systemImage: "italic")
+                        Label(NSLocalizedString("italic_text_format", bundle: .module, comment: ""), systemImage: "italic")
                     }
                     Toggle(isOn: $box.isUnderline) {
-                        Label("Underline", systemImage: "underline")
+                        Label(NSLocalizedString("underline_text_format", bundle: .module, comment: ""), systemImage: "underline")
                     }
                     Toggle(isOn: $box.isStrikethrough) {
-                        Label("Strikethrough", systemImage: "strikethrough")
+                        Label(NSLocalizedString("strikethrough_text_format", bundle: .module, comment: ""), systemImage: "strikethrough")
                     }
                 }
                 .controlGroupStyle(ControlGroupNoneSeparatorStyle())
@@ -290,13 +290,13 @@ struct TextFormatPopoverView: View {
                     Button(action: {
                         box.fontSize -= 1
                     }) {
-                        Label("Decrease", systemImage: "minus")
+                        Label(NSLocalizedString("decrease", bundle: .module, comment: ""), systemImage: "minus")
                     }
 
                     Button(action: {
                         box.fontSize += 1
                     }) {
-                        Label("Increase", systemImage: "plus")
+                        Label(NSLocalizedString("increase", bundle: .module, comment: ""), systemImage: "plus")
                     }
                 }
             }

@@ -24,7 +24,7 @@ struct BottomNavIOSScreen: View {
                     .edgesIgnoringSafeArea(.top)
                     .tabItem {
                         Image(systemName: "calendar")
-                        Text("Green")
+                        Text(NSLocalizedString("tab_item_label_green", bundle: .module, comment: ""))
                     }
                     .tag(2)
                 
@@ -32,7 +32,7 @@ struct BottomNavIOSScreen: View {
                     .edgesIgnoringSafeArea(.top)
                     .tabItem {
                         Image(systemName: "magnifyingglass")
-                        Text("Blue")
+                        Text(NSLocalizedString("tab_item_label_red", bundle: .module, comment: ""))
                     }
                     .tag(3)
                 
@@ -40,7 +40,7 @@ struct BottomNavIOSScreen: View {
                     .edgesIgnoringSafeArea(.top)
                     .tabItem {
                         Image(systemName: "bell.fill")
-                        Text("Purple")
+                        Text(NSLocalizedString("tab_item_label_purple", bundle: .module, comment: ""))
                     }
                     .tag(4)
             }
@@ -50,7 +50,7 @@ struct BottomNavIOSScreen: View {
                     Button {
                         onDismissClicked()
                     } label: {
-                        Text("Back")
+                        Text(NSLocalizedString("tab_title_red", bundle: .module, comment: ""))
                             .foregroundColor(.white)
                     }
                 }

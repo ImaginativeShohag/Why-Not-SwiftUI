@@ -24,13 +24,13 @@ struct CustomAXActionsScreen: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                Text("Use **VoiceOver** to check below examples.")
+                Text(NSLocalizedString("voiceover_instruction_text", bundle: .module, comment: ""))
                     .font(.footnote)
                     .multilineTextAlignment(.center)
 
                 Divider()
 
-                Text("Adjustable Action Example")
+                Text(NSLocalizedString("adjustable_action_example_title", bundle: .module, comment: ""))
                     .font(.title)
 
                 VStack {
@@ -38,11 +38,11 @@ struct CustomAXActionsScreen: View {
                         .transition(.opacity)
                         .id("CounterComponent\(countValue)")
 
-                    Button("Increment") {
+                    Button(NSLocalizedString("increment_button_title", bundle: .module, comment: "")) {
                         countValue += 1
                     }
 
-                    Button("Decrement") {
+                    Button(NSLocalizedString("decrement_button_title", bundle: .module, comment: "")) {
                         countValue -= 1
                     }
                 }
@@ -73,7 +73,7 @@ struct CustomAXActionsScreen: View {
 
                 // MARK: -
 
-                Text("Custom Actions Example")
+                Text(NSLocalizedString("custom_actions_example_title", bundle: .module, comment: ""))
                     .font(.title)
 
                 LazyVGrid(
@@ -98,11 +98,11 @@ struct CustomAXActionsScreen: View {
             }
             .padding(.horizontal)
         }
-        .navigationTitle("Custom Accessibility Actions")
-        .alert("Preview dialog.", isPresented: $showPreviewAlert) {
+        .navigationTitle(NSLocalizedString("custom_accessibility_actions_menu_item", bundle: .module, comment: ""))
+        .alert(NSLocalizedString("preview_dialog_title", bundle: .module, comment: ""), isPresented: $showPreviewAlert) {
             Button("Ok", role: .cancel) {}
         }
-        .alert("Do you want to delete this?", isPresented: $showDeleteAlert) {
+        .alert(NSLocalizedString("delete_confirmation_alert_title", bundle: .module, comment: ""), isPresented: $showDeleteAlert) {
             Button("No", role: .cancel) {}
             Button("Yes", role: .destructive) {}
         }
@@ -154,9 +154,9 @@ private struct AttachmentItem: View {
         /// Set custom label for AX tools.
         .accessibilityLabel("Awesome Image \(id)")
         /// Set custom hint for AX tools.
-        .accessibilityHint("Double tap to view preview.")
+        .accessibilityHint(NSLocalizedString("attachment_preview_hint", bundle: .module, comment: ""))
         /// Adding custom action for `delete`.
-        .accessibilityAction(named: Text("Delete")) {
+        .accessibilityAction(named: Text(NSLocalizedString("attachment_delete_action", bundle: .module, comment: ""))) {
             onDeleteClick()
         }
     }

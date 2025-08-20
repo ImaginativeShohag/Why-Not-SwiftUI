@@ -26,29 +26,29 @@ struct AppStorageScreen: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Description")) {
-                Text("This screen demonstrate example for `@AppStorage`. All the value here are coming form `UserDefaults` using `@AppStorage`.")
+            Section(header: Text(NSLocalizedString("description_section_header", bundle: .module, comment: ""))) {
+                Text(NSLocalizedString("app_storage_description_text", bundle: .module, comment: ""))
             }
 
-            Section(header: Text("Notifications")) {
-                Picker("Notify Me About", selection: $notifyMeAbout) {
-                    Text("Direct Messages").tag(NotifyMeAboutType.directMessages)
-                    Text("Mentions").tag(NotifyMeAboutType.mentions)
+            Section(header: Text(NSLocalizedString("notifications_menu_item_title", bundle: .module, comment: ""))) {
+                Picker(NSLocalizedString("notify_me_about_picker_label", bundle: .module, comment: ""), selection: $notifyMeAbout) {
+                    Text(NSLocalizedString("direct_messages_notification_option", bundle: .module, comment: "")).tag(NotifyMeAboutType.directMessages)
+                    Text(NSLocalizedString("notification_option_mentions", bundle: .module, comment: "")).tag(NotifyMeAboutType.mentions)
                     Text("Anything").tag(NotifyMeAboutType.anything)
                 }
-                Toggle("Play notification sounds", isOn: $playNotificationSounds)
-                Toggle("Send read receipts", isOn: $sendReadReceipts)
+                Toggle(NSLocalizedString("play_notification_sounds_toggle_label", bundle: .module, comment: ""), isOn: $playNotificationSounds)
+                Toggle(NSLocalizedString("send_read_receipts_toggle_label", bundle: .module, comment: ""), isOn: $sendReadReceipts)
             }
 
-            Section(header: Text("User Profiles")) {
-                Picker("Profile Image Size", selection: $profileImageSize) {
-                    Text("Large").tag(ProfileImageSize.large)
-                    Text("Medium").tag(ProfileImageSize.medium)
-                    Text("Small").tag(ProfileImageSize.small)
+            Section(header: Text(NSLocalizedString("user_profiles_section_header", bundle: .module, comment: ""))) {
+                Picker(NSLocalizedString("profile_image_size_picker_label", bundle: .module, comment: ""), selection: $profileImageSize) {
+                    Text(NSLocalizedString("profile_image_size_large_option", bundle: .module, comment: "")).tag(ProfileImageSize.large)
+                    Text(NSLocalizedString("mentions_notification_option", bundle: .module, comment: "")).tag(ProfileImageSize.medium)
+                    Text(NSLocalizedString("profile_image_size_small_option", bundle: .module, comment: "")).tag(ProfileImageSize.small)
                 }
             }
         }
-        .navigationTitle("@AppStorage Example")
+        .navigationTitle(NSLocalizedString("app_storage_example", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

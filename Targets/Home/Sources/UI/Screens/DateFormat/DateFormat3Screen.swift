@@ -32,7 +32,7 @@ struct DateFormat3Screen: View {
                         selection: $selectedDate,
                         displayedComponents: .date
                     ) {
-                        Text("Select a date")
+                        Text(NSLocalizedString("select_a_date_picker_label", bundle: .module, comment: ""))
                             .font(.headline)
                     }
                     
@@ -40,7 +40,7 @@ struct DateFormat3Screen: View {
                         selection: $selectedDate,
                         displayedComponents: .hourAndMinute
                     ) {
-                        Text("Select a time")
+                        Text(NSLocalizedString("select_a_time_picker_label", bundle: .module, comment: ""))
                             .font(.headline)
                     }
                 }
@@ -51,12 +51,12 @@ struct DateFormat3Screen: View {
                 }
                 
                 HStack {
-                    Text("Locale")
+                    Text(NSLocalizedString("time_examples_section_header", bundle: .module, comment: ""))
                         .font(.headline)
                     
                     Spacer()
                     
-                    Picker("Choose a locale", selection: $selectedLocale) {
+                    Picker(NSLocalizedString("choose_a_locale", bundle: .module, comment: ""), selection: $selectedLocale) {
                         ForEach(locales, id: \.id) {
                             Text("\($0.id) (\($0.name))")
                                 .tag($0)
@@ -70,12 +70,12 @@ struct DateFormat3Screen: View {
                         .stroke(.secondary)
                 }
                 
-                Text("Result")
+                Text(NSLocalizedString("select_a_date_label", bundle: .module, comment: ""))
                     .font(.title)
                 
                 // MARK: - Only Date
                 
-                Text("Date Examples")
+                Text(NSLocalizedString("date_examples_section_header", bundle: .module, comment: ""))
                     .font(.title2)
                 
                 ExampleItem(
@@ -116,7 +116,7 @@ struct DateFormat3Screen: View {
                 
                 // MARK: - Only Time
                 
-                Text("Time Examples")
+                Text(NSLocalizedString("time_examples_section_header_2", bundle: .module, comment: ""))
                     .font(.title2)
                 
                 ExampleItem(
@@ -157,7 +157,7 @@ struct DateFormat3Screen: View {
                 
                 // MARK: - Date & Time
                 
-                Text("Date & Time Examples")
+                Text(NSLocalizedString("date_and_time_examples", bundle: .module, comment: ""))
                     .font(.title2)
                 
                 ExampleItem(
@@ -198,7 +198,7 @@ struct DateFormat3Screen: View {
             }
             .padding()
         }
-        .navigationTitle("Date Format using Style")
+        .navigationTitle(NSLocalizedString("date_format_using_style_navigation_title", bundle: .module, comment: ""))
     }
 }
 

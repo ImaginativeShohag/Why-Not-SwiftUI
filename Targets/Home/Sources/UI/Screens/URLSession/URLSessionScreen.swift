@@ -40,7 +40,7 @@ struct URLSessionScreen: View {
             case .data(let fruits):
                 if fruits.isEmpty {
                     ContentUnavailableView(
-                        "No fruit found.",
+                        NSLocalizedString("no_fruit_found_message", bundle: .module, comment: ""),
                         systemImage: "cube.box"
                     )
                 } else {
@@ -60,7 +60,7 @@ struct URLSessionScreen: View {
                 }
             }
         }
-        .navigationTitle("URLSession Example")
+        .navigationTitle(NSLocalizedString("url_session_example_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await viewModel.getFruits()

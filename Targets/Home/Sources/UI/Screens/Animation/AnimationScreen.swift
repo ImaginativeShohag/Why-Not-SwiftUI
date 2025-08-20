@@ -58,7 +58,7 @@ struct AnimationScreen: View {
             }
             .padding()
         }
-        .navigationTitle("Animation Example")
+        .navigationTitle(NSLocalizedString("animation_example_navigation_title", bundle: .module, comment: ""))
     }
 }
 
@@ -111,7 +111,7 @@ struct AnimationTypesContainer: View {
                 BoxItem(name: "`.interpolatingSpring`", isLeft: $isLeft)
                     .animation(.interpolatingSpring(mass: 1, stiffness: 1, damping: 0.5, initialVelocity: 5), value: isLeft)
 
-                Button("Press here") {
+                Button(NSLocalizedString("press_here_button_title", bundle: .module, comment: "")) {
                     isLeft.toggle()
                 }
                 .buttonStyle(.bordered)
@@ -238,7 +238,7 @@ struct EffectModifiersContainer: View {
                         .animation(.spring(duration: 1, bounce: 0.75), value: scale2) // <-- 👀
                 }
 
-                Text("With: `.delay()`")
+                Text(NSLocalizedString("with_delay_modifier", bundle: .module, comment: ""))
 
                 Button {
                     rotation += 360
@@ -277,21 +277,21 @@ struct BindingValueAnimationContainer: View {
                     .padding(.bottom)
 
                 Toggle(
-                    "Toggle label (Default Animation)",
+                    NSLocalizedString("toggle_label_default_animation", bundle: .module, comment: ""),
                     isOn: $showingWelcome1.animation() // <-- 👀
                 )
 
                 if showingWelcome1 {
-                    Text("Hello World")
+                    Text(NSLocalizedString("hello_world_greeting", bundle: .module, comment: ""))
                 }
 
                 Toggle(
-                    "Toggle label (Custom Animation)",
+                    NSLocalizedString("toggle_label_custom_animation", bundle: .module, comment: ""),
                     isOn: $showingWelcome2.animation(.spring(duration: 1, bounce: 0.75)) // <-- 👀
                 )
 
                 if showingWelcome2 {
-                    Text("Hello World")
+                    Text(NSLocalizedString("hello_world_greeting", bundle: .module, comment: ""))
                 }
             }
         }
@@ -423,7 +423,7 @@ struct ApplyMultipleAnimationContainer: View {
                 InfoBox(text: "Color and shape animation.")
                     .padding(.bottom)
 
-                Button("Press Me") {
+                Button(NSLocalizedString("press_me_button_text", bundle: .module, comment: "")) {
                     isEnabled1.toggle()
                 }
                 .foregroundStyle(.white)
@@ -440,7 +440,7 @@ struct ApplyMultipleAnimationContainer: View {
                 InfoBox(text: "Only shape animation.")
                     .padding()
 
-                Button("Press Me") {
+                Button(NSLocalizedString("press_me_button_text", bundle: .module, comment: "")) {
                     isEnabled2.toggle()
                 }
                 .foregroundStyle(.white)
@@ -488,11 +488,11 @@ struct MatchedGeometryEffectAnimationContainer: View {
                             .fill(.red)
                             .frame(width: 44, height: 44)
                             .matchedGeometryEffect(id: "Shape", in: animation)
-                        Text("Do what you enjoy.")
+                        Text(NSLocalizedString("do_what_you_enjoy", bundle: .module, comment: ""))
                             .matchedGeometryEffect(id: "Title", in: animation)
                             .font(.headline)
                     } else {
-                        Text("Enjoy what you do.")
+                        Text(NSLocalizedString("enjoy_what_you_do", bundle: .module, comment: ""))
                             .matchedGeometryEffect(id: "Title", in: animation)
                             .font(.headline)
                         Circle()
@@ -520,7 +520,7 @@ struct MatchedGeometryEffectAnimationContainer: View {
                             .frame(width: frame, height: frame)
 
                         if isZoomed == false {
-                            Text("Do what you enjoy.")
+                            Text(NSLocalizedString("do_what_you_enjoy", bundle: .module, comment: ""))
                                 .matchedGeometryEffect(id: "AlbumTitle", in: animation)
                                 .font(.headline)
                             Spacer()
@@ -528,7 +528,7 @@ struct MatchedGeometryEffectAnimationContainer: View {
                     }
 
                     if isZoomed == true {
-                        Text("Enjoy what you do.")
+                        Text(NSLocalizedString("enjoy_what_you_do", bundle: .module, comment: ""))
                             .matchedGeometryEffect(id: "AlbumTitle", in: animation)
                             .font(.headline)
                     }
@@ -571,7 +571,7 @@ struct AddRemoveViewsAnimationContainer: View {
     var body: some View {
         CardContainer(title: "Add and remove views with a transition") {
             VStack(spacing: 16) {
-                Button("Example One") {
+                Button(NSLocalizedString("example_one", bundle: .module, comment: "")) {
                     withAnimation {
                         showDetails1.toggle()
                     }
@@ -583,7 +583,7 @@ struct AddRemoveViewsAnimationContainer: View {
 
                 // ----------------------------------------------------------------
 
-                Button("Example Two") {
+                Button(NSLocalizedString("example_two", bundle: .module, comment: "")) {
                     withAnimation {
                         showDetails2.toggle()
                     }
@@ -607,7 +607,7 @@ struct AddRemoveViewsAnimationContainer: View {
 
                 InfoBox(text: "Example for how to combine transitions.")
 
-                Button("Example Three") {
+                Button(NSLocalizedString("example_three", bundle: .module, comment: "")) {
                     withAnimation {
                         showDetails3.toggle()
                     }
@@ -620,7 +620,7 @@ struct AddRemoveViewsAnimationContainer: View {
 
                 // ----------------------------------------------------------------
 
-                Button("Example Four") {
+                Button(NSLocalizedString("example_four", bundle: .module, comment: "")) {
                     withAnimation {
                         showDetails4.toggle()
                     }
@@ -635,7 +635,7 @@ struct AddRemoveViewsAnimationContainer: View {
 
                 InfoBox(text: "Example for create asymmetric transitions.")
 
-                Button("Example Five") {
+                Button(NSLocalizedString("example_five", bundle: .module, comment: "")) {
                     withAnimation {
                         showDetails5.toggle()
                     }
@@ -716,7 +716,7 @@ struct TestSizeAnimationContainer: View {
                 InfoBox(text: "Press on the texts to activate the animations.")
                     .padding(.bottom)
 
-                Text("Hello, World!")
+                Text(NSLocalizedString("sidebar_main_content_greeting", bundle: .module, comment: ""))
                     .font(.custom("Georgia", size: fontSize)) // <-- 👀
                     .onTapGesture { // <-- 👀
                         withAnimation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 1)) {
@@ -724,7 +724,7 @@ struct TestSizeAnimationContainer: View {
                         }
                     }
 
-                Text("Hello, World!")
+                Text(NSLocalizedString("sidebar_main_content_greeting", bundle: .module, comment: ""))
                     .animatableFont(name: "Georgia", size: fontSize) // <-- 👀
                     .onTapGesture { // <-- 👀
                         withAnimation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 1)) {
@@ -732,7 +732,7 @@ struct TestSizeAnimationContainer: View {
                         }
                     }
 
-                Text("Hello, World!")
+                Text(NSLocalizedString("sidebar_main_content_greeting", bundle: .module, comment: ""))
                     .animatableSystemFont(size: fontSize) // <-- 👀
                     .onTapGesture { // <-- 👀
                         withAnimation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 1)) {
@@ -774,14 +774,14 @@ struct OverrideAnimationContainer: View {
             VStack(spacing: 16) {
                 InfoBox(text: "This code toggles some text between small and large sizes, animating all the way because it has an implicit animation attached.")
 
-                Button("Toggle Zoom") {
+                Button(NSLocalizedString("toggle_zoom_button", bundle: .module, comment: "")) {
                     isZoomed1.toggle() // <-- 👀
                 }
 
                 Spacer()
                     .frame(height: 16)
 
-                Text("Zoom Text")
+                Text(NSLocalizedString("zoom_text", bundle: .module, comment: ""))
                     .font(.title)
                     .scaleEffect(isZoomed1 ? 3 : 1) // <-- 👀
                     .animation(.easeInOut(duration: 2), value: isZoomed1) // <-- 👀
@@ -792,7 +792,7 @@ struct OverrideAnimationContainer: View {
 
                 InfoBox(text: "Here’s our same text scaling example code except using a transaction to insert a custom animation that overrides the implicit one.")
 
-                Button("Toggle Zoom") {
+                Button(NSLocalizedString("toggle_zoom_button", bundle: .module, comment: "")) {
                     var transaction = Transaction(animation: .linear) // <-- 👀
                     transaction.disablesAnimations = true // <-- 👀
 
@@ -804,7 +804,7 @@ struct OverrideAnimationContainer: View {
                 Spacer()
                     .frame(height: 16)
 
-                Text("Zoom Text")
+                Text(NSLocalizedString("zoom_text", bundle: .module, comment: ""))
                     .font(.title)
                     .scaleEffect(isZoomed2 ? 3 : 1) // <-- 👀
                     .animation(.easeInOut(duration: 2), value: isZoomed2) // <-- Will be ignored
@@ -815,7 +815,7 @@ struct OverrideAnimationContainer: View {
 
                 InfoBox(text: "Use the `transaction()` modifier on the second text view so we disable any transactions on that one view – we’re overriding the override.")
 
-                Button("Toggle Zoom") {
+                Button(NSLocalizedString("toggle_zoom_button", bundle: .module, comment: "")) {
                     var transaction = Transaction(animation: .linear) // <-- 👀
                     transaction.disablesAnimations = true // <-- 👀
 
@@ -827,14 +827,14 @@ struct OverrideAnimationContainer: View {
                 Spacer()
                     .frame(height: 16)
 
-                Text("Zoom Text 1")
+                Text(NSLocalizedString("zoom_text_1", bundle: .module, comment: ""))
                     .font(.title)
                     .scaleEffect(isZoomed3 ? 3 : 1) // <-- 👀
 
                 Spacer()
                     .frame(height: 16)
 
-                Text("Zoom Text 2")
+                Text(NSLocalizedString("zoom_text_2", bundle: .module, comment: ""))
                     .font(.title)
                     .scaleEffect(isZoomed3 ? 3 : 1) // <-- 👀
                     .transaction { transection in // <-- 👀
@@ -903,7 +903,7 @@ struct CompletionCallbackForAnimationContainer: View {
                         }
                     }
 
-                Button("Reset") {
+                Button(NSLocalizedString("reset_button_title", bundle: .module, comment: "")) {
                     scaleUp1 = false
                     fadeOut1 = false
                     scaleUp2 = false
@@ -934,7 +934,7 @@ struct PhaseAnimationContainer: View {
     var body: some View {
         CardContainer(title: "Create multi-step animations using phase animators") {
             VStack(spacing: 16) {
-                Text("Hello, world!")
+                Text(NSLocalizedString("hello_world_text", bundle: .module, comment: ""))
                     .font(.largeTitle)
                     .phaseAnimator([0, 1, 2]) { view, phase in // <-- 👀
                         view
@@ -943,18 +943,18 @@ struct PhaseAnimationContainer: View {
                     }
 
                 PhaseAnimator([0, 1, 2]) { value in // <-- 👀
-                    Text("Hello, world!")
+                    Text(NSLocalizedString("hello_world_text", bundle: .module, comment: ""))
                         .font(.title)
                         .scaleEffect(value) // <-- 👀
                         .opacity(value == 1 ? 1 : 0) // <-- 👀
 
-                    Text("Goodbye, world!")
+                    Text(NSLocalizedString("goodbye_world_text", bundle: .module, comment: ""))
                         .font(.title)
                         .scaleEffect(3 - value) // <-- 👀
                         .opacity(value == 1 ? 1 : 0) // <-- 👀
                 }
 
-                Text("Hello, world!")
+                Text(NSLocalizedString("hello_world_text", bundle: .module, comment: ""))
                     .font(.title)
                     .phaseAnimator(AnimationPhase.allCases) { view, phase in // <-- 👀
                         view

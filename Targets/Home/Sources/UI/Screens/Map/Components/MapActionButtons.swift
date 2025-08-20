@@ -20,13 +20,13 @@ struct MapActionButtons: View {
                     Button {
                         position = .automatic
                     } label: {
-                        Label("Show All", systemImage: "map")
+                        Label(NSLocalizedString("show_all_button_label", bundle: .module, comment: ""), systemImage: "map")
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(position == .automatic)
 
                     Toggle(
-                        "Toggle Marker UI",
+                        NSLocalizedString("toggle_marker_ui", bundle: .module, comment: ""),
                         systemImage: "mappin.and.ellipse",
                         isOn: $showCustomMarker
                     )
@@ -39,13 +39,13 @@ struct MapActionButtons: View {
                     Button {
                         search(for: "playground")
                     } label: {
-                        Label("Playgrounds", systemImage: "figure.and.child.holdinghands")
+                        Label(NSLocalizedString("playgrounds_button_label", bundle: .module, comment: ""), systemImage: "figure.and.child.holdinghands")
                     }
 
                     Button {
                         search(for: "beach")
                     } label: {
-                        Label("Beaches", systemImage: "beach.umbrella")
+                        Label(NSLocalizedString("beaches_button_label", bundle: .module, comment: ""), systemImage: "beach.umbrella")
                     }
                 }
                 .buttonStyle(.borderedProminent)

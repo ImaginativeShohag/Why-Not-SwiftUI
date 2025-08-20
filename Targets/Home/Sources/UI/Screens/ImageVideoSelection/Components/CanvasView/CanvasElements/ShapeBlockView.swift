@@ -411,7 +411,7 @@ private struct BackgroundOptionPopoverView: View {
                 Button {
                     block.backgroundColor = .clear
                 } label: {
-                    Text("No Fill")
+                    Text(NSLocalizedString("no_fill", bundle: .module, comment: ""))
                         .frame(maxWidth: .infinity)
                         .foregroundColor(.label)
                         .padding(.horizontal, 8)
@@ -503,7 +503,7 @@ private struct BorderOptionPopoverView: View {
                 Button {
                     block.borderColor = .clear
                 } label: {
-                    Text("No Stroke")
+                    Text(NSLocalizedString("no_stroke_button", bundle: .module, comment: ""))
                         .frame(maxWidth: .infinity)
                         .foregroundColor(.label)
                         .padding(.horizontal, 8)
@@ -530,7 +530,7 @@ private struct BorderOptionPopoverView: View {
                                 block.borderSize -= 1
                             }
                         } label: {
-                            Label("Decrease", systemImage: "minus")
+                            Label(NSLocalizedString("decrease", bundle: .module, comment: ""), systemImage: "minus")
                         }
 
                         Button {
@@ -544,7 +544,7 @@ private struct BorderOptionPopoverView: View {
                                 block.borderSize += 1
                             }
                         } label: {
-                            Label("Increase", systemImage: "plus")
+                            Label(NSLocalizedString("increase", bundle: .module, comment: ""), systemImage: "plus")
                         }
                     }
                 }
@@ -564,7 +564,7 @@ private struct BorderOptionPopoverView: View {
                                 block.cornerRadius -= 1
                             }
                         } label: {
-                            Label("Decrease", systemImage: "minus")
+                            Label(NSLocalizedString("decrease", bundle: .module, comment: ""), systemImage: "minus")
                         }
 
                         Button {
@@ -578,7 +578,7 @@ private struct BorderOptionPopoverView: View {
                                 block.cornerRadius += 1
                             }
                         } label: {
-                            Label("Increase", systemImage: "plus")
+                            Label(NSLocalizedString("increase", bundle: .module, comment: ""), systemImage: "plus")
                         }
                     }
                 }

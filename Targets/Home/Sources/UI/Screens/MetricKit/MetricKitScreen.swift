@@ -26,7 +26,7 @@ public struct MetricKitScreen: View {
     public var body: some View {
         VStack {
             if viewModel.items.isEmpty {
-                Text("No crash report found!")
+                Text(NSLocalizedString("no_crash_report_found", bundle: .module, comment: ""))
             } else {
                 Text("Last crashed: \(viewModel.time)")
                 List {
@@ -39,7 +39,7 @@ public struct MetricKitScreen: View {
         .onAppear {
             viewModel.loadCrashes()
         }
-        .navigationTitle("MetricKit")
+        .navigationTitle(NSLocalizedString("metric_kit_screen_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

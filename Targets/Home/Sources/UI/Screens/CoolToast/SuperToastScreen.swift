@@ -35,13 +35,13 @@ public struct SuperToastScreen: View {
                 Button {
                     showToastOne = true
                 } label: {
-                    Text("Toast Type One: Show")
+                    Text(NSLocalizedString("show_toast_type_one_button_label", bundle: .module, comment: ""))
                 }
 
                 Button {
                     showToastOne = false
                 } label: {
-                    Text("Toast Type One: Hide")
+                    Text(NSLocalizedString("toast_type_one_hide_button_label", bundle: .module, comment: ""))
                 }
             }
 
@@ -55,13 +55,13 @@ public struct SuperToastScreen: View {
                         message: "Impressive!"
                     )
                 } label: {
-                    Text("Toast Type Two: Show")
+                    Text(NSLocalizedString("toast_type_two_show_button_label", bundle: .module, comment: ""))
                 }
 
                 Button {
                     showToastTwo = nil
                 } label: {
-                    Text("Toast Type Two: Hide")
+                    Text(NSLocalizedString("toast_type_two_hide_button_label", bundle: .module, comment: ""))
                 }
             }
 
@@ -70,13 +70,13 @@ public struct SuperToastScreen: View {
             Button {
                 showToast1.toggle()
             } label: {
-                Text("Show Toast 1")
+                Text(NSLocalizedString("show_toast_1", bundle: .module, comment: ""))
             }
 
             Button {
                 showToast2.toggle()
             } label: {
-                Text("Show Toast 2")
+                Text(NSLocalizedString("show_toast_2_button_label", bundle: .module, comment: ""))
             }
 
             Button {
@@ -92,7 +92,7 @@ public struct SuperToastScreen: View {
                     showToast3 = nil
                 }
             } label: {
-                Text("Show Toast 3.1")
+                Text(NSLocalizedString("show_toast_3_1_button_label", bundle: .module, comment: ""))
             }
 
             Button {
@@ -108,7 +108,7 @@ public struct SuperToastScreen: View {
                     showToast3 = nil
                 }
             } label: {
-                Text("Show Toast 3.2")
+                Text(NSLocalizedString("show_toast_3_2_button_label", bundle: .module, comment: ""))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -147,7 +147,7 @@ public struct SuperToastScreen: View {
             data: $showToast3,
             padding: 200
         )
-        .navigationTitle("Super Toast")
+        .navigationTitle(NSLocalizedString("toast_type_one_show_button_label", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

@@ -50,13 +50,13 @@ public struct ImageMarkupScreen: View {
                 .ignoresSafeArea(.all)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .navigationTitle("Markup")
+            .navigationTitle(NSLocalizedString("markup_navigation_title", bundle: .module, comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .overlay {
                 if isProcessing {
                     ZStack {
                         ProgressView {
-                            Text("Processing...")
+                            Text(NSLocalizedString("processing_status_text", bundle: .module, comment: ""))
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -67,12 +67,12 @@ public struct ImageMarkupScreen: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     HStack(spacing: 8) {
-                        Button("Cancel", role: .cancel) {
+                        Button(NSLocalizedString("cancel_button_title", bundle: .module, comment: ""), role: .cancel) {
                             dismiss()
                         }
 
                         if UIDevice.current.isPhone {
-                            Button("Undo", systemImage: "arrow.uturn.backward.circle") {
+                            Button(NSLocalizedString("undo_button_title", bundle: .module, comment: ""), systemImage: "arrow.uturn.backward.circle") {
                                 undoManager?.undo()
                             }
                             .disabled(!canUndo)
@@ -88,7 +88,7 @@ public struct ImageMarkupScreen: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 8) {
-                        Button("Clear", systemImage: "trash") {
+                        Button(NSLocalizedString("clear_button_title", bundle: .module, comment: ""), systemImage: "trash") {
                             clearDrawing()
                         }
 
