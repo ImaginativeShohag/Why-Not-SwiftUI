@@ -11,7 +11,7 @@ public struct Module {
     let hasUnitTestResources: Bool
     let hasUITest: Bool
     let hasUITestResources: Bool
-    let dependencies: [String]
+    let dependencies: [TargetDependency]
     let coreDataModels: [CoreDataModel]
 
     public init(
@@ -21,7 +21,7 @@ public struct Module {
         hasUnitTestResources: Bool = false,
         hasUITest: Bool = false,
         hasUITestResources: Bool = false,
-        dependencies: [String] = [],
+        dependencies: [TargetDependency] = [],
         coreDataModels: [CoreDataModel] = []
     ) {
         self.name = name

@@ -163,7 +163,7 @@ public extension Project {
         var dependencies: [TargetDependency] = .init(externalDependencies)
 
         if !module.dependencies.isEmpty {
-            dependencies += module.dependencies.map { .target(name: $0) }
+            dependencies += module.dependencies
         }
 
         // Core Data

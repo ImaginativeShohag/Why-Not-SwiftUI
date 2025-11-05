@@ -4,17 +4,17 @@
 
 #if DEBUG
 
-@testable import NetworkKit
-import XCTest
-import Moya
 import Alamofire
+@testable import NetworkKit
+import Moya
+import XCTest
 
-// Note: To run this test we need to enable the production environment in `Package.swift` file by adding `[.define("PRODUCTION")]` in `swiftSettings` parameter in "CoolNetworkKit" target.
-final class NetworkProdTests: XCTestCase {
+/// ⚠️ Note: To run this test we need to enable the production environment in `Package.swift` file by adding `[.define("PRODUCTION")]` in `swiftSettings` parameter in **"NetworkKit"** target.
+final class CoolNetworkKitProdTests: XCTestCase {
     var provider: Backend<MockAPI>!
 
     override func setUpWithError() throws {
-        let session = NetworkSession.getNetworkSession()
+        let session = NetworkSession.create()
 
         provider = Backend<MockAPI>(
             isStubbed: true,
@@ -29,10 +29,9 @@ final class NetworkProdTests: XCTestCase {
 
     func setProvider(
         isStubbed: Bool = true,
-        hostUrl: String = "https://example.com",
         onError: @escaping (_ route: String, _ code: Int) -> Void
     ) {
-        let session = NetworkSession.getNetworkSession()
+        let session = NetworkSession.create()
 
         provider = Backend<MockAPI>(
             isStubbed: isStubbed,
@@ -96,7 +95,7 @@ final class NetworkProdTests: XCTestCase {
             XCTFail()
 
         case .failure(_, let errorMessage, let statusCode):
-            XCTAssertEqual(errorMessage, "(500) Internal Server Error. Please try again.")
+            XCTAssertEqual(errorMessage, "Request failed.")
             XCTAssertEqual(500, statusCode)
         }
     }
@@ -137,7 +136,7 @@ final class NetworkProdTests: XCTestCase {
             XCTFail()
 
         case .failure(_, let errorMessage, let statusCode):
-            XCTAssertEqual(errorMessage, "(401) Unauthorized! Your session has expired. Please login again to continue.")
+            XCTAssertEqual(errorMessage, "Unauthenticated.")
             XCTAssertEqual(401, statusCode)
         }
     }
@@ -291,15 +290,14 @@ final class NetworkProdTests: XCTestCase {
             }
 
             XCTAssertTrue(underlyingError.asAFError?.isServerTrustEvaluationError ?? false)
-            XCTAssertEqual(errorMessage, "Something went wrong. Please try again.")
+            XCTAssertEqual(errorMessage, underlyingError.localizedDescription)
             XCTAssertEqual(-1, statusCode)
         }
     }
 
     func test_request_withServerTrustEvaluationFailed_onEmptyURL_shouldFail() async throws {
         setProvider(
-            isStubbed: false,
-            hostUrl: ""
+            isStubbed: false
         ) { route, code in
             XCTAssertEqual(route, MockAPI.mockGetSuccess.path)
             XCTAssertEqual(code, -1)
@@ -323,14 +321,14 @@ final class NetworkProdTests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(errorMessage, "Something went wrong. Please try again.")
+            XCTAssertEqual(errorMessage, underlyingError.localizedDescription)
             XCTAssertEqual(-1, statusCode)
         }
     }
 }
 
-extension Empty: Equatable {
-    public static func == (lhs: Empty, rhs: Empty) -> Bool {
+extension Empty: @retroactive Equatable {
+    public static func == (_: Empty, _: Empty) -> Bool {
         true
     }
 }
