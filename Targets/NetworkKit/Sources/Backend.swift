@@ -16,7 +16,7 @@ import SuperLog
 /// - Parameter API: The generic type representing the API endpoints conforming to ApiEndpoint.
 ///
 /// - Note: Tested with `BackendTest`.
-public final class Backend<API: Sendable>: MoyaProvider<API>, @unchecked Sendable where API: ApiEndpoint {
+public final class Backend<API: Sendable>: MoyaProvider<API> where API: ApiEndpoint {
     private let onError: (_ route: String, _ code: Int) -> ()
 
     /// Initializes the provider for network calls.

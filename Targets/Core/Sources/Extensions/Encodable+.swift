@@ -24,10 +24,10 @@ public extension Encodable {
     /// - Returns: The JSON string for the `Encodable`. If it fails, it will throw an exception.
     ///
     /// - Note: Tested: `EncodableToJsonStringTests`
-    func toJSONString() throws -> String {
+    func toJSONString() throws -> String? {
         let jsonEncoder = JSONEncoder()
         jsonEncoder.outputFormatting = .sortedKeys
         let jsonData = try jsonEncoder.encode(self)
-        return String(data: jsonData, encoding: .utf8)!
+        return String(data: jsonData, encoding: .utf8)
     }
 }

@@ -11452,8 +11452,8 @@
         },
         "en" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "jailbroken-status"
+            "state" : "translated",
+            "value" : "Jailbroken Status"
           }
         },
         "es" : {
