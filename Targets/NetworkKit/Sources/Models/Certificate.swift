@@ -4,13 +4,7 @@
 
 import Foundation
 
-// Stores the certificates that will be used for certificate pinning.
-public enum Certificate {
-    // TODO: Example certificate
-    case rootCertificateXYZ
-}
-
-public extension Certificate {
+public struct Certificate: Sendable {
     /**
      * The public key for certificate pinning, stored as an array of bytes.
      *
@@ -67,10 +61,31 @@ public extension Certificate {
      *
      * Explanation: Check the explanation above for `.pem` type.
      */
-    var publicKey: [UInt8] {
-        switch self {
-        case .rootCertificateXYZ:
-            return []
-        }
+    public let rawPublicKeyBytes: [UInt8]
+    
+    /**
+     * Creates a `Certificate` instance from an array of raw certificate bytes.
+     *
+     * This initializer is used to construct a certificate object from the binary representation
+     * of a certificate's public key. The bytes should be obtained by converting a certificate
+     * file (`.pem` or `.der`) into a hexadecimal byte array.
+     *
+     * - Parameter bytes: An array of unsigned 8-bit integers representing the raw binary data
+     *   of the certificate's public key. This data is typically extracted from a `.pem` or `.der`
+     *   certificate file using command-line tools.
+     *
+     * - Note: For instructions on how to generate the byte array from certificate files,
+     *   see the documentation on the `rawPublicKeyBytes` property.
+     *
+     * ## Example
+     * ```swift
+     * let certificate = Certificate(fromBytes: [
+     *     0x30, 0x82, 0x01, 0x22, 0x30, 0x0d, 0x06, 0x09,
+     *     // ... additional bytes
+     * ])
+     * ```
+     */
+    public init(fromBytes bytes: [UInt8]) {
+        self.rawPublicKeyBytes = bytes
     }
 }

@@ -8,7 +8,7 @@ extension [Certificate] {
     /// Extracts the public key (`SecKey`) from each certificate in the array.
     ///
     /// This method iterates through the collection, attempting to create a `SecKey`
-    /// from the `publicKey` data of each `Certificate` instance.
+    /// from the `rawPublicKeyBytes` data of each `Certificate` instance.
     ///
     /// - Note: Certificates that fail to produce a valid `SecKey` are silently
     ///   omitted from the returned array.
@@ -19,7 +19,7 @@ extension [Certificate] {
         var keys: [SecKey] = []
 
         for certificate in self {
-            if let secKey = SecKey.create(from: certificate.publicKey) {
+            if let secKey = SecKey.create(from: certificate.rawPublicKeyBytes) {
                 keys.append(secKey)
             }
         }

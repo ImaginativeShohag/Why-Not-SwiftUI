@@ -5,7 +5,7 @@
 import Foundation
 
 /// This is used as the common model for receiving api response.
-public struct GeneralResponse: Codable {
+public struct GeneralResponse: Codable, Sendable {
     let success: Bool?
     let message: String?
 

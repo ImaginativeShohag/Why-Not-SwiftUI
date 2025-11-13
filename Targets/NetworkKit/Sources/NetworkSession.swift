@@ -5,6 +5,7 @@
 import Alamofire
 import Foundation
 import Moya
+import SuperLog
 
 public typealias Host = String
 
@@ -40,18 +41,21 @@ public enum NetworkSession {
         config.requestCachePolicy = cachePolicy
         config.timeoutIntervalForRequest = timeoutIntervalForRequest
         config.httpAdditionalHeaders = httpAdditionalHeaders
+        
+        if enableServerTrustManager, mappedCertificates.isEmpty {
+            SuperLog.e("Server trust manager enabled but no certificates are given.")
+        }
 
         let serverTrustManager: ServerTrustManager? = {
             guard enableServerTrustManager else {
                 return nil
             }
-            
-            // Build evaluators for certificate pinning
+
             let evaluators: [String: ServerTrustEvaluating] = mappedCertificates.reduce(into: [:]) { result, entry in
                 let (host, certificates) = entry
                 result[host] = PublicKeysTrustEvaluator(keys: certificates.getSecKeys())
             }
-            
+
             return ServerTrustManager(evaluators: evaluators)
         }()
 

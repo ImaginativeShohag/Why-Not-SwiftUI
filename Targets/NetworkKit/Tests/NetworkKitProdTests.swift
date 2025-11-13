@@ -10,7 +10,7 @@ import Moya
 import XCTest
 
 /// ⚠️ Note: To run this test we need to enable the production environment in `Package.swift` file by adding `[.define("PRODUCTION")]` in `swiftSettings` parameter in **"NetworkKit"** target.
-final class CoolNetworkKitProdTests: XCTestCase {
+final class NetworkKitProdTests: XCTestCase {
     var provider: Backend<MockAPI>!
 
     override func setUpWithError() throws {

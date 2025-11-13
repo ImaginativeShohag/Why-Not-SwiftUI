@@ -7,7 +7,7 @@ import Foundation
 import Moya
 import XCTest
 
-final class ArrayMultipartFormDataAppendTest: XCTestCase {
+final class ArrayMultipartFormDataAppendTests: XCTestCase {
     // MARK: - Value
 
     func testAppend_keyValueString_shouldAdd() {

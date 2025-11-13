@@ -78,6 +78,9 @@ let project = Project.app(
     configInfoPlist: [
         "CONF_HOST_URL": "$(XCC_HOST_URL)"
     ],
+    appModuleConfig: AppModuleConfig(
+        hasResources: true
+    ),
     modules: [
         Module(
             name: "Core",
@@ -122,7 +125,8 @@ let project = Project.app(
             name: "News",
             hasResources: true,
             hasUITest: true,
-            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "NetworkKit")]
+            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "NetworkKit")],
+            uiTestDependencies: [.target(name: "TestUtils")]
         ),
         Module(
             name: "Store",
@@ -130,7 +134,8 @@ let project = Project.app(
         ),
         Module(
             name: "TestUtils",
-            dependencies: [.target(name: "Core"), .target(name: "SuperLog"), .target(name: "NetworkKit"), .xctest]
+            dependencies: [.target(name: "Core"), .target(name: "SuperLog"), .target(name: "NetworkKit"), .xctest],
+            onlyForTestTarget: true
         )
     ],
     externalDependencies: [
@@ -147,6 +152,5 @@ let project = Project.app(
         .external(name: "Realm"),
         .external(name: "MarkdownUI"),
         .external(name: "SwiftUIIntrospect")
-    ],
-    coreDataModels: []
+    ]
 )
