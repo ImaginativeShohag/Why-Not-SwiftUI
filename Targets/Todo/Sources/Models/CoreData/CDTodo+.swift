@@ -42,8 +42,9 @@ extension CDTodo {
 // MARK: - Extensions
 
 extension CDTodo {
-    func toUIModel() async -> UITodo.Todo {
-        await .init(
+    @MainActor
+    func toUIModel() -> UITodo.Todo {
+        .init(
             id: Int(id),
             title: title ?? "",
             notes: notes ?? "",

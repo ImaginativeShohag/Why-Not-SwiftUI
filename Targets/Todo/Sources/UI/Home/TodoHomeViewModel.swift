@@ -69,7 +69,8 @@ class TodoHomeViewModel {
         todo: UITodo.Todo,
         title: String,
         notes: String,
-        priority: UITodo.Priority
+        priority: UITodo.Priority,
+        isCompleted: Bool
     ) async {
         if title.isEmpty, notes.isEmpty {
             return
@@ -77,18 +78,20 @@ class TodoHomeViewModel {
 
         do {
             try await repository.update(
-                todo: todo,
+                id: todo.id,
                 title: title,
                 notes: notes,
-                priority: priority
+                priority: priority,
+                isCompleted: isCompleted
             )
 
             // Update the model
             todo.title = title
             todo.notes = notes
             todo.priority = priority
+            todo.isCompleted = isCompleted
         } catch {
-            SuperLog.d("error: \(error)")
+            SuperLog.e("error: \(error)")
         }
     }
 
@@ -108,11 +111,27 @@ class TodoHomeViewModel {
         updateList()
     }
 
-    func toggleTodoCompleteStatus(for todo: UITodo.Todo) {
-        todo.isCompleted.toggle()
+    func toggleTodoCompleteStatus(for todo: UITodo.Todo) async {
+        let isCompleted = !todo.isCompleted
 
-        if todo.isCompleted, !showCompletedItems, let index = todoList.firstIndex(of: todo) {
-            todoList.remove(at: index)
+        do {
+            try await repository.update(
+                id: todo.id,
+                title: todo.title,
+                notes: todo.notes,
+                priority: todo.priority,
+                isCompleted: isCompleted
+            )
+
+            // Update the model
+            todo.isCompleted = isCompleted
+            
+            // Update the list
+            if todo.isCompleted, !showCompletedItems, let index = todoList.firstIndex(of: todo) {
+                todoList.remove(at: index)
+            }
+        } catch {
+            SuperLog.e("error: \(error)")
         }
     }
     

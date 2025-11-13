@@ -11,9 +11,10 @@ protocol ITodoRepository: Sendable {
     func insert(todo: UITodo.Todo) async throws
     func delete(todo: UITodo.Todo) async throws
     func update(
-        todo: UITodo.Todo,
+        id: Int,
         title: String,
         notes: String,
-        priority: UITodo.Priority
+        priority: UITodo.Priority,
+        isCompleted: Bool
     ) async throws
 }

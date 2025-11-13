@@ -2,6 +2,9 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Foundation
+
+@MainActor
 final class MockTodoRepository: ITodoRepository {
     private var todos: [UITodo.Todo] = [
         UITodo.Todo(id: 1, title: "Buy groceries", notes: "Milk, Bread, Eggs", priority: .medium),
@@ -26,19 +29,20 @@ final class MockTodoRepository: ITodoRepository {
     }
 
     func update(
-        todo: UITodo.Todo,
+        id: Int,
         title: String,
         notes: String,
-        priority: UITodo.Priority
+        priority: UITodo.Priority,
+        isCompleted: Bool
     ) async throws {
-        guard let index = todos.firstIndex(where: { $0.id == todo.id }) else { return }
-        let updated = await UITodo.Todo(
-            id: todo.id,
+        guard let index = todos.firstIndex(where: { $0.id == id }) else { return }
+        let updated = UITodo.Todo(
+            id: id,
             title: title,
             notes: notes,
             priority: priority,
-            createdAt: todo.createdAt,
-            isCompleted: todo.isCompleted
+            createdAt: Date(),
+            isCompleted: isCompleted
         )
         todos[index] = updated
     }
