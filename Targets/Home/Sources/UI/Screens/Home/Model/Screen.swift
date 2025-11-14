@@ -123,6 +123,10 @@ struct Screen: Identifiable, Sendable {
             name: "🏬 Store Overflow",
             destination: Destination.StoreSplash()
         ),
+        Screen(
+            name: "`TestUtils` UI Tests Demo",
+            destination: Destination.TestUtilsUITestsDemo()
+        ),
     ].sorted { old, new in
         old.name.filter { $0.isLetter || $0.isNumber } < new.name.filter { $0.isLetter || $0.isNumber }
     }

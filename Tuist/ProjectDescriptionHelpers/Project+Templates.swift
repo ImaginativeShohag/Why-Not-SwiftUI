@@ -46,7 +46,7 @@ public extension Project {
         appTargetDependencies.append(contentsOf: externalDependencies)
         appTargetDependencies.append(contentsOf: appExtensions.map { TargetDependency.target(name: $0.name) })
 
-        var finalInfoPlist = infoPlist.merging(configInfoPlist) { _, new in new }
+        let finalInfoPlist = infoPlist.merging(configInfoPlist) { _, new in new }
 
         var targets = makeAppTargets(
             name: name,

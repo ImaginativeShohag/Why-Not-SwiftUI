@@ -22,7 +22,7 @@ import PackageDescription
             "Shimmer": .framework,
             "RealmSwift": .framework,
             "MarkdownUI": .framework,
-            "SwiftUIIntrospect": .framework,
+            "SwiftUIIntrospect": .framework
         ],
         baseSettings: Settings.settings(
             configurations: BuildEnvironment.getConfigurations(for: .target)
