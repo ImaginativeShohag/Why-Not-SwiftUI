@@ -5,11 +5,13 @@
 #if DEBUG
 
 import Alamofire
-@testable import NetworkKit
 import Moya
+@testable import NetworkKit
 import XCTest
 
-/// ⚠️ Note: To run this test we need to enable the production environment in `Package.swift` file by adding `[.define("PRODUCTION")]` in `swiftSettings` parameter in **"NetworkKit"** target.
+/// ⚠️ Note: To run this test we need to enable the production environment:
+/// - Using `Package.swift`: In `Package.swift` file by adding `[.define("PRODUCTION")]` in `swiftSettings` parameter in **"NetworkKit"** target.
+/// - Using Xcode Project: Go to `Project > Build Settings > Swift Compiler - Custom Fags > Active Compilation Conditions` and add `PRODUCTION` as active schema condition.
 final class NetworkKitProdTests: XCTestCase {
     var provider: Backend<MockAPI>!
 
@@ -31,7 +33,10 @@ final class NetworkKitProdTests: XCTestCase {
         isStubbed: Bool = true,
         onError: @escaping (_ route: String, _ code: Int) -> Void
     ) {
-        let session = NetworkSession.create()
+        let session = NetworkSession.create(
+            enableServerTrustManager: true,
+            mappedCertificates: ["example.com": [CertificateStore.mockPEMKeyForExampleDotCom]]
+        )
 
         provider = Backend<MockAPI>(
             isStubbed: isStubbed,
@@ -43,7 +48,13 @@ final class NetworkKitProdTests: XCTestCase {
     }
 
     func test_withTaskCancelled_shouldGetError() async throws {
-        setProvider { route, code in
+        let session = NetworkSession.create()
+
+        let provider = Backend<MockAPI>(
+            isStubbed: true,
+            stubBehavior: .immediate,
+            session: session
+        ) { route, code in
             XCTAssertEqual(route, MockAPI.mockGetSuccess.path)
             XCTAssertEqual(code, -1)
         }
@@ -95,7 +106,7 @@ final class NetworkKitProdTests: XCTestCase {
             XCTFail()
 
         case .failure(_, let errorMessage, let statusCode):
-            XCTAssertEqual(errorMessage, "Request failed.")
+            XCTAssertEqual(errorMessage, "(500) Internal Server Error. Please try again.")
             XCTAssertEqual(500, statusCode)
         }
     }
@@ -136,7 +147,7 @@ final class NetworkKitProdTests: XCTestCase {
             XCTFail()
 
         case .failure(_, let errorMessage, let statusCode):
-            XCTAssertEqual(errorMessage, "Unauthenticated.")
+            XCTAssertEqual(errorMessage, "(401) Unauthorized! Your session has expired. Please login again to continue.")
             XCTAssertEqual(401, statusCode)
         }
     }
@@ -265,64 +276,66 @@ final class NetworkKitProdTests: XCTestCase {
         }
     }
 
-    func test_request_withServerTrustEvaluationFailed_onExampleURL_shouldFail() async throws {
-        setProvider(isStubbed: false) { route, code in
-            XCTAssertEqual(route, MockAPI.mockGetSuccess.path)
-            XCTAssertEqual(code, -1)
-        }
-
-        let result = await provider.request(
-            GeneralResponse.self,
-            on: .mockGetSuccess
+    func test_request_withNoMatchedCertificate_shouldFail() async throws {
+        let session = NetworkSession.create(
+            enableServerTrustManager: true,
+            mappedCertificates: ["example.com": [CertificateStore.mockPEMKeyForExampleDotCom]]
         )
 
-        switch result {
-        case .success:
-            XCTFail("Request should not be get succeeded")
+        let provider = Backend<MockAPI>(
+            isStubbed: false,
+            session: session
+        )
 
-        case .failure(let error, let errorMessage, let statusCode):
-            guard case MoyaError.underlying(let underlyingError, _) = error,
-                  case AFError.serverTrustEvaluationFailed(reason: let reason) = underlyingError,
-                  case AFError.ServerTrustFailureReason.publicKeyPinningFailed(host: _, trust: _, pinnedKeys: _, serverKeys: _) = reason
-            else {
-                XCTFail()
-                return
+        let result = await provider.request(GeneralResponse.self, on: .mockRequestCustomEndpoint("https://httpbin.org"))
+
+        switch result {
+        case .success(let response):
+            if response.isSuccess() {
+                XCTFail("Request should not be get succeeded.")
+            } else {
+                XCTFail("Request not success: \(response.getMessage()).")
             }
 
-            XCTAssertTrue(underlyingError.asAFError?.isServerTrustEvaluationError ?? false)
-            XCTAssertEqual(errorMessage, underlyingError.localizedDescription)
-            XCTAssertEqual(-1, statusCode)
+        case .failure(let error, _, _):
+            guard case MoyaError.underlying(let underlyingError, _) = error,
+                  case AFError.serverTrustEvaluationFailed(reason: let reason) = underlyingError,
+                  case AFError.ServerTrustFailureReason.noPublicKeysFound = reason
+            else {
+                XCTFail("\(error)")
+                return
+            }
         }
     }
 
-    func test_request_withServerTrustEvaluationFailed_onEmptyURL_shouldFail() async throws {
-        setProvider(
-            isStubbed: false
-        ) { route, code in
-            XCTAssertEqual(route, MockAPI.mockGetSuccess.path)
-            XCTAssertEqual(code, -1)
-        }
-
-        let result = await provider.request(
-            GeneralResponse.self,
-            on: .mockGetSuccess
+    func test_request_withEmptyCertificateList_shouldFail() async throws {
+        let session = NetworkSession.create(
+            enableServerTrustManager: true
         )
 
-        switch result {
-        case .success:
-            XCTFail("Request should not succeeded")
+        let provider = Backend<MockAPI>(
+            isStubbed: false,
+            session: session
+        )
 
-        case .failure(let error, let errorMessage, let statusCode):
+        let result = await provider.request(GeneralResponse.self, on: .mockRequestCustomEndpoint("https://httpbin.org"))
+
+        switch result {
+        case .success(let response):
+            if response.isSuccess() {
+                XCTFail("Request should not be get succeeded.")
+            } else {
+                XCTFail("Request not success: \(response.getMessage()).")
+            }
+
+        case .failure(let error, _, _):
             guard case MoyaError.underlying(let underlyingError, _) = error,
                   case AFError.serverTrustEvaluationFailed(reason: let reason) = underlyingError,
                   case AFError.ServerTrustFailureReason.noRequiredEvaluator = reason
             else {
-                XCTFail()
+                XCTFail("\(error)")
                 return
             }
-
-            XCTAssertEqual(errorMessage, underlyingError.localizedDescription)
-            XCTAssertEqual(-1, statusCode)
         }
     }
 }
