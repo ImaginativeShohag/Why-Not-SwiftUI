@@ -48,6 +48,7 @@ public struct HomeScreen: View {
                 NavigationLink(value: screen.destination) {
                     Text(screen.name.toMarkdown())
                 }
+                .accessibilityIdentifier(screen.name)
             }
         }
         .fontStyle(size: 16)

@@ -151,5 +151,6 @@ let project = Project.app(
         .external(name: "MarkdownUI"),
         .external(name: "SwiftUIIntrospect")
     ],
+    testDependencies: [.external(name: "TestUtils")],
     coreDataModels: []
 )

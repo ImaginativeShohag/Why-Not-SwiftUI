@@ -4,10 +4,4 @@
 
 import ProjectDescription
 
-let config = Config(
-    project: .tuist(
-        generationOptions: .options(
-            defaultConfiguration: "Debug Development"
-        )
-    )
-)
+let tuist = Tuist()
