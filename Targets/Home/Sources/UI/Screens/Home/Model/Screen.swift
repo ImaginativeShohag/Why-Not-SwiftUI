@@ -7,6 +7,7 @@ import NavigationKit
 import News
 import SwiftUI
 import Todo
+import Store
 
 struct Screen: Identifiable, Sendable {
     let id = UUID().uuidString
@@ -79,8 +80,8 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.ShimmerUI()
         ),
         Screen(
-            name: "Todo App",
-            destination: Destination.TodoHome()
+            name: "📋 Todo App",
+            destination: Destination.TodoIntro()
         ),
         Screen(
             name: "🥭 News App",
@@ -117,6 +118,10 @@ struct Screen: Identifiable, Sendable {
         Screen(
             name: "Map Example",
             destination: Destination.Map()
+        ),
+        Screen(
+            name: "🏬 Store Overflow",
+            destination: Destination.StoreSplash()
         ),
         Screen(
             name: "`TestUtils` UI Tests Demo",

@@ -1,0 +1,541 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    " **Canvas Device Settings** to quickly understand the effects." : {
+
+    },
+    " **Dynamic Type** from " : {
+
+    },
+    " ipsum!" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "%@ pt" : {
+
+    },
+    "%@%%" : {
+
+    },
+    "•" : {
+
+    },
+    "`.rotationEffect()`" : {
+
+    },
+    "`.scaleEffect()`" : {
+
+    },
+    "✿" : {
+
+    },
+    "1K" : {
+
+    },
+    "90%" : {
+
+    },
+    "1000" : {
+
+    },
+    "Accessibility" : {
+
+    },
+    "Accessibility Differentiate Without Color Example" : {
+
+    },
+    "Accessibility Reduce Motion Example" : {
+
+    },
+    "Accessibility Reduce Transparency Example" : {
+
+    },
+    "Add Attachment" : {
+
+    },
+    "Adjustable Action Example" : {
+
+    },
+    "All items inside the container will be shimmering." : {
+
+    },
+    "Allow" : {
+
+    },
+    "allowsDirectInteraction Trait" : {
+
+    },
+    "Anything" : {
+
+    },
+    "Back" : {
+
+    },
+    "Blue" : {
+
+    },
+    "Body" : {
+
+    },
+    "Callout" : {
+
+    },
+    "Cannot access your location. Please allow location access in the settings." : {
+
+    },
+    "Cannot access your location. Please allow location access." : {
+
+    },
+    "Caption 1" : {
+
+    },
+    "Caption 2" : {
+
+    },
+    "causesPageTurn Trait" : {
+
+    },
+    "Checkmark" : {
+
+    },
+    "Choose from Library (Multiple)" : {
+
+    },
+    "Choose from Library (Single)" : {
+
+    },
+    "Combine Complex Elements Example" : {
+
+    },
+    "Components" : {
+
+    },
+    "Crash App 💥" : {
+
+    },
+    "Create Alert" : {
+
+    },
+    "Custom Actions Example" : {
+
+    },
+    "Custom Component Example" : {
+
+    },
+    "Custom Label Example" : {
+
+    },
+    "Custom Label for Complex Elements Example" : {
+
+    },
+    "Custom Toggle" : {
+
+    },
+    "Custom Traits Example" : {
+
+    },
+    "Date & Time Examples" : {
+
+    },
+    "Date Examples" : {
+
+    },
+    "Date Format" : {
+
+    },
+    "Date Format using Style" : {
+
+    },
+    "Date Format using Template" : {
+
+    },
+    "Date: %@ | Time: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Date: %1$@ | Time: %2$@"
+          }
+        }
+      }
+    },
+    "Delete" : {
+
+    },
+    "Delete Alert" : {
+
+    },
+    "Demo 1" : {
+
+    },
+    "Demo 2" : {
+
+    },
+    "Demo 3" : {
+
+    },
+    "Description" : {
+
+    },
+    "Direct Messages" : {
+
+    },
+    "Do what you enjoy." : {
+
+    },
+    "Dynamic layout" : {
+
+    },
+    "Enjoy what you do." : {
+
+    },
+    "Enter a new name" : {
+
+    },
+    "Enter a valid email!" : {
+
+    },
+    "Example for `@ScaledMetric`" : {
+
+    },
+    "Failed to load preview." : {
+
+    },
+    "First, comment out all the '`accessibility*`' modifiers, then navigate the screen using **VoiceOver**. Then uncomment the modifiers and again navigate this screen using VoiceOver. So you will understand the difference." : {
+
+    },
+    "Font styles" : {
+
+    },
+    "Footnote" : {
+
+    },
+    "Format Text" : {
+
+    },
+    "Go" : {
+
+    },
+    "Goodbye, world!" : {
+
+    },
+    "Green" : {
+
+    },
+    "Headline" : {
+
+    },
+    "Hello World" : {
+
+    },
+    "Hello, world!" : {
+
+    },
+    "Hello, World!" : {
+
+    },
+    "Ignored Element" : {
+
+    },
+    "Ignored Element Example" : {
+
+    },
+    "Ignored Image Example" : {
+
+    },
+    "isButton Trait" : {
+
+    },
+    "isHeader Trait" : {
+
+    },
+    "isImage Trait" : {
+
+    },
+    "isKeyboardKey Trait" : {
+
+    },
+    "isLink Trait" : {
+
+    },
+    "isSearchField Trait" : {
+
+    },
+    "isSelected Trait" : {
+
+    },
+    "isStaticText Trait" : {
+
+    },
+    "isSummaryElement Trait" : {
+
+    },
+    "isToggle Trait" : {
+
+    },
+    "Item: %@ piece%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Item: %1$@ piece%2$@"
+          }
+        }
+      }
+    },
+    "jailbroken-status" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jailbroken Status"
+          }
+        }
+      }
+    },
+    "L" : {
+
+    },
+    "L\nO\nR\nE\nM" : {
+
+    },
+    "Large" : {
+
+    },
+    "Large Title" : {
+
+    },
+    "Last crashed: %@" : {
+
+    },
+    "Locale" : {
+
+    },
+    "Lorem Ipsum" : {
+
+    },
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam" : {
+
+    },
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." : {
+
+    },
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit." : {
+
+    },
+    "Medium" : {
+
+    },
+    "Mentions" : {
+
+    },
+    "Native Toggle" : {
+
+    },
+    "No crash report found!" : {
+
+    },
+    "No Fill" : {
+
+    },
+    "No Stroke" : {
+
+    },
+    "Notifications" : {
+
+    },
+    "orem" : {
+
+    },
+    "playsSound Trait" : {
+
+    },
+    "Processing..." : {
+
+    },
+    "Purple" : {
+
+    },
+    "Push Notification 🔔" : {
+
+    },
+    "Red" : {
+
+    },
+    "Report Size: %@" : {
+
+    },
+    "Result" : {
+
+    },
+    "Select a date" : {
+
+    },
+    "Select a time" : {
+
+    },
+    "Set/Limit Dynamic Type Size" : {
+
+    },
+    "Show Alert" : {
+
+    },
+    "Show Toast 1" : {
+
+    },
+    "Show Toast 2" : {
+
+    },
+    "Show Toast 3.1" : {
+
+    },
+    "Show Toast 3.2" : {
+
+    },
+    "Sidebar" : {
+
+    },
+    "Small" : {
+
+    },
+    "startsMediaSession Trait" : {
+
+    },
+    "Sub-Headline" : {
+
+    },
+    "Submit" : {
+
+    },
+    "Success" : {
+
+    },
+    "Success Alert" : {
+
+    },
+    "SwiftUI Popover" : {
+
+    },
+    "Take New Photo" : {
+
+    },
+    "Take New Video" : {
+
+    },
+    "The layout will be changed based on the `Dynamic Type`." : {
+
+    },
+    "The layout, text and paddings will be changed based on the `Dynamic Type`." : {
+
+    },
+    "This is a basic example of `Realm`." : {
+
+    },
+    "This screen demonstrate example for `@AppStorage`. All the value here are coming form `UserDefaults` using `@AppStorage`." : {
+
+    },
+    "This will not change with Dynamic Type" : {
+
+    },
+    "This will scale within a range" : {
+
+    },
+    "This will stay small" : {
+
+    },
+    "This won't go above large" : {
+
+    },
+    "Time Examples" : {
+
+    },
+    "Title 1" : {
+
+    },
+    "Title 2" : {
+
+    },
+    "Title 3" : {
+
+    },
+    "Toast Type One: Hide" : {
+
+    },
+    "Toast Type One: Show" : {
+
+    },
+    "Toast Type Two: Hide" : {
+
+    },
+    "Toast Type Two: Show" : {
+
+    },
+    "Turn on location service to show your current location on the map." : {
+
+    },
+    "Type a URL and tap Go." : {
+
+    },
+    "UIKit Popover" : {
+
+    },
+    "updatesFrequently Trait" : {
+
+    },
+    "Use " : {
+
+    },
+    "Use **VoiceOver** to check below examples." : {
+
+    },
+    "Use **VoiceOver** to check the custom Rotors." : {
+
+    },
+    "Use following ready-to-use blocks inside the above containers to add shimmer effect." : {
+
+    },
+    "User Profiles" : {
+
+    },
+    "Variation 1" : {
+
+    },
+    "Variation 2" : {
+
+    },
+    "Variation 3" : {
+
+    },
+    "With: `.delay()`" : {
+
+    },
+    "Your result is" : {
+
+    },
+    "Your score is" : {
+
+    },
+    "Zoom Text" : {
+
+    },
+    "Zoom Text 1" : {
+
+    },
+    "Zoom Text 2" : {
+
+    }
+  },
+  "version" : "1.0"
+}

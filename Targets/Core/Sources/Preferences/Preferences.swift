@@ -7,6 +7,8 @@ import Foundation
 /// This `enum` is contains the keys for the `Preferences`.
 extension Key {
     static let authToken: Key = "authToken"
+
+    static let codableExample: Key = "user"
 }
 
 /// `Preferences` is a wrapper for `UserDefaults`.
@@ -28,10 +30,14 @@ public enum Preferences {
     @UserDefault(key: .authToken)
     public static var authToken: String?
 
+    @CodableUserDefault(key: .codableExample)
+    public static var codableExample: DummyCodable?
+
     // MARK: - Reset
 
     public static func reset() {
         // TODO: Try with `Mirror(reflection:)`.
         authToken = $authToken.defaultValue
+        codableExample = $codableExample.defaultValue
     }
 }

@@ -6,7 +6,12 @@ import Core
 import Foundation
 import NetworkKit
 
-class NewsRepository {
+protocol INewRepository: Sendable {
+    func getAllNews() async -> ApiResult<AllNewsResponse>
+    func getNewsTypes() async -> ApiResult<NewsTypesResponse>
+}
+
+final class NewsRepository: INewRepository {
     func getAllNews() async -> ApiResult<AllNewsResponse> {
         return await DataSource.News.request(
             AllNewsResponse.self,

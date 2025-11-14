@@ -6,6 +6,7 @@ import Core
 import SwiftUI
 import Observation
 
+@MainActor
 @Observable
 class URLSessionViewModel {
     var state: UIState<[Fruit]> = .loading

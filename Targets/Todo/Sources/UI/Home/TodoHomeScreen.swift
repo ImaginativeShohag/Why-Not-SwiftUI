@@ -19,51 +19,72 @@ public extension Destination {
 
 // MARK: - UI
 
-@MainActor
 struct TodoHomeScreen: View {
     @State private var viewModel: TodoHomeViewModel
     @State private var showAddSheet = false
-    @State private var editItem: Todo? = nil
+    @State private var editItem: UITodo.Todo? = nil
 
     init(
-        viewModel: TodoHomeViewModel = TodoHomeViewModel(
-            modelContainer: TodoDataSource.shared.modelContainer
-        )
+        viewModel: TodoHomeViewModel = TodoHomeViewModel()
     ) {
         self.viewModel = viewModel
     }
 
     var body: some View {
-        VStack {
-            List(viewModel.todoList, id: \.id) { todo in
-                TodoItemView(
-                    title: todo.title,
-                    notes: todo.notes,
-                    priority: todo.priority,
-                    isCompleted: todo.isCompleted,
-                    onClick: {
-                        NavController.shared.navigateTo(
-                            Destination.TodoDetail(
-                                id: todo.id
-                            )
-                        )
-                    },
-                    onEditClick: {
-                        editItem = todo
-                    },
-                    onCompleteClick: {
-                        viewModel.toggleTodoCompleteStatus(for: todo)
+        VStack(spacing: 0) {
+            HStack {
+                ForEach(UITodo.Priority.allCases, id: \.self) { priority in
+                    Button {
+                        viewModel.updatePriorityFilter(priority: priority)
+                    } label: {
+                        Text(priority == .none ? "All" : priority.description)
+                            .bold(viewModel.selectedPriority == priority)
+                            .padding(8)
+                            .frame(maxWidth: .infinity)
+                            .background(viewModel.selectedPriority == priority ? Color.blue.opacity(0.2) : Color.clear)
+                            .cornerRadius(8)
                     }
-                )
+                }
             }
-            .animation(.default, value: viewModel.todoList)
+            .padding()
+
+            if viewModel.todoList.isEmpty {
+                ContentUnavailableView(
+                    "Nothing here yet!",
+                    systemImage: "heart.text.clipboard",
+                    description: Text("Your todo will appear here.")
+                )
+            } else {
+                List(viewModel.todoList, id: \.id) { todo in
+                    TodoItemView(
+                        title: todo.title,
+                        notes: todo.notes,
+                        priority: todo.priority,
+                        isCompleted: todo.isCompleted,
+                        onClick: {
+                            NavController.shared.navigateTo(
+                                Destination.TodoDetail(
+                                    id: todo.id
+                                )
+                            )
+                        },
+                        onEditClick: {
+                            editItem = todo
+                        },
+                        onCompleteClick: {
+                            viewModel.toggleTodoCompleteStatus(for: todo)
+                        }
+                    )
+                }
+            }
         }
+        .animation(.default, value: viewModel.todoList)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     viewModel.changeSortToShowLatestFirst()
                 } label: {
-                    Image(systemName: "arrow.up.arrow.down")
+                    Image(systemName: viewModel.sortToShowLatestFirst ?  "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle")
                 }
             }
 
@@ -91,6 +112,7 @@ struct TodoHomeScreen: View {
             }
         }
         .navigationTitle("Todo")
+        .toolbarTitleDisplayMode(.inline)
         .task {
             await viewModel.load()
         }
@@ -119,7 +141,7 @@ struct TodoHomeScreen: View {
                     editItem = nil
 
                     Task {
-                        await viewModel.save(
+                        await viewModel.update(
                             todo: todo,
                             title: title,
                             notes: notes,
@@ -135,15 +157,24 @@ struct TodoHomeScreen: View {
 
 #if DEBUG
 
-#Preview {
-    MainActor.assumeIsolated {
-        NavigationStack {
-            TodoHomeScreen(
-                viewModel: TodoHomeViewModel(
-                    modelContainer: PreviewSampleData.container
-                )
+#Preview("With Data") {
+    NavigationStack {
+        TodoHomeScreen(
+            viewModel: TodoHomeViewModel(
+                forPreview: true
             )
-        }
+        )
+    }
+}
+
+#Preview("Empty") {
+    NavigationStack {
+        TodoHomeScreen(
+            viewModel: TodoHomeViewModel(
+                forPreview: true,
+                isEmpty: true
+            )
+        )
     }
 }
 
@@ -151,10 +182,10 @@ struct TodoHomeScreen: View {
 
 // MARK: - Components
 
-struct TodoItemView: View {
+private struct TodoItemView: View {
     let title: String
     let notes: String
-    let priority: TodoPriority
+    let priority: UITodo.Priority
     let isCompleted: Bool
 
     let onClick: () -> Void

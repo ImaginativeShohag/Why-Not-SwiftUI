@@ -26,7 +26,11 @@ import UIKit
 
 public extension UIDevice {
     var isSimulator: Bool {
-        return TARGET_OS_SIMULATOR != 0
+        #if targetEnvironment(simulator)
+        return true
+        #else
+        return false
+        #endif
     }
 
     var isJailBroken: Bool {

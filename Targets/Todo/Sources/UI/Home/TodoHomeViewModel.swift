@@ -8,39 +8,46 @@ import SuperLog
 import SwiftData
 import SwiftUI
 
+@MainActor
 @Observable
 class TodoHomeViewModel {
-    private(set) var todoList: [Todo] = []
-    private(set) var showCompletedItems = false
-    private(set) var sortToShowLatestFirst = true
+    private(set) var todoList: [UITodo.Todo] = []
+    private(set) var showCompletedItems = Preferences.showCompletedItems ?? false
+    private(set) var sortToShowLatestFirst = Preferences.sortToShowLatestFirst ?? true
+    private(set) var selectedPriority: UITodo.Priority = .none
 
-    private let repository: TodoRepository
+    private let repository: ITodoRepository
 
     private var isPreview = false
 
-    private var sourceTodoList: [Todo] = []
+    private var sourceTodoList: [UITodo.Todo] = []
 
     init(
-        modelContainer: ModelContainer
+        repository: ITodoRepository = TodoRepository()
     ) {
-        self.repository = TodoRepository(modelContainer: modelContainer)
+        self.repository = repository
     }
 
     func load() async {
         guard !isPreview else { return }
-        guard todoList.isEmpty else { return }
 
         sourceTodoList = await repository.getAll()
+
+        SuperLog.v(sourceTodoList)
 
         updateList()
     }
 
-    func add(title: String, notes: String, priority: TodoPriority) async {
+    func add(
+        title: String,
+        notes: String,
+        priority: UITodo.Priority
+    ) async {
         if title.isEmpty, notes.isEmpty {
             return
         }
 
-        let todo = Todo(
+        let todo = UITodo.Todo(
             title: title,
             notes: notes,
             priority: priority
@@ -54,10 +61,16 @@ class TodoHomeViewModel {
             SuperLog.d("error: \(error)")
         }
 
-        updateList()
+        // Reload Data
+        await load()
     }
 
-    func save(todo: Todo, title: String, notes: String, priority: TodoPriority) async {
+    func update(
+        todo: UITodo.Todo,
+        title: String,
+        notes: String,
+        priority: UITodo.Priority
+    ) async {
         if title.isEmpty, notes.isEmpty {
             return
         }
@@ -69,6 +82,11 @@ class TodoHomeViewModel {
                 notes: notes,
                 priority: priority
             )
+
+            // Update the model
+            todo.title = title
+            todo.notes = notes
+            todo.priority = priority
         } catch {
             SuperLog.d("error: \(error)")
         }
@@ -76,26 +94,36 @@ class TodoHomeViewModel {
 
     func changeShowCompletedItems() {
         showCompletedItems.toggle()
+        
+        Preferences.showCompletedItems = showCompletedItems
 
         updateList()
     }
 
     func changeSortToShowLatestFirst() {
         sortToShowLatestFirst.toggle()
+        
+        Preferences.sortToShowLatestFirst = sortToShowLatestFirst
 
         updateList()
     }
 
-    func toggleTodoCompleteStatus(for todo: Todo) {
+    func toggleTodoCompleteStatus(for todo: UITodo.Todo) {
         todo.isCompleted.toggle()
 
         if todo.isCompleted, !showCompletedItems, let index = todoList.firstIndex(of: todo) {
             todoList.remove(at: index)
         }
     }
+    
+    func updatePriorityFilter(priority: UITodo.Priority) {
+        selectedPriority = priority
+
+        updateList()
+    }
 
     func updateList() {
-        let items = sourceTodoList.filter { todo in
+        var items = sourceTodoList.filter { todo in
             if showCompletedItems {
                 true
             } else {
@@ -103,6 +131,12 @@ class TodoHomeViewModel {
             }
         }
 
+        // Filter by priority
+        if selectedPriority != .none {
+            items = items.filter { $0.priority == selectedPriority }
+        }
+
+        // Sort
         if sortToShowLatestFirst {
             todoList = items.reversed()
         } else {
@@ -114,22 +148,25 @@ class TodoHomeViewModel {
 #if DEBUG
 
 extension TodoHomeViewModel {
-    convenience init(forPreview: Bool) {
+    convenience init(
+        forPreview: Bool,
+        isEmpty: Bool = false
+    ) {
         self.init(
-            modelContainer: PreviewSampleData.container
+            repository: MockTodoRepository()
         )
-
-        SuperLog.d("hi")
 
         self.isPreview = true
 
-        self.sourceTodoList = (1 ... 100).map {
-            Todo(
-                title: "Task \($0)",
-                notes: "Notes \($0)",
-                priority: $0 % 2 == 0 ? .none : .medium,
-                isCompleted: $0 % 2 == 0 ? true : false
-            )
+        if !isEmpty {
+            self.sourceTodoList = (1 ... 100).map {
+                UITodo.Todo(
+                    title: "Task \($0)",
+                    notes: "Notes \($0)",
+                    priority: $0 % 2 == 0 ? .none : ($0 % 3 == 0 ? .medium : .high),
+                    isCompleted: Bool.random()
+                )
+            }
         }
 
         updateList()

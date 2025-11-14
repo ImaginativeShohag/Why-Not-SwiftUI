@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    final class Accessibility: BaseDestination {
+    final class Accessibility: BaseDestination, @unchecked Sendable {
         override public func getScreen() -> any View {
             AccessibilityScreen()
         }

@@ -2,7 +2,7 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-import MapKit
+@preconcurrency import MapKit
 import SwiftUI
 
 struct MapActionButtons: View {

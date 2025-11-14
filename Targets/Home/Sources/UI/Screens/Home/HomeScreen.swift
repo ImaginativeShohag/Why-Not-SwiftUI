@@ -16,7 +16,7 @@ public struct HomeScreen: View {
             // MARK: Custom Menu
 
             HStack {
-                Text(NSLocalizedString("jailbroken-status", comment: "Jailbroken Status"))
+                Text("jailbroken-status", bundle: .module)
 
                 Spacer()
 

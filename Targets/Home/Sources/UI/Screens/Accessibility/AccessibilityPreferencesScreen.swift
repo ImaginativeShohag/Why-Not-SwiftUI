@@ -146,6 +146,7 @@ struct AccessibilityPreferencesScreen: View {
 // MARK: - Global methods
 
 /// Only animate if "Reduce Motion" is disabled.
+@MainActor
 func withOptionalAnimation<Result>(_ animation: Animation? = .default, _ body: () throws -> Result) rethrows -> Result {
     if UIAccessibility.isReduceMotionEnabled {
         return try body()

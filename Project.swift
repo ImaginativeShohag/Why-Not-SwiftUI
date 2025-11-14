@@ -106,19 +106,34 @@ let project = Project.app(
         ),
         Module(
             name: "Home",
+            hasResources: true,
             hasUnitTest: true,
             hasUITest: true,
-            dependencies: ["Core", "CommonUI", "SuperLog", "Todo", "News"]
+            dependencies: ["Core", "CommonUI", "SuperLog", "Todo", "News", "Store"]
         ),
         Module(
             name: "Todo",
-            dependencies: ["Core", "CommonUI", "SuperLog"]
+            dependencies: ["Core", "CommonUI", "SuperLog"],
+            coreDataModels: [
+                .coreDataModel("CoreData/TodoDB.xcdatamodeld")
+            ]
         ),
+//        Module(
+//            name: "TodoWithCoreData",
+//            dependencies: ["Core", "CommonUI", "SuperLog"],
+//            coreDataModels: [
+//                .coreDataModel("CoreData/TodoDB.xcdatamodeld")
+//            ]
+//        ),
         Module(
             name: "News",
             hasResources: true,
             hasUITest: true,
             dependencies: ["Core", "CommonUI", "SuperLog", "NetworkKit"]
+        ),
+        Module(
+            name: "Store",
+            dependencies: ["Core", "CommonUI", "SuperLog", "NetworkKit", "NavigationKit"]
         )
     ],
     externalDependencies: [
@@ -133,7 +148,8 @@ let project = Project.app(
         // We need both "RealmSwift" and "Realm" to solve the "Undefined symbol" issue.
         .external(name: "RealmSwift"),
         .external(name: "Realm"),
-        .external(name: "MarkdownUI")
+        .external(name: "MarkdownUI"),
+        .external(name: "SwiftUIIntrospect")
     ],
     testDependencies: [.external(name: "TestUtils")],
     coreDataModels: []

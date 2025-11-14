@@ -6,6 +6,7 @@ import Alamofire
 import Core
 import SwiftUI
 
+@MainActor
 @Observable
 class AlamofireViewModel {
     var state: UIState<[Flower]> = .loading

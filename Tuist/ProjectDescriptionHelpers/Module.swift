@@ -12,7 +12,7 @@ public struct Module {
     let hasUITest: Bool
     let hasUITestResources: Bool
     let dependencies: [String]
-    let coreDataModels: [Path]
+    let coreDataModels: [CoreDataModel]
 
     public init(
         name: String,
@@ -22,7 +22,7 @@ public struct Module {
         hasUITest: Bool = false,
         hasUITestResources: Bool = false,
         dependencies: [String] = [],
-        coreDataModels: [Path] = []
+        coreDataModels: [CoreDataModel] = []
     ) {
         self.name = name
         self.hasResources = hasResources

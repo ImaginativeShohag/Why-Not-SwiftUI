@@ -161,10 +161,9 @@ struct GeneralAXModifiersScreen: View {
                     //     /// sibling accessibility elements that are not modal are ignored.
                     //     .accessibilityAddTraits(.isModal)
 
-                    #warning("iOS 17")
-                    // Text("isToggle Trait")
-                    //     /// The accessibility element is a toggle.
-                    //     .accessibilityAddTraits(.isToggle)
+                    Text("isToggle Trait")
+                        /// The accessibility element is a toggle.
+                        .accessibilityAddTraits(.isToggle)
 
                     Divider()
                 }

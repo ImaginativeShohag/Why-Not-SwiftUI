@@ -5,9 +5,9 @@
 import Alamofire
 import Foundation
 
-enum Header {
+public enum Header {
     /// This is the common API authentication header.
-    static func getAuthHeaders() -> [String: String] {
+    public static func getAuthHeaders() -> [String: String] {
         [
             "Authorization": Preferences.authToken ?? "",
         ]
