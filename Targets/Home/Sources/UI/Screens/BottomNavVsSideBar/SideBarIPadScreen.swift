@@ -16,7 +16,7 @@ struct SideBarIPadScreen: View {
             ScrollView {
                 VStack(spacing: 0) {
                     SideBarIPadListItem(
-                        title: "Red",
+                        title: NSLocalizedString("tab_item_label_red", bundle: .module, comment: ""),
                         systemImage: "house.fill",
                         color: .red,
                         isSelected: selection == 1
@@ -34,7 +34,7 @@ struct SideBarIPadScreen: View {
                     }
 
                     SideBarIPadListItem(
-                        title: NSLocalizedString("tab_item_label_red", bundle: .module, comment: ""),
+                        title: NSLocalizedString("tab_item_label_blue", bundle: .module, comment: ""),
                         systemImage: "magnifyingglass",
                         color: .blue,
                         isSelected: selection == 3
@@ -63,7 +63,7 @@ struct SideBarIPadScreen: View {
                 switch selection {
                     case 1:
                         ColorScreen(color: .red)
-                            .navigationTitle("Red")
+                            .navigationTitle(NSLocalizedString("tab_item_label_red", bundle: .module, comment: ""))
                             .edgesIgnoringSafeArea(.top)
 
                     case 2:
@@ -73,7 +73,7 @@ struct SideBarIPadScreen: View {
 
                     case 3:
                         ColorScreen(color: .blue)
-                            .navigationTitle(NSLocalizedString("tab_item_label_red", bundle: .module, comment: ""))
+                            .navigationTitle(NSLocalizedString("tab_item_label_blue", bundle: .module, comment: ""))
                             .edgesIgnoringSafeArea(.top)
 
                     default:

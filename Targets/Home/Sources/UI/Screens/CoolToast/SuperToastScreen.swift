@@ -147,7 +147,7 @@ public struct SuperToastScreen: View {
             data: $showToast3,
             padding: 200
         )
-        .navigationTitle(NSLocalizedString("toast_type_one_show_button_label", bundle: .module, comment: ""))
+        .navigationTitle(NSLocalizedString("super_toast_screen_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

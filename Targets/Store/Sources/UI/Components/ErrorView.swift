@@ -15,7 +15,7 @@ struct ErrorView: View {
             },
             actions: {
                 Button("Retry") {
-                    //
+                    onRetryClick()
                 }
                 .buttonStyle(.borderedProminent)
                 .padding(.top)

@@ -16,7 +16,7 @@ struct BottomNavIOSScreen: View {
                     .edgesIgnoringSafeArea(.top)
                     .tabItem {
                         Image(systemName: "house.fill")
-                        Text("Red")
+                        Text(NSLocalizedString("tab_item_label_red", bundle: .module, comment: ""))
                     }
                     .tag(1)
                 
@@ -32,7 +32,7 @@ struct BottomNavIOSScreen: View {
                     .edgesIgnoringSafeArea(.top)
                     .tabItem {
                         Image(systemName: "magnifyingglass")
-                        Text(NSLocalizedString("tab_item_label_red", bundle: .module, comment: ""))
+                        Text(NSLocalizedString("tab_item_label_blue", bundle: .module, comment: ""))
                     }
                     .tag(3)
                 

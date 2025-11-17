@@ -40,7 +40,7 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.MetricKit()
         ),
         Screen(
-            name: NSLocalizedString("toast_type_one_show_button_label", bundle: .module, comment: ""),
+            name: NSLocalizedString("super_toast_screen_title", bundle: .module, comment: ""),
             destination: Destination.SuperToast()
         ),
         Screen(

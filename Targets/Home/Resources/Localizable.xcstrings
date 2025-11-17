@@ -12413,113 +12413,6 @@
         }
       }
     },
-    "mentions_notification_option" : {
-      "comment" : "UI Element: Text within a Picker option. Purpose: Allows the user to select to be notified about mentions. Screen: App Storage Screen, under the 'Notifications' section. Category: Noun.",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "الإشارات"
-          }
-        },
-        "bn" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "উল্লেখ"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Erwähnungen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Mentions"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Menciones"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Mentions"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "उल्लेख"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Menzioni"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "メンション"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "멘션"
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Sebutkan"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Vermeldingen"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Menções"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Omnämnanden"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "การกล่าวถึง"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Bahsetmeler"
-          }
-        },
-        "zh" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "提及"
-          }
-        }
-      }
-    },
     "metric_kit_screen_title" : {
       "comment" : "Navigation title for the MetricKit screen and its corresponding menu item. MetricKit is an Apple framework for collecting diagnostic reports.",
       "localizations" : {
@@ -15302,6 +15195,113 @@
         }
       }
     },
+    "profile_image_size_medium_option" : {
+      "comment" : "UI Element: Text within a Picker option. Purpose: Allows the user to select to be notified about mentions. Screen: App Storage Screen, under the 'Notifications' section. Category: Noun.",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "الإشارات"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "উল্লেখ"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erwähnungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mentions"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Menciones"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mentions"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "उल्लेख"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Menzioni"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "メンション"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "멘션"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sebutkan"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Vermeldingen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Menções"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Omnämnanden"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "การกล่าวถึง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bahsetmeler"
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "提及"
+          }
+        }
+      }
+    },
     "profile_image_size_picker_label" : {
       "comment" : "Label for a Picker UI element. This text describes the setting that allows users to choose the size of profile images. Appears on the AppStorageScreen within the 'User Profiles' section.",
       "localizations" : {
@@ -15836,9 +15836,6 @@
           }
         }
       }
-    },
-    "Red" : {
-
     },
     "red_flowers_rotor_label" : {
       "comment" : "Accessibility rotor label. This label is used by VoiceOver users to quickly navigate to red flower entries in the list. Appears on the AXRotorScreen.",
@@ -19067,6 +19064,113 @@
         }
       }
     },
+    "super_toast_screen_title" : {
+      "comment" : "UI Element: Button Label. Purpose: Shows the first type of toast notification. Context: Super Toast Screen.",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نوع التوست الأول: إظهار"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "টোস্ট টাইপ ওয়ান: দেখান"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Toast-Typ Eins: Anzeigen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Toast Type One: Show"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tipo de Tostada Uno: Mostrar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Type de Toast Un : Afficher"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "टोस्ट प्रकार एक: दिखाएँ"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tipo di Toast Uno: Mostra"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "トーストタイプ1：表示"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "토스트 유형 1: 표시"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Jenis Roti Bakar Satu: Papar"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Toast Type Eén: Tonen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tipo de Toast Um: Mostrar"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Toasttyp Ett: Visa"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "โทสต์ประเภทหนึ่ง: แสดง"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tost Tipi Bir: Göster"
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "吐司类型一：显示"
+          }
+        }
+      }
+    },
     "swiftui_popover_button_label" : {
       "comment" : "Label for a button. Tapping this button displays a popover implemented using SwiftUI's native `.popover()` modifier. Appears on the 'Always Popover' demonstration screen.",
       "localizations" : {
@@ -19170,6 +19274,18 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "SwiftUI 弹出框"
+          }
+        }
+      }
+    },
+    "tab_item_label_blue" : {
+      "comment" : "A label displayed below the blue tab item.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blue"
           }
         }
       }
@@ -20244,113 +20360,6 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "吐司类型一：隐藏"
-          }
-        }
-      }
-    },
-    "toast_type_one_show_button_label" : {
-      "comment" : "UI Element: Button Label. Purpose: Shows the first type of toast notification. Context: Super Toast Screen.",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "نوع التوست الأول: إظهار"
-          }
-        },
-        "bn" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "টোস্ট টাইপ ওয়ান: দেখান"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Toast-Typ Eins: Anzeigen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Toast Type One: Show"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Tipo de Tostada Uno: Mostrar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Type de Toast Un : Afficher"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "टोस्ट प्रकार एक: दिखाएँ"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Tipo di Toast Uno: Mostra"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "トーストタイプ1：表示"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "토스트 유형 1: 표시"
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Jenis Roti Bakar Satu: Papar"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Toast Type Eén: Tonen"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Tipo de Toast Um: Mostrar"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Toasttyp Ett: Visa"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "โทสต์ประเภทหนึ่ง: แสดง"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Tost Tipi Bir: Göster"
-          }
-        },
-        "zh" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "吐司类型一：显示"
           }
         }
       }

@@ -43,7 +43,7 @@ struct AppStorageScreen: View {
             Section(header: Text(NSLocalizedString("user_profiles_section_header", bundle: .module, comment: ""))) {
                 Picker(NSLocalizedString("profile_image_size_picker_label", bundle: .module, comment: ""), selection: $profileImageSize) {
                     Text(NSLocalizedString("profile_image_size_large_option", bundle: .module, comment: "")).tag(ProfileImageSize.large)
-                    Text(NSLocalizedString("mentions_notification_option", bundle: .module, comment: "")).tag(ProfileImageSize.medium)
+                    Text(NSLocalizedString("profile_image_size_medium_option", bundle: .module, comment: "")).tag(ProfileImageSize.medium)
                     Text(NSLocalizedString("profile_image_size_small_option", bundle: .module, comment: "")).tag(ProfileImageSize.small)
                 }
             }
