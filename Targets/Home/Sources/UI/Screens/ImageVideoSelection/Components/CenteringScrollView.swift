@@ -9,7 +9,8 @@ import SwiftUI
 
 class CenteringScrollView: UIScrollView {
     func centerContent() {
-        assert(subviews.count == 1)
+        guard subviews.count == 1 else { return }
+
         mutate(&subviews[0].frame) {
             // not clear why view.center.{x,y} = bounds.mid{X,Y} doesn't work -- maybe transform?
             $0.origin.x = max(0, bounds.width - $0.width) / 2

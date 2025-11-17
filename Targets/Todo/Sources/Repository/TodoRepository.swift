@@ -25,26 +25,32 @@ final class TodoRepository: ITodoRepository {
     func getAll() async -> [UITodo.Todo] {
         switch source {
             case .coreData:
-                let models = await coreDataTodoDao.getAll()
-            
-                var todos: [UITodo.Todo] = []
-                for model in models {
-                    let todo = await model.toUIModel()
-                    todos.append(todo)
+                do {
+                    let models = try await coreDataTodoDao.getAll()
+                    var todos: [UITodo.Todo] = []
+                    for model in models {
+                        let todo = await model.toUIModel()
+                        todos.append(todo)
+                    }
+                    return todos
+                } catch {
+                    SuperLog.e("Failed to fetch CoreData todos: \(error)")
+                    return []
                 }
 
-                return todos
-            
             case .swiftData:
-                let models = await swiftDataTodoDao.getAll()
-        
-                var todos: [UITodo.Todo] = []
-                for model in models {
-                    let todo = await model.toUIModel()
-                    todos.append(todo)
+                do {
+                    let models = try await swiftDataTodoDao.getAll()
+                    var todos: [UITodo.Todo] = []
+                    for model in models {
+                        let todo = await model.toUIModel()
+                        todos.append(todo)
+                    }
+                    return todos
+                } catch {
+                    SuperLog.e("Failed to fetch SwiftData todos: \(error)")
+                    return []
                 }
-
-                return todos
         }
     }
     
@@ -52,12 +58,10 @@ final class TodoRepository: ITodoRepository {
         switch source {
             case .coreData:
                 let todo = try await coreDataTodoDao.getBy(id: id)
-
                 return await todo?.toUIModel()
-            
+
             case .swiftData:
                 let todo = try await swiftDataTodoDao.getBy(id: id)
-
                 return await todo?.toUIModel()
         }
     }
@@ -68,14 +72,18 @@ final class TodoRepository: ITodoRepository {
                 try await coreDataTodoDao.insert(
                     title: todo.title,
                     notes: todo.notes,
-                    priority: CDPriority.fromUIModel(todo.priority)
+                    priority: CDPriority.fromUIModel(todo.priority),
+                    createdAt: todo.createdAt,
+                    isCompleted: todo.isCompleted
                 )
             
             case .swiftData:
                 try await swiftDataTodoDao.insert(
                     title: todo.title,
                     notes: todo.notes,
-                    priority: SDPriority.fromUIModel(todo.priority)
+                    priority: SDPriority.fromUIModel(todo.priority),
+                    createdAt: todo.createdAt,
+                    isCompleted: todo.isCompleted
                 )
         }
     }
@@ -104,10 +112,16 @@ final class TodoRepository: ITodoRepository {
         }
     }
     
-    func update(todo: UITodo.Todo, title: String, notes: String, priority: UITodo.Priority) async throws {
+    func update(
+        id: Int,
+        title: String,
+        notes: String,
+        priority: UITodo.Priority,
+        isCompleted: Bool
+    ) async throws {
         switch source {
             case .coreData:
-                let dbTodo = try await coreDataTodoDao.getBy(id: todo.id)
+                let dbTodo = try await coreDataTodoDao.getBy(id: id)
             
                 guard let dbTodo else {
                     SuperLog.e("Model not found!")
@@ -118,11 +132,12 @@ final class TodoRepository: ITodoRepository {
                     entity: dbTodo,
                     title: title,
                     notes: notes,
-                    priority: CDPriority.fromUIModel(priority)
+                    priority: CDPriority.fromUIModel(priority),
+                    isCompleted: isCompleted
                 )
             
             case .swiftData:
-                let dbTodo = try await swiftDataTodoDao.getBy(id: todo.id)
+                let dbTodo = try await swiftDataTodoDao.getBy(id: id)
         
                 guard let dbTodo else {
                     SuperLog.e("Model not found!")
@@ -133,7 +148,8 @@ final class TodoRepository: ITodoRepository {
                     entity: dbTodo,
                     title: title,
                     notes: notes,
-                    priority: SDPriority.fromUIModel(priority)
+                    priority: SDPriority.fromUIModel(priority),
+                    isCompleted: isCompleted
                 )
         }
     }

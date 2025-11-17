@@ -59,7 +59,7 @@ public struct ReorderListScreen: View {
         .onAppear {
             editMode = .active
         }
-        .navigationTitle("Reorder List")
+        .navigationTitle(NSLocalizedString("reorder_list_screen_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

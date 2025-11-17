@@ -6,9 +6,7 @@ import Alamofire
 import NetworkKit
 
 public extension NetworkSession {
-    static let `default` = NetworkSession.getNetworkSession(
-        // Note: To do certificate pinning use the following commented code.
-        // serverTrustManager: ServerTrustManager.default,
+    static let `default` = NetworkSession.create(
         httpAdditionalHeaders: [
             "Accept": "application/json",
         ]

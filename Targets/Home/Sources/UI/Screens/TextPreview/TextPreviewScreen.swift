@@ -49,7 +49,7 @@ public struct TextPreviewScreen: View {
             }
             .padding()
         }
-        .navigationTitle("Typography")
+        .navigationTitle(NSLocalizedString("typography_navigation_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

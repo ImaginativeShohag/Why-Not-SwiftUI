@@ -1,8 +1,9 @@
 //
-//  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
+//  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
 import Foundation
+import NetworkKit
 
 /// A model for passing mock data during UI testing.
 ///
@@ -32,7 +33,11 @@ public struct MockResponse {
     /// mock data for specific testing requirements.
     let data: Encodable?
 
-    public init(route: ApiEndpoint, statusCode: Int, data: Encodable?) {
+    public init(
+        route: ApiEndpoint,
+        statusCode: Int,
+        data: Encodable?
+    ) {
         self.route = route
         self.statusCode = statusCode
         self.data = data

@@ -15,6 +15,8 @@ class TodoHomeViewModel {
     private(set) var showCompletedItems = Preferences.showCompletedItems ?? false
     private(set) var sortToShowLatestFirst = Preferences.sortToShowLatestFirst ?? true
     private(set) var selectedPriority: UITodo.Priority = .none
+    private(set) var errorMessage: String?
+    var showErrorAlert = false
 
     private let repository: ITodoRepository
 
@@ -56,20 +58,24 @@ class TodoHomeViewModel {
         do {
             try await repository.insert(todo: todo)
 
-            sourceTodoList.append(todo)
-        } catch {
-            SuperLog.d("error: \(error)")
-        }
+            // Only update local state after successful DB insert
+            // Reload data to sync with DB
+            await load()
 
-        // Reload Data
-        await load()
+            clearError()
+        } catch {
+            SuperLog.e("Failed to add todo: \(error)")
+            errorMessage = "Failed to add todo. Please try again."
+            showErrorAlert = true
+        }
     }
 
     func update(
         todo: UITodo.Todo,
         title: String,
         notes: String,
-        priority: UITodo.Priority
+        priority: UITodo.Priority,
+        isCompleted: Bool
     ) async {
         if title.isEmpty, notes.isEmpty {
             return
@@ -77,18 +83,24 @@ class TodoHomeViewModel {
 
         do {
             try await repository.update(
-                todo: todo,
+                id: todo.id,
                 title: title,
                 notes: notes,
-                priority: priority
+                priority: priority,
+                isCompleted: isCompleted
             )
 
-            // Update the model
+            // Update the model only after successful DB update
             todo.title = title
             todo.notes = notes
             todo.priority = priority
+            todo.isCompleted = isCompleted
+
+            clearError()
         } catch {
-            SuperLog.d("error: \(error)")
+            SuperLog.e("Failed to update todo: \(error)")
+            errorMessage = "Failed to update todo. Please try again."
+            showErrorAlert = true
         }
     }
 
@@ -108,11 +120,31 @@ class TodoHomeViewModel {
         updateList()
     }
 
-    func toggleTodoCompleteStatus(for todo: UITodo.Todo) {
-        todo.isCompleted.toggle()
+    func toggleTodoCompleteStatus(for todo: UITodo.Todo) async {
+        let isCompleted = !todo.isCompleted
 
-        if todo.isCompleted, !showCompletedItems, let index = todoList.firstIndex(of: todo) {
-            todoList.remove(at: index)
+        do {
+            try await repository.update(
+                id: todo.id,
+                title: todo.title,
+                notes: todo.notes,
+                priority: todo.priority,
+                isCompleted: isCompleted
+            )
+
+            // Update the model only after successful DB update
+            todo.isCompleted = isCompleted
+
+            // Update the list
+            if todo.isCompleted, !showCompletedItems, let index = todoList.firstIndex(of: todo) {
+                todoList.remove(at: index)
+            }
+
+            clearError()
+        } catch {
+            SuperLog.e("Failed to toggle todo status: \(error)")
+            errorMessage = "Failed to update todo status. Please try again."
+            showErrorAlert = true
         }
     }
     
@@ -120,6 +152,11 @@ class TodoHomeViewModel {
         selectedPriority = priority
 
         updateList()
+    }
+
+    func clearError() {
+        errorMessage = nil
+        showErrorAlert = false
     }
 
     func updateList() {

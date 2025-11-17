@@ -21,11 +21,13 @@ public extension Encodable {
 
     /// Convert the `Encodable` object to JSON `String`.
     ///
-    /// - Returns: The JSON `String`, or `nil` if fails to convert.
-    func toJsonString() -> String? {
-        if let data = toData(), let jsonStr = String(data: data, encoding: .utf8) {
-            return jsonStr
-        }
-        return nil
+    /// - Returns: The JSON string for the `Encodable`. If it fails, it will throw an exception.
+    ///
+    /// - Note: Tested: `EncodableToJsonStringTests`
+    func toJSONString() throws -> String? {
+        let jsonEncoder = JSONEncoder()
+        jsonEncoder.outputFormatting = .sortedKeys
+        let jsonData = try jsonEncoder.encode(self)
+        return String(data: jsonData, encoding: .utf8)
     }
 }

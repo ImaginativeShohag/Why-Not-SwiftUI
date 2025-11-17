@@ -43,7 +43,7 @@ struct ProfileSheet: View {
                     VStack {
                         Form {
                             HStack(alignment: .center) {
-                                KFImage(URL(string: "https://picsum.photos/id/42/200/200"))
+                                KFImage(URL(string: "https://picsum.photos/seed/\(user.id)/200/200"))
                                     .placeholder {
                                         Image(systemName: "person.crop.circle")
                                             .resizable()

@@ -119,7 +119,7 @@ private struct ItemsView: View {
         VStack {
             // The list shows the items in the realm.
             List {
-                Text("This is a basic example of `Realm`.")
+                Text(NSLocalizedString("realm_basic_example_text", bundle: .module, comment: ""))
 
                 ForEach(itemGroup.items) { item in
                     ItemRow(item: item)
@@ -128,7 +128,7 @@ private struct ItemsView: View {
                 .onMove(perform: $itemGroup.items.move)
             }
             .listStyle(.automatic)
-            .navigationBarTitle("Realm Example", displayMode: .large)
+            .navigationBarTitle(NSLocalizedString("realm_example_navigation_title", bundle: .module, comment: ""), displayMode: .large)
             .navigationBarItems(
                 leading: self.leadingBarButton,
                 // Edit button on the right to enable rearranging items
@@ -170,12 +170,12 @@ private struct ItemDetailsView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Enter a new name")
+            Text(NSLocalizedString("enter_new_name_label", bundle: .module, comment: ""))
                 .font(.title)
 
             // Accept a new name
             HStack {
-                TextField("New name", text: $item.name)
+                TextField(NSLocalizedString("new_name_placeholder", bundle: .module, comment: ""), text: $item.name)
                     .navigationBarTitle(item.name)
                     .navigationBarItems(trailing: Toggle(isOn: $item.isFavorite) {
                         Image(systemName: item.isFavorite ? "heart.fill" : "heart")

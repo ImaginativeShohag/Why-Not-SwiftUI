@@ -4,11 +4,6 @@
 
 import CoreData
 
-extension NSManagedObject: @retroactive @unchecked Sendable {}
-extension NSPredicate: @retroactive @unchecked Sendable {}
-extension NSFetchRequest: @retroactive @unchecked Sendable {}
-extension NSManagedObjectContext: @retroactive @unchecked Sendable {}
-
 public final actor CoreDataDatabase {
     private let context: NSManagedObjectContext
 
@@ -55,6 +50,11 @@ public extension CoreDataDatabase {
         let request = NSFetchRequest<T>(entityName: String(describing: T.self))
         request.predicate = predicate
         request.sortDescriptors = sortBy
-        return try await self.fetch(request)
+        return try self.fetch(request)
     }
 }
+
+extension NSManagedObject: @retroactive @unchecked Sendable {}
+extension NSPredicate: @retroactive @unchecked Sendable {}
+extension NSFetchRequest: @retroactive @unchecked Sendable {}
+extension NSManagedObjectContext: @retroactive @unchecked Sendable {}

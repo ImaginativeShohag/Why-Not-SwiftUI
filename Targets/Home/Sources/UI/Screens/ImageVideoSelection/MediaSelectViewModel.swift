@@ -56,14 +56,12 @@ public final class MediaSelectViewModel {
     }
 
     func addAttachment() {
-        guard !selectedItems.isEmpty else { return }
+        guard let selectedItem else { return }
 
         showLoading = true
 
         Task.detached(priority: .userInitiated) { [selectedItem] in
-            if let selectedItem {
-                await self.processAndAppendAttachment(selectedItem)
-            }
+            await self.processAndAppendAttachment(selectedItem)
 
             await MainActor.run {
                 self.selectedItem = nil

@@ -26,13 +26,13 @@ public struct LabelToggleScreen: View {
 
     public var body: some View {
         VStack(spacing: 32) {
-            Text("Native Toggle")
+            Text(NSLocalizedString("native_toggle", bundle: .module, comment: ""))
                 .font(.headline)
 
             Toggle(isOn: $isOn) {}
                 .fixedSize()
 
-            Text("Custom Toggle")
+            Text(NSLocalizedString("custom_toggle", bundle: .module, comment: ""))
                 .font(.headline)
 
             LabelToggle(
@@ -40,7 +40,7 @@ public struct LabelToggleScreen: View {
             )
         }
         .padding()
-        .navigationTitle("Label Toggle")
+        .navigationTitle(NSLocalizedString("label_toggle", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

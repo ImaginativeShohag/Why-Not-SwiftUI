@@ -21,10 +21,10 @@ struct DateFormat2Screen: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading) {
-                Text("Format Text")
+                Text(NSLocalizedString("format_text", bundle: .module, comment: ""))
                     .font(.headline)
                 
-                TextField("Format Text", text: $formatText)
+                TextField(NSLocalizedString("format_text", bundle: .module, comment: ""), text: $formatText)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
                     .textFieldStyle(.roundedBorder)
@@ -78,7 +78,7 @@ struct DateFormat2Screen: View {
                 print("Current date: \(formattedDate)")
             }
         }
-        .navigationTitle("Date Format using Template")
+        .navigationTitle(NSLocalizedString("date_format_using_template", bundle: .module, comment: ""))
     }
 }
 

@@ -72,19 +72,28 @@ struct TodoHomeScreen: View {
                             editItem = todo
                         },
                         onCompleteClick: {
-                            viewModel.toggleTodoCompleteStatus(for: todo)
+                            Task {
+                                await viewModel.toggleTodoCompleteStatus(for: todo)
+                            }
                         }
                     )
                 }
             }
         }
         .animation(.default, value: viewModel.todoList)
+        .alert("Error", isPresented: $viewModel.showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     viewModel.changeSortToShowLatestFirst()
                 } label: {
-                    Image(systemName: viewModel.sortToShowLatestFirst ?  "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle")
+                    Image(systemName: viewModel.sortToShowLatestFirst ? "arrow.up.arrow.down.circle.fill" : "arrow.up.arrow.down.circle")
                 }
             }
 
@@ -145,7 +154,8 @@ struct TodoHomeScreen: View {
                             todo: todo,
                             title: title,
                             notes: notes,
-                            priority: priority
+                            priority: priority,
+                            isCompleted: false
                         )
                     }
                 }

@@ -11,7 +11,7 @@ struct ShimmerUIDemo0: View {
             VStack(spacing: 16) {
                 Header("Containers")
                 
-                Text("All items inside the container will be shimmering.")
+                Text(NSLocalizedString("shimmer_container_explanation", bundle: .module, comment: ""))
                     .multilineTextAlignment(.center)
                 
                 Divider()
@@ -42,7 +42,7 @@ struct ShimmerUIDemo0: View {
                 
                 Header("Blocks")
                 
-                Text("Use following ready-to-use blocks inside the above containers to add shimmer effect.")
+                Text(NSLocalizedString("shimmer_blocks_explanation", bundle: .module, comment: ""))
                     .multilineTextAlignment(.center)
                 
                 Divider()

@@ -34,8 +34,9 @@ final class SDTodo: Sendable {
 // MARK: - Extensions
 
 extension SDTodo {
-    func toUIModel() async -> UITodo.Todo {
-        await .init(
+    @MainActor
+    func toUIModel() -> UITodo.Todo {
+        .init(
             id: id,
             title: title,
             notes: notes,

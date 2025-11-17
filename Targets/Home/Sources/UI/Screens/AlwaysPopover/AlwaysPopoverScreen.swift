@@ -29,7 +29,7 @@ public struct AlwaysPopoverScreen: View {
             Button {
                 showInfo1 = true
             } label: {
-                Text("UIKit Popover")
+                Text(NSLocalizedString("uikit_popover_button_label", bundle: .module, comment: ""))
                 Image(systemName: "info")
             }
             .buttonStyle(.borderedProminent)
@@ -46,7 +46,7 @@ public struct AlwaysPopoverScreen: View {
             Button {
                 showInfo2 = true
             } label: {
-                Text("SwiftUI Popover")
+                Text(NSLocalizedString("swiftui_popover_button_label", bundle: .module, comment: ""))
                 Image(systemName: "info")
             }
             .buttonStyle(.borderedProminent)

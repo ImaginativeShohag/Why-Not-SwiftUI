@@ -40,7 +40,7 @@ public struct MediaSelectScreen: View {
     public var body: some View {
         VStack(spacing: 0) {
             if viewModel.attachmentItems.isEmpty {
-                ContentUnavailableView("No attachment yet.", systemImage: "photo.on.rectangle.angled")
+                ContentUnavailableView(NSLocalizedString("no_attachment_yet", bundle: .module, comment: ""), systemImage: "photo.on.rectangle.angled")
             } else {
                 ScrollView {
                     VStack {
@@ -63,42 +63,42 @@ public struct MediaSelectScreen: View {
                 Button {
                     showAttachmentAddDialog = true
                 } label: {
-                    Text("Add Attachment")
+                    Text(NSLocalizedString("add_attachment", bundle: .module, comment: ""))
                 }
                 .buttonStyle(.borderedProminent)
                 .confirmationDialog(
-                    "Add Attachment",
+                    NSLocalizedString("add_attachment", bundle: .module, comment: ""),
                     isPresented: $showAttachmentAddDialog
                 ) {
                     Button {
                         showImageCapturer = true
                     } label: {
-                        Text("Take New Photo")
+                        Text(NSLocalizedString("take_new_photo", bundle: .module, comment: ""))
                             .foregroundColor(Color.label)
                     }
 
                     Button {
                         showVideoCapturer = true
                     } label: {
-                        Text("Take New Video")
+                        Text(NSLocalizedString("take_new_video", bundle: .module, comment: ""))
                             .foregroundColor(Color.label)
                     }
 
                     Button {
                         showPhotoLibraryForSingle = true
                     } label: {
-                        Text("Choose from Library (Single)")
+                        Text(NSLocalizedString("choose_from_library_single", bundle: .module, comment: ""))
                             .foregroundColor(Color.label)
                     }
 
                     Button {
                         showPhotoLibraryForMultiple = true
                     } label: {
-                        Text("Choose from Library (Multiple)")
+                        Text(NSLocalizedString("choose_from_library_multiple", bundle: .module, comment: ""))
                             .foregroundColor(Color.label)
                     }
 
-                    Button("Cancel", role: .cancel) {}
+                    Button(NSLocalizedString("cancel_button_title", bundle: .module, comment: ""), role: .cancel) {}
                 }
                 .padding()
             }
@@ -107,7 +107,7 @@ public struct MediaSelectScreen: View {
             .shadow(color: Color.black.opacity(0.1), radius: 5)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .navigationTitle("Media Capture & Select")
+        .navigationTitle(NSLocalizedString("media_capture_and_select", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
             OverlayLoadingView(isPresented: viewModel.showLoading)

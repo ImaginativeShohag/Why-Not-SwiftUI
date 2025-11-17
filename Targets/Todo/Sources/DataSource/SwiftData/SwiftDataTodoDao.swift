@@ -19,13 +19,11 @@ final class SwiftDataTodoDao: ITodoDao {
         self.database = SwiftDataDatabase(modelContainer: container)
     }
 
-    func getAll() async -> [SDTodo] {
+    func getAll() async throws -> [SDTodo] {
         let descriptor = FetchDescriptor<SDTodo>()
-        let todos = try? await database.fetch(descriptor)
+        let todos = try await database.fetch(descriptor)
 
-        SuperLog.d("todos: \(String(describing: todos))")
-
-        return todos ?? []
+        return todos
     }
     
     func getBy(id: Int) async throws -> SDTodo? {
@@ -39,18 +37,24 @@ final class SwiftDataTodoDao: ITodoDao {
         return models.first
     }
     
-    func insert(title: String, notes: String, priority: SDPriority) async throws {
+    func insert(title: String, notes: String, priority: SDPriority, createdAt: Date, isCompleted: Bool) async throws {
+        // Generate a more robust ID using a combination of timestamp and random value
+        // to avoid collisions when multiple todos are created quickly
+        let timestamp = Int(Date().timeIntervalSince1970 * 1000)
+        let randomComponent = Int.random(in: 0..<1000)
+        let uniqueId = timestamp * 1000 + randomComponent
+
         let todo = SDTodo(
-            id: Int(Date().timeIntervalSince1970 * 1000),
+            id: uniqueId,
             title: title,
             notes: notes,
             priority: priority,
-            createdAt: Date(),
-            isCompleted: false
+            createdAt: createdAt,
+            isCompleted: isCompleted
         )
-        
+
         await database.insert(todo)
-        
+
         try await database.save()
     }
     
@@ -60,19 +64,13 @@ final class SwiftDataTodoDao: ITodoDao {
         try await database.save()
     }
     
-    func update(entity: SDTodo, title: String, notes: String, priority: SDPriority) async throws {
-        let id = entity.id
-        let predicate = #Predicate<SDTodo> {
-            $0.id == id
-        }
-        
-        let descriptor = FetchDescriptor<SDTodo>(predicate: predicate)
-        guard let models = await (try? database.fetch(descriptor)), let dbModel = models.first else { return }
-            
-        dbModel.title = title
-        dbModel.notes = notes
-        dbModel.priority = priority
-        
+    func update(entity: SDTodo, title: String, notes: String, priority: SDPriority, isCompleted: Bool) async throws {
+        // Update the entity directly without refetching
+        entity.title = title
+        entity.notes = notes
+        entity.priority = priority
+        entity.isCompleted = isCompleted
+
         try await database.save()
     }
 }

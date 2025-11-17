@@ -5,15 +5,23 @@
 import Foundation
 
 /// This is used as the common model for receiving api response.
-public struct GeneralResponse: Codable {
+public struct GeneralResponse: Codable, Sendable {
     let success: Bool?
     let message: String?
+
+    public init(
+        success: Bool?,
+        message: String?
+    ) {
+        self.success = success
+        self.message = message
+    }
 
     public func isSuccess() -> Bool {
         return self.success ?? false
     }
 
     public func getMessage(orDefault message: String = "Something went wrong. Try again.") -> String {
-        return self.message == nil || self.message?.isEmpty == true ? message : self.message!
+        return self.message.isBlank ? message : self.message!
     }
 }

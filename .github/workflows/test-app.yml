@@ -4,17 +4,17 @@ on: [ pull_request ]
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.2'
+          xcode-version: '26'
 
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
       - uses: SwiftyLab/setup-swift@latest
         with:
-          swift-version: "6.0.3"
+          swift-version: "6"
 
       - name: Get swift version
         run: swift --version
@@ -30,4 +30,4 @@ jobs:
         run: tuist install
 
       - name: Run tests
-        run: tuist test 'WhyNotSwiftUI Development' --skip-test-targets NetworkKitTests/NetworkProdTests --verbose
+        run: tuist test 'WhyNotSwiftUI Development' --skip-test-targets NetworkKitTests/NetworkKitProdTests --verbose

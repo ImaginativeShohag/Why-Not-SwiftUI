@@ -34,7 +34,9 @@ struct HomeScreen: View {
                                 Button {
                                     showProfile.toggle()
                                 } label: {
-                                    ProfileView()
+                                    ProfileView(
+                                        id: user.id
+                                    )
                                 }
                             }
                             .padding()
@@ -137,8 +139,10 @@ struct HomeScreen: View {
 }
 
 struct ProfileView: View {
+    let id: Int
+    
     var body: some View {
-        KFImage(URL(string: "https://picsum.photos/id/42/200/200"))
+        KFImage(URL(string: "https://picsum.photos/seed/\(id)/200/200"))
             .placeholder {
                 Image(systemName: "person.crop.circle")
                     .resizable()

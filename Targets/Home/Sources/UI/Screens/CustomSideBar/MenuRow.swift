@@ -56,7 +56,7 @@ struct MenuSubItemView: View {
                 MenuRow(
                     image: menu.image,
                     title: menu.title,
-                    counter: (menu.title == "Cart") ? 5 : (menu.title == "Notifications" ? 10 : 0),
+                    counter: (menu.title == "Cart") ? 5 : (menu.title == NSLocalizedString("notifications_menu_item_title", bundle: .module, comment: "") ? 10 : 0),
                     isSelected: menu.isSelected,
                     color: menu.color
                 ) {

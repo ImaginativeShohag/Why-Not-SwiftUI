@@ -5,6 +5,7 @@
 @testable import Core
 import NetworkKit
 @testable import News
+import TestUtils
 import XCTest
 
 #if DEBUG

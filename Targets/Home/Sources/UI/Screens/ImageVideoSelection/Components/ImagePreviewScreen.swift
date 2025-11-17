@@ -16,12 +16,12 @@ struct ImagePreviewScreen: View {
     var body: some View {
         ZStack {
             if isLoading {
-                ProgressView("Preparing preview...")
+                ProgressView(NSLocalizedString("preparing_preview", bundle: .module, comment: ""))
             } else if let previewItem = previewItem {
                 QuickLookController(previewItem: previewItem)
                     .edgesIgnoringSafeArea(.all)
             } else {
-                Text("Failed to load preview.")
+                Text(NSLocalizedString("failed_to_load_preview", bundle: .module, comment: ""))
             }
         }
         .onAppear {

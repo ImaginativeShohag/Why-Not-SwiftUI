@@ -43,7 +43,7 @@ public struct TextFieldValidationScreen: View {
                 .autocorrectionDisabled()
 
                 if viewModel.showEmailError {
-                    Text("Enter a valid email!")
+                    Text(NSLocalizedString("enter_valid_email_error_message", bundle: .module, comment: ""))
                         .fontStyle(size: 12)
                         .frame(maxWidth: .infinity)
                         .transition(.move(edge: .top).combined(with: .opacity))

@@ -7,6 +7,7 @@ import NetworkKit
 @testable import News
 import TestUtils
 import XCTest
+import TestUtils
 
 #if DEBUG
 

@@ -1,5 +1,5 @@
 //
-//  Copyright © 2024 Apple Inc. All rights reserved.
+//  Copyright © 2024 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
 @testable import NetworkKit

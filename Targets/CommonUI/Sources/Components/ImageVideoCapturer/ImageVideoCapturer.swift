@@ -69,28 +69,20 @@ public struct ImageVideoCapturer: UIViewControllerRepresentable {
             case UTType.image.identifier:
                 // Handle image selection result
                 print("Selected media is image")
-                    
-                if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+                
+                let imageToProcess = (info[UIImagePickerController.InfoKey.editedImage] as? UIImage)
+                    ?? (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)
+
+                if let image = imageToProcess {
                     if let maxImageSize = parent.maxImageSize {
-                        let resizedImage = editedImage.resizeIfNeeded(
+                        let resizedImage = image.resizeIfNeeded(
                             width: Int(maxImageSize.width),
                             height: Int(maxImageSize.height)
                         )
-                        
+                                        
                         parent.onSuccess(resizedImage, nil)
                     } else {
-                        parent.onSuccess(editedImage, nil)
-                    }
-                } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                    if let maxImageSize = parent.maxImageSize {
-                        let resizedImage = originalImage.resizeIfNeeded(
-                            width: Int(maxImageSize.width),
-                            height: Int(maxImageSize.height)
-                        )
-                        
-                        parent.onSuccess(resizedImage, nil)
-                    } else {
-                        parent.onSuccess(originalImage, nil)
+                        parent.onSuccess(image, nil)
                     }
                 }
 
@@ -98,7 +90,11 @@ public struct ImageVideoCapturer: UIViewControllerRepresentable {
                 // Handle video selection result
                 print("Selected media is video")
                     
-                let videoUrl = info[UIImagePickerController.InfoKey.mediaURL] as! URL
+                guard let videoUrl = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
+                    print("Video URL not found")
+                    picker.dismiss(animated: true)
+                    return
+                }
                     
                 // Help: https://www.swiftdevcenter.com/get-thumbnail-from-video-url-in-background-swift/
                 Task.detached(priority: .userInitiated) {

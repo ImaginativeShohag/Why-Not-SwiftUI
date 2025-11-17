@@ -31,7 +31,7 @@ struct Menu: Identifiable {
             color: Color.blue
         ),
         Menu(
-            title: "Notifications",
+            title: NSLocalizedString("notifications_menu_item_title", bundle: .module, comment: ""),
             image: UIImage(systemName: "bell")!,
             isSelected: true,
             target: .notifications,
