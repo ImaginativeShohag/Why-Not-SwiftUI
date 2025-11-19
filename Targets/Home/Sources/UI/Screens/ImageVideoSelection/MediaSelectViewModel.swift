@@ -5,12 +5,16 @@
 import PhotosUI
 import SwiftUI
 
-@MainActor
-public class MediaSelectViewModel: ObservableObject {
-    @Published var attachmentItems: [UIAttachment] = []
-    @Published var selectedItems: [PhotosPickerItem] = []
+// TODO: #1: Refactor codes.
 
-    @Published var showLoading: Bool = false
+@MainActor
+@Observable
+public final class MediaSelectViewModel {
+    var attachmentItems: [UIAttachment] = []
+    var selectedItems: [PhotosPickerItem] = []
+    var selectedItem: PhotosPickerItem?
+
+    var showLoading: Bool = false
 
     public nonisolated init() {}
 
@@ -26,8 +30,11 @@ public class MediaSelectViewModel: ObservableObject {
             id: UUID().hashValue,
             type: videoUrl == nil ? .capturedPhoto : .recordedVideo,
             image: image,
-            videoUrl: videoUrl?.absoluteString
+            videoUrl: videoUrl
         ))
+
+        // Reset selected items
+        selectedItem = nil
     }
 
     func addAttachments() {
@@ -35,31 +42,71 @@ public class MediaSelectViewModel: ObservableObject {
 
         showLoading = true
 
-        Task {
-            for item in self.selectedItems {
-                do {
-                    let data = try await item.loadTransferable(type: Data.self)
-
-                    if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            self.attachmentItems.append(UIAttachment(
-                                id: UUID().hashValue,
-                                type: .selectedPhoto,
-                                image: image,
-                                videoUrl: nil
-                            ))
-                        }
-                    }
-                } catch {
-                    print("Debug: \(error)")
-                }
+        Task.detached(priority: .userInitiated) { [selectedItems] in
+            for item in selectedItems {
+                await self.processAndAppendAttachment(item)
             }
 
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.selectedItems.removeAll()
 
                 self.showLoading = false
             }
+        }
+    }
+
+    func addAttachment() {
+        guard let selectedItem else { return }
+
+        showLoading = true
+
+        Task.detached(priority: .userInitiated) { [selectedItem] in
+            await self.processAndAppendAttachment(selectedItem)
+
+            await MainActor.run {
+                self.selectedItem = nil
+
+                self.showLoading = false
+            }
+        }
+    }
+
+    private func processAndAppendAttachment(_ item: PhotosPickerItem) async {
+        do {
+            if item.supportedContentTypes.contains(where: { $0.conforms(to: .image) }) {
+                if let data = try await item.loadTransferable(type: Data.self),
+                   let image = UIImage(data: data)
+                {
+                    await MainActor.run {
+                        self.attachmentItems.append(UIAttachment(
+                            id: UUID().hashValue,
+                            type: .selectedPhoto,
+                            image: image,
+                            videoUrl: nil
+                        ))
+                    }
+                }
+            } else if item.supportedContentTypes.contains(where: { $0.conforms(to: .movie) }) {
+                if let movie = try await item.loadTransferable(type: Movie.self) {
+                    let videoURL = movie.url
+
+                    // Generate thumbnail using async API (fixes error #4)
+                    let thumbnail = try await generateThumbnail(for: videoURL)
+
+                    await MainActor.run {
+                        self.attachmentItems.append(UIAttachment(
+                            id: UUID().hashValue,
+                            type: .recordedVideo,
+                            image: thumbnail,
+                            videoUrl: videoURL
+                        ))
+                    }
+                }
+            } else {
+                print("Unsupported media type")
+            }
+        } catch {
+            print("Debug: \(error)")
         }
     }
 
@@ -68,13 +115,67 @@ public class MediaSelectViewModel: ObservableObject {
     }
 }
 
+extension PhotosPickerItem {
+    func toUIImage() async throws -> UIImage? {
+        let data = try await loadTransferable(type: Data.self)
+
+        if let data = data, let image = UIImage(data: data) {
+            return image
+        } else {
+            return nil
+        }
+    }
+}
+
+// Helper struct to load video URL using Transferable
+struct Movie: Transferable {
+    let url: URL
+
+    static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(importedContentType: .movie) { receivedFile in
+            // Create a temp URL to copy the video file
+            let tempDirectory = FileManager.default.temporaryDirectory
+            let fileName = UUID().uuidString + ".mov"
+            let tempURL = tempDirectory.appendingPathComponent(fileName)
+
+            // receivedFile is of type ReceivedTransferredFile, which has a .file property (URL)
+            try FileManager.default.copyItem(at: receivedFile.file, to: tempURL)
+
+            // Return the Movie instance correctly initialized
+            return Movie(url: tempURL)
+        }
+    }
+}
+
+// Helper function to generate a thumbnail image from video URL
+private func generateThumbnail(for url: URL) async throws -> UIImage? {
+    let asset = AVURLAsset(url: url) // Use AVURLAsset (fixes error #3)
+    let generator = AVAssetImageGenerator(asset: asset)
+    generator.appliesPreferredTrackTransform = true
+
+    return try await withCheckedThrowingContinuation { continuation in
+        generator.generateCGImageAsynchronously(for: .zero) { cgImage, _, error in
+            if let error = error {
+                continuation.resume(throwing: error)
+            } else if let cgImage = cgImage {
+                continuation.resume(returning: UIImage(cgImage: cgImage))
+            } else {
+                continuation.resume(returning: nil)
+            }
+        }
+    }
+}
+
 #if DEBUG
 
-public extension MediaSelectViewModel {
-    convenience init(forPreview: Bool = true) {
+extension MediaSelectViewModel {
+    convenience init(
+        forPreview: Bool = true,
+        attachments: [UIAttachment]
+    ) {
         self.init()
 
-        self.attachmentItems = UIAttachment.examples
+        self.attachmentItems = attachments
     }
 }
 

@@ -71,7 +71,7 @@ struct MapScreen: View {
                     .stroke(.red, lineWidth: 5)
             }
         }
-        .navigationTitle("Map")
+        .navigationTitle(NSLocalizedString("map_screen_title", bundle: .module, comment: ""))
         .toolbarTitleDisplayMode(.inline)
         .mapControls {
             MapScaleView()
@@ -94,18 +94,18 @@ struct MapScreen: View {
             VStack {
                 if viewModel.locationAuthorizationStatus == .noDetermined {
                     MapWarningView {
-                        Text("Cannot access your location. Please allow location access.")
+                        Text(NSLocalizedString("location_access_undetermined_warning_message", bundle: .module, comment: ""))
                             .multilineTextAlignment(.center)
 
                         Button {
                             showPreLocationAuthorizationSection = true
                         } label: {
-                            Text("Allow")
+                            Text(NSLocalizedString("allow_button_title", bundle: .module, comment: ""))
                         }
                     }
                 } else if viewModel.locationAuthorizationStatus == .denied {
                     MapWarningView {
-                        Text("Cannot access your location. Please allow location access in the settings.")
+                        Text(NSLocalizedString("location_access_denied_settings_message", bundle: .module, comment: ""))
                             .multilineTextAlignment(.center)
                     }
                 }

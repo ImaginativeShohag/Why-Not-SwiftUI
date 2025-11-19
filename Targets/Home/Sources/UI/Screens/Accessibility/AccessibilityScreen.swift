@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: - Destination
 
 public extension Destination {
-    final class Accessibility: BaseDestination {
+    final class Accessibility: BaseDestination, @unchecked Sendable {
         override public func getScreen() -> any View {
             AccessibilityScreen()
         }
@@ -24,7 +24,7 @@ public struct AccessibilityScreen: View {
     public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text("Accessibility")
+                Text(NSLocalizedString("accessibility_screen_title", bundle: .module, comment: ""))
                     .font(.title)
 
                 NavigationLink {
@@ -50,7 +50,7 @@ public struct AccessibilityScreen: View {
                 } label: {
                     MenuItem(
                         icon: "3.circle",
-                        label: "Dynamic Type"
+                        label: NSLocalizedString("dynamic_type_menu_item", bundle: .module, comment: "")
                     )
                 }
 
@@ -59,7 +59,7 @@ public struct AccessibilityScreen: View {
                 } label: {
                     MenuItem(
                         icon: "4.circle",
-                        label: "Custom Accessibility Actions"
+                        label: NSLocalizedString("custom_accessibility_actions_menu_item", bundle: .module, comment: "")
                     )
                 }
 
@@ -68,7 +68,7 @@ public struct AccessibilityScreen: View {
                 } label: {
                     MenuItem(
                         icon: "5.circle",
-                        label: "Accessibility Preferences"
+                        label: NSLocalizedString("accessibility_preferences", bundle: .module, comment: "")
                     )
                 }
             }
@@ -76,7 +76,7 @@ public struct AccessibilityScreen: View {
             .multilineTextAlignment(.center)
             .buttonStyle(.bordered)
         }
-        .navigationTitle("Accessibility")
+        .navigationTitle(NSLocalizedString("accessibility_screen_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

@@ -11,7 +11,7 @@ public enum Constants {
     public static let projectName = "WhyNotSwiftUI"
 
     /// The app bundle ID.
-    public static let bundleId = "org.imaginativeworld.Why-Not-SwiftUI"
+    public static let bundleId = "org.imaginativeworld.Why-Not-SwiftUI${SAMPLE_CODE_DISAMBIGUATOR}"
 
     /// Name of the organization the app belongs to.
     public static let organizationName = "Md. Mahmudul Hasan Shohag"

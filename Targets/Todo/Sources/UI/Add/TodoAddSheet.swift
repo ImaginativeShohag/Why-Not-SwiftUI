@@ -10,9 +10,9 @@ struct TodoAddSheet: View {
 
     @State var title: String = ""
     @State var notes: String = ""
-    @State var priority: TodoPriority = .none
+    @State var priority: UITodo.Priority = .none
 
-    let onAddClick: (_ title: String, _ notes: String, _ priority: TodoPriority) -> Void
+    let onAddClick: (_ title: String, _ notes: String, _ priority: UITodo.Priority) -> Void
 
     var body: some View {
         NavigationStack {
@@ -26,11 +26,11 @@ struct TodoAddSheet: View {
 
                 Section {
                     Picker("Priority", selection: $priority) {
-                        Text("None").tag(TodoPriority.none)
+                        Text("None").tag(UITodo.Priority.none)
                         Divider()
-                        Text("Low").tag(TodoPriority.low)
-                        Text("Medium").tag(TodoPriority.medium)
-                        Text("High").tag(TodoPriority.high)
+                        Text("Low").tag(UITodo.Priority.low)
+                        Text("Medium").tag(UITodo.Priority.medium)
+                        Text("High").tag(UITodo.Priority.high)
                     }
                 }
             }

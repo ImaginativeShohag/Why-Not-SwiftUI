@@ -27,23 +27,23 @@ public struct DateFormatScreen: View {
             NavigationLink {
                 DateFormat1Screen()
             } label: {
-                Text("Date Format")
+                Text(NSLocalizedString("date_format", bundle: .module, comment: ""))
             }
 
             NavigationLink {
                 DateFormat2Screen()
             } label: {
-                Text("Date Format using Template")
+                Text(NSLocalizedString("date_format_using_template", bundle: .module, comment: ""))
             }
 
             NavigationLink {
                 DateFormat3Screen()
             } label: {
-                Text("Date Format using Style")
+                Text(NSLocalizedString("date_format_using_style_navigation_title", bundle: .module, comment: ""))
             }
         }
         .buttonStyle(.bordered)
-        .navigationTitle("Date Format")
+        .navigationTitle(NSLocalizedString("date_format", bundle: .module, comment: ""))
     }
 }
 

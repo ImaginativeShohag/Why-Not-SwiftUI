@@ -34,26 +34,27 @@ public extension Project {
         baseSettings: [String: SettingValue],
         infoPlist: [String: Plist.Value],
         configInfoPlist: [String: Plist.Value],
+        appModuleConfig: AppModuleConfig,
         modules: [Module],
-        externalDependencies: [TargetDependency],
-        coreDataModels: [Path]
+        externalDependencies: [TargetDependency]
     ) -> Project {
         let appMainTarget: ProjectDescription.TargetReference = "\(name)"
 
-        var dependencies: [TargetDependency] = modules
+        var appTargetDependencies: [TargetDependency] = modules
+            .filter { $0.onlyForTestTarget == false }
             .map { TargetDependency.target(name: $0.name) }
-        dependencies.append(contentsOf: externalDependencies)
-        dependencies.append(contentsOf: appExtensions.map { TargetDependency.target(name: $0.name) })
+        appTargetDependencies.append(contentsOf: externalDependencies)
+        appTargetDependencies.append(contentsOf: appExtensions.map { TargetDependency.target(name: $0.name) })
 
-        var finalInfoPlist = infoPlist.merging(configInfoPlist) { _, new in new }
+        let finalInfoPlist = infoPlist.merging(configInfoPlist) { _, new in new }
 
         var targets = makeAppTargets(
             name: name,
+            config: appModuleConfig,
             destinations: destinations,
             deploymentTargets: deploymentTargets,
-            dependencies: dependencies,
-            infoPlist: finalInfoPlist,
-            coreDataModels: coreDataModels
+            dependencies: appTargetDependencies,
+            infoPlist: finalInfoPlist
         )
         targets += modules.flatMap {
             makeFrameworkTargets(
@@ -77,11 +78,13 @@ public extension Project {
             name: name,
             organizationName: organizationName,
             options: .options(
-                automaticSchemesOptions: .disabled
+                automaticSchemesOptions: .disabled,
+                defaultKnownRegions: ["Base", "en", "bn", "ja", "de", "fr", "hi", "it", "es", "sv", "ar", "zh", "ko", "nl", "th", "ms", "pt", "tr"]
             ),
             settings: .settings(
                 base: baseSettings,
-                configurations: BuildEnvironment.getConfigurations(for: .app)
+                configurations: BuildEnvironment.getConfigurations(for: .app),
+                defaultConfiguration: "Debug Development"
             ),
             targets: targets,
             schemes: [
@@ -161,13 +164,13 @@ public extension Project {
         var dependencies: [TargetDependency] = .init(externalDependencies)
 
         if !module.dependencies.isEmpty {
-            dependencies += module.dependencies.map { .target(name: $0) }
+            dependencies += module.dependencies
         }
 
         // Core Data
-        let coreDataModels = module.coreDataModels.map { CoreDataModel.coreDataModel($0) }
+        let coreDataModels = module.coreDataModels
 
-        let sources = Target.target(
+        let mainTarget = Target.target(
             name: name,
             destinations: destinations,
             product: .framework,
@@ -183,7 +186,7 @@ public extension Project {
             coreDataModels: coreDataModels
         )
 
-        var tests: Target?
+        var testTarget: Target?
 
         if module.hasUnitTest {
             // Resources
@@ -193,7 +196,13 @@ public extension Project {
                 resources = ["Targets/\(name)/Tests/Resources/**"]
             }
 
-            tests = Target.target(
+            // Dependencies
+            let dependencies = [
+                .target(name: appTargetName),
+                .target(name: name)
+            ] + module.unitTestDependencies
+
+            testTarget = Target.target(
                 name: "\(name)Tests",
                 destinations: destinations,
                 product: .unitTests,
@@ -202,14 +211,14 @@ public extension Project {
                 infoPlist: .extendingDefault(with: infoPlist),
                 sources: ["Targets/\(name)/Tests/**"],
                 resources: resources,
-                dependencies: [.target(name: appTargetName), .target(name: name)],
+                dependencies: dependencies,
                 settings: .settings(
                     configurations: BuildEnvironment.getConfigurations(for: .unitTest)
                 )
             )
         }
 
-        var uiTests: Target?
+        var uiTestTarget: Target?
 
         if module.hasUITest {
             // Resources
@@ -219,7 +228,14 @@ public extension Project {
                 resources = ["Targets/\(name)/UITests/Resources/**"]
             }
 
-            uiTests = Target.target(
+            // Dependencies
+            // Here the target will be the main app target.
+            // Because UI test will run on the app itself.
+            let dependencies = [
+                .target(name: appTargetName)
+            ] + module.uiTestDependencies
+
+            uiTestTarget = Target.target(
                 name: "\(name)UITests",
                 destinations: destinations,
                 product: .uiTests,
@@ -228,29 +244,25 @@ public extension Project {
                 infoPlist: .extendingDefault(with: infoPlist),
                 sources: ["Targets/\(name)/UITests/**"],
                 resources: resources,
-                // Here the target will be the main app target.
-                // Because UI test will run on the app itself.
-                dependencies: [.target(name: appTargetName)],
+                dependencies: dependencies,
                 settings: .settings(
                     configurations: BuildEnvironment.getConfigurations(for: .target)
                 )
             )
         }
 
-        return [sources, tests, uiTests].compactMap { $0 }
+        return [mainTarget, testTarget, uiTestTarget].compactMap { $0 }
     }
 
     /// Helper function to create the application target and the unit test target.
     private static func makeAppTargets(
         name: String,
+        config: AppModuleConfig,
         destinations: Destinations,
         deploymentTargets: DeploymentTargets,
         dependencies: [TargetDependency],
-        infoPlist: [String: Plist.Value],
-        coreDataModels: [Path]
+        infoPlist: [String: Plist.Value]
     ) -> [Target] {
-        let coreDataModels = coreDataModels.map { CoreDataModel.coreDataModel($0) }
-
         let mainTarget = Target.target(
             name: name,
             destinations: destinations,
@@ -265,41 +277,73 @@ public extension Project {
             settings: .settings(
                 configurations: BuildEnvironment.getConfigurations(for: .app)
             ),
-            coreDataModels: coreDataModels
+            coreDataModels: config.coreDataModels
         )
 
-        let testTarget = Target.target(
-            name: "\(name)Tests",
-            destinations: destinations,
-            product: .unitTests,
-            bundleId: "\(bundleId).\(name)Tests",
-            deploymentTargets: deploymentTargets,
-            infoPlist: .extendingDefault(with: infoPlist),
-            sources: ["Targets/\(name)/Tests/**"],
-            dependencies: [
+        var testTarget: Target?
+
+        if config.hasUnitTest {
+            // Resources
+            var resources: ProjectDescription.ResourceFileElements?
+
+            if config.hasUnitTestResources {
+                resources = ["Targets/\(name)/Tests/Resources/**"]
+            }
+
+            // Dependencies
+            let dependencies = [
                 .target(name: name)
-            ],
-            settings: .settings(
-                configurations: BuildEnvironment.getConfigurations(for: .unitTest)
-            )
-        )
+            ] + config.unitTestDependencies
 
-        let uiTestTarget = Target.target(
-            name: "\(name)UITests",
-            destinations: destinations,
-            product: .uiTests,
-            bundleId: "\(bundleId).\(name)UITests",
-            deploymentTargets: deploymentTargets,
-            infoPlist: .extendingDefault(with: infoPlist),
-            sources: ["Targets/\(name)/UITests/**"],
-            dependencies: [
+            testTarget = Target.target(
+                name: "\(name)Tests",
+                destinations: destinations,
+                product: .unitTests,
+                bundleId: "\(bundleId).\(name)Tests",
+                deploymentTargets: deploymentTargets,
+                infoPlist: .extendingDefault(with: infoPlist),
+                sources: ["Targets/\(name)/Tests/**"],
+                resources: resources,
+                dependencies: dependencies,
+                settings: .settings(
+                    configurations: BuildEnvironment.getConfigurations(for: .unitTest)
+                )
+            )
+        }
+
+        var uiTestTarget: Target?
+
+        if config.hasUITest {
+            // Resources
+            var resources: ProjectDescription.ResourceFileElements?
+
+            if config.hasUITestResources {
+                resources = ["Targets/\(name)/UITests/Resources/**"]
+            }
+
+            // Dependencies
+            // Here the target will be the main app target.
+            // Because UI test will run on the app itself.
+            let dependencies = [
                 .target(name: name)
-            ],
-            settings: .settings(
-                configurations: BuildEnvironment.getConfigurations(for: .target)
-            )
-        )
+            ] + config.uiTestDependencies
 
-        return [mainTarget, testTarget, uiTestTarget]
+            let uiTestTarget = Target.target(
+                name: "\(name)UITests",
+                destinations: destinations,
+                product: .uiTests,
+                bundleId: "\(bundleId).\(name)UITests",
+                deploymentTargets: deploymentTargets,
+                infoPlist: .extendingDefault(with: infoPlist),
+                sources: ["Targets/\(name)/UITests/**"],
+                resources: resources,
+                dependencies: dependencies,
+                settings: .settings(
+                    configurations: BuildEnvironment.getConfigurations(for: .target)
+                )
+            )
+        }
+
+        return [mainTarget, testTarget, uiTestTarget].compactMap { $0 }
     }
 }

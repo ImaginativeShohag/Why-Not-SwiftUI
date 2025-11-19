@@ -21,7 +21,7 @@ struct LocationAuthorizationPreAlertSection: View {
                     Spacer()
                         .frame(height: 32)
 
-                    Text("Turn on location service to show your current location on the map.")
+                    Text(NSLocalizedString("location_service_instruction_text", bundle: .module, comment: ""))
                         .font(.title)
 
                     IconTextSection(
@@ -45,7 +45,7 @@ struct LocationAuthorizationPreAlertSection: View {
                     Button {
                         onClickAllow()
                     } label: {
-                        Text("Allow")
+                        Text(NSLocalizedString("allow_button_title", bundle: .module, comment: ""))
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)

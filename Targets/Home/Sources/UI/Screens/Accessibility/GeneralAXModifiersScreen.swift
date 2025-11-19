@@ -40,7 +40,7 @@ struct GeneralAXModifiersScreen: View {
         ScrollView {
             VStack(spacing: 16) {
                 Group {
-                    Text("First, comment out all the '`accessibility*`' modifiers, then navigate the screen using **VoiceOver**. Then uncomment the modifiers and again navigate this screen using VoiceOver. So you will understand the difference.")
+                    Text(NSLocalizedString("accessibility_modifiers_explanation_text", bundle: .module, comment: ""))
                         .font(.footnote)
                         .multilineTextAlignment(.center)
 
@@ -48,7 +48,7 @@ struct GeneralAXModifiersScreen: View {
                 }
 
                 Group {
-                    Text("Custom Label Example")
+                    Text(NSLocalizedString("custom_label_example_title", bundle: .module, comment: ""))
                         .font(.title)
 
                     Image(pictures[selectedPicture])
@@ -63,7 +63,7 @@ struct GeneralAXModifiersScreen: View {
                         /// Set custom value for AX tools.
                         .accessibilityValue(labels[selectedPicture])
                         /// Set custom hint for AX tools.
-                        .accessibilityHint("Double tap to change the image.")
+                        .accessibilityHint(NSLocalizedString("double_tap_to_change_image_hint", bundle: .module, comment: ""))
                         /// Set the element type for accessibility. So AX tools will think this is a "Button".
                         .accessibilityAddTraits(.isButton)
                         /// Remove the default view type for accessibility. So AX tools will to think this is a "Image".
@@ -75,48 +75,48 @@ struct GeneralAXModifiersScreen: View {
                 // MARK: -
 
                 Group {
-                    Text("Custom Traits Example")
+                    Text(NSLocalizedString("custom_traits_example_title", bundle: .module, comment: ""))
                         .font(.title)
 
-                    Text("isButton Trait")
+                    Text(NSLocalizedString("is_button_trait", bundle: .module, comment: ""))
                         /// The accessibility element is a button.
                         .accessibilityAddTraits(.isButton)
 
-                    Text("isHeader Trait")
+                    Text(NSLocalizedString("is_header_trait", bundle: .module, comment: ""))
                         /// The accessibility element is a header that divides content into
                         /// sections, like the title of a navigation bar.
                         .accessibilityAddTraits(.isHeader)
 
-                    Text("isSelected Trait")
+                    Text(NSLocalizedString("is_selected_trait_label", bundle: .module, comment: ""))
                         /// The accessibility element is currently selected.
                         .accessibilityAddTraits(.isSelected)
 
-                    Text("isLink Trait")
+                    Text(NSLocalizedString("is_link_trait", bundle: .module, comment: ""))
                         /// The accessibility element is a link.
                         .accessibilityAddTraits(.isLink)
 
-                    Text("isSearchField Trait")
+                    Text(NSLocalizedString("is_search_field_trait", bundle: .module, comment: ""))
                         /// The accessibility element is a search field.
                         .accessibilityAddTraits(.isSearchField)
 
-                    Text("isImage Trait")
+                    Text(NSLocalizedString("is_image_trait_label", bundle: .module, comment: ""))
                         /// The accessibility element is an image.
                         .accessibilityAddTraits(.isImage)
 
-                    Text("playsSound Trait")
+                    Text(NSLocalizedString("plays_sound_trait_label", bundle: .module, comment: ""))
                         /// The accessibility element plays its own sound when activated.
                         .accessibilityAddTraits(.playsSound)
 
-                    Text("isKeyboardKey Trait")
+                    Text(NSLocalizedString("is_keyboard_key_trait", bundle: .module, comment: ""))
                         /// The accessibility element behaves as a keyboard key.
                         .accessibilityAddTraits(.isKeyboardKey)
 
-                    Text("isStaticText Trait")
+                    Text(NSLocalizedString("is_static_text_trait", bundle: .module, comment: ""))
                         /// The accessibility element is a static text that cannot be
                         /// modified by the user.
                         .accessibilityAddTraits(.isStaticText)
 
-                    Text("isSummaryElement Trait")
+                    Text(NSLocalizedString("is_summary_element_trait", bundle: .module, comment: ""))
                         /// The accessibility element provides summary information when the
                         /// application starts.
                         ///
@@ -125,7 +125,7 @@ struct GeneralAXModifiersScreen: View {
                         /// temperature in the Weather app.
                         .accessibilityAddTraits(.isSummaryElement)
 
-                    Text("updatesFrequently Trait")
+                    Text(NSLocalizedString("updates_frequently_trait", bundle: .module, comment: ""))
                         /// The accessibility element frequently updates its label or value.
                         ///
                         /// Use this trait when you want an assistive technology to poll for
@@ -133,7 +133,7 @@ struct GeneralAXModifiersScreen: View {
                         /// this trait to characterize the readout of a stopwatch.
                         .accessibilityAddTraits(.updatesFrequently)
 
-                    Text("startsMediaSession Trait")
+                    Text(NSLocalizedString("starts_media_session_trait", bundle: .module, comment: ""))
                         /// The accessibility element starts a media session when it is activated.
                         ///
                         /// Use this trait to silence the audio output of an assistive technology,
@@ -142,12 +142,12 @@ struct GeneralAXModifiersScreen: View {
                         /// the user is recording audio.
                         .accessibilityAddTraits(.startsMediaSession)
 
-                    Text("allowsDirectInteraction Trait")
+                    Text(NSLocalizedString("allows_direct_interaction_trait_label", bundle: .module, comment: ""))
                         /// The accessibility element allows direct touch interaction for
                         /// VoiceOver users.
                         .accessibilityAddTraits(.allowsDirectInteraction)
 
-                    Text("causesPageTurn Trait")
+                    Text(NSLocalizedString("causes_page_turn_trait_label", bundle: .module, comment: ""))
                         /// The accessibility element causes an automatic page turn when VoiceOver
                         /// finishes reading the text within it.
                         .accessibilityAddTraits(.causesPageTurn)
@@ -161,10 +161,9 @@ struct GeneralAXModifiersScreen: View {
                     //     /// sibling accessibility elements that are not modal are ignored.
                     //     .accessibilityAddTraits(.isModal)
 
-                    #warning("iOS 17")
-                    // Text("isToggle Trait")
-                    //     /// The accessibility element is a toggle.
-                    //     .accessibilityAddTraits(.isToggle)
+                    Text(NSLocalizedString("is_toggle_trait", bundle: .module, comment: ""))
+                        /// The accessibility element is a toggle.
+                        .accessibilityAddTraits(.isToggle)
 
                     Divider()
                 }
@@ -172,7 +171,7 @@ struct GeneralAXModifiersScreen: View {
                 // MARK: -
 
                 Group {
-                    Text("Ignored Image Example")
+                    Text(NSLocalizedString("ignored_image_example_title", bundle: .module, comment: ""))
                         .font(.title)
 
                     /// If we use `Image(decorative:)` AX tools will ignore it.
@@ -188,10 +187,10 @@ struct GeneralAXModifiersScreen: View {
                 // MARK: -
 
                 Group {
-                    Text("Ignored Element Example")
+                    Text(NSLocalizedString("accessibility_ignored_element_explanation", bundle: .module, comment: ""))
                         .font(.title)
 
-                    Text("Ignored Element")
+                    Text(NSLocalizedString("ignored_element_label", bundle: .module, comment: ""))
                         /// This element will be hidden to AX tools. So it will be ignored by AX tools.
                         .accessibilityHidden(true)
 
@@ -205,7 +204,7 @@ struct GeneralAXModifiersScreen: View {
                         .font(.title)
 
                     VStack {
-                        Text("Your score is")
+                        Text(NSLocalizedString("your_score_is_label", bundle: .module, comment: ""))
                         Text("1000")
                             .font(.title)
                     }
@@ -219,11 +218,11 @@ struct GeneralAXModifiersScreen: View {
                 // MARK: -
 
                 Group {
-                    Text("Custom Label for Complex Elements Example")
+                    Text(NSLocalizedString("custom_label_for_complex_elements_example_title", bundle: .module, comment: ""))
                         .font(.title)
 
                     VStack {
-                        Text("Your result is")
+                        Text(NSLocalizedString("general_ax_modifiers_intro_text", bundle: .module, comment: ""))
                         Text("1K")
                             .font(.title)
                     }
@@ -238,7 +237,7 @@ struct GeneralAXModifiersScreen: View {
                 // MARK: -
 
                 Group {
-                    Text("Custom Component Example")
+                    Text(NSLocalizedString("general_accessibility_screen_title", bundle: .module, comment: ""))
                         .font(.title)
 
                     LongPressCheckmark(
@@ -248,7 +247,7 @@ struct GeneralAXModifiersScreen: View {
             }
             .padding()
         }
-        .navigationTitle("Accessibility Modifiers")
+        .navigationTitle(NSLocalizedString("accessibility_modifiers_screen_title", bundle: .module, comment: ""))
     }
 }
 
@@ -275,9 +274,9 @@ struct LongPressCheckmark: View {
             .accessibilityAddTraits(.isButton)
             .accessibilityAddTraits(isSelected ? .isSelected : [])
             /// Set custom label for AX tools.
-            .accessibilityLabel(Text("Checkmark"))
+            .accessibilityLabel(Text(NSLocalizedString("checkmark_label", bundle: .module, comment: "")))
             /// Set custom hint for AX tools.
-            .accessibilityHint("You can toggle the checkmark")
+            .accessibilityHint(NSLocalizedString("toggle_checkmark_hint", bundle: .module, comment: ""))
             /// This element is using `onLongPressGesture`, so VO cannot access it directly.
             /// So, for VO users we added specify the action here.
             .accessibilityAction { isSelected.toggle() }

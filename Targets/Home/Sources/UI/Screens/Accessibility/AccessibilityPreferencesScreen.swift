@@ -36,7 +36,7 @@ struct AccessibilityPreferencesScreen: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                Text("Accessibility Differentiate Without Color Example")
+                Text(NSLocalizedString("accessibility_differentiate_without_color_example_title", bundle: .module, comment: ""))
                     .font(.title)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
@@ -59,12 +59,12 @@ struct AccessibilityPreferencesScreen: View {
                 // MARK: -
 
                 Group {
-                    Text("Accessibility Reduce Transparency Example")
+                    Text(NSLocalizedString("accessibility_reduce_transparency_example_title", bundle: .module, comment: ""))
                         .font(.title)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
 
-                    Text("Hello, World!")
+                    Text(NSLocalizedString("sidebar_main_content_greeting", bundle: .module, comment: ""))
                         .padding()
                         /// Remove the transparency if "Reduce Transparency" is enabled.
                         .background(reduceTransparency ? Color.systemBlack : Color.systemBlack.opacity(0.5))
@@ -76,12 +76,12 @@ struct AccessibilityPreferencesScreen: View {
 
                 // MARK: -
 
-                Text("Accessibility Reduce Motion Example")
+                Text(NSLocalizedString("accessibility_reduce_motion_example_title", bundle: .module, comment: ""))
                     .font(.title)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
 
-                Text("Hello, World!")
+                Text(NSLocalizedString("sidebar_main_content_greeting", bundle: .module, comment: ""))
                     .scaleEffect(scale)
                     .onTapGesture {
                         /// We are using custom method to stop animation.
@@ -102,13 +102,13 @@ struct AccessibilityPreferencesScreen: View {
                     /// Set the element type for accessibility. So AX tools will think this is a "Button".
                     .accessibilityAddTraits(.isButton)
                     /// Set custom hint for AX tools.
-                    .accessibilityHint("Double tap to increase the text size.")
+                    .accessibilityHint(NSLocalizedString("accessibility_hint_double_tap_increase_text_size", bundle: .module, comment: ""))
 
                 Divider()
 
                 // MARK: -
 
-                Text("Accessibility Reduce Motion Example")
+                Text(NSLocalizedString("accessibility_reduce_motion_example_title", bundle: .module, comment: ""))
                     .font(.title)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
@@ -133,11 +133,11 @@ struct AccessibilityPreferencesScreen: View {
                     .accessibilityIgnoresInvertColors()
             }
         }
-        .navigationTitle("Accessibility Preferences")
+        .navigationTitle(NSLocalizedString("accessibility_preferences", bundle: .module, comment: ""))
     }
 }
 
-#Preview("Accessibility Preferences") {
+#Preview(NSLocalizedString("accessibility_preferences", bundle: .module, comment: "")) {
     NavigationStack {
         AccessibilityPreferencesScreen()
     }
@@ -146,6 +146,7 @@ struct AccessibilityPreferencesScreen: View {
 // MARK: - Global methods
 
 /// Only animate if "Reduce Motion" is disabled.
+@MainActor
 func withOptionalAnimation<Result>(_ animation: Animation? = .default, _ body: () throws -> Result) rethrows -> Result {
     if UIAccessibility.isReduceMotionEnabled {
         return try body()

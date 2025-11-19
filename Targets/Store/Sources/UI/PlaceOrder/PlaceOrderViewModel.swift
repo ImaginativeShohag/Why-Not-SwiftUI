@@ -1,0 +1,82 @@
+//
+//  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
+//
+
+import Core
+import Foundation
+
+@MainActor
+@Observable
+class PlaceOrderViewModel: CartActions {
+    var orderSubmitState: UIState<Bool>?
+    var nameText: String = ""
+    var phoneNumberText: String = ""
+    var addressText: String = ""
+
+    private var isPreview: Bool = false
+    private nonisolated let repository: StoreRepository
+
+    init(
+        repository: StoreRepository = StoreRepository(),
+        cartManager: CartManager = CartManager.shared
+    ) {
+        self.repository = repository
+
+        super.init(cartManager: cartManager)
+
+        nameText = Preferences.name ?? ""
+        phoneNumberText = Preferences.phoneNumber ?? ""
+        addressText = Preferences.address ?? ""
+    }
+
+    func submitOrder() async {
+        guard !isPreview else { return }
+
+        orderSubmitState = .loading
+
+        try? await Task.sleep(for: .seconds(2))
+
+        // Save the address
+        Preferences.name = nameText
+        Preferences.phoneNumber = phoneNumberText
+        Preferences.address = addressText
+
+        // Reset the cart
+        clearCart()
+
+        orderSubmitState = .data(data: true)
+    }
+}
+
+#if DEBUG
+
+extension PlaceOrderViewModel {
+    convenience init(
+        forPreview: Bool,
+        productIsEmpty: Bool,
+        productsIsLoading: Bool,
+        productsIsError: Bool
+    ) {
+        if productIsEmpty {
+            self.init(
+                cartManager: CartManager.mockWithEmptyItem
+            )
+        } else {
+            self.init(
+                cartManager: CartManager.mock
+            )
+        }
+
+        isPreview = true
+
+        if productsIsLoading {
+            orderSubmitState = .loading
+        } else if productsIsError {
+            orderSubmitState = .error(message: "Something went wrong! Try again.")
+        } else {
+            orderSubmitState = .data(data: true)
+        }
+    }
+}
+
+#endif

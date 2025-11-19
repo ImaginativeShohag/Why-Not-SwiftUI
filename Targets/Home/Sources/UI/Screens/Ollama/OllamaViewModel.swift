@@ -26,6 +26,7 @@ private let ollamaModel = "llama3.1:8b"
 /// Documentation: https://github.com/ollama/ollama/blob/main/README.md#rest-api
 private let ollamaEndpoint = "http://localhost:11434"
 
+@MainActor
 @Observable
 class OllamaViewModel {
     var messages: [ChatMessage] = []

@@ -64,7 +64,7 @@ public struct FitnessRingCardScreen: View {
                 .fill(.ultraThinMaterial)
         }
         .padding()
-        .navigationTitle("Ring Chart: Fitness")
+        .navigationTitle(NSLocalizedString("ring_chart_fitness", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

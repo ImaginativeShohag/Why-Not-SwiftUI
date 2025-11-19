@@ -26,29 +26,29 @@ public struct ShimmerUIScreen: View {
             NavigationLink {
                 ShimmerUIDemo0()
             } label: {
-                Text("Components")
+                Text(NSLocalizedString("components", bundle: .module, comment: ""))
             }
 
             NavigationLink {
                 ShimmerUIDemo1()
             } label: {
-                Text("Demo 1")
+                Text(NSLocalizedString("shimmer_ui_demo_1_button_label", bundle: .module, comment: ""))
             }
 
             NavigationLink {
                 ShimmerUIDemo2()
             } label: {
-                Text("Demo 2")
+                Text(NSLocalizedString("demo_2_button_label", bundle: .module, comment: ""))
             }
 
             NavigationLink {
                 ShimmerUIDemo3()
             } label: {
-                Text("Demo 3")
+                Text(NSLocalizedString("demo_3_button_label", bundle: .module, comment: ""))
             }
         }
         .buttonStyle(.borderedProminent)
-        .navigationTitle("ShimmerUI")
+        .navigationTitle(NSLocalizedString("shimmer_ui_screen_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

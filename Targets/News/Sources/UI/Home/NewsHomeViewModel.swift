@@ -5,6 +5,7 @@
 import Core
 import Foundation
 
+@MainActor
 @Observable
 class NewsHomeViewModel {
     var newsState: UIState<[News]> = .loading
@@ -12,9 +13,9 @@ class NewsHomeViewModel {
 
     private var isPreview: Bool = false
 
-    private let repository: NewsRepository
+    private let repository: INewRepository
 
-    init(repository: NewsRepository = NewsRepository()) {
+    init(repository: INewRepository = NewsRepository()) {
         self.repository = repository
     }
 

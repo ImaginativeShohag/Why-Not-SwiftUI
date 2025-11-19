@@ -10,10 +10,10 @@ import Foundation
 
 @propertyWrapper
 public struct UserDefault<T: PropertyListValue> {
-    let key: Key
-    let defaultValue: T?
+    public let key: Key
+    public let defaultValue: T?
 
-    init(key: Key, defaultValue: T? = nil) {
+    public init(key: Key, defaultValue: T? = nil) {
         self.key = key
         self.defaultValue = defaultValue
     }
@@ -37,10 +37,10 @@ public struct UserDefault<T: PropertyListValue> {
 
 @propertyWrapper
 public struct CodableUserDefault<T: Codable> {
-    let key: Key
-    let defaultValue: T?
+    public let key: Key
+    public let defaultValue: T?
 
-    init(key: Key, defaultValue: T? = nil) {
+    public init(key: Key, defaultValue: T? = nil) {
         self.key = key
         self.defaultValue = defaultValue
     }

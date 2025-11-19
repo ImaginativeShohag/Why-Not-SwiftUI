@@ -32,7 +32,7 @@ struct OllamaScreen: View {
             VStack {
                 if viewModel.messages.isEmpty {
                     ContentUnavailableView(
-                        "Ask anything!",
+                        NSLocalizedString("content_unavailable_ask_anything_title", bundle: .module, comment: ""),
                         systemImage: "message"
                     )
                 } else {
@@ -52,7 +52,7 @@ struct OllamaScreen: View {
                 }
 
                 HStack {
-                    TextField("Ask anything...", text: $prompt)
+                    TextField(NSLocalizedString("ollama_screen_ask_anything_placeholder", bundle: .module, comment: ""), text: $prompt)
                         .submitLabel(.go)
                         .onSubmit {
                             ask()
@@ -73,7 +73,7 @@ struct OllamaScreen: View {
                 .background(Material.regular)
             }
         }
-        .navigationTitle("Ollama Example")
+        .navigationTitle(NSLocalizedString("ollama_screen_navigation_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 

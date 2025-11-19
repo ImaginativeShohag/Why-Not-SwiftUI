@@ -16,7 +16,7 @@ import SuperLog
 /// - Parameter API: The generic type representing the API endpoints conforming to ApiEndpoint.
 ///
 /// - Note: Tested with `BackendTest`.
-public class Backend<API>: MoyaProvider<API> where API: ApiEndpoint {
+public final class Backend<API: Sendable>: MoyaProvider<API> where API: ApiEndpoint {
     private let onError: (_ route: String, _ code: Int) -> ()
 
     /// Initializes the provider for network calls.
@@ -57,7 +57,7 @@ public class Backend<API>: MoyaProvider<API> where API: ApiEndpoint {
                     httpHeaderFields: target.headers
                 )
             },
-            stubClosure: { _ in isStubbed ? stubBehavior : .never },
+            stubClosure: { _ in (isUITestEnvironment || isStubbed) ? stubBehavior : .never },
             callbackQueue: DispatchQueue(label: API.dispatchLabel),
             session: session,
             plugins: plugins
@@ -76,6 +76,13 @@ public extension Backend {
         )
     }
 
+    /// Request for an API call to the `endpoint` for a `T` response.
+    func request<T>(
+        on endpoint: API
+    ) async -> ApiResult<T> where T: Decodable {
+        return await request(T.self, on: endpoint)
+    }
+
     /// Request for an API call to the `endpoint` for a `resourceType` response.
     func request<T>(
         _ resourceType: T.Type,
@@ -83,15 +90,19 @@ public extension Backend {
     ) async -> ApiResult<T> where T: Decodable {
         await withCheckedContinuation { continuation in
             var cancellable: AnyCancellable?
-            // ----------------------------------------------------------------
-            // Check task cancellation
-            // ----------------------------------------------------------------
-            if _Concurrency.Task.isCancelled {
-                continuation.resume(returning: Backend.canceledRequestResult())
-                cancellable?.cancel()
-                return
+
+            // Helper to check cancellation and resume with cancelled result
+            func checkCancellation() -> Bool {
+                if _Concurrency.Task.isCancelled {
+                    continuation.resume(returning: Backend.canceledRequestResult())
+                    cancellable?.cancel()
+                    return true
+                }
+                return false
             }
-            // ----------------------------------------------------------------
+
+            // Check task cancellation before starting
+            guard !checkCancellation() else { return }
 
             cancellable = requestPublisher(endpoint)
                 .filterSuccessfulStatusCodes()
@@ -108,9 +119,7 @@ public extension Backend {
 
                         let statusCode: Int = error.response?.statusCode ?? -1
 
-                        DispatchQueue.main.async {
-                            self.onError(endpoint.path, statusCode)
-                        }
+                        self.onError(endpoint.path, statusCode)
 
                         // ----------------------------------------------------------------
                         // Handle `Empty` model
@@ -118,17 +127,17 @@ public extension Backend {
 
                         /// If the status code is between success codes and the`responseType` is given `Empty.self`, then we will call the compilation closure manually.
                         if resourceType is Alamofire.Empty.Type, (200 ... 299).contains(statusCode) {
-                            // ----------------------------------------------------------------
-                            // Check task cancellation
-                            // ----------------------------------------------------------------
-                            if _Concurrency.Task.isCancelled {
-                                continuation.resume(returning: Backend.canceledRequestResult())
-                                cancellable?.cancel()
+                            guard !checkCancellation() else { return }
+
+                            guard let emptyValue = Alamofire.Empty.value as? T else {
+                                continuation.resume(returning: .failure(
+                                    error: error,
+                                    errorMessage: "Type mismatch for Empty response",
+                                    statusCode: statusCode
+                                ))
                                 return
                             }
-                            // ----------------------------------------------------------------
-
-                            continuation.resume(returning: .success(response: Alamofire.Empty.value as! T))
+                            continuation.resume(returning: .success(response: emptyValue))
                             return
                         }
 
@@ -139,6 +148,7 @@ public extension Backend {
                         var errorMessage = ""
 
                         #if PRODUCTION
+                        
                         if case let .statusCode(response) = error {
                             /// If the app is in **production** we only show status code related messages.
                             errorMessage = HttpStatusCode.getMessage(for: response.statusCode)
@@ -150,6 +160,7 @@ public extension Backend {
                             /// If the app is in **production** and the error is **not related** to **status code** then we show this.
                             errorMessage = "Something went wrong. Please try again."
                         }
+                        
                         #else
 
                         errorMessage = self.getErrorMessage(for: error)
@@ -157,6 +168,7 @@ public extension Backend {
                         if statusCode > 0 {
                             errorMessage = "(\(statusCode)) \(errorMessage)"
                         }
+                        
                         #endif
 
                         // ----------------------------------------------------------------
@@ -178,15 +190,8 @@ public extension Backend {
                             #endif
                         }
 
-                        // ----------------------------------------------------------------
-                        // Check task cancellation
-                        // ----------------------------------------------------------------
-                        if _Concurrency.Task.isCancelled {
-                            continuation.resume(returning: Backend.canceledRequestResult())
-                            cancellable?.cancel()
-                            return
-                        }
-                        // ----------------------------------------------------------------
+                        guard !checkCancellation() else { return }
+
                         continuation.resume(returning: .failure(
                             error: error,
                             errorMessage: errorMessage,
@@ -196,15 +201,7 @@ public extension Backend {
 
                     cancellable?.cancel()
                 } receiveValue: { response in
-                    // ----------------------------------------------------------------
-                    // Check task cancellation
-                    // ----------------------------------------------------------------
-                    if _Concurrency.Task.isCancelled {
-                        continuation.resume(returning: Backend.canceledRequestResult())
-                        cancellable?.cancel()
-                        return
-                    }
-                    // ----------------------------------------------------------------
+                    guard !checkCancellation() else { return }
 
                     continuation.resume(returning: .success(response: response))
                 }

@@ -39,14 +39,14 @@ public struct NativeAlertScreen: View {
                 Button {
                     showAlert = true
                 } label: {
-                    Text("Show Alert")
+                    Text(NSLocalizedString("show_alert_button_title", bundle: .module, comment: ""))
                 }
             }
 
             // MARK: - Variation 2
 
             VStack {
-                Text("Variation 2")
+                Text(NSLocalizedString("native_alert_screen_show_alert_button_variation_2", bundle: .module, comment: ""))
                     .font(.system(.title))
 
                 Button {
@@ -55,32 +55,32 @@ public struct NativeAlertScreen: View {
                         primaryButtonText: "Agreed!"
                     )
                 } label: {
-                    Text("Show Alert")
+                    Text(NSLocalizedString("show_alert_button_title", bundle: .module, comment: ""))
                 }
             }
 
             // MARK: - Variation 3
 
             VStack {
-                Text("Variation 3")
+                Text(NSLocalizedString("delete_alert_button_title", bundle: .module, comment: ""))
                     .font(.system(.title))
 
                 Button {
                     alertType = NativeAlertScreenAlert(id: .create)
                 } label: {
-                    Text("Create Alert")
+                    Text(NSLocalizedString("create_alert_button_title", bundle: .module, comment: ""))
                 }
 
                 Button {
                     alertType = NativeAlertScreenAlert(id: .delete)
                 } label: {
-                    Text("Delete Alert")
+                    Text(NSLocalizedString("delete_alert_button_title", bundle: .module, comment: ""))
                 }
 
                 Button {
                     alertType = NativeAlertScreenAlert(id: .success)
                 } label: {
-                    Text("Success Alert")
+                    Text(NSLocalizedString("success_alert_button_title", bundle: .module, comment: ""))
                 }
             }
 
@@ -91,7 +91,7 @@ public struct NativeAlertScreen: View {
             isPresented: $showAlert,
             title: "Select Color",
             message: "Select a color.",
-            primaryButtonText: "Green",
+            primaryButtonText: NSLocalizedString("tab_item_label_green", bundle: .module, comment: ""),
             primaryButtonTextColor: Color(.systemGreen),
             primaryButtonHandler: {
                 //
@@ -110,7 +110,7 @@ public struct NativeAlertScreen: View {
                     title: "Create?",
                     primaryButtonText: "Yes",
                     primaryButtonStyle: .default,
-                    secondaryButtonText: "Cancel",
+                    secondaryButtonText: NSLocalizedString("cancel_button_title", bundle: .module, comment: ""),
                     secondaryButtonStyle: .cancel
                 )
             case .delete:
@@ -118,7 +118,7 @@ public struct NativeAlertScreen: View {
                     title: "Delete?",
                     primaryButtonText: "Yes",
                     primaryButtonStyle: .destructive,
-                    secondaryButtonText: "Cancel",
+                    secondaryButtonText: NSLocalizedString("cancel_button_title", bundle: .module, comment: ""),
                     secondaryButtonStyle: .cancel
                 )
             case .success:

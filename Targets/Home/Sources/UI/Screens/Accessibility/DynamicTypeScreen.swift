@@ -22,11 +22,11 @@ struct DynamicTypeScreen: View {
                 Group {
                     Text("Use ")
                         +
-                        Text(" **Dynamic Type** from ")
+                        Text(NSLocalizedString("dynamic_type_from_text", bundle: .module, comment: ""))
                         +
                         Text(Image(systemName: "switch.2"))
                         +
-                        Text(" **Canvas Device Settings** to quickly understand the effects.")
+                        Text(NSLocalizedString("canvas_device_settings_effects_text", bundle: .module, comment: ""))
                 }
                 .multilineTextAlignment(.center)
                 .font(.footnote)
@@ -42,25 +42,25 @@ struct DynamicTypeScreen: View {
 
                 // MARK: -
 
-                Text("Set/Limit Dynamic Type Size")
+                Text(NSLocalizedString("set_limit_dynamic_type_size", bundle: .module, comment: ""))
                     .font(.title)
                     .multilineTextAlignment(.center)
 
-                Text("This will not change with Dynamic Type")
+                Text(NSLocalizedString("dynamic_type_no_change_text", bundle: .module, comment: ""))
                     /// This will be stay same for all dynamic type settings.
                     /// It is not recommended to use specified font size. Use the dedicated font styles.
                     .font(.system(size: 16))
 
-                Text("This will stay small")
+                Text(NSLocalizedString("dynamic_type_stay_small_text", bundle: .module, comment: ""))
                     /// This will limit the size to `.small`. So it will not gets affected by dynamic type change.
                     .dynamicTypeSize(.small)
 
-                Text("This won't go above large")
+                Text(NSLocalizedString("dynamic_type_limit_large_text", bundle: .module, comment: ""))
                     /// This will limit font scaling from `.xSmall` up to `.large`.
                     /// After `.large` dynamic type the text will not grow more.
                     .dynamicTypeSize(...DynamicTypeSize.large)
 
-                Text("This will scale within a range")
+                Text(NSLocalizedString("dynamic_type_scale_range_text", bundle: .module, comment: ""))
                     /// This will only scale up or down between `large` and `.xxxlarge`.
                     .dynamicTypeSize(DynamicTypeSize.large ... DynamicTypeSize.xxxLarge)
 
@@ -77,7 +77,7 @@ struct DynamicTypeScreen: View {
                 DynamicLayoutWithScaleMetric()
             }
         }
-        .navigationTitle("Dynamic Type")
+        .navigationTitle(NSLocalizedString("dynamic_type_menu_item", bundle: .module, comment: ""))
     }
 }
 
@@ -86,7 +86,7 @@ struct DynamicTypeScreen_Previews: PreviewProvider {
         NavigationStack {
             DynamicTypeScreen()
         }
-        .previewDisplayName("Dynamic Type")
+        .previewDisplayName(NSLocalizedString("dynamic_type_menu_item", bundle: .module, comment: ""))
 
         NavigationStack {
             DynamicTypeScreen()
@@ -106,7 +106,7 @@ struct DynamicTypeScreen_Previews: PreviewProvider {
 
 struct FontStyles: View {
     var body: some View {
-        Text("Font styles")
+        Text(NSLocalizedString("font_styles_screen_title", bundle: .module, comment: ""))
             .font(.title)
             .multilineTextAlignment(.center)
 
@@ -116,22 +116,22 @@ struct FontStyles: View {
 
         Group {
             Text(Image(systemName: "doc.richtext"))
-                + Text("Large Title")
+                + Text(NSLocalizedString("font_style_large_title", bundle: .module, comment: ""))
         }.font(.largeTitle)
 
         Group {
             Text(Image(systemName: "doc.richtext"))
-                + Text("Title 1")
+                + Text(NSLocalizedString("font_style_title_1", bundle: .module, comment: ""))
         }.font(.title)
 
         Group {
             Text(Image(systemName: "doc.richtext"))
-                + Text("Title 2")
+                + Text(NSLocalizedString("font_style_title_2", bundle: .module, comment: ""))
         }.font(.title2)
 
         Group {
             Text(Image(systemName: "doc.richtext"))
-                + Text("Title 3")
+                + Text(NSLocalizedString("font_style_title_3", bundle: .module, comment: ""))
         }.font(.title3)
 
         Group {
@@ -141,7 +141,7 @@ struct FontStyles: View {
 
         Group {
             Text(Image(systemName: "doc.richtext"))
-                + Text("Body")
+                + Text(NSLocalizedString("font_styles_title", bundle: .module, comment: ""))
         }.font(.body) // Default
 
         Group {
@@ -161,12 +161,12 @@ struct FontStyles: View {
 
         Group {
             Text(Image(systemName: "doc.richtext"))
-                + Text("Caption 1")
+                + Text(NSLocalizedString("font_styles_caption_1", bundle: .module, comment: ""))
         }.font(.caption)
 
         Group {
             Text(Image(systemName: "doc.richtext"))
-                + Text("Caption 2")
+                + Text(NSLocalizedString("font_styles_caption_2", bundle: .module, comment: ""))
         }.font(.caption2)
     }
 }
@@ -195,11 +195,11 @@ struct DynamicLayout: View {
         let layout = dynamicTypeSize > .xxxLarge ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
 
         VStack(alignment: .center, spacing: 16) {
-            Text("Dynamic layout")
+            Text(NSLocalizedString("dynamic_layout_title", bundle: .module, comment: ""))
                 .font(.title)
                 .multilineTextAlignment(.center)
 
-            Text("The layout will be changed based on the `Dynamic Type`.")
+            Text(NSLocalizedString("dynamic_type_layout_explanation", bundle: .module, comment: ""))
                 .multilineTextAlignment(.center)
 
             layout {
@@ -249,11 +249,11 @@ struct DynamicLayoutWithScaleMetric: View {
         let layout = dynamicTypeSize > .xxxLarge ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
 
         VStack(alignment: .center, spacing: 16) {
-            Text("Example for `@ScaledMetric`")
+            Text(NSLocalizedString("scaled_metric_example_title", bundle: .module, comment: ""))
                 .font(.title)
                 .multilineTextAlignment(.center)
 
-            Text("The layout, text and paddings will be changed based on the `Dynamic Type`.")
+            Text(NSLocalizedString("dynamic_type_description", bundle: .module, comment: ""))
                 .multilineTextAlignment(.center)
 
             VStack(spacing: scaleSizeForSpacing) {

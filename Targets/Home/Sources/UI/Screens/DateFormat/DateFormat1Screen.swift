@@ -35,7 +35,7 @@ struct DateFormat1Screen: View {
                         selection: $selectedDate,
                         displayedComponents: .date
                     ) {
-                        Text("Select a date")
+                        Text(NSLocalizedString("select_a_date_picker_label", bundle: .module, comment: ""))
                             .font(.headline)
                     }
                     
@@ -43,7 +43,7 @@ struct DateFormat1Screen: View {
                         selection: $selectedDate,
                         displayedComponents: .hourAndMinute
                     ) {
-                        Text("Select a time")
+                        Text(NSLocalizedString("select_a_time_picker_label", bundle: .module, comment: ""))
                             .font(.headline)
                     }
                 }
@@ -54,12 +54,12 @@ struct DateFormat1Screen: View {
                 }
                 
                 HStack {
-                    Text("Locale")
+                    Text(NSLocalizedString("time_examples_section_header", bundle: .module, comment: ""))
                         .font(.headline)
                     
                     Spacer()
                     
-                    Picker("Choose a locale", selection: $selectedLocale) {
+                    Picker(NSLocalizedString("choose_a_locale", bundle: .module, comment: ""), selection: $selectedLocale) {
                         ForEach(locales, id: \.id) {
                             Text("\($0.id) (\($0.name))")
                                 .tag($0)
@@ -74,10 +74,10 @@ struct DateFormat1Screen: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Text("Format Text")
+                    Text(NSLocalizedString("format_text", bundle: .module, comment: ""))
                         .font(.headline)
                     
-                    TextField("Format Text", text: $formatText)
+                    TextField(NSLocalizedString("format_text", bundle: .module, comment: ""), text: $formatText)
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .textFieldStyle(.roundedBorder)
@@ -89,7 +89,7 @@ struct DateFormat1Screen: View {
                         .stroke(.secondary)
                 }
                 
-                Text("Result")
+                Text(NSLocalizedString("select_a_date_label", bundle: .module, comment: ""))
                     .font(.title)
                 
                 ExampleItem(
@@ -154,7 +154,7 @@ struct DateFormat1Screen: View {
             }
             .padding()
         }
-        .navigationTitle("Date Format")
+        .navigationTitle(NSLocalizedString("date_format", bundle: .module, comment: ""))
     }
 }
 

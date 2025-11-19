@@ -40,7 +40,7 @@ struct AlamofireScreen: View {
             case .data(let flowers):
                 if flowers.isEmpty {
                     ContentUnavailableView(
-                        "No flower found.",
+                        NSLocalizedString("no_flower_found_message", bundle: .module, comment: ""),
                         systemImage: "cube.box"
                     )
                 } else {
@@ -60,7 +60,7 @@ struct AlamofireScreen: View {
                 }
             }
         }
-        .navigationTitle("Alamofire Example")
+        .navigationTitle(NSLocalizedString("alamofire_example_navigation_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await viewModel.getFlowers()

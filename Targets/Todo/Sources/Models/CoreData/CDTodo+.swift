@@ -1,0 +1,56 @@
+//
+//  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
+//
+
+import CoreData
+
+extension CDTodo {
+    var priority: CDPriority {
+        get {
+            CDPriority(rawValue: self.priorityValue) ?? .medium
+        }
+        set {
+            self.priorityValue = newValue.rawValue
+        }
+    }
+}
+
+extension CDTodo {
+    static func create(
+        context: NSManagedObjectContext,
+        id: Int = UUID().hashValue,
+        title: String,
+        notes: String,
+        priority: CDPriority,
+        isCompleted: Bool,
+        createdAt: Date = Date()
+    ) -> CDTodo {
+        let todo = CDTodo(context: context)
+
+        todo.id = Int64(id)
+        todo.title = title
+        todo.notes = notes
+        todo.priority = priority
+        todo.isCompleted = isCompleted
+        todo.createdAt = createdAt
+        
+        return todo
+    }
+}
+
+
+// MARK: - Extensions
+
+extension CDTodo {
+    @MainActor
+    func toUIModel() -> UITodo.Todo {
+        .init(
+            id: Int(id),
+            title: title ?? "",
+            notes: notes ?? "",
+            priority: priority.toUIModel(),
+            createdAt: createdAt ?? Date(),
+            isCompleted: isCompleted
+        )
+    }
+}

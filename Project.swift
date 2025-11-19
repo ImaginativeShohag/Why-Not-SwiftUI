@@ -78,23 +78,26 @@ let project = Project.app(
     configInfoPlist: [
         "CONF_HOST_URL": "$(XCC_HOST_URL)"
     ],
+    appModuleConfig: AppModuleConfig(
+        hasResources: true
+    ),
     modules: [
         Module(
             name: "Core",
             hasResources: true,
             hasUnitTest: true,
-            dependencies: ["SuperLog", "NetworkKit"]
+            dependencies: [.target(name: "SuperLog"), .target(name: "NetworkKit")]
         ),
         Module(
             name: "CommonUI",
             hasResources: true,
             hasUITest: true,
-            dependencies: ["Core", "SuperLog"]
+            dependencies: [.target(name: "Core"), .target(name: "SuperLog")]
         ),
         Module(
             name: "NetworkKit",
             hasUnitTest: true,
-            dependencies: ["SuperLog"]
+            dependencies: [.target(name: "SuperLog")]
         ),
         Module(
             name: "SuperLog"
@@ -102,23 +105,37 @@ let project = Project.app(
         Module(
             name: "NavigationKit",
             hasUnitTest: true,
-            dependencies: ["SuperLog"]
+            dependencies: [.target(name: "SuperLog")]
         ),
         Module(
             name: "Home",
+            hasResources: true,
             hasUnitTest: true,
             hasUITest: true,
-            dependencies: ["Core", "CommonUI", "SuperLog", "Todo", "News"]
+            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "Todo"), .target(name: "News"), .target(name: "Store")]
         ),
         Module(
             name: "Todo",
-            dependencies: ["Core", "CommonUI", "SuperLog"]
+            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog")],
+            coreDataModels: [
+                .coreDataModel("CoreData/TodoDB.xcdatamodeld")
+            ]
         ),
         Module(
             name: "News",
             hasResources: true,
             hasUITest: true,
-            dependencies: ["Core", "CommonUI", "SuperLog", "NetworkKit"]
+            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "NetworkKit")],
+            uiTestDependencies: [.target(name: "TestUtils")]
+        ),
+        Module(
+            name: "Store",
+            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "NetworkKit"), .target(name: "NavigationKit")]
+        ),
+        Module(
+            name: "TestUtils",
+            dependencies: [.target(name: "Core"), .target(name: "SuperLog"), .target(name: "NetworkKit"), .xctest],
+            onlyForTestTarget: true
         )
     ],
     externalDependencies: [
@@ -133,7 +150,7 @@ let project = Project.app(
         // We need both "RealmSwift" and "Realm" to solve the "Undefined symbol" issue.
         .external(name: "RealmSwift"),
         .external(name: "Realm"),
-        .external(name: "MarkdownUI")
-    ],
-    coreDataModels: []
+        .external(name: "MarkdownUI"),
+        .external(name: "SwiftUIIntrospect")
+    ]
 )

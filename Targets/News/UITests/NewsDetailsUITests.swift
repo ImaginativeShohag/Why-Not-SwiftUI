@@ -5,7 +5,9 @@
 @testable import Core
 import NetworkKit
 @testable import News
+import TestUtils
 import XCTest
+import TestUtils
 
 #if DEBUG
 
@@ -57,8 +59,7 @@ class NewsDetailsUITests: XCTestCase {
         XCTAssertTrue(publishedDate.waitForExistence(timeout: 5))
         XCTAssertTrue(publishedDate.label == newsPublishedDateLabel)
 
-        let details = app.staticTexts["details"]
-        XCTAssertTrue(details.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.waitForElement(matching: "details", timeout: 5))
     }
 
     func runAppAndGoToModule() {

@@ -34,7 +34,7 @@ public struct OverviewRingCardScreen: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 ZStack {
-                    Text("90%")
+                    Text(NSLocalizedString("overview_ring_card_percentage_value", bundle: .module, comment: ""))
                         .font(.system(size: 20, weight: .bold))
 
                     RingChart(
@@ -79,7 +79,7 @@ public struct OverviewRingCardScreen: View {
         }
         .frame(maxWidth: .infinity)
         .padding(16)
-        .navigationTitle("Ring Chart: Overview")
+        .navigationTitle(NSLocalizedString("ring_chart_overview_title", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

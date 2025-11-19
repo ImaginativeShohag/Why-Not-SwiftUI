@@ -56,7 +56,7 @@ public struct SuperProgressScreen: View {
                 .padding(.horizontal)
         }
         .accentColor(Color(.systemMint))
-        .navigationTitle("Super Progress")
+        .navigationTitle(NSLocalizedString("super_progress", bundle: .module, comment: ""))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

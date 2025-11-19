@@ -6,6 +6,7 @@ import CoreLocation
 import SwiftUI
 import MapKit
 
+@MainActor
 @Observable
 class MapViewModel: NSObject {
     var locationAuthorizationStatus = LocationAuthorizationStatus.noDetermined

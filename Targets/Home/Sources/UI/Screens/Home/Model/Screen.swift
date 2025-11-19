@@ -7,6 +7,7 @@ import NavigationKit
 import News
 import SwiftUI
 import Todo
+import Store
 
 struct Screen: Identifiable, Sendable {
     let id = UUID().uuidString
@@ -15,19 +16,19 @@ struct Screen: Identifiable, Sendable {
 
     static let screens: [Screen] = [
         Screen(
-            name: "Typography",
+            name: NSLocalizedString("typography_navigation_title", bundle: .module, comment: ""),
             destination: Destination.Typography()
         ),
         Screen(
-            name: "Ring Chart: Overview",
+            name: NSLocalizedString("ring_chart_overview_title", bundle: .module, comment: ""),
             destination: Destination.RingChartOverview()
         ),
         Screen(
-            name: "Ring Chart: Fitness",
+            name: NSLocalizedString("ring_chart_fitness", bundle: .module, comment: ""),
             destination: Destination.RingChartFitness()
         ),
         Screen(
-            name: "Media Capture & Select",
+            name: NSLocalizedString("media_capture_and_select", bundle: .module, comment: ""),
             destination: Destination.MediaCaptureAndSelect()
         ),
         Screen(
@@ -35,11 +36,11 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.BottomNavAndSideBar()
         ),
         Screen(
-            name: "MetricKit",
+            name: NSLocalizedString("metric_kit_screen_title", bundle: .module, comment: ""),
             destination: Destination.MetricKit()
         ),
         Screen(
-            name: "Super Toast",
+            name: NSLocalizedString("super_toast_screen_title", bundle: .module, comment: ""),
             destination: Destination.SuperToast()
         ),
         Screen(
@@ -47,7 +48,7 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.NativeAlert()
         ),
         Screen(
-            name: "Super Progress",
+            name: NSLocalizedString("super_progress", bundle: .module, comment: ""),
             destination: Destination.SuperProgress()
         ),
         Screen(
@@ -55,19 +56,19 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.TextFieldValidation()
         ),
         Screen(
-            name: "Accessibility",
+            name: NSLocalizedString("accessibility_screen_title", bundle: .module, comment: ""),
             destination: Destination.Accessibility()
         ),
         Screen(
-            name: "Label Toggle",
+            name: NSLocalizedString("label_toggle", bundle: .module, comment: ""),
             destination: Destination.LabelToggle()
         ),
         Screen(
-            name: "Date Format",
+            name: NSLocalizedString("date_format", bundle: .module, comment: ""),
             destination: Destination.DateFormat()
         ),
         Screen(
-            name: "Reorder List",
+            name: NSLocalizedString("reorder_list_screen_title", bundle: .module, comment: ""),
             destination: Destination.ReorderList()
         ),
         Screen(
@@ -75,12 +76,12 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.AlwaysPopover()
         ),
         Screen(
-            name: "ShimmerUI",
+            name: NSLocalizedString("shimmer_ui_screen_title", bundle: .module, comment: ""),
             destination: Destination.ShimmerUI()
         ),
         Screen(
-            name: "Todo App",
-            destination: Destination.TodoHome()
+            name: "📋 Todo App",
+            destination: Destination.TodoIntro()
         ),
         Screen(
             name: "🥭 News App",
@@ -103,7 +104,7 @@ struct Screen: Identifiable, Sendable {
             destination: Destination.RealmDB()
         ),
         Screen(
-            name: "Animation Example",
+            name: NSLocalizedString("animation_example_navigation_title", bundle: .module, comment: ""),
             destination: Destination.Animation()
         ),
         Screen(
@@ -117,6 +118,14 @@ struct Screen: Identifiable, Sendable {
         Screen(
             name: "Map Example",
             destination: Destination.Map()
+        ),
+        Screen(
+            name: "🏬 Store Overflow",
+            destination: Destination.StoreSplash()
+        ),
+        Screen(
+            name: "`TestUtils` UI Tests Demo",
+            destination: Destination.TestUtilsUITestsDemo()
         ),
     ].sorted { old, new in
         old.name.filter { $0.isLetter || $0.isNumber } < new.name.filter { $0.isLetter || $0.isNumber }

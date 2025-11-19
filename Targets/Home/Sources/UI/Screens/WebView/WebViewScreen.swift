@@ -59,7 +59,7 @@ struct WebViewScreen: View {
                     .disabled(!canGoForward)
 
                     ZStack(alignment: .trailing) {
-                        TextField("Enter url", text: $url)
+                        TextField(NSLocalizedString("web_view_enter_url_placeholder", bundle: .module, comment: ""), text: $url)
                             .submitLabel(.go)
                             .onSubmit {
                                 go()
@@ -84,7 +84,7 @@ struct WebViewScreen: View {
                     Button {
                         go()
                     } label: {
-                        Text("Go")
+                        Text(NSLocalizedString("go_button_title", bundle: .module, comment: ""))
                     }
                     .buttonStyle(.bordered)
                 }
@@ -125,7 +125,7 @@ struct WebViewScreen: View {
                     .background(Color.systemBackground)
                 } else if webView.url == nil {
                     ZStack {
-                        Text("Type a URL and tap Go.")
+                        Text(NSLocalizedString("web_view_type_url_instruction", bundle: .module, comment: ""))
                             .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -17,7 +17,7 @@ struct CustomSideBarScreen: View {
                     SideBarContent()
                 },
                 content: {
-                    Text("Hello, World!")
+                    Text(NSLocalizedString("sidebar_main_content_greeting", bundle: .module, comment: ""))
                 }
             )
             .toolbar {
@@ -38,9 +38,9 @@ struct SideBarContent: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text("Sidebar")
-                Text("Sidebar")
-                Text("Sidebar")
+                Text(NSLocalizedString("sidebar_title", bundle: .module, comment: ""))
+                Text(NSLocalizedString("sidebar_title", bundle: .module, comment: ""))
+                Text(NSLocalizedString("sidebar_title", bundle: .module, comment: ""))
             }
         }
         .frame(maxWidth: .infinity)
