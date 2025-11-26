@@ -11,6 +11,7 @@ struct ProfileSheet: View {
 
     @State private var viewModel: ProfileViewModel
     @State private var showSignOutAlert: Bool = false
+    @State private var showLanguageSettings: Bool = false
 
     init(viewModel: ProfileViewModel = ProfileViewModel()) {
         self.viewModel = viewModel
@@ -74,13 +75,17 @@ struct ProfileSheet: View {
                             Section {
                                 Button("Orders") {
                                     dismiss()
-                                    
+
                                     NavController.shared.navigateTo(
                                         Destination.Orders()
                                     )
                                 }
+
+                                Button("Language Settings") {
+                                    showLanguageSettings.toggle()
+                                }
                             }
-                            
+
                             Section {
                                 Button("Sign Out") {
                                     showSignOutAlert.toggle()
@@ -114,7 +119,7 @@ struct ProfileSheet: View {
                 isPresented: $showSignOutAlert) {
                     Button("Sign Out", role: .destructive) {
                         viewModel.signOut()
-                        
+
                         NavController.shared.navigateTo(
                             Destination.Login(),
                             popUpTo: Destination.Main.self,
@@ -123,6 +128,9 @@ struct ProfileSheet: View {
                     }
                     .tint(.red)
                 }
+            .sheet(isPresented: $showLanguageSettings) {
+                LanguageSettingsScreen()
+            }
         }
     }
 }
