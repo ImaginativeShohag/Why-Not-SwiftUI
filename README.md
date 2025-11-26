@@ -315,6 +315,7 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [x] Add map example with current location access
 - [ ] Add example for FakeStoreAPI (https://fakestoreapi.com/)
 - [ ] Custom top appbar example
+- [ ] Add example from: [iOS 26 by Examples](https://github.com/artemnovichkov/iOS-26-by-Examples)
 
 ## Extensions
 

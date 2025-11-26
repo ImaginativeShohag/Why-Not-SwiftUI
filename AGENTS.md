@@ -117,8 +117,9 @@ Targets/
 - Pass only required data and callbacks
 
 **Localization:**
-- Uses `Localizable.xcstrings` for string resources
-- Access with `NSLocalizedString("key", bundle: .module, comment: "")`
+- **Home module:** Uses `Localizable.xcstrings` for string resources with `NSLocalizedString("key", bundle: .module, comment: "")`
+- **New modules (Todo, Store, News):** Will use runtime localization system - see [Runtime Localization Plan](Docs/RuntimeLocalizationPlan.md)
+- Runtime translations fetched from server, cached locally, with English fallback in code
 
 ## Build Configuration
 
