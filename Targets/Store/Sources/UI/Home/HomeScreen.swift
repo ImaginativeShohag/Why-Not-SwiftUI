@@ -26,13 +26,14 @@ struct HomeScreen: View {
                     VStack(alignment: .leading, spacing: 0) {
                         if let user = viewModel.user {
                             HStack {
-                                Text("store_welcome".localize(
+                                Text.localized(
+                                    "store_welcome",
                                     default: "Welcome, **%@**!",
                                     comment: "Welcome message with user's full name on home screen",
                                     with: user.name.getFullName()
-                                ))
-                                    .font(.title)
-                                    .lineLimit(1)
+                                )
+                                .font(.title)
+                                .lineLimit(1)
 
                                 Spacer()
 

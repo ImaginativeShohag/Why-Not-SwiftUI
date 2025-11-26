@@ -4,7 +4,7 @@ import SwiftUI
 
 /// View modifier that refreshes the view when language changes
 private struct LocalizationObserverModifier: ViewModifier {
-    @ObservedObject private var localizationManager = LocalizationManager.shared
+    @State private var localizationManager = LocalizationManager.shared
 
     func body(content: Content) -> some View {
         content

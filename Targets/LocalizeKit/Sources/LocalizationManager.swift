@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 import Core
 import SuperLog
 import NetworkKit
@@ -7,25 +6,28 @@ import NetworkKit
 /// Main localization manager handling translation loading/retrieval
 /// Singleton pattern with observable language changes
 @MainActor
-public final class LocalizationManager: ObservableObject {
+@Observable
+public final class LocalizationManager {
     // MARK: - Singleton
 
     public static let shared = LocalizationManager()
 
-    // MARK: - Published Properties
+    // MARK: - Observable Properties
 
     /// Current selected language code
-    @Published public private(set) var currentLanguage: String = "en"
+    public private(set) var currentLanguage: String = "en"
 
     /// Available languages fetched from server
-    @Published public private(set) var availableLanguages: [Language] = []
+    public private(set) var availableLanguages: [Language] = []
 
     /// Loading state
-    @Published public private(set) var isLoading: Bool = false
+    public private(set) var isLoading: Bool = false
 
     // MARK: - Private Properties
 
     private var translationStorage: TranslationStorage?
+
+    /// Current translations - triggers UI updates when changed
     private var currentTranslations: TranslationFile?
 
     /// Custom plural rules per language (Vue-i18n style)

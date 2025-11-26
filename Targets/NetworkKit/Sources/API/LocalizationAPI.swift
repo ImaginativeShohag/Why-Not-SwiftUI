@@ -5,6 +5,16 @@
 import Foundation
 import Moya
 
+public extension DataSource {
+    /// Localization API backend for fetching translations
+    /// Uses stub behavior with 1 second delay for realistic development testing
+    nonisolated(unsafe) static let Localization = Backend<LocalizationAPI>(
+        isStubbed: true,
+        stubBehavior: .delayed(seconds: 1),
+        session: NetworkSession.create()
+    )
+}
+
 /// Localization API endpoints
 /// Provides access to translation files and available languages from server
 public enum LocalizationAPI {
