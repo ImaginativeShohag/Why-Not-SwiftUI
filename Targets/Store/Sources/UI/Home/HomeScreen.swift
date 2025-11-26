@@ -4,6 +4,7 @@
 
 import Core
 import Kingfisher
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 @_spi(Advanced) import SwiftUIIntrospect
@@ -25,7 +26,11 @@ struct HomeScreen: View {
                     VStack(alignment: .leading, spacing: 0) {
                         if let user = viewModel.user {
                             HStack {
-                                Text("Welcome, **\(user.name.getFullName())**!")
+                                Text("store_welcome".localize(
+                                    default: "Welcome, **%@**!",
+                                    comment: "Welcome message with user's full name on home screen",
+                                    with: user.name.getFullName()
+                                ))
                                     .font(.title)
                                     .lineLimit(1)
 
@@ -127,6 +132,7 @@ struct HomeScreen: View {
             .sheet(isPresented: $showProfile) {
                 ProfileSheet()
             }
+            .onLanguageChange()
         }
     }
 

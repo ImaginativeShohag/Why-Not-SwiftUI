@@ -3,6 +3,7 @@
 //
 
 import Kingfisher
+import LocalizeKit
 import SwiftUI
 import NavigationKit
 
@@ -30,7 +31,10 @@ struct ProfileSheet: View {
                             Label(message, systemImage: "exclamationmark.triangle")
                         },
                         actions: {
-                            Button("Retry") {
+                            Button("store_retry".localize(
+                                default: "Retry",
+                                comment: "Retry button text"
+                            )) {
                                 Task {
                                     await viewModel.getUserDetails()
                                 }
@@ -58,22 +62,52 @@ struct ProfileSheet: View {
                             }
                             .frame(maxWidth: .infinity)
 
-                            Section("Details") {
+                            Section("store_details".localize(
+                                default: "Details",
+                                comment: "Profile details section header"
+                            )) {
                                 LabeledContent(
-                                    "Name",
+                                    "store_name".localize(
+                                        default: "Name",
+                                        comment: "User name label"
+                                    ),
                                     value: user.name.getFullName()
                                 )
-                                LabeledContent("Username", value: user.username)
-                                LabeledContent("Email", value: user.email)
-                                LabeledContent("Phone", value: user.phone)
                                 LabeledContent(
-                                    "Address",
+                                    "store_username".localize(
+                                        default: "Username",
+                                        comment: "Username label"
+                                    ),
+                                    value: user.username
+                                )
+                                LabeledContent(
+                                    "store_email".localize(
+                                        default: "Email",
+                                        comment: "Email address label"
+                                    ),
+                                    value: user.email
+                                )
+                                LabeledContent(
+                                    "store_phone".localize(
+                                        default: "Phone",
+                                        comment: "Phone number label"
+                                    ),
+                                    value: user.phone
+                                )
+                                LabeledContent(
+                                    "store_address".localize(
+                                        default: "Address",
+                                        comment: "Address label"
+                                    ),
                                     value: user.address?.getAddress() ?? "-"
                                 )
                             }
-                            
+
                             Section {
-                                Button("Orders") {
+                                Button("store_orders".localize(
+                                    default: "Orders",
+                                    comment: "Orders button text"
+                                )) {
                                     dismiss()
 
                                     NavController.shared.navigateTo(
@@ -81,13 +115,19 @@ struct ProfileSheet: View {
                                     )
                                 }
 
-                                Button("Language Settings") {
+                                Button("store_language_settings".localize(
+                                    default: "Language Settings",
+                                    comment: "Language settings button text"
+                                )) {
                                     showLanguageSettings.toggle()
                                 }
                             }
 
                             Section {
-                                Button("Sign Out") {
+                                Button("store_sign_out".localize(
+                                    default: "Sign Out",
+                                    comment: "Sign out button text"
+                                )) {
                                     showSignOutAlert.toggle()
                                 }
                                 .tint(.red)
@@ -96,7 +136,10 @@ struct ProfileSheet: View {
                     }
                 }
             }
-            .navigationTitle("Profile")
+            .navigationTitle("store_profile".localize(
+                default: "Profile",
+                comment: "Profile screen title"
+            ))
             .navigationBarTitleDisplayMode(.inline)
             .background(Color.systemGroupedBackground)
             .toolbar {
@@ -104,7 +147,10 @@ struct ProfileSheet: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("Done")
+                        Text("store_done".localize(
+                            default: "Done",
+                            comment: "Done button text"
+                        ))
                     }
                 }
             }
@@ -115,9 +161,15 @@ struct ProfileSheet: View {
                 await viewModel.getUserDetails()
             }
             .alert(
-                "Signout from Store?",
+                "store_sign_out_alert_title".localize(
+                    default: "Sign out from Store?",
+                    comment: "Alert title for sign out confirmation"
+                ),
                 isPresented: $showSignOutAlert) {
-                    Button("Sign Out", role: .destructive) {
+                    Button("store_sign_out".localize(
+                        default: "Sign Out",
+                        comment: "Sign out confirmation button"
+                    ), role: .destructive) {
                         viewModel.signOut()
 
                         NavController.shared.navigateTo(
@@ -131,6 +183,7 @@ struct ProfileSheet: View {
             .sheet(isPresented: $showLanguageSettings) {
                 LanguageSettingsScreen()
             }
+            .onLanguageChange()
         }
     }
 }
