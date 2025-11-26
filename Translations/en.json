@@ -1,0 +1,177 @@
+{
+  "version": "1.0.0",
+  "language": "en",
+  "generatedAt": "2025-11-27T10:30:00Z",
+  "modules": {
+    "Store": {
+      "store_welcome": {
+        "value": "Welcome, **%@**!",
+        "type": "interpolation",
+        "comment": "Welcome message with user's full name on home screen",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_retry": {
+        "value": "Retry",
+        "type": "simple",
+        "comment": "Retry button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_profile": {
+        "value": "Profile",
+        "type": "simple",
+        "comment": "Profile screen title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_done": {
+        "value": "Done",
+        "type": "simple",
+        "comment": "Done button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_details": {
+        "value": "Details",
+        "type": "simple",
+        "comment": "Profile details section header",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_name": {
+        "value": "Name",
+        "type": "simple",
+        "comment": "User name label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_username": {
+        "value": "Username",
+        "type": "simple",
+        "comment": "Username label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_email": {
+        "value": "Email",
+        "type": "simple",
+        "comment": "Email address label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_phone": {
+        "value": "Phone",
+        "type": "simple",
+        "comment": "Phone number label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_address": {
+        "value": "Address",
+        "type": "simple",
+        "comment": "Address label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_orders": {
+        "value": "Orders",
+        "type": "simple",
+        "comment": "Orders button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_language_settings": {
+        "value": "Language Settings",
+        "type": "simple",
+        "comment": "Language settings button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_sign_out": {
+        "value": "Sign Out",
+        "type": "simple",
+        "comment": "Sign out button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_sign_out_alert_title": {
+        "value": "Sign out from Store?",
+        "type": "simple",
+        "comment": "Alert title for sign out confirmation",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      }
+    }
+  }
+}

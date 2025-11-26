@@ -1,0 +1,177 @@
+{
+  "version": "1.0.0",
+  "language": "bn",
+  "generatedAt": "2025-11-27T10:35:00Z",
+  "modules": {
+    "Store": {
+      "store_welcome": {
+        "value": "স্বাগতম, **%@**!",
+        "type": "interpolation",
+        "comment": "Welcome message with user's full name on home screen",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_retry": {
+        "value": "পুনরায় চেষ্টা করুন",
+        "type": "simple",
+        "comment": "Retry button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_profile": {
+        "value": "প্রোফাইল",
+        "type": "simple",
+        "comment": "Profile screen title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_done": {
+        "value": "সম্পন্ন",
+        "type": "simple",
+        "comment": "Done button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_details": {
+        "value": "বিস্তারিত",
+        "type": "simple",
+        "comment": "Profile details section header",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_name": {
+        "value": "নাম",
+        "type": "simple",
+        "comment": "User name label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_username": {
+        "value": "ব্যবহারকারীর নাম",
+        "type": "simple",
+        "comment": "Username label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_email": {
+        "value": "ইমেইল",
+        "type": "simple",
+        "comment": "Email address label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_phone": {
+        "value": "ফোন",
+        "type": "simple",
+        "comment": "Phone number label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_address": {
+        "value": "ঠিকানা",
+        "type": "simple",
+        "comment": "Address label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_orders": {
+        "value": "অর্ডার",
+        "type": "simple",
+        "comment": "Orders button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_language_settings": {
+        "value": "ভাষা সেটিংস",
+        "type": "simple",
+        "comment": "Language settings button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_sign_out": {
+        "value": "সাইন আউট",
+        "type": "simple",
+        "comment": "Sign out button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_sign_out_alert_title": {
+        "value": "স্টোর থেকে সাইন আউট করবেন?",
+        "type": "simple",
+        "comment": "Alert title for sign out confirmation",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      }
+    }
+  }
+}

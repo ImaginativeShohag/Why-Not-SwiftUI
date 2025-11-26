@@ -125,29 +125,80 @@ extension LocalizationAPI: ApiEndpoint {
     private var englishStubData: Data {
         let json = """
         {
-          "version": "1.0",
+          "version": "1.0.0",
           "language": "en",
-          "generatedAt": "2024-11-27T10:30:00Z",
+          "generatedAt": "2025-11-27T10:30:00Z",
           "modules": {
             "Store": {
               "store_welcome": {
-                "value": "Welcome to the Store!",
-                "type": "simple",
-                "comment": "Greeting shown on store home screen"
-              },
-              "store_items_count": {
-                "type": "plural",
-                "comment": "Item count in shopping cart",
-                "value": {
-                  "zero": "No items",
-                  "one": "1 item",
-                  "other": "%d items"
-                }
-              },
-              "store_greeting": {
-                "value": "Hello, %@!",
+                "value": "Welcome, **%@**!",
                 "type": "interpolation",
-                "comment": "Personal greeting with user name"
+                "comment": "Welcome message with user's full name on home screen"
+              },
+              "store_retry": {
+                "value": "Retry",
+                "type": "simple",
+                "comment": "Retry button text"
+              },
+              "store_profile": {
+                "value": "Profile",
+                "type": "simple",
+                "comment": "Profile screen title"
+              },
+              "store_done": {
+                "value": "Done",
+                "type": "simple",
+                "comment": "Done button text"
+              },
+              "store_details": {
+                "value": "Details",
+                "type": "simple",
+                "comment": "Profile details section header"
+              },
+              "store_name": {
+                "value": "Name",
+                "type": "simple",
+                "comment": "User name label"
+              },
+              "store_username": {
+                "value": "Username",
+                "type": "simple",
+                "comment": "Username label"
+              },
+              "store_email": {
+                "value": "Email",
+                "type": "simple",
+                "comment": "Email address label"
+              },
+              "store_phone": {
+                "value": "Phone",
+                "type": "simple",
+                "comment": "Phone number label"
+              },
+              "store_address": {
+                "value": "Address",
+                "type": "simple",
+                "comment": "Address label"
+              },
+              "store_orders": {
+                "value": "Orders",
+                "type": "simple",
+                "comment": "Orders button text"
+              },
+              "store_language_settings": {
+                "value": "Language Settings",
+                "type": "simple",
+                "comment": "Language settings button text"
+              },
+              "store_sign_out": {
+                "value": "Sign Out",
+                "type": "simple",
+                "comment": "Sign out button text"
+              },
+              "store_sign_out_alert_title": {
+                "value": "Sign out from Store?",
+                "type": "simple",
+                "comment": "Alert title for sign out confirmation"
               }
             }
           }
@@ -160,29 +211,80 @@ extension LocalizationAPI: ApiEndpoint {
     private var bengaliStubData: Data {
         let json = """
         {
-          "version": "1.0",
+          "version": "1.0.0",
           "language": "bn",
-          "generatedAt": "2024-11-27T10:30:00Z",
+          "generatedAt": "2025-11-27T10:35:00Z",
           "modules": {
             "Store": {
               "store_welcome": {
-                "value": "স্টোরে স্বাগতম!",
-                "type": "simple",
-                "comment": "Greeting shown on store home screen"
-              },
-              "store_items_count": {
-                "type": "plural",
-                "comment": "Item count in shopping cart",
-                "value": {
-                  "zero": "কোন আইটেম নেই",
-                  "one": "১টি আইটেম",
-                  "other": "%d টি আইটেম"
-                }
-              },
-              "store_greeting": {
-                "value": "হ্যালো, %@!",
+                "value": "স্বাগতম, **%@**!",
                 "type": "interpolation",
-                "comment": "Personal greeting with user name"
+                "comment": "Welcome message with user's full name on home screen"
+              },
+              "store_retry": {
+                "value": "পুনরায় চেষ্টা করুন",
+                "type": "simple",
+                "comment": "Retry button text"
+              },
+              "store_profile": {
+                "value": "প্রোফাইল",
+                "type": "simple",
+                "comment": "Profile screen title"
+              },
+              "store_done": {
+                "value": "সম্পন্ন",
+                "type": "simple",
+                "comment": "Done button text"
+              },
+              "store_details": {
+                "value": "বিস্তারিত",
+                "type": "simple",
+                "comment": "Profile details section header"
+              },
+              "store_name": {
+                "value": "নাম",
+                "type": "simple",
+                "comment": "User name label"
+              },
+              "store_username": {
+                "value": "ব্যবহারকারীর নাম",
+                "type": "simple",
+                "comment": "Username label"
+              },
+              "store_email": {
+                "value": "ইমেইল",
+                "type": "simple",
+                "comment": "Email address label"
+              },
+              "store_phone": {
+                "value": "ফোন",
+                "type": "simple",
+                "comment": "Phone number label"
+              },
+              "store_address": {
+                "value": "ঠিকানা",
+                "type": "simple",
+                "comment": "Address label"
+              },
+              "store_orders": {
+                "value": "অর্ডার",
+                "type": "simple",
+                "comment": "Orders button text"
+              },
+              "store_language_settings": {
+                "value": "ভাষা সেটিংস",
+                "type": "simple",
+                "comment": "Language settings button text"
+              },
+              "store_sign_out": {
+                "value": "সাইন আউট",
+                "type": "simple",
+                "comment": "Sign out button text"
+              },
+              "store_sign_out_alert_title": {
+                "value": "স্টোর থেকে সাইন আউট করবেন?",
+                "type": "simple",
+                "comment": "Alert title for sign out confirmation"
               }
             }
           }
@@ -195,32 +297,80 @@ extension LocalizationAPI: ApiEndpoint {
     private var arabicStubData: Data {
         let json = """
         {
-          "version": "1.0",
+          "version": "1.0.0",
           "language": "ar",
-          "generatedAt": "2024-11-27T10:30:00Z",
+          "generatedAt": "2025-11-27T10:40:00Z",
           "modules": {
             "Store": {
               "store_welcome": {
-                "value": "مرحبا بك في المتجر!",
-                "type": "simple",
-                "comment": "Greeting shown on store home screen"
-              },
-              "store_items_count": {
-                "type": "plural",
-                "comment": "Item count in shopping cart",
-                "value": {
-                  "zero": "لا توجد عناصر",
-                  "one": "عنصر واحد",
-                  "two": "عنصران",
-                  "few": "%d عناصر",
-                  "many": "%d عنصرًا",
-                  "other": "%d عنصر"
-                }
-              },
-              "store_greeting": {
-                "value": "مرحبا، %@!",
+                "value": "!**%@** ،مرحباً",
                 "type": "interpolation",
-                "comment": "Personal greeting with user name"
+                "comment": "Welcome message with user's full name on home screen"
+              },
+              "store_retry": {
+                "value": "إعادة المحاولة",
+                "type": "simple",
+                "comment": "Retry button text"
+              },
+              "store_profile": {
+                "value": "الملف الشخصي",
+                "type": "simple",
+                "comment": "Profile screen title"
+              },
+              "store_done": {
+                "value": "تم",
+                "type": "simple",
+                "comment": "Done button text"
+              },
+              "store_details": {
+                "value": "التفاصيل",
+                "type": "simple",
+                "comment": "Profile details section header"
+              },
+              "store_name": {
+                "value": "الاسم",
+                "type": "simple",
+                "comment": "User name label"
+              },
+              "store_username": {
+                "value": "اسم المستخدم",
+                "type": "simple",
+                "comment": "Username label"
+              },
+              "store_email": {
+                "value": "البريد الإلكتروني",
+                "type": "simple",
+                "comment": "Email address label"
+              },
+              "store_phone": {
+                "value": "الهاتف",
+                "type": "simple",
+                "comment": "Phone number label"
+              },
+              "store_address": {
+                "value": "العنوان",
+                "type": "simple",
+                "comment": "Address label"
+              },
+              "store_orders": {
+                "value": "الطلبات",
+                "type": "simple",
+                "comment": "Orders button text"
+              },
+              "store_language_settings": {
+                "value": "إعدادات اللغة",
+                "type": "simple",
+                "comment": "Language settings button text"
+              },
+              "store_sign_out": {
+                "value": "تسجيل الخروج",
+                "type": "simple",
+                "comment": "Sign out button text"
+              },
+              "store_sign_out_alert_title": {
+                "value": "تسجيل الخروج من المتجر؟",
+                "type": "simple",
+                "comment": "Alert title for sign out confirmation"
               }
             }
           }

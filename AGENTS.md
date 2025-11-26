@@ -60,12 +60,16 @@ The project is organized into modular frameworks defined in `Project.swift`:
 - `SuperLog`: Logging framework
 - `NetworkKit`: Network layer with Alamofire/Moya integration
 - `NavigationKit`: Navigation wrapper on top of NavigationStack
+- `LocalizeKit`: Runtime localization system with plural support, caching, and network fetch
 
 **Feature Modules:**
 - `Home`: Main home screen with navigation to all examples
 - `Todo`: Todo app with SwiftData and CoreData implementations
 - `News`: News module with mock data for UI testing
-- `Store`: Store/shop example module
+- `Store`: Store/shop example module with runtime localization (Bengali, Arabic)
+
+**Translation Management:**
+- `Tools/LocalizeKit`: CLI tool for extracting, merging, validating, and diffing translations
 
 **Main Target:**
 - `WhyNotSwiftUI`: Main app target that depends on all modules
@@ -118,8 +122,41 @@ Targets/
 
 **Localization:**
 - **Home module:** Uses `Localizable.xcstrings` for string resources with `NSLocalizedString("key", bundle: .module, comment: "")`
-- **New modules (Todo, Store, News):** Will use runtime localization system - see [Runtime Localization Plan](Docs/RuntimeLocalizationPlan.md)
-- Runtime translations fetched from server, cached locally, with English fallback in code
+- **Store module:** Uses runtime localization system (LocalizeKit) with full Bengali and Arabic translations
+- **Runtime system features:**
+  - Fetches translations from server (currently stubbed in NetworkKit)
+  - Local caching in Library/Caches
+  - CLDR-compliant plural support (all 6 categories)
+  - Custom plural rules (Vue-i18n style)
+  - Three-tier fallback: Server → Cache → English default in code
+  - Observable language changes with `.onLanguageChange()` modifier
+  - Language selection UI in ProfileSheet
+- **Translation files:** Located in `Translations/` directory (en.json, bn.json, ar.json)
+- **CLI tool:** `Tools/LocalizeKit` for extracting, merging, validating, and diffing translations
+- **Usage:** See [Runtime Localization Plan](Docs/RuntimeLocalizationPlan.md) and [LocalizeKit Quick Start](Docs/LocalizeKitQuickStart.md)
+
+**String Localization API:**
+```swift
+// Simple string
+"key".localize(default: "English text", comment: "Description")
+
+// With interpolation
+"key".localize(default: "Hello, %@!", comment: "Greeting", with: name)
+
+// With plurals
+"key".localize(
+    defaultPlural: [.one: "1 item", .other: "%d items"],
+    comment: "Item count",
+    count: itemCount
+)
+```
+
+**Translation Management Workflow:**
+1. Add `.localize()` calls in code with English defaults
+2. Extract strings: `localizekit extract --version 1.0.0 --language en`
+3. Create translations by copying and translating JSON files
+4. Validate: `localizekit validate --file-path bn.json --base-path en.json`
+5. Upload JSON files to server or update stub data in `LocalizationAPI.swift`
 
 ## Build Configuration
 
