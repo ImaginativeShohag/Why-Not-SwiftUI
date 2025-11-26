@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import Core
 import SuperLog
+import NetworkKit
 
 /// Main localization manager handling translation loading/retrieval
 /// Singleton pattern with observable language changes
@@ -77,26 +78,63 @@ public final class LocalizationManager: ObservableObject {
             return
         }
 
-        // If not in cache, would fetch from server (Phase 1.2)
-        // For now, just update the language
-        currentLanguage = languageCode
-        Preferences.selectedLanguage = languageCode
+        // If not in cache, fetch from server
+        do {
+            try await fetchTranslations(for: languageCode)
+            currentLanguage = languageCode
+            Preferences.selectedLanguage = languageCode
+            SuperLog.d("Language changed to \(languageCode) from server")
+        } catch {
+            SuperLog.e("Failed to fetch translations for \(languageCode): \(error)")
+        }
+
         isLoading = false
-
-        SuperLog.w("No cached translations found for \(languageCode). Will fetch from server.")
     }
 
-    /// Load available languages (to be implemented with NetworkKit in Phase 1.2)
+    /// Load available languages from server
     public func loadAvailableLanguages() async {
-        // Placeholder - will be implemented in Phase 1.2
-        SuperLog.d("loadAvailableLanguages() - to be implemented")
+        SuperLog.d("Loading available languages...")
+        isLoading = true
+
+        let result: ApiResult<AvailableLanguages> = await DataSource.Localization.request(on: .availableLanguages)
+
+        switch result {
+        case .success(let response):
+            availableLanguages = response.languages
+            SuperLog.d("Loaded \(response.languages.count) available languages")
+
+        case .failure(let error, let errorMessage, let statusCode):
+            SuperLog.e("Failed to load available languages: \(errorMessage) (Status: \(statusCode))")
+            SuperLog.e("Error: \(error)")
+        }
+
+        isLoading = false
     }
 
-    /// Fetch translations from server (to be implemented with NetworkKit in Phase 1.2)
+    /// Fetch translations from server for specific language
     /// - Parameter languageCode: Language code to fetch
     public func fetchTranslations(for languageCode: String) async throws {
-        // Placeholder - will be implemented in Phase 1.2
-        SuperLog.d("fetchTranslations(for: \(languageCode)) - to be implemented")
+        SuperLog.d("Fetching translations for \(languageCode)...")
+
+        let result: ApiResult<TranslationFile> = await DataSource.Localization.request(on: .translationFile(languageCode: languageCode))
+
+        switch result {
+        case .success(let translationFile):
+            // Save to cache
+            await cacheTranslations(translationFile, for: languageCode)
+
+            // Set as current translations
+            currentTranslations = translationFile
+
+            // Save version to preferences
+            Preferences.translationVersion = translationFile.version
+
+            SuperLog.d("Fetched and cached translations for \(languageCode), version: \(translationFile.version)")
+
+        case .failure(let error, let errorMessage, let statusCode):
+            SuperLog.e("Failed to fetch translations: \(errorMessage) (Status: \(statusCode))")
+            throw error
+        }
     }
 
     // MARK: - Translation Retrieval
