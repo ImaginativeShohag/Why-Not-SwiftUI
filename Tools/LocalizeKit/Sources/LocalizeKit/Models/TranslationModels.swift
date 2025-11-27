@@ -92,10 +92,10 @@ struct DiffFile: Codable {
 }
 
 struct DiffSummary: Codable {
-    let new: Int
-    let modified: Int
-    let removed: Int
-    let unchanged: Int
+    var new: Int
+    var modified: Int
+    var removed: Int
+    var unchanged: Int
 }
 
 struct ModuleChanges: Codable {

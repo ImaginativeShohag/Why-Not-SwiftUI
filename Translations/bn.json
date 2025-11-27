@@ -1,177 +1,489 @@
 {
-  "version": "1.0.0",
-  "language": "bn",
-  "generatedAt": "2025-11-27T10:35:00Z",
-  "modules": {
-    "Store": {
-      "store_welcome": {
-        "value": "স্বাগতম, **%@**!",
-        "type": "interpolation",
-        "comment": "Welcome message with user's full name on home screen",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+  "generatedAt" : "2025-11-27T01:40:18Z",
+  "language" : "bn",
+  "modules" : {
+    "Store" : {
+      "store_address" : {
+        "comment" : "Address label",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Address"
       },
-      "store_retry": {
-        "value": "পুনরায় চেষ্টা করুন",
-        "type": "simple",
-        "comment": "Retry button text",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_app_name" : {
+        "comment" : "Navigation title",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Store Overflow"
       },
-      "store_profile": {
-        "value": "প্রোফাইল",
-        "type": "simple",
-        "comment": "Profile screen title",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_cart_checkout" : {
+        "comment" : "Button to proceed to checkout",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Check Out"
       },
-      "store_done": {
-        "value": "সম্পন্ন",
-        "type": "simple",
-        "comment": "Done button text",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_cart_empty_description" : {
+        "comment" : "Description for empty cart state",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Add some products to continue."
       },
-      "store_details": {
-        "value": "বিস্তারিত",
-        "type": "simple",
-        "comment": "Profile details section header",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_cart_empty_title" : {
+        "comment" : "Title shown when cart has no items",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Your Cart is Empty."
       },
-      "store_name": {
-        "value": "নাম",
-        "type": "simple",
-        "comment": "User name label",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_cart_menu_orders" : {
+        "comment" : "Menu item to view orders",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Orders"
       },
-      "store_username": {
-        "value": "ব্যবহারকারীর নাম",
-        "type": "simple",
-        "comment": "Username label",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_cart_title" : {
+        "comment" : "Cart screen title",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Cart"
       },
-      "store_email": {
-        "value": "ইমেইল",
-        "type": "simple",
-        "comment": "Email address label",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_cart_total" : {
+        "comment" : "Label for total price in cart",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Total"
       },
-      "store_phone": {
-        "value": "ফোন",
-        "type": "simple",
-        "comment": "Phone number label",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_categories_title" : {
+        "comment" : "Categories screen title",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Categories"
       },
-      "store_address": {
-        "value": "ঠিকানা",
-        "type": "simple",
-        "comment": "Address label",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_checkout_address_placeholder" : {
+        "comment" : "Address TextField placeholder",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Address..."
       },
-      "store_orders": {
-        "value": "অর্ডার",
-        "type": "simple",
-        "comment": "Orders button text",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_checkout_completed_description" : {
+        "comment" : "Description for completed checkout",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Add some products to continue again."
       },
-      "store_language_settings": {
-        "value": "ভাষা সেটিংস",
-        "type": "simple",
-        "comment": "Language settings button text",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_checkout_completed_title" : {
+        "comment" : "Title shown when checkout is complete",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Checkout is completed."
       },
-      "store_sign_out": {
-        "value": "সাইন আউট",
-        "type": "simple",
-        "comment": "Sign out button text",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_checkout_name_placeholder" : {
+        "comment" : "Name TextField placeholder",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Your name..."
       },
-      "store_sign_out_alert_title": {
-        "value": "স্টোর থেকে সাইন আউট করবেন?",
-        "type": "simple",
-        "comment": "Alert title for sign out confirmation",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
+      "store_checkout_phone_placeholder" : {
+        "comment" : "Phone TextField placeholder",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Phone number..."
+      },
+      "store_checkout_place_order" : {
+        "comment" : "Button to place order",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Place Order"
+      },
+      "store_checkout_placing_order" : {
+        "comment" : "Button text while placing order",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Placing Order..."
+      },
+      "store_checkout_shipping_address" : {
+        "comment" : "Label for shipping address section",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Shipping Address"
+      },
+      "store_checkout_success_title" : {
+        "comment" : "Success alert title",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Order placed successfully!"
+      },
+      "store_checkout_title" : {
+        "comment" : "Checkout screen title",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Checkout"
+      },
+      "store_checkout_total" : {
+        "comment" : "Label for total price in checkout",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Total"
+      },
+      "store_details" : {
+        "comment" : "Profile details section header",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Details"
+      },
+      "store_done" : {
+        "comment" : "Done button text",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Done"
+      },
+      "store_email" : {
+        "comment" : "Email address label",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Email"
+      },
+      "store_language_changing" : {
+        "comment" : "Progress message while changing language",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Changing language..."
+      },
+      "store_language_loading" : {
+        "comment" : "Loading text while fetching languages",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Loading languages..."
+      },
+      "store_language_select_footer" : {
+        "comment" : "Footer explaining language selection",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Choose your preferred language for the app. The interface will be translated immediately."
+      },
+      "store_language_select_header" : {
+        "comment" : "Header for language selection list",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Select Language"
+      },
+      "store_language_settings" : {
+        "comment" : "Language settings button text",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Language Settings"
+      },
+      "store_language_title" : {
+        "comment" : "Language settings screen title",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Language"
+      },
+      "store_login" : {
+        "comment" : "Login button text",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Login"
+      },
+      "store_name" : {
+        "comment" : "User name label",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Name"
+      },
+      "store_ok" : {
+        "comment" : "OK button text",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Ok"
+      },
+      "store_orders" : {
+        "comment" : "Orders button text",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Orders"
+      },
+      "store_orders_title" : {
+        "comment" : "Orders screen title",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Orders"
+      },
+      "store_password" : {
+        "comment" : "Password field placeholder",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Password"
+      },
+      "store_phone" : {
+        "comment" : "Phone number label",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Phone"
+      },
+      "store_product_details_title" : {
+        "comment" : "Product details screen title",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Product Details"
+      },
+      "store_products_category_title" : {
+        "comment" : "Title showing the current category name",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "interpolation",
+        "value" : "Category: %@"
+      },
+      "store_profile" : {
+        "comment" : "Profile screen title",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Profile"
+      },
+      "store_retry" : {
+        "comment" : "Retry button text",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Retry"
+      },
+      "store_sign_out" : {
+        "comment" : "Sign out confirmation button",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Sign Out"
+      },
+      "store_sign_out_alert_title" : {
+        "comment" : "Alert title for sign out confirmation",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Sign out from Store?"
+      },
+      "store_tab_bag" : {
+        "comment" : "Tab bar label for shopping bag",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Bag"
+      },
+      "store_tab_categories" : {
+        "comment" : "Tab bar label for categories",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Categories"
+      },
+      "store_tab_home" : {
+        "comment" : "Tab bar label for home",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Home"
+      },
+      "store_username" : {
+        "comment" : "Username field placeholder",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Username"
+      },
+      "store_welcome" : {
+        "comment" : "Welcome message with user's full name on home screen",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "interpolation",
+        "value" : "Welcome, **%@**!"
+      },
+      "store_welcome_to" : {
+        "comment" : "Login screen welcome text",
+        "metadata" : {
+          "addedInVersion" : "1.0.0",
+          "status" : "new",
+          "translationStatus" : "untranslated"
+        },
+        "type" : "simple",
+        "value" : "Welcome to"
       }
     }
-  }
+  },
+  "version" : "1.0.0"
 }

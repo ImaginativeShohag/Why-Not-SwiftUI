@@ -78,13 +78,12 @@ struct MenuCommand: AsyncParsableCommand {
             throw ExitCode.failure
         }
 
-        let command = ExtractCommand(
-            projectPath: finalProjectPath,
-            outputPath: finalOutputPath,
-            language: finalLanguage,
-            version: version,
-            verbose: false
-        )
+        var command = ExtractCommand()
+        command.projectPath = finalProjectPath
+        command.outputPath = finalOutputPath
+        command.language = finalLanguage
+        command.version = version
+        command.verbose = false
 
         try await command.run()
     }
@@ -114,13 +113,12 @@ struct MenuCommand: AsyncParsableCommand {
         let keepRemovedInput = readLine() ?? "n"
         let keepRemoved = keepRemovedInput.lowercased() == "y"
 
-        let command = MergeCommand(
-            newFile: newFile,
-            existingFile: existingFile,
-            outputPath: outputPath,
-            keepRemoved: keepRemoved,
-            verbose: false
-        )
+        var command = MergeCommand()
+        command.newFile = newFile
+        command.existingFile = existingFile
+        command.outputPath = outputPath
+        command.keepRemoved = keepRemoved
+        command.verbose = false
 
         try await command.run()
     }
@@ -138,14 +136,13 @@ struct MenuCommand: AsyncParsableCommand {
         let basePathInput = readLine()
         let basePath = basePathInput?.isEmpty == false ? basePathInput : nil
 
-        let command = ValidateCommand(
-            filePath: filePath,
-            basePath: basePath,
-            checkMissing: true,
-            checkFormat: true,
-            checkPlurals: true,
-            verbose: false
-        )
+        var command = ValidateCommand()
+        command.filePath = filePath
+        command.basePath = basePath
+        command.checkMissing = true
+        command.checkFormat = true
+        command.checkPlurals = true
+        command.verbose = false
 
         try await command.run()
     }
@@ -175,13 +172,12 @@ struct MenuCommand: AsyncParsableCommand {
         let formatInput = readLine() ?? "json"
         let format = formatInput.isEmpty ? "json" : formatInput
 
-        let command = DiffCommand(
-            oldFile: oldFile,
-            newFile: newFile,
-            outputPath: outputPath,
-            format: format,
-            verbose: false
-        )
+        var command = DiffCommand()
+        command.oldFile = oldFile
+        command.newFile = newFile
+        command.outputPath = outputPath
+        command.format = format
+        command.verbose = false
 
         try await command.run()
     }

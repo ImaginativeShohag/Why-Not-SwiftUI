@@ -1,6 +1,6 @@
 # LocalizeKit CLI
 
-A powerful command-line tool for managing translations in SwiftUI projects with runtime localization.
+A powerful command-line tool for managing translations in SwiftUI projects with runtime localization support.
 
 ## Features
 
@@ -9,6 +9,7 @@ A powerful command-line tool for managing translations in SwiftUI projects with 
 - **Validate** translation files for completeness and correctness
 - **Generate Diff** between translation versions
 - **Interactive Menu** for easy access to all commands
+- Supports both `String.localize()` and `Text.localized()` patterns
 
 ## Installation
 
@@ -16,15 +17,30 @@ A powerful command-line tool for managing translations in SwiftUI projects with 
 
 ```bash
 cd Tools/LocalizeKit
-swift build -c release
+swift build -c release --disable-sandbox
 ```
 
 The executable will be located at `.build/release/LocalizeKit`.
 
-You can copy it to a location in your PATH:
+### Optional: Install to PATH
+
+You can copy it to a location in your PATH for easier access:
 
 ```bash
+# Copy to /usr/local/bin (requires sudo)
 sudo cp .build/release/LocalizeKit /usr/local/bin/localizekit
+
+# Or copy to your user bin directory
+mkdir -p ~/bin
+cp .build/release/LocalizeKit ~/bin/localizekit
+# Add ~/bin to your PATH in ~/.zshrc or ~/.bashrc
+```
+
+### Verify Installation
+
+```bash
+localizekit --version
+# Output: 1.0.0
 ```
 
 ## Usage
@@ -200,31 +216,26 @@ YourProject/
 
 ## String Extraction
 
-The tool looks for `.localize()` method calls in your Swift code:
+The tool automatically detects and extracts localization strings from your Swift code. It supports **two patterns**:
 
-### Simple Strings
+### Pattern 1: String Extension (`.localize()`)
 
 ```swift
-Text("store_welcome".localize(
+// Simple strings
+"store_welcome".localize(
     default: "Welcome!",
     comment: "Welcome message"
-))
-```
+)
 
-### Interpolation
-
-```swift
-Text("store_items_count".localize(
+// With interpolation
+"store_items_count".localize(
     default: "You have %d items",
     comment: "Items count message",
     with: itemCount
-))
-```
+)
 
-### Plurals
-
-```swift
-Text("store_cart_items".localize(
+// With plurals
+"store_cart_items".localize(
     defaultPlural: [
         .zero: "No items",
         .one: "1 item",
@@ -232,8 +243,41 @@ Text("store_cart_items".localize(
     ],
     comment: "Cart items count",
     count: cartCount
-))
+)
 ```
+
+### Pattern 2: Text Static Method (`Text.localized()`)
+
+```swift
+// Simple strings
+Text.localized(
+    "store_welcome",
+    default: "Welcome!",
+    comment: "Welcome message"
+)
+
+// With interpolation
+Text.localized(
+    "store_greeting",
+    default: "Welcome, **%@**!",
+    comment: "Welcome message with user's full name on home screen",
+    with: user.name.getFullName()
+)
+
+// With plurals
+Text.localized(
+    "store_cart_items",
+    defaultPlural: [
+        .zero: "No items",
+        .one: "1 item",
+        .other: "%d items"
+    ],
+    comment: "Cart items count",
+    count: cartCount
+)
+```
+
+**Note:** The CLI automatically detects both patterns during extraction. You can use whichever pattern fits your use case better.
 
 ## Translation File Format
 
@@ -350,20 +394,86 @@ localizekit diff \
 ## Troubleshooting
 
 ### No strings found
-- Make sure you're using `.localize()` extension methods
-- Check that `--project-path` points to the correct location
+
+**Problem:** The CLI reports no localization strings found in the project.
+
+**Solutions:**
+- Make sure you're using either `.localize()` or `Text.localized()` patterns
+- Check that `--project-path` points to the correct project root
 - Verify that `Targets/` directory exists in your project
+- Ensure your Swift files are in `Targets/ModuleName/Sources/` directories
+- Try running with `--verbose` flag to see which files are being processed
+
+**Example:**
+```bash
+# Run with verbose output to debug
+.build/release/LocalizeKit extract \
+  --project-path /path/to/project \
+  --version 1.0.0 \
+  --language en \
+  --verbose
+```
 
 ### Format validation errors
+
+**Problem:** Format specifier validation fails when checking translations.
+
+**Solutions:**
 - Ensure format specifiers match between languages
-- Use `%@` for strings, `%d` for integers, etc.
-- Check that the order and count of specifiers is correct
+- Use `%@` for strings, `%d` for integers, `%f` for floats
+- Check that the order and count of specifiers is consistent
+- Markdown formatting (like `**text**`) is NOT a format specifier
+
+**Example:**
+```swift
+// Correct - both have %@
+default: "Welcome, **%@**!"
+translation: "স্বাগতম, **%@**!"
+
+// Incorrect - missing %d
+default: "You have %d items"
+translation: "You have items"  // Missing %d
+```
 
 ### Plural validation errors
-- Different languages require different plural forms
-- Arabic requires all 6 forms (zero, one, two, few, many, other)
-- English requires 2 forms (one, other)
+
+**Problem:** Plural form validation fails.
+
+**Solutions:**
+- Different languages require different plural forms (CLDR rules)
+- **Arabic** requires 6 forms: zero, one, two, few, many, other
+- **English** requires 2 forms: one, other
+- **Bengali** requires 2 forms: one, other
 - Check CLDR plural rules for your target language
+
+**Required forms by language:**
+```
+en, bn:      one, other
+ar:          zero, one, two, few, many, other
+```
+
+### Build errors
+
+**Problem:** `swift build` fails with sandbox errors.
+
+**Solution:** Use the `--disable-sandbox` flag:
+```bash
+swift build -c release --disable-sandbox
+```
+
+### Text.localized() not detected
+
+**Problem:** Strings using `Text.localized()` are not being extracted.
+
+**Solution:** This was fixed in the latest version. Make sure you're using the latest build:
+```bash
+cd Tools/LocalizeKit
+swift build -c release --disable-sandbox
+```
+
+The CLI now supports both patterns:
+- ✅ `"key".localize(default: "value", comment: "...")`
+- ✅ `Text.localized("key", default: "value", comment: "...")`
 
 ## License
 

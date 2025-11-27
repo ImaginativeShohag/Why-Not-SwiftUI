@@ -124,7 +124,7 @@ final class StringExtractor {
 
 // MARK: - Visitor
 
-/// SwiftSyntax visitor that finds `.localize()` calls
+/// SwiftSyntax visitor that finds `.localize()` and `Text.localized()` calls
 private final class LocalizationVisitor: SyntaxVisitor {
     let filePath: String
     let moduleName: String
@@ -139,25 +139,71 @@ private final class LocalizationVisitor: SyntaxVisitor {
     }
 
     override func visit(_ node: FunctionCallExprSyntax) -> SyntaxVisitorContinueKind {
+        // Try to extract from either pattern:
+        // 1. "key".localize(default: "value", comment: "...")
+        // 2. Text.localized("key", default: "value", comment: "...")
+
+        if let extracted = extractFromStringLocalize(node) {
+            extractedStrings.append(extracted)
+        } else if let extracted = extractFromTextLocalized(node) {
+            extractedStrings.append(extracted)
+        }
+
+        return .visitChildren
+    }
+
+    /// Extract from pattern: "key".localize(default: "value", comment: "...")
+    private func extractFromStringLocalize(_ node: FunctionCallExprSyntax) -> ExtractedString? {
         // Check if this is a .localize() call
         guard let memberAccess = node.calledExpression.as(MemberAccessExprSyntax.self),
               memberAccess.declName.baseName.text == "localize" else {
-            return .visitChildren
+            return nil
         }
 
         // Extract the key (base of the member access)
         guard let keyExpr = memberAccess.base?.as(StringLiteralExprSyntax.self),
               let keySegment = keyExpr.segments.first?.as(StringSegmentSyntax.self) else {
-            return .visitChildren
+            return nil
         }
 
         let key = keySegment.content.text
+        return extractStringData(from: node, key: key)
+    }
 
+    /// Extract from pattern: Text.localized("key", default: "value", comment: "...")
+    private func extractFromTextLocalized(_ node: FunctionCallExprSyntax) -> ExtractedString? {
+        // Check if this is Text.localized() call
+        guard let memberAccess = node.calledExpression.as(MemberAccessExprSyntax.self),
+              memberAccess.declName.baseName.text == "localized" else {
+            return nil
+        }
+
+        // Check if base is "Text"
+        guard let baseIdentifier = memberAccess.base?.as(DeclReferenceExprSyntax.self),
+              baseIdentifier.baseName.text == "Text" else {
+            return nil
+        }
+
+        // First argument should be the key
+        guard let firstArg = node.arguments.first,
+              firstArg.label == nil, // unlabeled first argument
+              let keyExpr = firstArg.expression.as(StringLiteralExprSyntax.self),
+              let keySegment = keyExpr.segments.first?.as(StringSegmentSyntax.self) else {
+            return nil
+        }
+
+        let key = keySegment.content.text
+        return extractStringData(from: node, key: key)
+    }
+
+    /// Common extraction logic for both patterns
+    private func extractStringData(from node: FunctionCallExprSyntax, key: String) -> ExtractedString? {
         // Parse arguments
         var defaultValue: String = ""
         var comment: String = ""
         var count: String? = nil
         var defaultPlural: [String: String]? = nil
+        var withParameters: [String] = []
 
         for argument in node.arguments {
             let label = argument.label?.text ?? ""
@@ -186,6 +232,11 @@ private final class LocalizationVisitor: SyntaxVisitor {
                     defaultPlural = parsePluralDictionary(dictExpr)
                 }
 
+            case "with":
+                // Capture interpolation parameters
+                let paramDesc = argument.expression.description.trimmingCharacters(in: .whitespacesAndNewlines)
+                withParameters.append(paramDesc)
+
             default:
                 break
             }
@@ -204,7 +255,7 @@ private final class LocalizationVisitor: SyntaxVisitor {
         // Get line number
         let lineNumber = sourceCode.lineNumber(at: node.position)
 
-        let extractedString = ExtractedString(
+        return ExtractedString(
             key: key,
             moduleName: moduleName,
             defaultValue: defaultValue,
@@ -214,10 +265,6 @@ private final class LocalizationVisitor: SyntaxVisitor {
             filePath: filePath,
             lineNumber: lineNumber
         )
-
-        extractedStrings.append(extractedString)
-
-        return .visitChildren
     }
 
     private func parsePluralDictionary(_ dictExpr: DictionaryExprSyntax) -> [String: String] {

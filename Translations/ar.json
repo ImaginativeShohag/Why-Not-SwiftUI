@@ -1,13 +1,13 @@
 {
   "version": "1.0.0",
   "language": "ar",
-  "generatedAt": "2025-11-27T10:40:00Z",
+  "generatedAt": "2025-11-27T01:30:00Z",
   "modules": {
     "Store": {
-      "store_welcome": {
-        "value": "!**%@** ،مرحباً",
-        "type": "interpolation",
-        "comment": "Welcome message with user's full name on home screen",
+      "store_address": {
+        "value": "العنوان",
+        "type": "simple",
+        "comment": "Address label",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
@@ -16,10 +16,10 @@
           "changeReason": null
         }
       },
-      "store_retry": {
-        "value": "إعادة المحاولة",
+      "store_app_name": {
+        "value": "متجر أوفرفلو",
         "type": "simple",
-        "comment": "Retry button text",
+        "comment": "Navigation title",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
@@ -28,10 +28,10 @@
           "changeReason": null
         }
       },
-      "store_profile": {
-        "value": "الملف الشخصي",
+      "store_cart_checkout": {
+        "value": "الدفع",
         "type": "simple",
-        "comment": "Profile screen title",
+        "comment": "Button to proceed to checkout",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
@@ -40,10 +40,202 @@
           "changeReason": null
         }
       },
-      "store_done": {
-        "value": "تم",
+      "store_cart_empty_description": {
+        "value": "أضف بعض المنتجات للمتابعة.",
         "type": "simple",
-        "comment": "Done button text",
+        "comment": "Description for empty cart state",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_cart_empty_title": {
+        "value": "عربة التسوق فارغة.",
+        "type": "simple",
+        "comment": "Title shown when cart has no items",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_cart_menu_orders": {
+        "value": "الطلبات",
+        "type": "simple",
+        "comment": "Menu item to view orders",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_cart_title": {
+        "value": "عربة التسوق",
+        "type": "simple",
+        "comment": "Cart screen title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_cart_total": {
+        "value": "المجموع",
+        "type": "simple",
+        "comment": "Label for total price in cart",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_categories_title": {
+        "value": "الفئات",
+        "type": "simple",
+        "comment": "Categories screen title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_address_placeholder": {
+        "value": "العنوان...",
+        "type": "simple",
+        "comment": "Address TextField placeholder",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_completed_description": {
+        "value": "أضف بعض المنتجات للمتابعة مرة أخرى.",
+        "type": "simple",
+        "comment": "Description for completed checkout",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_completed_title": {
+        "value": "اكتمل الدفع.",
+        "type": "simple",
+        "comment": "Title shown when checkout is complete",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_name_placeholder": {
+        "value": "اسمك...",
+        "type": "simple",
+        "comment": "Name TextField placeholder",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_phone_placeholder": {
+        "value": "رقم الهاتف...",
+        "type": "simple",
+        "comment": "Phone TextField placeholder",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_place_order": {
+        "value": "تقديم الطلب",
+        "type": "simple",
+        "comment": "Button to place order",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_placing_order": {
+        "value": "جاري تقديم الطلب...",
+        "type": "simple",
+        "comment": "Button text while placing order",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_shipping_address": {
+        "value": "عنوان الشحن",
+        "type": "simple",
+        "comment": "Label for shipping address section",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_success_title": {
+        "value": "تم تقديم الطلب بنجاح!",
+        "type": "simple",
+        "comment": "Success alert title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_title": {
+        "value": "الدفع",
+        "type": "simple",
+        "comment": "Checkout screen title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_checkout_total": {
+        "value": "المجموع",
+        "type": "simple",
+        "comment": "Label for total price in checkout",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
@@ -64,22 +256,10 @@
           "changeReason": null
         }
       },
-      "store_name": {
-        "value": "الاسم",
+      "store_done": {
+        "value": "تم",
         "type": "simple",
-        "comment": "User name label",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "validated",
-          "changeReason": null
-        }
-      },
-      "store_username": {
-        "value": "اسم المستخدم",
-        "type": "simple",
-        "comment": "Username label",
+        "comment": "Done button text",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
@@ -100,10 +280,10 @@
           "changeReason": null
         }
       },
-      "store_phone": {
-        "value": "الهاتف",
+      "store_language_changing": {
+        "value": "جاري تغيير اللغة...",
         "type": "simple",
-        "comment": "Phone number label",
+        "comment": "Progress message while changing language",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
@@ -112,10 +292,10 @@
           "changeReason": null
         }
       },
-      "store_address": {
-        "value": "العنوان",
+      "store_language_loading": {
+        "value": "جاري تحميل اللغات...",
         "type": "simple",
-        "comment": "Address label",
+        "comment": "Loading text while fetching languages",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
@@ -124,10 +304,22 @@
           "changeReason": null
         }
       },
-      "store_orders": {
-        "value": "الطلبات",
+      "store_language_select_footer": {
+        "value": "اختر لغتك المفضلة للتطبيق. سيتم ترجمة الواجهة على الفور.",
         "type": "simple",
-        "comment": "Orders button text",
+        "comment": "Footer explaining language selection",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_language_select_header": {
+        "value": "اختر اللغة",
+        "type": "simple",
+        "comment": "Header for language selection list",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
@@ -148,10 +340,154 @@
           "changeReason": null
         }
       },
+      "store_language_title": {
+        "value": "اللغة",
+        "type": "simple",
+        "comment": "Language settings screen title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_login": {
+        "value": "تسجيل الدخول",
+        "type": "simple",
+        "comment": "Login button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_name": {
+        "value": "الاسم",
+        "type": "simple",
+        "comment": "User name label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_ok": {
+        "value": "حسناً",
+        "type": "simple",
+        "comment": "OK button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_orders": {
+        "value": "الطلبات",
+        "type": "simple",
+        "comment": "Orders button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_orders_title": {
+        "value": "الطلبات",
+        "type": "simple",
+        "comment": "Orders screen title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_password": {
+        "value": "كلمة المرور",
+        "type": "simple",
+        "comment": "Password field placeholder",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_phone": {
+        "value": "الهاتف",
+        "type": "simple",
+        "comment": "Phone number label",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_product_details_title": {
+        "value": "تفاصيل المنتج",
+        "type": "simple",
+        "comment": "Product details screen title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_products_category_title": {
+        "value": "الفئة: %@",
+        "type": "interpolation",
+        "comment": "Title showing the current category name",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_profile": {
+        "value": "الملف الشخصي",
+        "type": "simple",
+        "comment": "Profile screen title",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_retry": {
+        "value": "إعادة المحاولة",
+        "type": "simple",
+        "comment": "Retry button text",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
       "store_sign_out": {
         "value": "تسجيل الخروج",
         "type": "simple",
-        "comment": "Sign out button text",
+        "comment": "Sign out confirmation button",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
@@ -164,6 +500,78 @@
         "value": "تسجيل الخروج من المتجر؟",
         "type": "simple",
         "comment": "Alert title for sign out confirmation",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_tab_bag": {
+        "value": "الحقيبة",
+        "type": "simple",
+        "comment": "Tab bar label for shopping bag",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_tab_categories": {
+        "value": "الفئات",
+        "type": "simple",
+        "comment": "Tab bar label for categories",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_tab_home": {
+        "value": "الرئيسية",
+        "type": "simple",
+        "comment": "Tab bar label for home",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_username": {
+        "value": "اسم المستخدم",
+        "type": "simple",
+        "comment": "Username field placeholder",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_welcome": {
+        "value": "!**%@** ،مرحباً",
+        "type": "interpolation",
+        "comment": "Welcome message with user's full name on home screen",
+        "metadata": {
+          "addedInVersion": "1.0.0",
+          "lastModifiedVersion": null,
+          "status": "new",
+          "translationStatus": "validated",
+          "changeReason": null
+        }
+      },
+      "store_welcome_to": {
+        "value": "مرحباً بك في",
+        "type": "simple",
+        "comment": "Login screen welcome text",
         "metadata": {
           "addedInVersion": "1.0.0",
           "lastModifiedVersion": null,
