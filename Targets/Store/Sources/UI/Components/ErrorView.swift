@@ -2,6 +2,7 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import LocalizeKit
 import SwiftUI
 
 struct ErrorView: View {
@@ -14,7 +15,7 @@ struct ErrorView: View {
                 Label(message, systemImage: "exclamationmark.triangle")
             },
             actions: {
-                Button("Retry") {
+                Button("store_retry".localize(default: "Retry", comment: "Retry button text")) {
                     onRetryClick()
                 }
                 .buttonStyle(.borderedProminent)

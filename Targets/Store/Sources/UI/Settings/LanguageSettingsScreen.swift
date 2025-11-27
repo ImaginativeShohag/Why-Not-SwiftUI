@@ -19,7 +19,7 @@ struct LanguageSettingsScreen: View {
             ZStack {
                 switch viewModel.state {
                 case .loading:
-                    ProgressView("Loading languages...")
+                    ProgressView("store_language_loading".localize(default: "Loading languages...", comment: "Loading text while fetching languages"))
 
                 case .error(let message):
                     ContentUnavailableView(
@@ -27,7 +27,7 @@ struct LanguageSettingsScreen: View {
                             Label(message, systemImage: "exclamationmark.triangle")
                         },
                         actions: {
-                            Button("Retry") {
+                            Button("store_retry".localize(default: "Retry", comment: "Retry button text")) {
                                 Task {
                                     await viewModel.loadLanguages()
                                 }
@@ -41,14 +41,18 @@ struct LanguageSettingsScreen: View {
                     languageListView
                 }
             }
-            .navigationTitle("Language")
+            .navigationTitle("store_language_title".localize(default: "Language", comment: "Language settings screen title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         dismiss()
                     } label: {
-                        Text("Done")
+                        Text.localized(
+                            "store_done",
+                            default: "Done",
+                            comment: "Done button text"
+                        )
                     }
                 }
             }
@@ -65,7 +69,11 @@ struct LanguageSettingsScreen: View {
                             ProgressView()
                                 .tint(.white)
 
-                            Text("Changing language...")
+                            Text.localized(
+                                "store_language_changing",
+                                default: "Changing language...",
+                                comment: "Progress message while changing language"
+                            )
                                 .foregroundStyle(.white)
                                 .font(.subheadline)
                         }
@@ -77,6 +85,7 @@ struct LanguageSettingsScreen: View {
                     }
                 }
             }
+            .onLanguageChange()
         }
     }
 
@@ -88,9 +97,17 @@ struct LanguageSettingsScreen: View {
                     languageRow(language)
                 }
             } header: {
-                Text("Select Language")
+                Text.localized(
+                    "store_language_select_header",
+                    default: "Select Language",
+                    comment: "Header for language selection list"
+                )
             } footer: {
-                Text("Choose your preferred language for the app. The interface will be translated immediately.")
+                Text.localized(
+                    "store_language_select_footer",
+                    default: "Choose your preferred language for the app. The interface will be translated immediately.",
+                    comment: "Footer explaining language selection"
+                )
                     .font(.footnote)
             }
         }

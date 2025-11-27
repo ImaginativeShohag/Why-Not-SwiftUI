@@ -4,6 +4,7 @@
 
 import Core
 import Kingfisher
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -28,23 +29,28 @@ struct PlaceOrderScreen: View {
     }
 
     var body: some View {
+        content
+    }
+
+    @ViewBuilder
+    private var content: some View {
         VStack(spacing: 0) {
             if viewModel.cartManager.items.isEmpty {
-                ContentUnavailableView(
-                    "Checkout is completed.",
-                    systemImage: "shippingbox",
-                    description: Text("Add some products to continue again.")
-                )
+                emptyStateView
             } else {
                 ScrollView {
                     VStack(spacing: 16) {
                         HStack {
                             Image(systemName: "map")
-                            Text("Shipping Address")
+                            Text.localized(
+                                "store_checkout_shipping_address",
+                                default: "Shipping Address",
+                                comment: "Label for shipping address section"
+                            )
                         }
 
                         TextField(
-                            "Your name...",
+                            "store_checkout_name_placeholder".localize(default: "Your name...", comment: "Name TextField placeholder"),
                             text: $viewModel.nameText
                         )
                         .padding()
@@ -54,7 +60,7 @@ struct PlaceOrderScreen: View {
                         }
 
                         TextField(
-                            "Phone number...",
+                            "store_checkout_phone_placeholder".localize(default: "Phone number...", comment: "Phone TextField placeholder"),
                             text: $viewModel.phoneNumberText
                         )
                         .padding()
@@ -64,7 +70,7 @@ struct PlaceOrderScreen: View {
                         }
 
                         TextField(
-                            "Enter your address here...",
+                            "store_checkout_address_placeholder".localize(default: "Address...", comment: "Address TextField placeholder"),
                             text: $viewModel.addressText,
                             axis: .vertical
                         )
@@ -100,14 +106,18 @@ struct PlaceOrderScreen: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.systemGroupedBackground)
-        .navigationTitle("Checkout")
+        .navigationTitle("store_checkout_title".localize(default: "Checkout", comment: "Checkout screen title"))
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
             VStack {
                 Divider()
 
                 HStack {
-                    Text("Total")
+                    Text.localized(
+                        "store_checkout_total",
+                        default: "Total",
+                        comment: "Label for total price in checkout"
+                    )
 
                     Spacer()
 
@@ -125,11 +135,19 @@ struct PlaceOrderScreen: View {
                     if viewModel.orderSubmitState == .loading {
                         ProgressView()
 
-                        Text("Placing Order...")
+                        Text.localized(
+                            "store_checkout_placing_order",
+                            default: "Placing Order...",
+                            comment: "Button text while placing order"
+                        )
                             .font(.title3)
                             .frame(maxWidth: .infinity)
                     } else {
-                        Text("Place Order")
+                        Text.localized(
+                            "store_checkout_place_order",
+                            default: "Place Order",
+                            comment: "Button to place order"
+                        )
                             .font(.title3)
                             .frame(maxWidth: .infinity)
                     }
@@ -151,14 +169,38 @@ struct PlaceOrderScreen: View {
             }
         }
         .alert(
-            "Order placed successfully!",
+            "store_checkout_success_title".localize(default: "Order placed successfully!", comment: "Success alert title"),
             isPresented: $showSuccessAlert
         ) {
             Button {
                 NavController.shared.popBackStack()
             } label: {
-                Text("Ok")
+                Text.localized(
+                    "store_ok",
+                    default: "Ok",
+                    comment: "OK button text"
+                )
             }
+        }
+        .onLanguageChange()
+    }
+
+    @ViewBuilder
+    private var emptyStateView: some View {
+        ContentUnavailableView {
+            Text.localized(
+                "store_checkout_completed_title",
+                default: "Checkout is completed.",
+                comment: "Title shown when checkout is complete"
+            )
+        } description: {
+            Text.localized(
+                "store_checkout_completed_description",
+                default: "Add some products to continue again.",
+                comment: "Description for completed checkout"
+            )
+        } actions: {
+            EmptyView()
         }
     }
 }

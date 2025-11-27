@@ -2,6 +2,7 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -27,15 +28,23 @@ struct SplashScreen: View {
     var body: some View {
         ZStack {
             VStack(spacing: 8) {
-                Text("Welcome to")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.white)
+                Text.localized(
+                    "store_welcome_to",
+                    default: "Welcome to",
+                    comment: "Splash screen welcome text"
+                )
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(.white)
 
-                Text("Store Overflow")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.white)
+                Text.localized(
+                    "store_app_name",
+                    default: "Store Overflow",
+                    comment: "Application name"
+                )
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundStyle(.white)
             }
             .padding()
         }
@@ -68,6 +77,7 @@ struct SplashScreen: View {
         .task {
             await viewModel.checkNextAction()
         }
+        .onLanguageChange()
     }
 }
 

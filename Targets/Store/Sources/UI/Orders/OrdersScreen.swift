@@ -4,6 +4,7 @@
 
 import Core
 import Kingfisher
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -48,13 +49,14 @@ struct OrdersScreen: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .navigationBarTitle("Orders")
+        .navigationBarTitle("store_orders_title".localize(default: "Orders", comment: "Orders screen title"))
         .refreshable {
             await viewModel.loadOrders(forced: true)
         }
         .task {
             await viewModel.loadOrders()
         }
+        .onLanguageChange()
     }
 }
 

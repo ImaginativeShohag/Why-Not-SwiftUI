@@ -2,6 +2,7 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -31,14 +32,22 @@ struct LoginScreen: View {
         ScrollView {
             VStack(spacing: 16) {
                 VStack(spacing: 8) {
-                    Text("Welcome to")
-                        .fontWeight(.bold)
-                        .foregroundStyle(.white)
+                    Text.localized(
+                        "store_welcome_to",
+                        default: "Welcome to",
+                        comment: "Login screen welcome text"
+                    )
+                    .fontWeight(.bold)
+                    .foregroundStyle(.white)
 
-                    Text("Store Overflow")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.white)
+                    Text.localized(
+                        "store_app_name",
+                        default: "Store Overflow",
+                        comment: "Application name"
+                    )
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.white)
                 }
                 .padding()
                 .frame(minHeight: 200)
@@ -63,22 +72,36 @@ struct LoginScreen: View {
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Username")
-                            .font(.footnote)
-                            .foregroundStyle(.gray)
+                        Text.localized(
+                            "store_username",
+                            default: "Username",
+                            comment: "Username field label"
+                        )
+                        .font(.footnote)
+                        .foregroundStyle(.gray)
 
-                        TextField("Username", text: $username)
+                        TextField(
+                            "store_username".localize(default: "Username", comment: "Username field placeholder"),
+                            text: $username
+                        )
                     }
                     .padding()
                     .background(Color.tertiarySystemGroupedBackground)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Password")
-                            .font(.footnote)
-                            .foregroundStyle(.gray)
+                        Text.localized(
+                            "store_password",
+                            default: "Password",
+                            comment: "Password field label"
+                        )
+                        .font(.footnote)
+                        .foregroundStyle(.gray)
 
-                        TextField("Password", text: $password)
+                        TextField(
+                            "store_password".localize(default: "Password", comment: "Password field placeholder"),
+                            text: $password
+                        )
                     }
                     .padding()
                     .background(Color.tertiarySystemGroupedBackground)
@@ -96,7 +119,11 @@ struct LoginScreen: View {
                             if viewModel.state?.isLoading == true {
                                 ProgressView()
                             } else {
-                                Text("Login")
+                                Text.localized(
+                                    "store_login",
+                                    default: "Login",
+                                    comment: "Login button text"
+                                )
                             }
                         }
                         .padding(.vertical, 16)
@@ -115,7 +142,7 @@ struct LoginScreen: View {
             }
             .disabled(viewModel.state?.isLoading == true)
         }
-        .navigationTitle("Store Overflow")
+        .navigationTitle("store_app_name".localize(default: "Store Overflow", comment: "Navigation title"))
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: viewModel.state) { _, newState in
             if let state = newState, state.getData() == true {
@@ -127,6 +154,7 @@ struct LoginScreen: View {
                     )
             }
         }
+        .onLanguageChange()
     }
 }
 

@@ -2,6 +2,7 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -29,11 +30,11 @@ enum TabItem: String {
 
 struct MainScreen: View {
     @State var selection: TabItem = .home
-    
+
     var body: some View {
         TabView(selection: $selection) {
             Tab(
-                "Home",
+                "store_tab_home".localize(default: "Home", comment: "Tab bar label for home"),
                 systemImage: "text.rectangle.page.fill",
                 value: .home)
             {
@@ -41,15 +42,15 @@ struct MainScreen: View {
             }
 
             Tab(
-                "Categories",
+                "store_tab_categories".localize(default: "Categories", comment: "Tab bar label for categories"),
                 systemImage: "shippingbox",
                 value: .categories)
             {
                 CategoriesScreen()
             }
-                    
+
             Tab(
-                "Bag",
+                "store_tab_bag".localize(default: "Bag", comment: "Tab bar label for shopping bag"),
                 systemImage: "bag",
                 value: .bag)
             {
@@ -58,6 +59,7 @@ struct MainScreen: View {
         }
         .tabViewStyle(.sidebarAdaptable)
         .toolbarVisibility(.hidden, for: .navigationBar)
+        .onLanguageChange()
     }
 }
 
