@@ -132,8 +132,8 @@ Targets/
   - Observable language changes with `.onLanguageChange()` modifier
   - Language selection UI in ProfileSheet
 - **Translation files:** Located in `Translations/` directory (base.json for English source, bn.json, ar.json for target languages)
-- **CLI tool:** `Tools/LocalizeKit` v2 - CLI for extracting, merging, validating, diffing, and migrating translations
-- **CLI features:** Auto-versioning, per-key change tracking, multi-language batch operations, migration from v1
+- **CLI tool:** `Tools/LocalizeKit` - CLI for extracting, merging, validating, and diffing translations
+- **CLI features:** Auto-versioning, per-key change tracking, multi-language batch operations
 - **Usage:** See [Runtime Localization Plan](Docs/RuntimeLocalizationPlan.md) and [LocalizeKit Quick Start](Docs/LocalizeKitQuickStart.md)
 
 **String Localization API:**
@@ -152,7 +152,7 @@ Targets/
 )
 ```
 
-**Translation Management Workflow (LocalizeKit v2):**
+**Translation Management Workflow:**
 1. Add `.localize()` calls in code with English defaults
 2. Extract strings: `localizekit extract --project-path .` (auto-increments version, creates/updates base.json)
 3. Create target languages: `localizekit merge --language bn --language ar` or `--all`
@@ -161,7 +161,7 @@ Targets/
 6. Preview changes: `localizekit diff --all`
 7. Upload JSON files to server or update stub data in `LocalizationAPI.swift`
 
-**LocalizeKit v2 Key Changes:**
+**LocalizeKit Key Features:**
 - No manual version specification (auto-managed integer versions)
 - `base.json` instead of `en.json` for source language
 - Per-key version tracking (tracks which keys changed)

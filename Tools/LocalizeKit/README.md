@@ -1,16 +1,6 @@
-# LocalizeKit CLI v2
+# LocalizeKit CLI
 
 A powerful command-line tool for managing translations in SwiftUI projects with runtime localization support, featuring automatic version management and per-key change tracking.
-
-## What's New in v2.0
-
-- 🚀 **Auto-managed versioning** - No manual version specification needed
-- 📌 **Per-key version tracking** - Track changes at individual string level
-- 🗂️ **Simplified workflow** - `base.json` + target language files
-- 🌍 **Multi-language support** - Process multiple languages with `--all` flag
-- 🔄 **Smart synchronization** - Intelligent version-based merge logic
-- 📊 **Terminal-only diff** - Quick preview of translation status
-- 🔧 **Migration tool** - Convert v1 files to v2 format
 
 ## Features
 
@@ -18,9 +8,11 @@ A powerful command-line tool for managing translations in SwiftUI projects with 
 - **Merge** translations with intelligent version-based synchronization
 - **Validate** translation files for completeness and correctness
 - **Preview Diff** between base and target languages (terminal output)
-- **Migrate** from v1 to v2 format with automatic backup
 - **Interactive Menu** for easy access to all commands
 - Supports both `String.localize()` and `Text.localized()` patterns
+- **Auto-managed versioning** - No manual version specification needed
+- **Per-key version tracking** - Track changes at individual string level
+- **Multi-language support** - Process multiple languages with `--all` flag
 
 ## Installation
 
@@ -49,7 +41,7 @@ cp .build/release/LocalizeKit ~/bin/localizekit
 
 ```bash
 localizekit --version
-# Output: 2.0.0
+# Output: 1.0.0
 ```
 
 ## Quick Start
@@ -299,26 +291,6 @@ Summary:
    This will add 3 new keys and update 2 modified keys.
 ```
 
-#### Migrate from v1 to v2
-
-Convert old format translation files to v2:
-
-```bash
-localizekit migrate --project-path . --base-language en
-```
-
-**Options:**
-- `--project-path`: Root directory (default: current directory)
-- `--base-language`: Base language file to convert (default: en)
-- `--backup`: Create backup before migration (default: true)
-- `--verbose`: Enable verbose output
-
-**What it does:**
-1. Creates `Translations.backup/` (if `--backup`)
-2. Converts `en.json` → `base.json` (v2 format with integer versions)
-3. Simplifies all target files (removes metadata and comments)
-4. Syncs all file versions with base
-
 ## Project Structure
 
 The CLI expects this structure:
@@ -439,22 +411,6 @@ localizekit merge --all
 
 # 5. Validate
 localizekit validate --all
-```
-
-### Migration from v1
-
-```bash
-# 1. Backup manually (optional, CLI also creates backup)
-cp -r Translations Translations-v1-backup
-
-# 2. Run migration
-localizekit migrate
-
-# 3. Verify
-localizekit validate --all
-
-# 4. Remove old en.json if everything looks good
-rm Translations/en.json
 ```
 
 ## Translation File Format
@@ -624,16 +580,6 @@ After merge --language ar:
   - **English, Bengali**: one, other
   - **Arabic**: zero, one, two, few, many, other
 - Provide all required forms for target language
-
-### Migration issues
-
-**Problem:** Migration from v1 fails.
-
-**Solutions:**
-- Ensure v1 files use correct JSON structure
-- Check `--base-language` matches your base file
-- Verify backup creation succeeded
-- Check migration output for errors
 
 ### Build errors
 

@@ -10,13 +10,12 @@ struct LocalizeKit: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "localizekit",
         abstract: "Translation management tool for SwiftUI projects",
-        version: "2.0.0",
+        version: "1.0.0",
         subcommands: [
             ExtractCommand.self,
             MergeCommand.self,
             ValidateCommand.self,
             DiffCommand.self,
-            MigrateCommand.self,
             MenuCommand.self
         ],
         defaultSubcommand: MenuCommand.self
