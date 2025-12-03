@@ -167,7 +167,8 @@ Targets/
 - Per-key version tracking (tracks which keys changed)
 - Simplified target files (no metadata/comments)
 - Smart merge based on version comparison
-- Built-in test suite: `bash Tools/LocalizeKit/test_localizekit.sh`
+- Comprehensive Swift unit tests using XCTest framework
+- Built-in test suite: `swift test --package-path Tools/LocalizeKit --disable-sandbox`
 
 ## Build Configuration
 
