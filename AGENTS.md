@@ -131,8 +131,9 @@ Targets/
   - Three-tier fallback: Server → Cache → English default in code
   - Observable language changes with `.onLanguageChange()` modifier
   - Language selection UI in ProfileSheet
-- **Translation files:** Located in `Translations/` directory (en.json, bn.json, ar.json)
-- **CLI tool:** `Tools/LocalizeKit` for extracting, merging, validating, and diffing translations
+- **Translation files:** Located in `Translations/` directory (base.json for English source, bn.json, ar.json for target languages)
+- **CLI tool:** `Tools/LocalizeKit` v2 - CLI for extracting, merging, validating, diffing, and migrating translations
+- **CLI features:** Auto-versioning, per-key change tracking, multi-language batch operations, migration from v1
 - **Usage:** See [Runtime Localization Plan](Docs/RuntimeLocalizationPlan.md) and [LocalizeKit Quick Start](Docs/LocalizeKitQuickStart.md)
 
 **String Localization API:**
@@ -151,12 +152,22 @@ Targets/
 )
 ```
 
-**Translation Management Workflow:**
+**Translation Management Workflow (LocalizeKit v2):**
 1. Add `.localize()` calls in code with English defaults
-2. Extract strings: `localizekit extract --version 1.0.0 --language en`
-3. Create translations by copying and translating JSON files
-4. Validate: `localizekit validate --file-path bn.json --base-path en.json`
-5. Upload JSON files to server or update stub data in `LocalizationAPI.swift`
+2. Extract strings: `localizekit extract --project-path .` (auto-increments version, creates/updates base.json)
+3. Create target languages: `localizekit merge --language bn --language ar` or `--all`
+4. Translate values in target JSON files (bn.json, ar.json)
+5. Validate: `localizekit validate --all`
+6. Preview changes: `localizekit diff --all`
+7. Upload JSON files to server or update stub data in `LocalizationAPI.swift`
+
+**LocalizeKit v2 Key Changes:**
+- No manual version specification (auto-managed integer versions)
+- `base.json` instead of `en.json` for source language
+- Per-key version tracking (tracks which keys changed)
+- Simplified target files (no metadata/comments)
+- Smart merge based on version comparison
+- Built-in test suite: `bash Tools/LocalizeKit/test_localizekit.sh`
 
 ## Build Configuration
 
