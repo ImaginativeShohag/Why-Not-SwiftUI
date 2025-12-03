@@ -1,13 +1,24 @@
-# LocalizeKit CLI
+# LocalizeKit CLI v2
 
-A powerful command-line tool for managing translations in SwiftUI projects with runtime localization support.
+A powerful command-line tool for managing translations in SwiftUI projects with runtime localization support, featuring automatic version management and per-key change tracking.
+
+## What's New in v2.0
+
+- 🚀 **Auto-managed versioning** - No manual version specification needed
+- 📌 **Per-key version tracking** - Track changes at individual string level
+- 🗂️ **Simplified workflow** - `base.json` + target language files
+- 🌍 **Multi-language support** - Process multiple languages with `--all` flag
+- 🔄 **Smart synchronization** - Intelligent version-based merge logic
+- 📊 **Terminal-only diff** - Quick preview of translation status
+- 🔧 **Migration tool** - Convert v1 files to v2 format
 
 ## Features
 
 - **Extract** strings from Swift source files using SwiftSyntax
-- **Merge** new extracted strings with existing translations
+- **Merge** translations with intelligent version-based synchronization
 - **Validate** translation files for completeness and correctness
-- **Generate Diff** between translation versions
+- **Preview Diff** between base and target languages (terminal output)
+- **Migrate** from v1 to v2 format with automatic backup
 - **Interactive Menu** for easy access to all commands
 - Supports both `String.localize()` and `Text.localized()` patterns
 
@@ -24,8 +35,6 @@ The executable will be located at `.build/release/LocalizeKit`.
 
 ### Optional: Install to PATH
 
-You can copy it to a location in your PATH for easier access:
-
 ```bash
 # Copy to /usr/local/bin (requires sudo)
 sudo cp .build/release/LocalizeKit /usr/local/bin/localizekit
@@ -40,14 +49,58 @@ cp .build/release/LocalizeKit ~/bin/localizekit
 
 ```bash
 localizekit --version
-# Output: 1.0.0
+# Output: 2.0.0
+```
+
+## Quick Start
+
+### 1. Extract Strings (First Time)
+
+```bash
+localizekit extract --project-path .
+```
+
+This creates `Translations/base.json` with version 1 and all extracted strings.
+
+### 2. Create Target Languages
+
+```bash
+# Create Arabic translation
+localizekit merge --language ar
+
+# Create multiple languages
+localizekit merge --language bn --language es
+```
+
+### 3. Translate the JSON Files
+
+Edit `ar.json`, `bn.json`, etc. and translate the values from English to target languages.
+
+### 4. After Code Changes
+
+```bash
+# Extract again (version auto-increments to 2)
+localizekit extract --project-path .
+
+# Sync all languages with base
+localizekit merge --all
+```
+
+### 5. Validate & Preview
+
+```bash
+# Validate all languages
+localizekit validate --all
+
+# Preview what needs translation
+localizekit diff --language ar
 ```
 
 ## Usage
 
 ### Interactive Menu (Default)
 
-Simply run the tool without arguments to access the interactive menu:
+Simply run the tool without arguments:
 
 ```bash
 localizekit
@@ -59,40 +112,46 @@ localizekit menu
 
 #### Extract Strings
 
-Extract localization strings from your project's Swift files:
+Extract localization strings and update `base.json`:
 
 ```bash
-localizekit extract \
-  --project-path /path/to/project \
-  --output-path ./Translations \
-  --language en \
-  --version 1.0.0
+# First extraction (creates base.json with version 1)
+localizekit extract --project-path .
+
+# Incremental extraction (auto-increments version)
+localizekit extract --project-path . --ignore-comment-changes
 ```
 
 **Options:**
 - `--project-path`: Root directory of the project (default: current directory)
-- `--output-path`: Output directory for generated JSON files (default: ./Translations)
-- `--language`: Language code for the extracted strings (default: en)
-- `--version`: Version string for the translation file (required)
+- `--ignore-comment-changes`: Skip interactive prompts for comment changes
 - `--verbose`: Enable verbose output
 
-**Example Output:**
+**What it does:**
+- **First time**: Creates `Translations/base.json` with version 1
+- **Subsequent runs**: Increments version and tracks changes per-key
+  - **New keys**: Added with current version
+  - **Modified keys**: Version updated, marked as modified
+  - **Removed keys**: Deleted from base.json
+  - **Comment changes**: Interactive prompt (unless `--ignore-comment-changes`)
 
+**Example base.json:**
 ```json
 {
-  "version": "1.0.0",
+  "version": 2,
   "language": "en",
-  "generatedAt": "2025-11-27T10:30:00Z",
+  "generatedAt": "2025-11-28T10:30:00Z",
   "modules": {
     "Store": {
       "store_welcome": {
         "value": "Welcome, **%@**!",
         "type": "interpolation",
-        "comment": "Welcome message with user's full name",
+        "comment": "Welcome message with user name",
+        "version": 2,
         "metadata": {
-          "addedInVersion": "1.0.0",
-          "status": "new",
-          "translationStatus": "untranslated"
+          "addedInVersion": 1,
+          "lastModifiedVersion": 2,
+          "status": "modified"
         }
       }
     }
@@ -102,101 +161,167 @@ localizekit extract \
 
 #### Merge Translations
 
-Merge newly extracted strings with existing translations:
+Sync target language files with `base.json`:
 
 ```bash
-localizekit merge \
-  --new-file ./Translations/en-new.json \
-  --existing-file ./Translations/bn.json \
-  --output-path ./Translations/bn-merged.json \
-  --keep-removed
+# Single language
+localizekit merge --language ar
+
+# Multiple languages
+localizekit merge --language ar --language bn --language es
+
+# All languages in Translations/
+localizekit merge --all
 ```
 
 **Options:**
-- `--new-file`: Path to the new extracted translation file
-- `--existing-file`: Path to the existing translation file
-- `--output-path`: Output path for the merged translation file
-- `--keep-removed`: Keep strings that were removed from source code (optional)
+- `--language`: Target language code(s) (repeatable)
+- `--all`: Merge all available language files
+- `--project-path`: Root directory (default: current directory)
 - `--verbose`: Enable verbose output
 
-**Merge Behavior:**
-- **New keys**: Added with `status: new` and `translationStatus: untranslated`
-- **Modified keys**: Keeps existing translation but marks as `needsReview`
-- **Unchanged keys**: Preserved as-is
-- **Removed keys**: Either kept with `status: removed` or discarded (based on `--keep-removed`)
+**Version Comparison Logic:**
+- Replaces target values when `base_key.version > target_file.version`
+- Preserves translations for up-to-date keys
+- Adds new keys from base
+- Removes keys not in base
+- Syncs file version with base
+
+**Example target file (ar.json):**
+```json
+{
+  "version": 2,
+  "language": "ar",
+  "generatedAt": "2025-11-28T10:31:00Z",
+  "modules": {
+    "Store": {
+      "store_welcome": {
+        "value": "!**%@** ،مرحباً",
+        "type": "interpolation"
+      }
+    }
+  }
+}
+```
+
+Note: Target files are simplified (no comments or metadata).
 
 #### Validate Translations
 
-Validate translation files for errors and completeness:
+Validate translation files against `base.json`:
 
 ```bash
-localizekit validate \
-  --file-path ./Translations/bn.json \
-  --base-path ./Translations/en.json \
-  --check-missing \
-  --check-format \
-  --check-plurals
+# Single language
+localizekit validate --language ar
+
+# Multiple languages
+localizekit validate --language ar --language bn
+
+# All languages including base
+localizekit validate --all
 ```
 
 **Options:**
-- `--file-path`: Path to the translation file to validate
-- `--base-path`: Base language file for comparison (optional)
+- `--language`: Language code(s) to validate (repeatable)
+- `--all`: Validate all files including base.json
+- `--project-path`: Root directory (default: current directory)
 - `--check-missing`: Check for missing translations (default: true)
 - `--check-format`: Check for format string mismatches (default: true)
 - `--check-plurals`: Check for plural forms (default: true)
 - `--verbose`: Enable verbose output
 
 **Validation Checks:**
-1. Missing translations (empty values)
-2. Format specifier count and type matching
-3. Required plural forms for language
-4. Missing keys compared to base language
-5. Translation status tracking
+1. **Base file**:
+   - Version consistency (key version ≤ file version)
+   - Format specifiers match type
+   - Plural forms completeness
 
-#### Generate Diff
+2. **Target files**:
+   - Missing keys (in base, not in target)
+   - Extra keys (in target, not in base)
+   - Untranslated strings (still in English)
+   - Format specifier mismatches
+   - Plural form mismatches
+   - Version status (warns if behind base)
 
-Generate a diff between two translation versions:
+#### Preview Diff
+
+Show translation differences in terminal:
 
 ```bash
-localizekit diff \
-  --old-file ./Translations/v1.0.0/en.json \
-  --new-file ./Translations/v1.1.0/en.json \
-  --output-path ./Diffs/v1.0.0-to-v1.1.0.json \
-  --format json
+# Single language
+localizekit diff --language ar
+
+# Multiple languages
+localizekit diff --language ar --language bn
+
+# All languages
+localizekit diff --all
 ```
 
 **Options:**
-- `--old-file`: Path to the old translation file
-- `--new-file`: Path to the new translation file
-- `--output-path`: Output path for the diff file
-- `--format`: Output format (`json` or `markdown`)
+- `--language`: Language code(s) to compare (repeatable)
+- `--all`: Compare all languages with base
+- `--project-path`: Root directory (default: current directory)
+- `--verbose`: Show detailed values
+
+**Output Format:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Diff: ar.json ↔ base.json
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Summary:
+  🆕 New keys:      3
+  🔄 Modified:      2
+  ❌ Removed:       1
+  ✅ Up-to-date:    42
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🆕 NEW KEYS (not in ar.json):
+
+  Module: Store
+    • store_checkout_title
+      Base v2: "Checkout"
+
+🔄 MODIFIED (base changed, needs re-translation):
+
+  Module: Store
+    • store_welcome
+      Base v3: "Welcome, **%@**!"
+      ar v2:   "!**%@** ،مرحباً" ⚠️ OUTDATED
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Recommendation:
+   Run: merge --language ar
+   This will add 3 new keys and update 2 modified keys.
+```
+
+#### Migrate from v1 to v2
+
+Convert old format translation files to v2:
+
+```bash
+localizekit migrate --project-path . --base-language en
+```
+
+**Options:**
+- `--project-path`: Root directory (default: current directory)
+- `--base-language`: Base language file to convert (default: en)
+- `--backup`: Create backup before migration (default: true)
 - `--verbose`: Enable verbose output
 
-**Diff Output (JSON):**
-```json
-{
-  "version": "1.1.0",
-  "previousVersion": "1.0.0",
-  "generatedAt": "2025-11-27T10:30:00Z",
-  "summary": {
-    "new": 5,
-    "modified": 3,
-    "removed": 1,
-    "unchanged": 42
-  },
-  "changesByModule": {
-    "Store": {
-      "new": {...},
-      "modified": {...},
-      "removed": {...}
-    }
-  }
-}
-```
+**What it does:**
+1. Creates `Translations.backup/` (if `--backup`)
+2. Converts `en.json` → `base.json` (v2 format with integer versions)
+3. Simplifies all target files (removes metadata and comments)
+4. Syncs all file versions with base
 
 ## Project Structure
 
-The CLI tool expects your project to follow this structure:
+The CLI expects this structure:
 
 ```
 YourProject/
@@ -209,14 +334,15 @@ YourProject/
 │   │       └── *.swift
 │   └── ...
 └── Translations/
-    ├── en.json
-    ├── bn.json
-    └── ar.json
+    ├── base.json     # Base language (English) with metadata
+    ├── ar.json       # Arabic (simplified)
+    ├── bn.json       # Bengali (simplified)
+    └── es.json       # Spanish (simplified)
 ```
 
 ## String Extraction
 
-The tool automatically detects and extracts localization strings from your Swift code. It supports **two patterns**:
+The tool automatically detects and extracts localization strings from Swift code. It supports **two patterns**:
 
 ### Pattern 1: String Extension (`.localize()`)
 
@@ -228,10 +354,10 @@ The tool automatically detects and extracts localization strings from your Swift
 )
 
 // With interpolation
-"store_items_count".localize(
-    default: "You have %d items",
-    comment: "Items count message",
-    with: itemCount
+"store_greeting".localize(
+    default: "Hello, %@!",
+    comment: "Greeting with name",
+    with: userName
 )
 
 // With plurals
@@ -260,8 +386,8 @@ Text.localized(
 Text.localized(
     "store_greeting",
     default: "Welcome, **%@**!",
-    comment: "Welcome message with user's full name on home screen",
-    with: user.name.getFullName()
+    comment: "Welcome message with user name",
+    with: user.name
 )
 
 // With plurals
@@ -277,30 +403,128 @@ Text.localized(
 )
 ```
 
-**Note:** The CLI automatically detects both patterns during extraction. You can use whichever pattern fits your use case better.
+**Note:** Both patterns are automatically detected during extraction.
+
+## Workflow Examples
+
+### Initial Setup
+
+```bash
+# 1. Extract strings to create base.json
+localizekit extract
+
+# 2. Create target languages
+localizekit merge --language ar --language bn
+
+# 3. Translate the JSON files manually
+# Edit ar.json and bn.json
+
+# 4. Validate
+localizekit validate --all
+```
+
+### After Adding New Features
+
+```bash
+# 1. Extract again (version auto-increments)
+localizekit extract
+
+# 2. Preview what changed
+localizekit diff --all
+
+# 3. Sync all languages (adds new keys, marks modified ones)
+localizekit merge --all
+
+# 4. Translate new/modified strings in target files
+
+# 5. Validate
+localizekit validate --all
+```
+
+### Migration from v1
+
+```bash
+# 1. Backup manually (optional, CLI also creates backup)
+cp -r Translations Translations-v1-backup
+
+# 2. Run migration
+localizekit migrate
+
+# 3. Verify
+localizekit validate --all
+
+# 4. Remove old en.json if everything looks good
+rm Translations/en.json
+```
 
 ## Translation File Format
 
-Translation files follow this JSON structure:
+### Base File (base.json)
+
+Contains metadata and per-key versioning:
 
 ```json
 {
-  "version": "1.0.0",
+  "version": 2,
   "language": "en",
-  "generatedAt": "2025-11-27T10:30:00Z",
+  "generatedAt": "2025-11-28T10:30:00Z",
   "modules": {
-    "ModuleName": {
-      "translation_key": {
-        "value": "Translated text",
+    "Store": {
+      "store_welcome": {
+        "value": "Welcome!",
         "type": "simple",
-        "comment": "Translator comment",
+        "comment": "Welcome message",
+        "version": 1,
         "metadata": {
-          "addedInVersion": "1.0.0",
-          "lastModifiedVersion": null,
-          "status": "new",
-          "translationStatus": "untranslated",
-          "changeReason": null
+          "addedInVersion": 1,
+          "status": "unchanged"
         }
+      },
+      "store_items": {
+        "value": {
+          "zero": "No items",
+          "one": "1 item",
+          "other": "%d items"
+        },
+        "type": "plural",
+        "comment": "Items count",
+        "version": 2,
+        "metadata": {
+          "addedInVersion": 1,
+          "lastModifiedVersion": 2,
+          "status": "modified"
+        }
+      }
+    }
+  }
+}
+```
+
+### Target File (ar.json, bn.json, etc.)
+
+Simplified format without metadata:
+
+```json
+{
+  "version": 2,
+  "language": "ar",
+  "generatedAt": "2025-11-28T10:31:00Z",
+  "modules": {
+    "Store": {
+      "store_welcome": {
+        "value": "!مرحباً",
+        "type": "simple"
+      },
+      "store_items": {
+        "value": {
+          "zero": "لا توجد عناصر",
+          "one": "عنصر واحد",
+          "two": "عنصران",
+          "few": "%d عناصر",
+          "many": "%d عنصرًا",
+          "other": "%d عنصر"
+        },
+        "type": "plural"
       }
     }
   }
@@ -329,151 +553,107 @@ Translation files follow this JSON structure:
 - `interpolation`: Text with format specifiers (%@, %d, etc.)
 - `plural`: Text with plural forms
 
-### Translation Status
+### Translation Status (base.json only)
 
-- `untranslated`: Not yet translated (default for new keys)
-- `needs_review`: Translation needs review (after source text changed)
-- `validated`: Reviewed and approved
+- `new`: Newly added key
+- `modified`: Key value changed
+- `unchanged`: Key hasn't changed
 
-## Workflow
+## Version Management
 
-### 1. Initial Extraction
+### How Versioning Works
 
-```bash
-# Extract English strings (base language)
-localizekit extract --version 1.0.0 --language en
+1. **File Version**: Integer incremented on each extract
+2. **Key Version**: Tracks when each key was last modified
+3. **Version Comparison**: `base_key.version > target_file.version`
+
+### Example Scenario
+
 ```
+base.json v3:
+  store_welcome: version 2 (modified in v2)
+  store_checkout: version 3 (new in v3)
 
-### 2. Create Translations
+ar.json v2:
+  store_welcome: "مرحباً" (translated at v2)
 
-Copy `en.json` to `bn.json`, `ar.json`, etc. and translate the values.
-
-### 3. After Code Changes
-
-```bash
-# Extract new strings
-localizekit extract --version 1.1.0 --language en
-
-# Merge with existing translations
-localizekit merge \
-  --new-file ./Translations/en.json \
-  --existing-file ./Translations/bn.json \
-  --output-path ./Translations/bn.json
-```
-
-### 4. Validate Translations
-
-```bash
-# Validate Bengali translation against English base
-localizekit validate \
-  --file-path ./Translations/bn.json \
-  --base-path ./Translations/en.json
-```
-
-### 5. Generate Change Report
-
-```bash
-# Generate markdown diff for translators
-localizekit diff \
-  --old-file ./old-versions/en-1.0.0.json \
-  --new-file ./Translations/en.json \
-  --output-path ./changes.md \
-  --format markdown
+After merge --language ar:
+  - store_welcome: KEPT (v2 ≤ v2, translation is up-to-date)
+  - store_checkout: ADDED (new key, uses English)
+  - ar.json version updated to 3
 ```
 
 ## Tips
 
-1. **Version Control**: Commit translation files to git to track changes
-2. **Base Language**: Always use English as the base language for extraction
-3. **Comments**: Add meaningful comments for translators to understand context
-4. **Format Specifiers**: Use proper format specifiers (%@, %d) for dynamic content
-5. **Plural Forms**: Always provide all required plural forms for target languages
-6. **Validation**: Run validation before committing translation changes
-7. **Diff Reports**: Generate markdown diffs to help translators see what changed
+1. **Always use base.json**: Never manually edit `base.json`, always use `extract` command
+2. **Version Control**: Commit all JSON files to git
+3. **Comments**: Add meaningful comments for translators
+4. **Format Specifiers**: Ensure %@, %d match between languages
+5. **Plural Forms**: Provide all required forms for each language (CLDR rules)
+6. **Validation**: Run `validate --all` before committing
+7. **Diff Preview**: Use `diff` to see what needs translation
+8. **Batch Operations**: Use `--all` flag for multi-language operations
 
 ## Troubleshooting
 
 ### No strings found
 
-**Problem:** The CLI reports no localization strings found in the project.
+**Problem:** CLI reports no localization strings found.
 
 **Solutions:**
-- Make sure you're using either `.localize()` or `Text.localized()` patterns
-- Check that `--project-path` points to the correct project root
-- Verify that `Targets/` directory exists in your project
-- Ensure your Swift files are in `Targets/ModuleName/Sources/` directories
-- Try running with `--verbose` flag to see which files are being processed
-
-**Example:**
-```bash
-# Run with verbose output to debug
-.build/release/LocalizeKit extract \
-  --project-path /path/to/project \
-  --version 1.0.0 \
-  --language en \
-  --verbose
-```
+- Use `.localize()` or `Text.localized()` patterns
+- Check `--project-path` points to project root
+- Ensure `Targets/*/Sources/` structure exists
+- Run with `--verbose` to see processed files
 
 ### Format validation errors
 
-**Problem:** Format specifier validation fails when checking translations.
+**Problem:** Format specifier validation fails.
 
 **Solutions:**
-- Ensure format specifiers match between languages
-- Use `%@` for strings, `%d` for integers, `%f` for floats
-- Check that the order and count of specifiers is consistent
-- Markdown formatting (like `**text**`) is NOT a format specifier
-
-**Example:**
-```swift
-// Correct - both have %@
-default: "Welcome, **%@**!"
-translation: "স্বাগতম, **%@**!"
-
-// Incorrect - missing %d
-default: "You have %d items"
-translation: "You have items"  // Missing %d
-```
+- Match specifiers between languages: `%@` for strings, `%d` for integers
+- Check specifier count and order
+- Note: Markdown `**text**` is NOT a format specifier
 
 ### Plural validation errors
 
 **Problem:** Plural form validation fails.
 
 **Solutions:**
-- Different languages require different plural forms (CLDR rules)
-- **Arabic** requires 6 forms: zero, one, two, few, many, other
-- **English** requires 2 forms: one, other
-- **Bengali** requires 2 forms: one, other
-- Check CLDR plural rules for your target language
+- Different languages need different forms (CLDR rules):
+  - **English, Bengali**: one, other
+  - **Arabic**: zero, one, two, few, many, other
+- Provide all required forms for target language
 
-**Required forms by language:**
-```
-en, bn:      one, other
-ar:          zero, one, two, few, many, other
-```
+### Migration issues
+
+**Problem:** Migration from v1 fails.
+
+**Solutions:**
+- Ensure v1 files use correct JSON structure
+- Check `--base-language` matches your base file
+- Verify backup creation succeeded
+- Check migration output for errors
 
 ### Build errors
 
 **Problem:** `swift build` fails with sandbox errors.
 
-**Solution:** Use the `--disable-sandbox` flag:
+**Solution:** Use `--disable-sandbox` flag:
 ```bash
 swift build -c release --disable-sandbox
 ```
 
-### Text.localized() not detected
+## Testing
 
-**Problem:** Strings using `Text.localized()` are not being extracted.
+Run the comprehensive test suite:
 
-**Solution:** This was fixed in the latest version. Make sure you're using the latest build:
 ```bash
 cd Tools/LocalizeKit
-swift build -c release --disable-sandbox
+bash test_localizekit.sh
 ```
 
-The CLI now supports both patterns:
-- ✅ `"key".localize(default: "value", comment: "...")`
-- ✅ `Text.localized("key", default: "value", comment: "...")`
+See [TESTING.md](TESTING.md) for details on the 16 automated tests.
 
 ## License
 

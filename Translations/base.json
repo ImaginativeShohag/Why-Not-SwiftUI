@@ -1,0 +1,489 @@
+{
+  "generatedAt" : "2025-12-03T22:16:45Z",
+  "language" : "en",
+  "modules" : {
+    "Store" : {
+      "store_address" : {
+        "comment" : "Address label",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Address",
+        "version" : 1
+      },
+      "store_app_name" : {
+        "comment" : "Navigation title",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Store Overflow",
+        "version" : 1
+      },
+      "store_cart_checkout" : {
+        "comment" : "Button to proceed to checkout",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Check Out",
+        "version" : 1
+      },
+      "store_cart_empty_description" : {
+        "comment" : "Description for empty cart state",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Add some products to continue.",
+        "version" : 1
+      },
+      "store_cart_empty_title" : {
+        "comment" : "Title shown when cart has no items",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Your Cart is Empty.",
+        "version" : 1
+      },
+      "store_cart_menu_orders" : {
+        "comment" : "Menu item to view orders",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Orders",
+        "version" : 1
+      },
+      "store_cart_title" : {
+        "comment" : "Cart screen title",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Cart",
+        "version" : 1
+      },
+      "store_cart_total" : {
+        "comment" : "Label for total price in cart",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Total",
+        "version" : 1
+      },
+      "store_categories_title" : {
+        "comment" : "Categories screen title",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Categories",
+        "version" : 1
+      },
+      "store_checkout_address_placeholder" : {
+        "comment" : "Address TextField placeholder",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Address...",
+        "version" : 1
+      },
+      "store_checkout_completed_description" : {
+        "comment" : "Description for completed checkout",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Add some products to continue again.",
+        "version" : 1
+      },
+      "store_checkout_completed_title" : {
+        "comment" : "Title shown when checkout is complete",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Checkout is completed.",
+        "version" : 1
+      },
+      "store_checkout_name_placeholder" : {
+        "comment" : "Name TextField placeholder",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Your name...",
+        "version" : 1
+      },
+      "store_checkout_phone_placeholder" : {
+        "comment" : "Phone TextField placeholder",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Phone number...",
+        "version" : 1
+      },
+      "store_checkout_place_order" : {
+        "comment" : "Button to place order",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Place Order",
+        "version" : 1
+      },
+      "store_checkout_placing_order" : {
+        "comment" : "Button text while placing order",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Placing Order...",
+        "version" : 1
+      },
+      "store_checkout_shipping_address" : {
+        "comment" : "Label for shipping address section",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Shipping Address",
+        "version" : 1
+      },
+      "store_checkout_success_title" : {
+        "comment" : "Success alert title",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Order placed successfully!",
+        "version" : 1
+      },
+      "store_checkout_title" : {
+        "comment" : "Checkout screen title",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Checkout",
+        "version" : 1
+      },
+      "store_checkout_total" : {
+        "comment" : "Label for total price in checkout",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Total",
+        "version" : 1
+      },
+      "store_details" : {
+        "comment" : "Profile details section header",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Details",
+        "version" : 1
+      },
+      "store_done" : {
+        "comment" : "Done button text",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Done",
+        "version" : 1
+      },
+      "store_email" : {
+        "comment" : "Email address label",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Email",
+        "version" : 1
+      },
+      "store_language_changing" : {
+        "comment" : "Progress message while changing language",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Changing language...",
+        "version" : 1
+      },
+      "store_language_loading" : {
+        "comment" : "Loading text while fetching languages",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Loading languages...",
+        "version" : 1
+      },
+      "store_language_select_footer" : {
+        "comment" : "Footer explaining language selection",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Choose your preferred language for the app. The interface will be translated immediately.",
+        "version" : 1
+      },
+      "store_language_select_header" : {
+        "comment" : "Header for language selection list",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Select Language",
+        "version" : 1
+      },
+      "store_language_settings" : {
+        "comment" : "Language settings button text",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Language Settings",
+        "version" : 1
+      },
+      "store_language_title" : {
+        "comment" : "Language settings screen title",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Language",
+        "version" : 1
+      },
+      "store_login" : {
+        "comment" : "Login button text",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Login",
+        "version" : 1
+      },
+      "store_name" : {
+        "comment" : "User name label",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Name",
+        "version" : 1
+      },
+      "store_ok" : {
+        "comment" : "OK button text",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Ok",
+        "version" : 1
+      },
+      "store_orders" : {
+        "comment" : "Orders button text",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Orders",
+        "version" : 1
+      },
+      "store_orders_title" : {
+        "comment" : "Orders screen title",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Orders",
+        "version" : 1
+      },
+      "store_password" : {
+        "comment" : "Password field placeholder",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Password",
+        "version" : 1
+      },
+      "store_phone" : {
+        "comment" : "Phone number label",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Phone",
+        "version" : 1
+      },
+      "store_product_details_title" : {
+        "comment" : "Product details screen title",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Product Details",
+        "version" : 1
+      },
+      "store_products_category_title" : {
+        "comment" : "Title showing the current category name",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "interpolation",
+        "value" : "Category: %@",
+        "version" : 1
+      },
+      "store_profile" : {
+        "comment" : "Profile screen title",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Profile",
+        "version" : 1
+      },
+      "store_retry" : {
+        "comment" : "Retry button text",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Retry",
+        "version" : 1
+      },
+      "store_sign_out" : {
+        "comment" : "Sign out confirmation button",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Sign Out",
+        "version" : 1
+      },
+      "store_sign_out_alert_title" : {
+        "comment" : "Alert title for sign out confirmation",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Sign out from Store?",
+        "version" : 1
+      },
+      "store_tab_bag" : {
+        "comment" : "Tab bar label for shopping bag",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Bag",
+        "version" : 1
+      },
+      "store_tab_categories" : {
+        "comment" : "Tab bar label for categories",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Categories",
+        "version" : 1
+      },
+      "store_tab_home" : {
+        "comment" : "Tab bar label for home",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Home",
+        "version" : 1
+      },
+      "store_username" : {
+        "comment" : "Username field placeholder",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Username",
+        "version" : 1
+      },
+      "store_welcome" : {
+        "comment" : "Welcome message with user's full name on home screen",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "interpolation",
+        "value" : "Welcome, **%@**!",
+        "version" : 1
+      },
+      "store_welcome_to" : {
+        "comment" : "Login screen welcome text",
+        "metadata" : {
+          "addedInVersion" : 1,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Welcome to",
+        "version" : 1
+      }
+    }
+  },
+  "version" : 1
+}

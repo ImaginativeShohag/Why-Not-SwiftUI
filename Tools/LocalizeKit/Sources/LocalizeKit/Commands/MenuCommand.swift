@@ -16,24 +16,25 @@ struct MenuCommand: AsyncParsableCommand {
 
         ╔═══════════════════════════════════════════════════════╗
         ║         LocalizeKit - Translation Manager            ║
-        ║                     v1.0.0                           ║
+        ║                     v2.0.0                           ║
         ╚═══════════════════════════════════════════════════════╝
 
         Please select an option:
 
-        1. Extract strings from project
-        2. Merge extracted strings with existing translations
-        3. Validate translation files
-        4. Generate diff between versions
-        5. Exit
+        1. Extract strings from project → Updates base.json
+        2. Merge translations → Sync target languages with base
+        3. Validate translations → Check for issues
+        4. Preview diff → See what needs translation
+        5. Migrate from v1 to v2 → Convert old format
+        6. Exit
 
         """)
 
-        print("Enter your choice (1-5): ", terminator: "")
+        print("Enter your choice (1-6): ", terminator: "")
 
         guard let input = readLine(),
               let choice = Int(input) else {
-            print("❌ Invalid input. Please enter a number between 1 and 5.")
+            print("❌ Invalid input. Please enter a number between 1 and 6.")
             throw ExitCode.failure
         }
 
@@ -47,10 +48,12 @@ struct MenuCommand: AsyncParsableCommand {
         case 4:
             try await runDiffWizard()
         case 5:
+            try await runMigrateWizard()
+        case 6:
             print("👋 Goodbye!")
             throw ExitCode.success
         default:
-            print("❌ Invalid choice. Please select a number between 1 and 5.")
+            print("❌ Invalid choice. Please select a number between 1 and 6.")
             throw ExitCode.failure
         }
     }
@@ -64,25 +67,13 @@ struct MenuCommand: AsyncParsableCommand {
         let projectPath = readLine() ?? FileManager.default.currentDirectoryPath
         let finalProjectPath = projectPath.isEmpty ? FileManager.default.currentDirectoryPath : projectPath
 
-        print("Enter output path (press Enter for ./Translations): ", terminator: "")
-        let outputPath = readLine() ?? "./Translations"
-        let finalOutputPath = outputPath.isEmpty ? "./Translations" : outputPath
-
-        print("Enter language code (press Enter for 'en'): ", terminator: "")
-        let language = readLine() ?? "en"
-        let finalLanguage = language.isEmpty ? "en" : language
-
-        print("Enter version (required): ", terminator: "")
-        guard let version = readLine(), !version.isEmpty else {
-            print("❌ Version is required.")
-            throw ExitCode.failure
-        }
+        print("Skip comment change prompts? (y/N): ", terminator: "")
+        let skipPrompt = readLine()?.lowercased() ?? "n"
+        let ignoreCommentChanges = (skipPrompt == "y" || skipPrompt == "yes")
 
         var command = ExtractCommand()
         command.projectPath = finalProjectPath
-        command.outputPath = finalOutputPath
-        command.language = finalLanguage
-        command.version = version
+        command.ignoreCommentChanges = ignoreCommentChanges
         command.verbose = false
 
         try await command.run()
@@ -91,33 +82,30 @@ struct MenuCommand: AsyncParsableCommand {
     private func runMergeWizard() async throws {
         print("\n🔀 Merge Translations Wizard\n")
 
-        print("Enter path to new extracted file: ", terminator: "")
-        guard let newFile = readLine(), !newFile.isEmpty else {
-            print("❌ New file path is required.")
-            throw ExitCode.failure
-        }
+        print("Enter project path (press Enter for current directory): ", terminator: "")
+        let projectPath = readLine() ?? FileManager.default.currentDirectoryPath
+        let finalProjectPath = projectPath.isEmpty ? FileManager.default.currentDirectoryPath : projectPath
 
-        print("Enter path to existing translation file: ", terminator: "")
-        guard let existingFile = readLine(), !existingFile.isEmpty else {
-            print("❌ Existing file path is required.")
-            throw ExitCode.failure
-        }
+        print("Merge all languages? (y/N): ", terminator: "")
+        let mergeAll = readLine()?.lowercased() ?? "n"
 
-        print("Enter output path: ", terminator: "")
-        guard let outputPath = readLine(), !outputPath.isEmpty else {
-            print("❌ Output path is required.")
-            throw ExitCode.failure
+        var languages: [String] = []
+        if mergeAll != "y" && mergeAll != "yes" {
+            print("Enter language codes (comma-separated, e.g., ar,bn,es): ", terminator: "")
+            guard let langInput = readLine(), !langInput.isEmpty else {
+                print("❌ At least one language is required, or use --all flag.")
+                throw ExitCode.failure
+            }
+            languages = langInput.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
         }
-
-        print("Keep removed strings? (y/n, press Enter for 'n'): ", terminator: "")
-        let keepRemovedInput = readLine() ?? "n"
-        let keepRemoved = keepRemovedInput.lowercased() == "y"
 
         var command = MergeCommand()
-        command.newFile = newFile
-        command.existingFile = existingFile
-        command.outputPath = outputPath
-        command.keepRemoved = keepRemoved
+        command.projectPath = finalProjectPath
+        if mergeAll == "y" || mergeAll == "yes" {
+            command.all = true
+        } else {
+            command.language = languages
+        }
         command.verbose = false
 
         try await command.run()
@@ -126,19 +114,30 @@ struct MenuCommand: AsyncParsableCommand {
     private func runValidateWizard() async throws {
         print("\n✅ Validate Translation File Wizard\n")
 
-        print("Enter path to translation file: ", terminator: "")
-        guard let filePath = readLine(), !filePath.isEmpty else {
-            print("❌ File path is required.")
-            throw ExitCode.failure
+        print("Enter project path (press Enter for current directory): ", terminator: "")
+        let projectPath = readLine() ?? FileManager.default.currentDirectoryPath
+        let finalProjectPath = projectPath.isEmpty ? FileManager.default.currentDirectoryPath : projectPath
+
+        print("Validate all languages? (y/N): ", terminator: "")
+        let validateAll = readLine()?.lowercased() ?? "n"
+
+        var languages: [String] = []
+        if validateAll != "y" && validateAll != "yes" {
+            print("Enter language codes (comma-separated, e.g., ar,bn,es): ", terminator: "")
+            guard let langInput = readLine(), !langInput.isEmpty else {
+                print("❌ At least one language is required, or use --all flag.")
+                throw ExitCode.failure
+            }
+            languages = langInput.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
         }
 
-        print("Enter base file path for comparison (press Enter to skip): ", terminator: "")
-        let basePathInput = readLine()
-        let basePath = basePathInput?.isEmpty == false ? basePathInput : nil
-
         var command = ValidateCommand()
-        command.filePath = filePath
-        command.basePath = basePath
+        command.projectPath = finalProjectPath
+        if validateAll == "y" || validateAll == "yes" {
+            command.all = true
+        } else {
+            command.language = languages
+        }
         command.checkMissing = true
         command.checkFormat = true
         command.checkPlurals = true
@@ -148,35 +147,56 @@ struct MenuCommand: AsyncParsableCommand {
     }
 
     private func runDiffWizard() async throws {
-        print("\n📊 Generate Diff Wizard\n")
+        print("\n📊 Preview Translation Diff Wizard\n")
 
-        print("Enter path to old translation file: ", terminator: "")
-        guard let oldFile = readLine(), !oldFile.isEmpty else {
-            print("❌ Old file path is required.")
-            throw ExitCode.failure
+        print("Enter project path (press Enter for current directory): ", terminator: "")
+        let projectPath = readLine() ?? FileManager.default.currentDirectoryPath
+        let finalProjectPath = projectPath.isEmpty ? FileManager.default.currentDirectoryPath : projectPath
+
+        print("Compare all languages? (y/N): ", terminator: "")
+        let compareAll = readLine()?.lowercased() ?? "n"
+
+        var languages: [String] = []
+        if compareAll != "y" && compareAll != "yes" {
+            print("Enter language codes (comma-separated, e.g., ar,bn,es): ", terminator: "")
+            guard let langInput = readLine(), !langInput.isEmpty else {
+                print("❌ At least one language is required, or use --all flag.")
+                throw ExitCode.failure
+            }
+            languages = langInput.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
         }
-
-        print("Enter path to new translation file: ", terminator: "")
-        guard let newFile = readLine(), !newFile.isEmpty else {
-            print("❌ New file path is required.")
-            throw ExitCode.failure
-        }
-
-        print("Enter output path: ", terminator: "")
-        guard let outputPath = readLine(), !outputPath.isEmpty else {
-            print("❌ Output path is required.")
-            throw ExitCode.failure
-        }
-
-        print("Enter output format (json/markdown, press Enter for 'json'): ", terminator: "")
-        let formatInput = readLine() ?? "json"
-        let format = formatInput.isEmpty ? "json" : formatInput
 
         var command = DiffCommand()
-        command.oldFile = oldFile
-        command.newFile = newFile
-        command.outputPath = outputPath
-        command.format = format
+        command.projectPath = finalProjectPath
+        if compareAll == "y" || compareAll == "yes" {
+            command.all = true
+        } else {
+            command.language = languages
+        }
+        command.verbose = false
+
+        try await command.run()
+    }
+
+    private func runMigrateWizard() async throws {
+        print("\n🔄 Migrate from v1 to v2 Wizard\n")
+
+        print("Enter project path (press Enter for current directory): ", terminator: "")
+        let projectPath = readLine() ?? FileManager.default.currentDirectoryPath
+        let finalProjectPath = projectPath.isEmpty ? FileManager.default.currentDirectoryPath : projectPath
+
+        print("Enter base language file (press Enter for 'en'): ", terminator: "")
+        let baseLanguage = readLine() ?? "en"
+        let finalBaseLanguage = baseLanguage.isEmpty ? "en" : baseLanguage
+
+        print("Create backup before migration? (Y/n): ", terminator: "")
+        let createBackup = readLine()?.lowercased() ?? "y"
+        let backup = createBackup != "n" && createBackup != "no"
+
+        var command = MigrateCommand()
+        command.projectPath = finalProjectPath
+        command.baseLanguage = finalBaseLanguage
+        command.backup = backup
         command.verbose = false
 
         try await command.run()

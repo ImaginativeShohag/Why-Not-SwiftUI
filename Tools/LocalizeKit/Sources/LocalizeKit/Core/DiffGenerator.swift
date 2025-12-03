@@ -17,7 +17,7 @@ final class DiffGenerator {
         oldFile: TranslationFile,
         newFile: TranslationFile
     ) -> DiffFile {
-        var changesByModule: [String: ModuleChanges] = [:]
+        var changesByModule: [String: LegacyModuleChanges] = [:]
         var summary = DiffSummary(new: 0, modified: 0, removed: 0, unchanged: 0)
 
         // Get all modules from both files
@@ -63,7 +63,7 @@ final class DiffGenerator {
 
             // Only add module if there are changes
             if !newEntries.isEmpty || !modifiedEntries.isEmpty || !removedEntries.isEmpty {
-                changesByModule[moduleName] = ModuleChanges(
+                changesByModule[moduleName] = LegacyModuleChanges(
                     new: newEntries,
                     modified: modifiedEntries,
                     removed: removedEntries
