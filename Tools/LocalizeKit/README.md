@@ -592,14 +592,41 @@ swift build -c release --disable-sandbox
 
 ## Testing
 
-Run the comprehensive test suite:
+LocalizeKit includes a comprehensive unit test suite using Swift's XCTest framework.
+
+### Run Tests
 
 ```bash
+# From LocalizeKit directory
 cd Tools/LocalizeKit
-bash test_localizekit.sh
+swift test --disable-sandbox
+
+# Or from anywhere
+swift test --package-path Tools/LocalizeKit --disable-sandbox
 ```
 
-See [TESTING.md](TESTING.md) for details on the 16 automated tests.
+### Test Coverage
+
+The test suite covers:
+- Translation model encoding/decoding (simple, interpolation, plural)
+- Base and target translation file structures
+- JSON serialization and deserialization
+- Format specifier preservation
+- Plural forms with all CLDR categories
+- Translation status and type validation
+- Performance benchmarks
+
+### CI/CD Integration
+
+The Swift tests can easily be integrated into CI/CD pipelines:
+
+```bash
+# GitHub Actions example
+- name: Run LocalizeKit Tests
+  run: |
+    cd Tools/LocalizeKit
+    swift test --disable-sandbox
+```
 
 ## License
 

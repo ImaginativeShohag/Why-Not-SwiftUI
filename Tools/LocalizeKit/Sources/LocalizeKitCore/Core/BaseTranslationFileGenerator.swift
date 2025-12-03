@@ -5,17 +5,17 @@
 import Foundation
 
 /// Generates base.json files from extracted strings
-final class BaseTranslationFileGenerator {
+public final class BaseTranslationFileGenerator {
     private let version: Int
     private let verbose: Bool
 
-    init(version: Int, verbose: Bool = false) {
+    public init(version: Int, verbose: Bool = false) {
         self.version = version
         self.verbose = verbose
     }
 
     /// Generate a BaseTranslationFile from extracted strings
-    func generate(from extractedStrings: [ExtractedString]) -> BaseTranslationFile {
+    public func generate(from extractedStrings: [ExtractedString]) -> BaseTranslationFile {
         var moduleDict: [String: [String: BaseTranslationEntry]] = [:]
 
         // Group strings by module
@@ -58,7 +58,7 @@ final class BaseTranslationFileGenerator {
     }
 
     /// Save base translation file to disk
-    func save(_ translationFile: BaseTranslationFile, to outputPath: String) throws {
+    public func save(_ translationFile: BaseTranslationFile, to outputPath: String) throws {
         let fileManager = FileManager.default
 
         // Create directory if needed
@@ -85,7 +85,7 @@ final class BaseTranslationFileGenerator {
     }
 
     /// Load existing base file
-    func load(from path: String) throws -> BaseTranslationFile {
+    public func load(from path: String) throws -> BaseTranslationFile {
         let url = URL(fileURLWithPath: path)
         let data = try Data(contentsOf: url)
         let decoder = JSONDecoder()
@@ -93,7 +93,7 @@ final class BaseTranslationFileGenerator {
     }
 
     /// Generate summary statistics
-    func generateSummary(from translationFile: BaseTranslationFile) -> String {
+    public func generateSummary(from translationFile: BaseTranslationFile) -> String {
         var totalStrings = 0
         var simpleStrings = 0
         var pluralStrings = 0

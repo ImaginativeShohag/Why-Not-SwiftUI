@@ -5,15 +5,15 @@
 import Foundation
 
 /// Generates diff between two translation file versions
-final class DiffGenerator {
+public final class DiffGenerator {
     private let verbose: Bool
 
-    init(verbose: Bool = false) {
+    public init(verbose: Bool = false) {
         self.verbose = verbose
     }
 
     /// Generate diff between two translation files
-    func generateDiff(
+    public func generateDiff(
         oldFile: TranslationFile,
         newFile: TranslationFile
     ) -> DiffFile {
@@ -84,7 +84,7 @@ final class DiffGenerator {
     }
 
     /// Save diff file as JSON
-    func saveDiffJSON(_ diffFile: DiffFile, to path: String) throws {
+    public func saveDiffJSON(_ diffFile: DiffFile, to path: String) throws {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let data = try encoder.encode(diffFile)
@@ -96,7 +96,7 @@ final class DiffGenerator {
     }
 
     /// Save diff file as Markdown
-    func saveDiffMarkdown(_ diffFile: DiffFile, to path: String) throws {
+    public func saveDiffMarkdown(_ diffFile: DiffFile, to path: String) throws {
         var markdown = generateMarkdown(from: diffFile)
         try markdown.write(toFile: path, atomically: true, encoding: .utf8)
 
@@ -106,14 +106,14 @@ final class DiffGenerator {
     }
 
     /// Load translation file from disk
-    func loadTranslationFile(from path: String) throws -> TranslationFile {
+    public func loadTranslationFile(from path: String) throws -> TranslationFile {
         let url = URL(fileURLWithPath: path)
         let data = try Data(contentsOf: url)
         return try JSONDecoder().decode(TranslationFile.self, from: data)
     }
 
     /// Print diff summary
-    func printSummary(_ diffFile: DiffFile) {
+    public func printSummary(_ diffFile: DiffFile) {
         print("""
 
         📊 Diff Summary

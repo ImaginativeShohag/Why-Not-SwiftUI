@@ -5,19 +5,19 @@
 import Foundation
 
 /// Generates translation JSON files from extracted strings
-final class TranslationFileGenerator {
+public final class TranslationFileGenerator {
     private let version: String
     private let language: String
     private let verbose: Bool
 
-    init(version: String, language: String, verbose: Bool = false) {
+    public init(version: String, language: String, verbose: Bool = false) {
         self.version = version
         self.language = language
         self.verbose = verbose
     }
 
     /// Generate a TranslationFile from extracted strings
-    func generate(from extractedStrings: [ExtractedString]) -> TranslationFile {
+    public func generate(from extractedStrings: [ExtractedString]) -> TranslationFile {
         var moduleDict: [String: [String: TranslationEntry]] = [:]
 
         // Group strings by module
@@ -62,7 +62,7 @@ final class TranslationFileGenerator {
     }
 
     /// Save translation file to disk
-    func save(_ translationFile: TranslationFile, to outputPath: String) throws {
+    public func save(_ translationFile: TranslationFile, to outputPath: String) throws {
         let fileManager = FileManager.default
 
         // Create directory if needed
@@ -89,7 +89,7 @@ final class TranslationFileGenerator {
     }
 
     /// Generate summary statistics
-    func generateSummary(from translationFile: TranslationFile) -> String {
+    public func generateSummary(from translationFile: TranslationFile) -> String {
         var totalStrings = 0
         var simpleStrings = 0
         var pluralStrings = 0

@@ -5,18 +5,22 @@
 import Foundation
 
 /// Merges base.json changes into target language files
-final class LanguageMerger {
-    struct Changes {
-        var added: [String] = []
-        var updated: [String] = []
-        var removed: [String] = []
-        var kept: [String] = []
+public final class LanguageMerger {
+    public struct Changes {
+        public var added: [String] = []
+        public var updated: [String] = []
+        public var removed: [String] = []
+        public var kept: [String] = []
+
+        public init() {}
     }
 
-    private(set) var changes = Changes()
+    public private(set) var changes = Changes()
+
+    public init() {}
 
     /// Sync target language file with base.json
-    func sync(
+    public func sync(
         base: BaseTranslationFile,
         target: TargetTranslationFile
     ) -> TargetTranslationFile {
@@ -77,7 +81,7 @@ final class LanguageMerger {
     }
 
     /// Create new target language file from base
-    func createFromBase(
+    public func createFromBase(
         base: BaseTranslationFile,
         language: String
     ) -> TargetTranslationFile {
@@ -111,7 +115,7 @@ final class LanguageMerger {
     }
 
     /// Load target translation file
-    func loadTargetFile(from path: String) throws -> TargetTranslationFile {
+    public func loadTargetFile(from path: String) throws -> TargetTranslationFile {
         let url = URL(fileURLWithPath: path)
         let data = try Data(contentsOf: url)
         let decoder = JSONDecoder()
@@ -119,7 +123,7 @@ final class LanguageMerger {
     }
 
     /// Save target translation file
-    func saveTargetFile(_ file: TargetTranslationFile, to path: String) throws {
+    public func saveTargetFile(_ file: TargetTranslationFile, to path: String) throws {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let data = try encoder.encode(file)

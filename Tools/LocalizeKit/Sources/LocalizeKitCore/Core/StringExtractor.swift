@@ -7,17 +7,17 @@ import SwiftParser
 import SwiftSyntax
 
 /// Extracts localization strings from Swift source files using SwiftSyntax
-final class StringExtractor {
+public final class StringExtractor {
     private let projectPath: String
     private let verbose: Bool
 
-    init(projectPath: String, verbose: Bool = false) {
+    public init(projectPath: String, verbose: Bool = false) {
         self.projectPath = projectPath
         self.verbose = verbose
     }
 
     /// Extract all localization strings from the project
-    func extract() throws -> [ExtractedString] {
+    public func extract() throws -> [ExtractedString] {
         var extractedStrings: [ExtractedString] = []
         let fileManager = FileManager.default
 
@@ -126,12 +126,12 @@ final class StringExtractor {
 
 /// SwiftSyntax visitor that finds `.localize()` and `Text.localized()` calls
 private final class LocalizationVisitor: SyntaxVisitor {
-    let filePath: String
-    let moduleName: String
-    let sourceCode: String
+    public let filePath: String
+    public let moduleName: String
+    public let sourceCode: String
     private(set) var extractedStrings: [ExtractedString] = []
 
-    init(filePath: String, moduleName: String, sourceCode: String) {
+    public init(filePath: String, moduleName: String, sourceCode: String) {
         self.filePath = filePath
         self.moduleName = moduleName
         self.sourceCode = sourceCode
@@ -295,7 +295,7 @@ private final class LocalizationVisitor: SyntaxVisitor {
 
 extension String {
     /// Calculate line number for a given position in the source code
-    func lineNumber(at position: AbsolutePosition) -> Int {
+    public func lineNumber(at position: AbsolutePosition) -> Int {
         let offset = position.utf8Offset
         let substring = self.prefix(offset)
         return substring.reduce(1) { count, char in
@@ -306,11 +306,11 @@ extension String {
 
 // MARK: - Errors
 
-enum ExtractionError: LocalizedError {
+public enum ExtractionError: LocalizedError {
     case targetsDirectoryNotFound(path: String)
     case invalidSwiftFile(path: String)
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .targetsDirectoryNotFound(let path):
             return "Targets directory not found at: \(path)"

@@ -4,6 +4,7 @@
 
 import ArgumentParser
 import Foundation
+import LocalizeKitCore
 
 struct MenuCommand: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
@@ -16,7 +17,7 @@ struct MenuCommand: AsyncParsableCommand {
 
         ╔═══════════════════════════════════════════════════════╗
         ║         LocalizeKit - Translation Manager            ║
-        ║                     v2.0.0                           ║
+        ║                     v1.0.0                           ║
         ╚═══════════════════════════════════════════════════════╝
 
         Please select an option:
@@ -25,16 +26,15 @@ struct MenuCommand: AsyncParsableCommand {
         2. Merge translations → Sync target languages with base
         3. Validate translations → Check for issues
         4. Preview diff → See what needs translation
-        5. Migrate from v1 to v2 → Convert old format
-        6. Exit
+        5. Exit
 
         """)
 
-        print("Enter your choice (1-6): ", terminator: "")
+        print("Enter your choice (1-5): ", terminator: "")
 
         guard let input = readLine(),
               let choice = Int(input) else {
-            print("❌ Invalid input. Please enter a number between 1 and 6.")
+            print("❌ Invalid input. Please enter a number between 1 and 5.")
             throw ExitCode.failure
         }
 
@@ -48,12 +48,10 @@ struct MenuCommand: AsyncParsableCommand {
         case 4:
             try await runDiffWizard()
         case 5:
-            try await runMigrateWizard()
-        case 6:
             print("👋 Goodbye!")
             throw ExitCode.success
         default:
-            print("❌ Invalid choice. Please select a number between 1 and 6.")
+            print("❌ Invalid choice. Please select a number between 1 and 5.")
             throw ExitCode.failure
         }
     }
@@ -173,30 +171,6 @@ struct MenuCommand: AsyncParsableCommand {
         } else {
             command.language = languages
         }
-        command.verbose = false
-
-        try await command.run()
-    }
-
-    private func runMigrateWizard() async throws {
-        print("\n🔄 Migrate from v1 to v2 Wizard\n")
-
-        print("Enter project path (press Enter for current directory): ", terminator: "")
-        let projectPath = readLine() ?? FileManager.default.currentDirectoryPath
-        let finalProjectPath = projectPath.isEmpty ? FileManager.default.currentDirectoryPath : projectPath
-
-        print("Enter base language file (press Enter for 'en'): ", terminator: "")
-        let baseLanguage = readLine() ?? "en"
-        let finalBaseLanguage = baseLanguage.isEmpty ? "en" : baseLanguage
-
-        print("Create backup before migration? (Y/n): ", terminator: "")
-        let createBackup = readLine()?.lowercased() ?? "y"
-        let backup = createBackup != "n" && createBackup != "no"
-
-        var command = MigrateCommand()
-        command.projectPath = finalProjectPath
-        command.baseLanguage = finalBaseLanguage
-        command.backup = backup
         command.verbose = false
 
         try await command.run()

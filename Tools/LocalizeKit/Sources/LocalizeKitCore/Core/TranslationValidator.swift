@@ -5,15 +5,15 @@
 import Foundation
 
 /// Validates translation files for completeness and correctness
-final class TranslationValidator {
+public final class TranslationValidator {
     private let verbose: Bool
 
-    init(verbose: Bool = false) {
+    public init(verbose: Bool = false) {
         self.verbose = verbose
     }
 
     /// Validate a translation file
-    func validate(
+    public func validate(
         file: TranslationFile,
         basePath: String? = nil,
         checkMissing: Bool = true,
@@ -263,7 +263,7 @@ final class TranslationValidator {
     }
 
     /// Print validation report
-    func printReport(_ result: ValidationResult, fileName: String) {
+    public func printReport(_ result: ValidationResult, fileName: String) {
         print("""
 
         📋 Validation Report: \(fileName)
@@ -321,31 +321,31 @@ final class TranslationValidator {
 
 // MARK: - Supporting Types
 
-struct ValidationResult {
-    let isValid: Bool
-    let issues: [ValidationIssue]
-    let stats: ValidationStats
+public struct ValidationResult {
+    public let isValid: Bool
+    public let issues: [ValidationIssue]
+    public let stats: ValidationStats
 }
 
-struct ValidationIssue {
-    let module: String
-    let key: String
-    let severity: Severity
-    let message: String
+public struct ValidationIssue {
+    public let module: String
+    public let key: String
+    public let severity: Severity
+    public let message: String
 
-    enum Severity {
+    public enum Severity {
         case error
         case warning
     }
 }
 
-struct ValidationStats {
-    var totalStrings: Int = 0
-    var validated: Int = 0
-    var needsReview: Int = 0
-    var untranslated: Int = 0
-    var missingTranslations: Int = 0
-    var missingKeys: Int = 0
-    var formatIssues: Int = 0
-    var pluralIssues: Int = 0
+public struct ValidationStats {
+    public var totalStrings: Int = 0
+    public var validated: Int = 0
+    public var needsReview: Int = 0
+    public var untranslated: Int = 0
+    public var missingTranslations: Int = 0
+    public var missingKeys: Int = 0
+    public var formatIssues: Int = 0
+    public var pluralIssues: Int = 0
 }

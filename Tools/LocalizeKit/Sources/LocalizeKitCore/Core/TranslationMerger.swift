@@ -5,17 +5,17 @@
 import Foundation
 
 /// Merges new extracted strings with existing translations
-final class TranslationMerger {
+public final class TranslationMerger {
     private let keepRemoved: Bool
     private let verbose: Bool
 
-    init(keepRemoved: Bool, verbose: Bool = false) {
+    public init(keepRemoved: Bool, verbose: Bool = false) {
         self.keepRemoved = keepRemoved
         self.verbose = verbose
     }
 
     /// Merge new strings with existing translations
-    func merge(
+    public func merge(
         newFile: TranslationFile,
         existingFile: TranslationFile
     ) -> TranslationFile {
@@ -134,7 +134,7 @@ final class TranslationMerger {
     }
 
     /// Load translation file from disk
-    func loadTranslationFile(from path: String) throws -> TranslationFile {
+    public func loadTranslationFile(from path: String) throws -> TranslationFile {
         let url = URL(fileURLWithPath: path)
         let data = try Data(contentsOf: url)
         let decoder = JSONDecoder()
@@ -142,7 +142,7 @@ final class TranslationMerger {
     }
 
     /// Save translation file to disk
-    func saveTranslationFile(_ file: TranslationFile, to path: String) throws {
+    public func saveTranslationFile(_ file: TranslationFile, to path: String) throws {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let data = try encoder.encode(file)
@@ -182,8 +182,8 @@ final class TranslationMerger {
 // MARK: - Supporting Types
 
 private struct MergeStats {
-    var new: Int = 0
-    var modified: Int = 0
-    var unchanged: Int = 0
-    var removed: Int = 0
+    public var new: Int = 0
+    public var modified: Int = 0
+    public var unchanged: Int = 0
+    public var removed: Int = 0
 }

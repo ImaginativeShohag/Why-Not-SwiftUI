@@ -5,23 +5,25 @@
 import Foundation
 
 /// Merges newly extracted strings with existing base.json
-final class BaseFileMerger {
-    struct Changes {
-        var new: [String] = []
-        var modified: [String] = []
-        var removed: [String] = []
-        var commentChanged: [String] = []
+public final class BaseFileMerger {
+    public struct Changes {
+        public var new: [String] = []
+        public var modified: [String] = []
+        public var removed: [String] = []
+        public var commentChanged: [String] = []
+
+        public init() {}
     }
 
     private let ignoreCommentChanges: Bool
-    private(set) var changes = Changes()
+    public private(set) var changes = Changes()
 
-    init(ignoreCommentChanges: Bool = false) {
+    public init(ignoreCommentChanges: Bool = false) {
         self.ignoreCommentChanges = ignoreCommentChanges
     }
 
     /// Merge extracted strings into existing base file
-    func merge(
+    public func merge(
         existing: BaseTranslationFile,
         extracted: [ExtractedString],
         newVersion: Int

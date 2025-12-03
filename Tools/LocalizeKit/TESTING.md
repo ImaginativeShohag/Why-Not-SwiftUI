@@ -1,200 +1,203 @@
-# LocalizeKit CLI Test Suite
+# LocalizeKit Test Suite
 
-Comprehensive integration test suite for the LocalizeKit CLI tool v2.
+Comprehensive unit test suite for LocalizeKit CLI using Swift's XCTest framework.
 
-## Features
+## Overview
 
-- **Self-contained**: Creates its own test project with sample Swift files
-- **No dependencies**: Doesn't rely on parent project structure
-- **Comprehensive**: Tests all CLI commands and new v2 features
-- **Automated cleanup**: Removes test artifacts on exit
-- **Color-coded output**: Easy-to-read test results
+The test suite provides automated testing for LocalizeKit's core functionality using Swift's native testing framework (XCTest). Tests are written in Swift and can be easily integrated into CI/CD pipelines.
+
+## Running Tests
+
+### Quick Start
+
+```bash
+# From LocalizeKit directory
+cd Tools/LocalizeKit
+swift test --disable-sandbox
+```
+
+### From Project Root
+
+```bash
+swift test --package-path Tools/LocalizeKit --disable-sandbox
+```
+
+### Verbose Output
+
+```bash
+swift test --disable-sandbox --verbose
+```
+
+### Run Specific Tests
+
+```bash
+# Run only LocalizeKitCoreTests
+swift test --disable-sandbox --filter LocalizeKitCoreTests
+
+# Run a specific test method
+swift test --disable-sandbox --filter LocalizeKitCoreTests/testBaseTranslationFileEncoding
+```
 
 ## Test Coverage
 
-### Commands Tested (16 tests)
-1. ✅ **Initial Extract** - Creates base.json with version 1
-2. ✅ **Per-Key Versioning** - Verifies version tracking at key level
-3. ✅ **String.localize() Pattern** - Detects extension method pattern
-4. ✅ **Text.localized() Pattern** - Detects static method pattern
-5. ✅ **Interpolation Detection** - Identifies format specifiers
-6. ✅ **Plural Detection** - Identifies plural forms
-7. ✅ **Incremental Extract** - Version increment and new key tracking
-8. ✅ **Merge (Create)** - Creates new target language from base
-9. ✅ **Merge (Sync)** - Version comparison logic
-10. ✅ **Validate Command** - Validates target against base
-11. ✅ **Diff Command** - Terminal output generation
-12. ✅ **Merge --all Flag** - Multi-language merge
-13. ✅ **Validate --all Flag** - Multi-language validation
-14. ✅ **Migration Command** - v1 to v2 conversion
-15. ✅ **Format Specifiers** - Preserves %@, %d specifiers
-16. ✅ **Plural Forms** - Preserves zero, one, other forms
+### Translation Models (12 Tests)
 
-## Usage
-
-### Run Tests
-
-```bash
-# From anywhere
-bash Tools/LocalizeKit/test_localizekit.sh
-
-# Or from LocalizeKit directory
-cd Tools/LocalizeKit
-bash test_localizekit.sh
-```
-
-### Prerequisites
-
-The CLI must be built first:
-
-```bash
-cd Tools/LocalizeKit
-swift build -c release --disable-sandbox
-```
+1. ✅ **Simple Value Encoding** - Tests encoding of simple string values
+2. ✅ **Plural Value Encoding** - Tests encoding of plural forms
+3. ✅ **Base Translation File Encoding** - Tests full base.json structure
+4. ✅ **Target Translation File Encoding** - Tests target language file structure
+5. ✅ **Translation Type Validation** - Tests simple, interpolation, and plural types
+6. ✅ **Translation Status Validation** - Tests new, modified, and unchanged statuses
+7. ✅ **Base File JSON Loading** - Tests loading base.json from JSON string
+8. ✅ **Target File JSON Loading** - Tests loading target files from JSON
+9. ✅ **Plural Forms Preservation** - Tests all 6 CLDR plural categories
+10. ✅ **Format Specifier Detection** - Tests %@, %d detection
+11. ✅ **Translation Value Performance** - Benchmarks encoding performance
+12. ✅ **Base File Performance** - Benchmarks file encoding performance
 
 ## Test Structure
 
-The test suite automatically creates:
-
 ```
-/tmp/localizekit-tests-{PID}/
-├── Targets/
-│   └── TestModule/
-│       └── Sources/
-│           └── UI/
-│               └── Screens/
-│                   ├── HomeScreen.swift     # String.localize() examples
-│                   └── ProfileScreen.swift  # Text.localized() examples
-├── Translations/
-│   ├── base.json          # Generated from extraction (v2 format)
-│   ├── ar.json            # Created by merge command
-│   └── bn.json            # Created for --all flag test
-└── MigrationTest/
-    └── Translations/
-        ├── en.json        # v1 format (for migration test)
-        └── base.json      # Migrated to v2 format
+Tests/
+└── LocalizeKitTests/
+    └── LocalizeKitCoreTests.swift     # Core functionality tests
 ```
 
-## Sample Test Files
+## What's Tested
 
-### HomeScreen.swift
-Contains examples of:
-- Simple strings with `.localize()`
-- Interpolation strings with format specifiers
-- Plural strings with `.zero`, `.one`, `.other`
+### JSON Serialization
+- Encoding and decoding of base translation files
+- Encoding and decoding of target translation files
+- Proper handling of simple, interpolation, and plural types
+- Metadata preservation (version, status, comments)
 
-### ProfileScreen.swift
-Contains examples of:
-- Simple strings with `Text.localized()`
-- Static method pattern detection
+### Translation Values
+- Simple string values
+- Interpolation with format specifiers (%@, %d, %f)
+- Plural forms with all CLDR categories:
+  - zero, one, two, few, many, other
 
-## Expected Output
+### File Structures
+- Base file structure with metadata
+- Target file structure (simplified)
+- Module organization
+- Version tracking
+
+### Performance
+- Translation value encoding benchmarks
+- Base file encoding benchmarks
+- Measured against baseline for regression detection
+
+## CI/CD Integration
+
+### GitHub Actions
+
+```yaml
+name: LocalizeKit Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Tests
+        run: |
+          cd Tools/LocalizeKit
+          swift test --disable-sandbox
+```
+
+### GitLab CI
+
+```yaml
+test:
+  stage: test
+  script:
+    - cd Tools/LocalizeKit
+    - swift test --disable-sandbox
+  only:
+    - main
+    - merge_requests
+```
+
+## Advantages Over Bash Tests
+
+1. **Type Safety** - Swift's type system catches errors at compile time
+2. **IDE Integration** - Works seamlessly with Xcode and VS Code
+3. **Better Assertions** - XCTest provides rich assertion APIs
+4. **Performance Testing** - Built-in performance measurement
+5. **Parallel Execution** - Tests can run in parallel for speed
+6. **CI/CD Friendly** - Standard test reporting formats
+7. **Debugging** - Can use Xcode debugger on failing tests
+8. **Maintainable** - Swift code is easier to maintain than bash scripts
+
+## Writing New Tests
+
+To add new tests, create test methods in `LocalizeKitCoreTests.swift`:
+
+```swift
+func testNewFeature() throws {
+    // Arrange
+    let input = "test input"
+
+    // Act
+    let result = processInput(input)
+
+    // Assert
+    XCTAssertEqual(result, "expected output")
+}
+```
+
+## Test Output
+
+Successful test run:
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-LocalizeKit CLI v2 Integration Tests
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✅ CLI found at .build/release/LocalizeKit
-✅ CLI version is 2.0.0
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Setting up test project
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✅ Test project created at /tmp/localizekit-tests-12345
-
-... (all tests)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Test Summary
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Total Tests: 16
-Passed: 16
-All tests passed! ✅
+Test Suite 'All tests' started.
+Test Suite 'LocalizeKitCoreTests' started.
+Test Case 'testBaseTranslationFileEncoding' passed (0.001 seconds).
+Test Case 'testTranslationValuePluralEncoding' passed (0.000 seconds).
+...
+Test Suite 'LocalizeKitCoreTests' passed.
+    Executed 12 tests, with 0 failures in 0.708 seconds
 ```
-
-## New v2 Features Tested
-
-### Per-Key Versioning
-- Verifies each key has individual version tracking
-- Tests version increment on key modification
-- Tests version comparison in merge command
-
-### Auto-Managed base.json
-- Tests initial extract creates base.json with version 1
-- Tests incremental extract increments file version
-- Tests new keys get current version number
-
-### Multi-Language Support
-- Tests `--language` parameter (repeatable)
-- Tests `--all` flag for batch operations
-- Tests merge/validate across multiple languages
-
-### Version Comparison Logic
-- Tests that keys with `base_key.version > target_file.version` are replaced
-- Tests that up-to-date keys are preserved
-- Tests file version synchronization
-
-### Migration
-- Tests v1 to v2 format conversion
-- Tests version string to int conversion
-- Tests backup creation
-- Tests simplified target file generation
 
 ## Troubleshooting
 
-### CLI not found
+### Build Errors
 
+If you encounter sandbox errors:
 ```bash
-# Build the CLI first
-cd Tools/LocalizeKit
-swift build -c release --disable-sandbox
+swift build --disable-sandbox
+swift test --disable-sandbox
 ```
 
-### Tests failing
+### Missing Dependencies
 
-If tests fail, the test directory is preserved for inspection:
-
+If dependencies are missing:
 ```bash
-# Check test artifacts
-ls -la /tmp/localizekit-tests-{PID}/
-cat /tmp/localizekit-tests-{PID}/Translations/base.json
+swift package resolve
+swift build --disable-sandbox
 ```
 
-### jq not installed
+### Clean Build
 
-The tests require `jq` for JSON parsing:
-
+For a fresh start:
 ```bash
-# macOS
-brew install jq
-
-# Linux
-sudo apt-get install jq
+rm -rf .build
+swift build --disable-sandbox
+swift test --disable-sandbox
 ```
 
-## Continuous Integration
+## Future Enhancements
 
-Add to your CI pipeline:
-
-```yaml
-# .github/workflows/test.yml
-- name: Test LocalizeKit CLI
-  run: |
-    cd Tools/LocalizeKit
-    swift build -c release --disable-sandbox
-    bash test_localizekit.sh
-```
-
-## Contributing
-
-When adding new CLI features:
-1. Add corresponding test case to `test_localizekit.sh`
-2. Ensure test is self-contained (doesn't depend on parent project)
-3. Run tests to verify all pass
-4. Update this README with new test description
+Potential areas for additional test coverage:
+- String extraction from Swift files (requires mocking file system)
+- Translation validation logic
+- Diff generation
+- Merge logic with version comparison
+- CLI command integration tests
 
 ## License
 

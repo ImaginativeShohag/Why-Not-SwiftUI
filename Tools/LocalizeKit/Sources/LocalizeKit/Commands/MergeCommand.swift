@@ -4,6 +4,7 @@
 
 import ArgumentParser
 import Foundation
+import LocalizeKitCore
 
 struct MergeCommand: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
