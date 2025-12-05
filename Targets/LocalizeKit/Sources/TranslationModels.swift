@@ -4,12 +4,12 @@ import Foundation
 
 /// Root translation file structure
 public struct TranslationFile: Codable, Sendable {
-    public let version: String
+    public let version: Int
     public let language: String
     public let generatedAt: String
     public let modules: [String: ModuleTranslations]
 
-    public init(version: String, language: String, generatedAt: String, modules: [String: ModuleTranslations]) {
+    public init(version: Int, language: String, generatedAt: String, modules: [String: ModuleTranslations]) {
         self.version = version
         self.language = language
         self.generatedAt = generatedAt

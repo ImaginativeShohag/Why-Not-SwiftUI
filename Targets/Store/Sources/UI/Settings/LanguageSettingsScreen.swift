@@ -2,8 +2,8 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-import SwiftUI
 import LocalizeKit
+import SwiftUI
 
 struct LanguageSettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -61,28 +61,12 @@ struct LanguageSettingsScreen: View {
             }
             .overlay {
                 if viewModel.isChangingLanguage {
-                    ZStack {
-                        Color.black.opacity(0.4)
-                            .ignoresSafeArea()
-
-                        VStack(spacing: 16) {
-                            ProgressView()
-                                .tint(.white)
-
-                            Text.localized(
-                                "store_language_changing",
-                                default: "Changing language...",
-                                comment: "Progress message while changing language"
-                            )
-                                .foregroundStyle(.white)
-                                .font(.subheadline)
-                        }
-                        .padding(24)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color(.systemGray6))
+                    LoadingOverlay(
+                        message: "store_language_changing".localize(
+                            default: "Changing language...",
+                            comment: "Progress message while changing language"
                         )
-                    }
+                    )
                 }
             }
             .onLanguageChange()
@@ -108,7 +92,7 @@ struct LanguageSettingsScreen: View {
                     default: "Choose your preferred language for the app. The interface will be translated immediately.",
                     comment: "Footer explaining language selection"
                 )
-                    .font(.footnote)
+                .font(.footnote)
             }
         }
     }
@@ -174,6 +158,60 @@ struct LanguageSettingsScreen: View {
             isError: true
         )
     )
+}
+
+#endif
+
+private struct LoadingOverlay: View {
+    let message: String
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+
+            VStack(spacing: 16) {
+                ProgressView()
+                    .tint(Color.label)
+
+                Text(message)
+                    .foregroundStyle(Color.label)
+                    .font(.subheadline)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(24)
+            .frame(maxWidth: 200)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(.systemGray6))
+            )
+        }
+    }
+}
+
+#if DEBUG
+
+#Preview("Loading - Short Message") {
+    LoadingOverlay(
+        message: "Changing language..."
+    )
+}
+
+#Preview("Loading - Long Message") {
+    LoadingOverlay(
+        message: "Please wait while we process your request. This may take a few moments..."
+    )
+}
+
+#Preview("Loading - On Content") {
+    ZStack {
+        // Simulated background content
+        List(1 ... 20, id: \.self) { item in
+            Text("Item \(item)")
+        }
+
+        LoadingOverlay(message: "Loading...")
+    }
 }
 
 #endif

@@ -327,5 +327,5 @@ extension Preferences {
     public static var selectedLanguage: String?
 
     @UserDefault(key: .translationVersion)
-    public static var translationVersion: String?
+    public static var translationVersion: Int?
 }

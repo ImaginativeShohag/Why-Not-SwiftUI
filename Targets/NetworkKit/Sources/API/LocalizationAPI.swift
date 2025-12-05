@@ -135,7 +135,7 @@ extension LocalizationAPI: ApiEndpoint {
     private var englishStubData: Data {
         let json = """
         {
-          "version": "1.0.0",
+          "version": 1,
           "language": "en",
           "generatedAt": "2025-11-27T10:30:00Z",
           "modules": {
@@ -391,7 +391,7 @@ extension LocalizationAPI: ApiEndpoint {
     private var bengaliStubData: Data {
         let json = """
         {
-          "version": "1.0.0",
+          "version": 1,
           "language": "bn",
           "generatedAt": "2025-11-27T10:35:00Z",
           "modules": {
@@ -647,7 +647,7 @@ extension LocalizationAPI: ApiEndpoint {
     private var arabicStubData: Data {
         let json = """
         {
-          "version": "1.0.0",
+          "version": 1,
           "language": "ar",
           "generatedAt": "2025-11-27T10:40:00Z",
           "modules": {
