@@ -141,7 +141,7 @@ let project = Project.app(
         Module(
             name: "LocalizeKit",
             hasUnitTest: true,
-            dependencies: [.target(name: "Core"), .target(name: "SuperLog"), .target(name: "NetworkKit")]
+            dependencies: [.target(name: "Core"), .target(name: "SuperLog")]
         )
     ],
     externalDependencies: [

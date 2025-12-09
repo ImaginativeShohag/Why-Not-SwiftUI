@@ -20,10 +20,15 @@ final class LanguageSettingsViewModel {
     var selectedLanguage: String = "en"
     var isChangingLanguage: Bool = false
 
-    private let localizationManager = LocalizationManager.shared
+    private let localizationManager: LocalizationManager
+    private let translationRepository: TranslationRepository
 
-    init() {
-        // Get current language from manager
+    init(
+        localizationManager: LocalizationManager = .shared,
+        translationRepository: TranslationRepository = TranslationRepository()
+    ) {
+        self.localizationManager = localizationManager
+        self.translationRepository = translationRepository
         selectedLanguage = localizationManager.currentLanguage
     }
 
@@ -31,6 +36,9 @@ final class LanguageSettingsViewModel {
 
     #if DEBUG
     init(forPreview: Bool, isLoading: Bool = false, isError: Bool = false) {
+        self.localizationManager = .shared
+        self.translationRepository = TranslationRepository()
+
         if isLoading {
             state = .loading
         } else if isError {
@@ -52,32 +60,48 @@ final class LanguageSettingsViewModel {
     func loadLanguages() async {
         state = .loading
 
-        await localizationManager.loadAvailableLanguages()
+        let result = await translationRepository.fetchAvailableLanguages()
 
-        // Check if we have languages
-        if localizationManager.availableLanguages.isEmpty {
-            state = .error("No languages available")
-            SuperLog.e("No available languages loaded")
-        } else {
-            availableLanguages = localizationManager.availableLanguages
+        switch result {
+        case .success(let languages):
+            localizationManager.setAvailableLanguages(languages)
+            availableLanguages = languages
             selectedLanguage = localizationManager.currentLanguage
             state = .data
-            SuperLog.d("Loaded \(availableLanguages.count) languages")
+            SuperLog.d("LanguageSettingsViewModel: Loaded \(languages.count) languages")
+
+        case .failure(let error):
+            state = .error(error.localizedDescription)
+            SuperLog.e("LanguageSettingsViewModel: Failed to load languages - \(error)")
         }
     }
 
     func changeLanguage(to languageCode: String) async {
         guard languageCode != selectedLanguage else { return }
 
-        SuperLog.d("Changing language to: \(languageCode)")
+        SuperLog.d("LanguageSettingsViewModel: Changing language to: \(languageCode)")
         isChangingLanguage = true
 
-        await localizationManager.changeLanguage(to: languageCode)
+        // Step 1: Fetch translations from repository
+        let result = await translationRepository.fetchTranslations(for: languageCode)
 
-        selectedLanguage = localizationManager.currentLanguage
+        switch result {
+        case .success(let translationFile):
+            // Step 2: Push translations to LocalizationManager (caches internally)
+            await localizationManager.setTranslations(translationFile, for: languageCode)
+
+            // Step 3: Activate the language (loads from cache)
+            await localizationManager.changeLanguage(to: languageCode)
+
+            // Step 4: Update ViewModel state
+            selectedLanguage = localizationManager.currentLanguage
+            SuperLog.d("LanguageSettingsViewModel: Language changed to \(selectedLanguage)")
+
+        case .failure(let error):
+            SuperLog.e("LanguageSettingsViewModel: Failed to change language - \(error)")
+        }
+
         isChangingLanguage = false
-
-        SuperLog.d("Language changed to: \(selectedLanguage)")
     }
 
     func isSelected(_ languageCode: String) -> Bool {

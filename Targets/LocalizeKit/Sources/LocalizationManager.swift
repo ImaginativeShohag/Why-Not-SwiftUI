@@ -1,7 +1,6 @@
 import Foundation
 import Core
 import SuperLog
-import NetworkKit
 
 /// Main localization manager handling translation loading/retrieval
 /// Singleton pattern with observable language changes
@@ -65,78 +64,52 @@ public final class LocalizationManager {
 
     /// Change the current language
     /// - Parameter languageCode: Language code (e.g., "en", "bn")
+    /// - Note: This method only loads from cache. Use repository layer to fetch new translations first.
     public func changeLanguage(to languageCode: String) async {
         guard languageCode != currentLanguage else { return }
 
-        SuperLog.d("Changing language to: \(languageCode)")
+        SuperLog.d("LocalizationManager: Changing language to: \(languageCode)")
         isLoading = true
 
-        // Try to load from cache first
+        // Load from cache only
         if await loadCachedTranslations(for: languageCode) {
             currentLanguage = languageCode
             Preferences.selectedLanguage = languageCode
             isLoading = false
-            SuperLog.d("Language changed to \(languageCode) from cache")
-            return
+            SuperLog.d("LocalizationManager: Language changed to \(languageCode) from cache")
+        } else {
+            isLoading = false
+            SuperLog.w("LocalizationManager: No cached translations for \(languageCode). Repository must fetch first.")
         }
-
-        // If not in cache, fetch from server
-        do {
-            try await fetchTranslations(for: languageCode)
-            currentLanguage = languageCode
-            Preferences.selectedLanguage = languageCode
-            SuperLog.d("Language changed to \(languageCode) from server")
-        } catch {
-            SuperLog.e("Failed to fetch translations for \(languageCode): \(error)")
-        }
-
-        isLoading = false
     }
 
-    /// Load available languages from server
-    public func loadAvailableLanguages() async {
-        SuperLog.d("Loading available languages...")
-        isLoading = true
+    // MARK: - Data Setters (Called by Repository Layer)
 
-        let result: ApiResult<AvailableLanguages> = await DataSource.Localization.request(on: .availableLanguages)
-
-        switch result {
-        case .success(let response):
-            availableLanguages = response.languages
-            SuperLog.d("Loaded \(response.languages.count) available languages")
-
-        case .failure(let error, let errorMessage, let statusCode):
-            SuperLog.e("Failed to load available languages: \(errorMessage) (Status: \(statusCode))")
-            SuperLog.e("Error: \(error)")
-        }
-
-        isLoading = false
+    /// Set available languages from external source
+    /// - Parameter languages: Array of available languages
+    public func setAvailableLanguages(_ languages: [Language]) {
+        self.availableLanguages = languages
+        SuperLog.d("LocalizationManager: Set \(languages.count) available languages")
     }
 
-    /// Fetch translations from server for specific language
-    /// - Parameter languageCode: Language code to fetch
-    public func fetchTranslations(for languageCode: String) async throws {
-        SuperLog.d("Fetching translations for \(languageCode)...")
+    /// Set translations from external source and cache them
+    /// - Parameters:
+    ///   - translationFile: Translation file to set and cache
+    ///   - languageCode: Language code for the translations
+    public func setTranslations(_ translationFile: TranslationFile, for languageCode: String) async {
+        // Cache the translations
+        await cacheTranslations(translationFile, for: languageCode)
 
-        let result: ApiResult<TranslationFile> = await DataSource.Localization.request(on: .translationFile(languageCode: languageCode))
-
-        switch result {
-        case .success(let translationFile):
-            // Save to cache
-            await cacheTranslations(translationFile, for: languageCode)
-
-            // Set as current translations
+        // If this is the current language, set it as active
+        if languageCode == currentLanguage {
             currentTranslations = translationFile
-
-            // Save version to preferences
-            Preferences.translationVersion = translationFile.version
-
-            SuperLog.d("Fetched and cached translations for \(languageCode), version: \(translationFile.version)")
-
-        case .failure(let error, let errorMessage, let statusCode):
-            SuperLog.e("Failed to fetch translations: \(errorMessage) (Status: \(statusCode))")
-            throw error
+            SuperLog.d("LocalizationManager: Set and activated translations for \(languageCode)")
+        } else {
+            SuperLog.d("LocalizationManager: Cached translations for \(languageCode)")
         }
+
+        // Save version to preferences
+        Preferences.translationVersion = translationFile.version
     }
 
     // MARK: - Translation Retrieval
