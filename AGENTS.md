@@ -165,7 +165,7 @@ Targets/
 - No manual version specification (auto-managed integer versions)
 - `base.json` instead of `en.json` for source language
 - Per-key version tracking (tracks which keys changed)
-- Simplified target files (no metadata/comments)
+- Simplified target files (includes comments for translator context, no version metadata)
 - Smart merge based on version comparison
 - Comprehensive Swift unit tests using XCTest framework
 - Built-in test suite: `swift test --package-path Tools/LocalizeKit --disable-sandbox`
