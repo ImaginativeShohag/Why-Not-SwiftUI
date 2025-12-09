@@ -19,7 +19,7 @@ extension String {
     @MainActor
     public func localize(
         default defaultValue: String,
-        comment: String = ""
+        comment: String? = nil
     ) -> String {
         LocalizationManager.shared.string(for: self) ?? defaultValue
     }
@@ -42,7 +42,7 @@ extension String {
     @MainActor
     public func localize(
         default defaultValue: String,
-        comment: String = "",
+        comment: String? = nil,
         with argument: CVarArg
     ) -> String {
         let format = localize(default: defaultValue, comment: comment)
@@ -67,7 +67,7 @@ extension String {
     @MainActor
     public func localize(
         default defaultValue: String,
-        comment: String = "",
+        comment: String? = nil,
         with arguments: CVarArg...
     ) -> String {
         let format = localize(default: defaultValue, comment: comment)
@@ -96,7 +96,7 @@ extension String {
     @MainActor
     public func localize(
         defaultPlural: [PluralCategory: String],
-        comment: String = "",
+        comment: String? = nil,
         count: Int
     ) -> String {
         // Try to get from server/cache first
@@ -149,7 +149,7 @@ extension String {
     @MainActor
     public func localize(
         defaultPlural: [PluralCategory: String],
-        comment: String = "",
+        comment: String? = nil,
         count: Int,
         with argument: CVarArg
     ) -> String {
@@ -181,7 +181,7 @@ extension String {
     @MainActor
     public func localize(
         defaultPlural: [PluralCategory: String],
-        comment: String = "",
+        comment: String? = nil,
         count: Int,
         with arguments: CVarArg...
     ) -> String {

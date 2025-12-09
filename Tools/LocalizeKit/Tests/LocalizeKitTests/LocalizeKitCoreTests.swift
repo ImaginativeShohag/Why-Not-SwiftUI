@@ -85,7 +85,8 @@ final class LocalizeKitCoreTests: XCTestCase {
                 "TestModule": [
                     "test_key": TargetTranslationEntry(
                         value: .simple("القيمة"),
-                        type: .simple
+                        type: .simple,
+                        comment: nil
                     )
                 ]
             ]

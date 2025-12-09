@@ -217,11 +217,13 @@ final class LocalizeKitIntegrationTests: XCTestCase {
         targetModules["Store"] = [
             "store_welcome": TargetTranslationEntry(
                 value: .simple("مرحبا بك في متجرنا!"),
-                type: .simple
+                type: .simple,
+                comment: nil
             ),
             "old_key": TargetTranslationEntry(
                 value: .simple("قيمة قديمة"),
-                type: .simple
+                type: .simple,
+                comment: nil
             )
         ]
 
@@ -319,7 +321,8 @@ final class LocalizeKitIntegrationTests: XCTestCase {
                 "Store": [
                     "key1": TargetTranslationEntry(
                         value: .simple("القيمة 1"),
-                        type: .simple
+                        type: .simple,
+                        comment: nil
                     )
                     // key2 is missing
                 ]
@@ -371,7 +374,8 @@ final class LocalizeKitIntegrationTests: XCTestCase {
                 "Store": [
                     "greeting": TargetTranslationEntry(
                         value: .simple("مرحبا"), // Missing %@ specifier
-                        type: .interpolation
+                        type: .interpolation,
+                        comment: nil
                     )
                 ]
             ]
@@ -441,11 +445,13 @@ final class LocalizeKitIntegrationTests: XCTestCase {
         translatedModules["Store"] = [
             "store_welcome": TargetTranslationEntry(
                 value: .simple("مرحبا بك في متجرنا!"),
-                type: .simple
+                type: .simple,
+                comment: nil
             ),
             "store_greeting": TargetTranslationEntry(
                 value: .simple("!**%@** ،مرحبا"),
-                type: .interpolation
+                type: .interpolation,
+                comment: nil
             ),
             "store_items_count": TargetTranslationEntry(
                 value: .plural([
@@ -456,15 +462,18 @@ final class LocalizeKitIntegrationTests: XCTestCase {
                     "many": "%d عنصرًا في السلة",
                     "other": "%d عنصر في السلة"
                 ]),
-                type: .plural
+                type: .plural,
+                comment: nil
             ),
             "store_product_title": TargetTranslationEntry(
                 value: .simple("تفاصيل المنتج"),
-                type: .simple
+                type: .simple,
+                comment: nil
             ),
             "store_price": TargetTranslationEntry(
                 value: .simple("$%.2f :السعر"),
-                type: .interpolation
+                type: .interpolation,
+                comment: nil
             )
         ]
 

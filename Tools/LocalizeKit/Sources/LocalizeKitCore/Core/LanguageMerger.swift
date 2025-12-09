@@ -39,20 +39,27 @@ public final class LanguageMerger {
                         // Replace with English value from base
                         let updated = TargetTranslationEntry(
                             value: baseEntry.value,
-                            type: baseEntry.type
+                            type: baseEntry.type,
+                            comment: baseEntry.comment
                         )
                         updatedStrings[key] = updated
                         changes.updated.append("\(moduleName).\(key)")
                     } else {
-                        // Keep existing translation
-                        updatedStrings[key] = targetEntry
+                        // Keep existing translation but update comment from base
+                        let kept = TargetTranslationEntry(
+                            value: targetEntry.value,
+                            type: targetEntry.type,
+                            comment: baseEntry.comment
+                        )
+                        updatedStrings[key] = kept
                         changes.kept.append("\(moduleName).\(key)")
                     }
                 } else {
                     // NEW KEY - add from base with English value
                     let newEntry = TargetTranslationEntry(
                         value: baseEntry.value,
-                        type: baseEntry.type
+                        type: baseEntry.type,
+                        comment: baseEntry.comment
                     )
                     updatedStrings[key] = newEntry
                     changes.added.append("\(moduleName).\(key)")
@@ -94,7 +101,8 @@ public final class LanguageMerger {
             for (key, baseEntry) in baseStrings {
                 let entry = TargetTranslationEntry(
                     value: baseEntry.value,
-                    type: baseEntry.type
+                    type: baseEntry.type,
+                    comment: baseEntry.comment
                 )
                 targetStrings[key] = entry
                 changes.added.append("\(moduleName).\(key)")

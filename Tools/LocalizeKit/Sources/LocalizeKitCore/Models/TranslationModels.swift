@@ -40,6 +40,7 @@ public struct TargetTranslationFile: Codable {
 public struct TargetTranslationEntry: Codable {
     public let value: TranslationValue
     public let type: TranslationType
+    public let comment: String?
 }
 
 // MARK: - Shared Types
