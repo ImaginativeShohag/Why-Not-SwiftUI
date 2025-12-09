@@ -60,7 +60,7 @@ The project is organized into modular frameworks defined in `Project.swift`:
 - `SuperLog`: Logging framework
 - `NetworkKit`: Network layer with Alamofire/Moya integration
 - `NavigationKit`: Navigation wrapper on top of NavigationStack
-- `LocalizeKit`: Runtime localization system with plural support, caching, and network fetch
+- `LocalizeKit`: Runtime localization system with plural support, caching, and language management (no network dependencies)
 
 **Feature Modules:**
 - `Home`: Main home screen with navigation to all examples
@@ -107,8 +107,10 @@ Targets/
 
 **Repository Pattern:**
 - Used in Todo module with abstraction over CoreData and SwiftData
+- Used in Store module for translation network operations (TranslationRepository)
 - Repositories handle data source switching transparently
 - ViewModels depend on repository interfaces, not concrete implementations
+- LocalizeKit is a pure localization engine; Store module owns translation fetching
 
 **Navigation:**
 - Uses `NavigationKit` module with `NavController` and `Destination` pattern
@@ -123,8 +125,11 @@ Targets/
 **Localization:**
 - **Home module:** Uses `Localizable.xcstrings` for string resources with `NSLocalizedString("key", bundle: .module, comment: "")`
 - **Store module:** Uses runtime localization system (LocalizeKit) with full Bengali and Arabic translations
-- **Runtime system features:**
-  - Fetches translations from server (currently stubbed in NetworkKit)
+- **Runtime system architecture:**
+  - TranslationRepository (Store module) fetches translations from server (currently stubbed in NetworkKit)
+  - LocalizationManager (LocalizeKit) handles caching, lookup, and language activation
+  - LocalizeKit has no NetworkKit dependency - pure localization logic
+  - LanguageSettingsViewModel coordinates: Repository fetch → LocalizationManager cache → Activate
   - Local caching in Library/Caches
   - CLDR-compliant plural support (all 6 categories)
   - Custom plural rules (Vue-i18n style)
