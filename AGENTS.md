@@ -60,7 +60,7 @@ The project is organized into modular frameworks defined in `Project.swift`:
 - `SuperLog`: Logging framework
 - `NetworkKit`: Network layer with Alamofire/Moya integration
 - `NavigationKit`: Navigation wrapper on top of NavigationStack
-- `LocalizeKit`: Runtime localization system with plural support, caching, and language management (no network dependencies)
+- `LocalizeKit`: **Fully independent** runtime localization system with plural support, caching, and language management (zero external dependencies)
 
 **Feature Modules:**
 - `Home`: Main home screen with navigation to all examples
@@ -167,6 +167,10 @@ Targets/
 7. Upload JSON files to server or update stub data in `LocalizationAPI.swift`
 
 **LocalizeKit Key Features:**
+- **Fully Independent Module**: Zero dependencies on Core, SuperLog, or any other project modules
+- **Internal Utilities**:
+  - `LocalizeKitStorage`: Minimal UserDefaults accessor for language preferences (backward compatible with existing keys)
+  - `LocalizeKitLogger`: DEBUG-only logging using OSLog (zero overhead in Release builds)
 - No manual version specification (auto-managed integer versions)
 - `base.json` instead of `en.json` for source language
 - Per-key version tracking (tracks which keys changed)
@@ -174,6 +178,7 @@ Targets/
 - Smart merge based on version comparison
 - Comprehensive Swift unit tests using XCTest framework
 - Built-in test suite: `swift test --package-path Tools/LocalizeKit --disable-sandbox`
+- **Portable**: Can be copied to any Swift/iOS project or extracted as a standalone Swift Package
 
 ## Build Configuration
 

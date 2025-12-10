@@ -1,6 +1,4 @@
 import Foundation
-import Core
-import SuperLog
 
 /// Main localization manager handling translation loading/retrieval
 /// Singleton pattern with observable language changes
@@ -39,11 +37,11 @@ public final class LocalizationManager {
         do {
             self.translationStorage = try TranslationStorage()
         } catch {
-            SuperLog.e("Failed to initialize TranslationStorage: \(error)")
+            LocalizeKitLogger.e("Failed to initialize TranslationStorage: \(error)")
         }
 
         // Load saved language preference
-        if let savedLanguage = Preferences.selectedLanguage {
+        if let savedLanguage = LocalizeKitStorage.shared.selectedLanguage {
             self.currentLanguage = savedLanguage
             Task {
                 await loadCachedTranslations(for: savedLanguage)
@@ -57,7 +55,7 @@ public final class LocalizationManager {
     /// - Parameter pluralRules: Dictionary of language code to plural rule function
     public func configure(pluralRules: [String: PluralRule]) {
         self.pluralRules = pluralRules
-        SuperLog.d("LocalizationManager configured with \(pluralRules.count) custom plural rules")
+        LocalizeKitLogger.d("LocalizationManager configured with \(pluralRules.count) custom plural rules")
     }
 
     // MARK: - Language Management
@@ -68,18 +66,18 @@ public final class LocalizationManager {
     public func changeLanguage(to languageCode: String) async {
         guard languageCode != currentLanguage else { return }
 
-        SuperLog.d("LocalizationManager: Changing language to: \(languageCode)")
+        LocalizeKitLogger.d("LocalizationManager: Changing language to: \(languageCode)")
         isLoading = true
 
         // Load from cache only
         if await loadCachedTranslations(for: languageCode) {
             currentLanguage = languageCode
-            Preferences.selectedLanguage = languageCode
+            LocalizeKitStorage.shared.selectedLanguage = languageCode
             isLoading = false
-            SuperLog.d("LocalizationManager: Language changed to \(languageCode) from cache")
+            LocalizeKitLogger.d("LocalizationManager: Language changed to \(languageCode) from cache")
         } else {
             isLoading = false
-            SuperLog.w("LocalizationManager: No cached translations for \(languageCode). Repository must fetch first.")
+            LocalizeKitLogger.w("LocalizationManager: No cached translations for \(languageCode). Repository must fetch first.")
         }
     }
 
@@ -89,7 +87,7 @@ public final class LocalizationManager {
     /// - Parameter languages: Array of available languages
     public func setAvailableLanguages(_ languages: [Language]) {
         self.availableLanguages = languages
-        SuperLog.d("LocalizationManager: Set \(languages.count) available languages")
+        LocalizeKitLogger.d("LocalizationManager: Set \(languages.count) available languages")
     }
 
     /// Set translations from external source and cache them
@@ -103,13 +101,13 @@ public final class LocalizationManager {
         // If this is the current language, set it as active
         if languageCode == currentLanguage {
             currentTranslations = translationFile
-            SuperLog.d("LocalizationManager: Set and activated translations for \(languageCode)")
+            LocalizeKitLogger.d("LocalizationManager: Set and activated translations for \(languageCode)")
         } else {
-            SuperLog.d("LocalizationManager: Cached translations for \(languageCode)")
+            LocalizeKitLogger.d("LocalizationManager: Cached translations for \(languageCode)")
         }
 
         // Save version to preferences
-        Preferences.translationVersion = translationFile.version
+        LocalizeKitStorage.shared.translationVersion = translationFile.version
     }
 
     // MARK: - Translation Retrieval
@@ -125,7 +123,7 @@ public final class LocalizationManager {
         // Extract module and key from format "module_key"
         let components = key.split(separator: "_", maxSplits: 1)
         guard components.count >= 2 else {
-            SuperLog.w("Invalid key format: \(key). Expected 'module_key'")
+            LocalizeKitLogger.w("Invalid key format: \(key). Expected 'module_key'")
             return nil
         }
 
@@ -134,7 +132,7 @@ public final class LocalizationManager {
 
         // Look up in module translations
         guard let moduleTranslations = translations.modules[moduleName]?.translations[key] else {
-            SuperLog.w("Translation not found for key: \(key)")
+            LocalizeKitLogger.w("Translation not found for key: \(key)")
             return nil
         }
 
@@ -143,7 +141,7 @@ public final class LocalizationManager {
         case .simple(let value):
             return value
         case .plural:
-            SuperLog.w("Key \(key) is plural, use pluralString() instead")
+            LocalizeKitLogger.w("Key \(key) is plural, use pluralString() instead")
             return nil
         }
     }
@@ -161,7 +159,7 @@ public final class LocalizationManager {
         // Extract module and key from format "module_key"
         let components = key.split(separator: "_", maxSplits: 1)
         guard components.count >= 2 else {
-            SuperLog.w("Invalid key format: \(key). Expected 'module_key'")
+            LocalizeKitLogger.w("Invalid key format: \(key). Expected 'module_key'")
             return nil
         }
 
@@ -170,13 +168,13 @@ public final class LocalizationManager {
 
         // Look up in module translations
         guard let moduleTranslations = translations.modules[moduleName]?.translations[key] else {
-            SuperLog.w("Translation not found for key: \(key)")
+            LocalizeKitLogger.w("Translation not found for key: \(key)")
             return nil
         }
 
         // Extract plural dictionary
         guard case .plural(let pluralDict) = moduleTranslations.value else {
-            SuperLog.w("Key \(key) is not plural, use string() instead")
+            LocalizeKitLogger.w("Key \(key) is not plural, use string() instead")
             return nil
         }
 
@@ -209,18 +207,18 @@ public final class LocalizationManager {
     /// - Returns: True if loaded successfully
     private func loadCachedTranslations(for languageCode: String) async -> Bool {
         guard let storage = translationStorage else {
-            SuperLog.e("TranslationStorage not initialized")
+            LocalizeKitLogger.e("TranslationStorage not initialized")
             return false
         }
 
         do {
             if let cached = try await storage.load(for: languageCode) {
                 currentTranslations = cached
-                SuperLog.d("Loaded cached translations for \(languageCode), version: \(cached.version)")
+                LocalizeKitLogger.d("Loaded cached translations for \(languageCode), version: \(cached.version)")
                 return true
             }
         } catch {
-            SuperLog.e("Failed to load cached translations: \(error)")
+            LocalizeKitLogger.e("Failed to load cached translations: \(error)")
         }
 
         return false
@@ -232,31 +230,31 @@ public final class LocalizationManager {
     ///   - languageCode: Language code
     public func cacheTranslations(_ translations: TranslationFile, for languageCode: String) async {
         guard let storage = translationStorage else {
-            SuperLog.e("TranslationStorage not initialized")
+            LocalizeKitLogger.e("TranslationStorage not initialized")
             return
         }
 
         do {
             try await storage.save(translations, for: languageCode)
-            SuperLog.d("Cached translations for \(languageCode), version: \(translations.version)")
+            LocalizeKitLogger.d("Cached translations for \(languageCode), version: \(translations.version)")
         } catch {
-            SuperLog.e("Failed to cache translations: \(error)")
+            LocalizeKitLogger.e("Failed to cache translations: \(error)")
         }
     }
 
     /// Clear all cached translations
     public func clearCache() async {
         guard let storage = translationStorage else {
-            SuperLog.e("TranslationStorage not initialized")
+            LocalizeKitLogger.e("TranslationStorage not initialized")
             return
         }
 
         do {
             try await storage.clearAll()
             currentTranslations = nil
-            SuperLog.d("Cleared all cached translations")
+            LocalizeKitLogger.d("Cleared all cached translations")
         } catch {
-            SuperLog.e("Failed to clear cache: \(error)")
+            LocalizeKitLogger.e("Failed to clear cache: \(error)")
         }
     }
 
@@ -264,14 +262,14 @@ public final class LocalizationManager {
     /// - Returns: Array of cached language codes
     public func getCachedLanguages() async -> [String] {
         guard let storage = translationStorage else {
-            SuperLog.e("TranslationStorage not initialized")
+            LocalizeKitLogger.e("TranslationStorage not initialized")
             return []
         }
 
         do {
             return try await storage.listCachedLanguages()
         } catch {
-            SuperLog.e("Failed to list cached languages: \(error)")
+            LocalizeKitLogger.e("Failed to list cached languages: \(error)")
             return []
         }
     }
@@ -286,19 +284,4 @@ public final class LocalizationManager {
 
         return await storage.getCacheDirectoryPath()
     }
-}
-
-// MARK: - Preferences Extension
-
-extension Key {
-    static let selectedLanguage: Key = "selectedLanguage"
-    static let translationVersion: Key = "translationVersion"
-}
-
-extension Preferences {
-    @UserDefault(key: .selectedLanguage)
-    public static var selectedLanguage: String?
-
-    @UserDefault(key: .translationVersion)
-    public static var translationVersion: Int?
 }
