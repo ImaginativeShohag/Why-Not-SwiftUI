@@ -1,7 +1,7 @@
 import Foundation
 
 /// FileManager-based translation storage
-/// Caches translations in Library/Caches directory (auto-cleaned by system)
+/// Caches translations in Application Support directory (permanent storage)
 public actor TranslationStorage {
     private let fileManager: FileManager
     private let cacheDirectory: URL
@@ -9,13 +9,15 @@ public actor TranslationStorage {
     public init(fileManager: FileManager = .default) throws {
         self.fileManager = fileManager
 
-        // Get Caches directory
-        guard let cachesURL = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+        // Get Application Support directory for permanent storage
+        guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
             throw StorageError.cacheDirectoryNotFound
         }
 
-        // Create translations subdirectory
-        self.cacheDirectory = cachesURL.appendingPathComponent("Translations", isDirectory: true)
+        // Create LocalizeKit/Translations subdirectory
+        self.cacheDirectory = appSupportURL
+            .appendingPathComponent("LocalizeKit", isDirectory: true)
+            .appendingPathComponent("Translations", isDirectory: true)
 
         // Create directory if it doesn't exist
         if !fileManager.fileExists(atPath: cacheDirectory.path) {
@@ -52,6 +54,39 @@ public actor TranslationStorage {
         let data = try Data(contentsOf: fileURL)
         let decoder = JSONDecoder()
         return try decoder.decode(TranslationFile.self, from: data)
+    }
+
+    /// Check cache state by loading file and comparing version with server version
+    /// - Parameter language: Language object with code and server version
+    /// - Returns: Cache state (valid, stale, missing, or corrupted)
+    public func checkCacheState(for language: Language) async -> CacheState {
+        do {
+            // Try to load cached file
+            guard let cachedFile = try load(for: language.code) else {
+                return .missing
+            }
+
+            // Compare version from cached file with server version
+            if cachedFile.version == language.version {
+                return .valid(cachedFile: cachedFile)
+            } else {
+                return .stale(cachedVersion: cachedFile.version)
+            }
+        } catch {
+            // File exists but couldn't be loaded (corrupted)
+            let fileURL = cacheDirectory.appendingPathComponent("\(language.code).json")
+            if fileManager.fileExists(atPath: fileURL.path) {
+                return .corrupted
+            } else {
+                return .missing
+            }
+        }
+    }
+
+    /// Delete cached translation file (alias for delete method)
+    /// - Parameter languageCode: Language code (e.g., "en", "bn")
+    public func deleteCacheFile(for languageCode: String) throws {
+        try delete(for: languageCode)
     }
 
     /// Check if translation file exists in cache

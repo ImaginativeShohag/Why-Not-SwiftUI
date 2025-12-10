@@ -104,7 +104,7 @@ extension LocalizationAPI: ApiEndpoint {
                 "code": "bn_BD",
                 "name_en": "Bengali",
                 "name_locale": "বাংলা",
-                "version": 12
+                "version": 1
               },
               {
                 "code": "en_US",

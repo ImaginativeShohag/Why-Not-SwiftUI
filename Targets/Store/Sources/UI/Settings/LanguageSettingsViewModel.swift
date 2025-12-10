@@ -82,30 +82,77 @@ final class LanguageSettingsViewModel {
 
     func changeLanguage(to languageCode: String) async {
         guard languageCode != selectedLanguage else { return }
+        guard let language = findLanguage(code: languageCode) else {
+            SuperLog.e("LanguageSettingsViewModel: Language not found: \(languageCode)")
+            return
+        }
 
         SuperLog.d("LanguageSettingsViewModel: Changing language to: \(languageCode)")
         isChangingLanguage = true
 
-        // Step 1: Fetch translations from repository
+        // Special case: Default English language doesn't need API call (uses code defaults)
+        if languageCode == "en_US" {
+            SuperLog.d("LanguageSettingsViewModel: Using default English (no API call needed)")
+            // Create empty translation file - localize() will use default values
+            let emptyTranslation = TranslationFile(version: language.version, modules: [:])
+            localizationManager.activateLanguage(emptyTranslation, code: languageCode)
+            selectedLanguage = languageCode
+            isChangingLanguage = false
+            return
+        }
+
+        // Step 1: Check cache state (version comparison)
+        let cacheState = await localizationManager.getCacheState(for: language)
+
+        switch cacheState {
+        case .valid(let cachedFile):
+            // Cache is valid and version matches - use it directly (instant, no API call)
+            SuperLog.d("LanguageSettingsViewModel: Using cached translation (v\(cachedFile.version))")
+            localizationManager.activateLanguage(cachedFile, code: languageCode)
+            selectedLanguage = languageCode
+
+        case .stale(let cachedVersion):
+            // Cache exists but version is outdated - fetch fresh from network
+            SuperLog.d("LanguageSettingsViewModel: Cache stale (v\(cachedVersion)), fetching v\(language.version)")
+            await fetchAndCache(languageCode: languageCode)
+
+        case .missing:
+            // No cache exists - fetch from network
+            SuperLog.d("LanguageSettingsViewModel: No cache found, fetching from network")
+            await fetchAndCache(languageCode: languageCode)
+
+        case .corrupted:
+            // Cache file is corrupted - delete and fetch fresh
+            SuperLog.w("LanguageSettingsViewModel: Cache corrupted, deleting and re-fetching")
+            try? await localizationManager.deleteCacheFile(for: languageCode)
+            await fetchAndCache(languageCode: languageCode)
+        }
+
+        isChangingLanguage = false
+    }
+
+    // MARK: - Private Helpers
+
+    private func fetchAndCache(languageCode: String) async {
         let result = await translationRepository.fetchTranslations(for: languageCode)
 
         switch result {
         case .success(let translationFile):
-            // Step 2: Push translations to LocalizationManager (caches internally)
+            // Cache and activate
             await localizationManager.setTranslations(translationFile, for: languageCode)
-
-            // Step 3: Activate the language (loads from cache)
-            await localizationManager.changeLanguage(to: languageCode)
-
-            // Step 4: Update ViewModel state
-            selectedLanguage = localizationManager.currentLanguage
-            SuperLog.d("LanguageSettingsViewModel: Language changed to \(selectedLanguage)")
+            localizationManager.activateLanguage(translationFile, code: languageCode)
+            selectedLanguage = languageCode
+            SuperLog.d("LanguageSettingsViewModel: Language changed to \(selectedLanguage), version: \(translationFile.version)")
 
         case .failure(let error):
-            SuperLog.e("LanguageSettingsViewModel: Failed to change language - \(error)")
+            // Show error (offline or network issue)
+            state = .error(message: error.localizedDescription)
+            SuperLog.e("LanguageSettingsViewModel: Failed to fetch translations - \(error)")
         }
+    }
 
-        isChangingLanguage = false
+    private func findLanguage(code: String) -> Language? {
+        state.getData()?.allLanguages.first { $0.code == code }
     }
 
     func isSelected(_ languageCode: String) -> Bool {

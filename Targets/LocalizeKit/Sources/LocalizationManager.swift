@@ -1,5 +1,21 @@
 import Foundation
 
+// MARK: - Cache State
+
+/// Represents the state of a cached translation file
+public enum CacheState: Sendable {
+    /// Cache exists and version matches server version (includes cached file)
+    case valid(cachedFile: TranslationFile)
+    /// Cache exists but version is outdated (includes old version number)
+    case stale(cachedVersion: Int)
+    /// No cache exists for this language
+    case missing
+    /// Cache file exists but is corrupted/invalid JSON
+    case corrupted
+}
+
+// MARK: - Localization Manager
+
 /// Main localization manager handling translation loading/retrieval
 /// Singleton pattern with observable language changes
 @MainActor
@@ -95,7 +111,7 @@ public final class LocalizationManager {
     ///   - translationFile: Translation file to set and cache
     ///   - languageCode: Language code for the translations
     public func setTranslations(_ translationFile: TranslationFile, for languageCode: String) async {
-        // Cache the translations
+        // Cache the translations (version is embedded in file)
         await cacheTranslations(translationFile, for: languageCode)
 
         // If this is the current language, set it as active
@@ -105,9 +121,40 @@ public final class LocalizationManager {
         } else {
             LocalizeKitLogger.d("LocalizationManager: Cached translations for \(languageCode)")
         }
+    }
 
-        // Save version to preferences
-        LocalizeKitStorage.shared.translationVersion = translationFile.version
+    /// Check cache state for a language (version comparison)
+    /// - Parameter language: Language object with code and server version
+    /// - Returns: Cache state (valid, stale, missing, or corrupted)
+    public func getCacheState(for language: Language) async -> CacheState {
+        guard let storage = translationStorage else {
+            LocalizeKitLogger.e("TranslationStorage not initialized")
+            return .missing
+        }
+
+        return await storage.checkCacheState(for: language)
+    }
+
+    /// Activate language from provided TranslationFile
+    /// - Parameters:
+    ///   - translationFile: Translation file to activate
+    ///   - code: Language code
+    public func activateLanguage(_ translationFile: TranslationFile, code: String) {
+        currentTranslations = translationFile
+        currentLanguage = code
+        LocalizeKitStorage.shared.selectedLanguage = code
+        LocalizeKitLogger.d("LocalizationManager: Activated language \(code), version: \(translationFile.version)")
+    }
+
+    /// Delete corrupted cache file
+    /// - Parameter languageCode: Language code
+    public func deleteCacheFile(for languageCode: String) async throws {
+        guard let storage = translationStorage else {
+            throw StorageError.cacheDirectoryNotFound
+        }
+
+        try await storage.deleteCacheFile(for: languageCode)
+        LocalizeKitLogger.d("LocalizationManager: Deleted cache file for \(languageCode)")
     }
 
     // MARK: - Translation Retrieval

@@ -198,10 +198,14 @@ Targets/
 - **Store module:** Uses runtime localization system (LocalizeKit) with full Bengali and Arabic translations
 - **Runtime system architecture:**
   - TranslationRepository (Store module) fetches translations from server (currently stubbed in NetworkKit)
-  - LocalizationManager (LocalizeKit) handles caching, lookup, and language activation
+  - LocalizationManager (LocalizeKit) handles version-aware caching, lookup, and language activation
   - LocalizeKit has no NetworkKit dependency - pure localization logic
-  - LanguageSettingsViewModel coordinates: Repository fetch → LocalizationManager cache → Activate
-  - Local caching in Library/Caches
+  - LanguageSettingsViewModel coordinates language changes with cache-first strategy
+  - **Cache-First Flow:** Check cache version → If valid, use cache (instant) → If stale/missing, fetch from API
+  - **Permanent storage:** `Library/Application Support/LocalizeKit/Translations/`
+  - **Per-language versioning:** Each language tracks its own version (e.g., bn_BD: v12, ar_AE: v2)
+  - **Version comparison:** Cached file version vs server version → only fetch if mismatch
+  - **Cache states:** valid (instant load), stale (re-fetch), missing (fetch), corrupted (delete + re-fetch)
   - CLDR-compliant plural support (all 6 categories)
   - Custom plural rules (Vue-i18n style)
   - Three-tier fallback: Server → Cache → English default in code

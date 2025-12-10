@@ -35,34 +35,12 @@ final class LocalizeKitStorageTests: XCTestCase {
         XCTAssertNil(storage.selectedLanguage)
     }
 
-    func testTranslationVersion_InitiallyNil() {
-        XCTAssertNil(storage.translationVersion)
-    }
-
-    func testTranslationVersion_SetAndGet() {
-        storage.translationVersion = 42
-        XCTAssertEqual(storage.translationVersion, 42)
-    }
-
-    func testTranslationVersion_SetToNil() {
-        storage.translationVersion = 10
-        storage.translationVersion = nil
-        XCTAssertNil(storage.translationVersion)
-    }
-
-    func testTranslationVersion_ZeroIsValid() {
-        storage.translationVersion = 0
-        XCTAssertEqual(storage.translationVersion, 0)
-    }
-
     func testClearAll() {
         storage.selectedLanguage = "ar"
-        storage.translationVersion = 5
 
         storage.clearAll()
 
         XCTAssertNil(storage.selectedLanguage)
-        XCTAssertNil(storage.translationVersion)
     }
 
     func testBackwardCompatibility_SameKeysAsPreferences() {

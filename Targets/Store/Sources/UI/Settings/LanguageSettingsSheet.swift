@@ -55,16 +55,6 @@ struct LanguageSettingsSheet: View {
             .task {
                 await viewModel.loadLanguages()
             }
-            .overlay {
-                if viewModel.isChangingLanguage {
-                    LoadingOverlay(
-                        message: "store_language_changing".localize(
-                            default: "Changing language...",
-                            comment: "Progress message while changing language"
-                        )
-                    )
-                }
-            }
             .onLanguageChange()
         }
     }
@@ -74,7 +64,7 @@ struct LanguageSettingsSheet: View {
         List {
             Section {
                 ForEach(viewModel.countries, id: \.self) { country in
-                    NavigationLink(destination: languageListView(for: country)) {
+                    NavigationLink(destination: LanguageListSheet(country: country, viewModel: viewModel)) {
                         HStack {
                             Text(country)
                                 .font(.body)
@@ -112,78 +102,6 @@ struct LanguageSettingsSheet: View {
             }
         }
     }
-
-    @ViewBuilder
-    private func languageListView(for country: String) -> some View {
-        List {
-            Section {
-                ForEach(viewModel.languages(for: country)) { language in
-                    languageRow(language)
-                }
-            } header: {
-                Text.localized(
-                    "store_language_select_header",
-                    default: "Select Language",
-                    comment: "Header for language selection list"
-                )
-            } footer: {
-                Text.localized(
-                    "store_language_select_footer",
-                    default: "Choose your preferred language for the app. The interface will be translated immediately.",
-                    comment: "Footer explaining language selection"
-                )
-                .font(.footnote)
-            }
-        }
-        .navigationTitle(country)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            if viewModel.hasPendingChanges() {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .confirm) {
-                        Task {
-                            await viewModel.applyPendingLanguageChange()
-                        }
-                    } label: {
-                        Text.localized(
-                            "store_apply",
-                            default: "Apply",
-                            comment: "Apply button text to confirm language change"
-                        )
-                    }
-                    .disabled(viewModel.isChangingLanguage)
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func languageRow(_ language: Language) -> some View {
-        Button {
-            viewModel.selectLanguage(language.code)
-        } label: {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(language.nameLocale)
-                        .font(.body)
-                        .foregroundStyle(.primary)
-
-                    Text(language.nameEn)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-
-                if viewModel.isSelected(language.code) {
-                    Image(systemName: "checkmark")
-                        .foregroundStyle(.blue)
-                        .font(.body.weight(.semibold))
-                }
-            }
-        }
-        .disabled(viewModel.isChangingLanguage)
-    }
 }
 
 #if DEBUG
@@ -216,60 +134,6 @@ struct LanguageSettingsSheet: View {
             isError: true
         )
     )
-}
-
-#endif
-
-private struct LoadingOverlay: View {
-    let message: String
-
-    var body: some View {
-        ZStack {
-            Color.black.opacity(0.4)
-                .ignoresSafeArea()
-
-            VStack(spacing: 16) {
-                ProgressView()
-                    .tint(Color.label)
-
-                Text(message)
-                    .foregroundStyle(Color.label)
-                    .font(.subheadline)
-                    .multilineTextAlignment(.center)
-            }
-            .padding(24)
-            .frame(maxWidth: 200)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(.systemGray6))
-            )
-        }
-    }
-}
-
-#if DEBUG
-
-#Preview("Loading - Short Message") {
-    LoadingOverlay(
-        message: "Changing language..."
-    )
-}
-
-#Preview("Loading - Long Message") {
-    LoadingOverlay(
-        message: "Please wait while we process your request. This may take a few moments..."
-    )
-}
-
-#Preview("Loading - On Content") {
-    ZStack {
-        // Simulated background content
-        List(1 ... 20, id: \.self) { item in
-            Text("Item \(item)")
-        }
-
-        LoadingOverlay(message: "Loading...")
-    }
 }
 
 #endif
