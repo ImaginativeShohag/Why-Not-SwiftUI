@@ -134,7 +134,7 @@ struct ValidateCommand: AsyncParsableCommand {
             }
 
             let targetFile = try loadTargetFile(from: targetPath)
-            return validateTargetFile(targetFile, against: baseFile)
+            return validateTargetFile(targetFile, language: language, against: baseFile)
         }
     }
 
@@ -209,7 +209,7 @@ struct ValidateCommand: AsyncParsableCommand {
         return errors.isEmpty
     }
 
-    private func validateTargetFile(_ targetFile: TargetTranslationFile, against baseFile: BaseTranslationFile) -> Bool {
+    private func validateTargetFile(_ targetFile: TargetTranslationFile, language: String, against baseFile: BaseTranslationFile) -> Bool {
         var errors: [String] = []
         var warnings: [String] = []
         var missingKeys: [String] = []
@@ -336,9 +336,9 @@ struct ValidateCommand: AsyncParsableCommand {
 
         let hasErrors = !missingKeys.isEmpty || !formatMismatches.isEmpty
         if hasErrors {
-            print("❌ \(targetFile.language).json has errors")
+            print("❌ \(language).json has errors")
         } else {
-            print("✅ \(targetFile.language).json is valid")
+            print("✅ \(language).json is valid")
         }
         print("")
 

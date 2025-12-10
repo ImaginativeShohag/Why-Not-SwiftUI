@@ -103,6 +103,39 @@ Targets/
 - Generic components: Can end with `View` (e.g., `CustomTextFieldView`, `RingChartView`)
 - ViewModels: Located in same directory as their screen (e.g., `HomeScreen.swift` + `HomeViewModel.swift`)
 
+### Toolbar Button Conventions
+
+**Important:** Use semantic button roles and placements for toolbar items:
+
+**Dismissal/Close Buttons (for Sheets and Modals):**
+```swift
+.toolbar {
+    ToolbarItem(placement: .cancellationAction) {
+        Button("Done", role: .close) {
+            dismiss()
+        }
+    }
+}
+```
+- Use `placement: .cancellationAction` for dismiss/close buttons
+- Use `role: .close` to indicate cancellation action
+- Automatically positions left (LTR) or right (RTL)
+- VoiceOver announces as cancellation, Escape key support
+
+**Confirmation/Apply Buttons:**
+```swift
+.toolbar {
+    ToolbarItem(placement: .confirmationAction) {
+        Button("Apply", role: .confirm) {
+            applyChanges()
+        }
+    }
+}
+```
+- Use `role: .confirm` for confirm/apply/save buttons
+- Automatically positions right (LTR) or left (RTL)
+- Follows iOS HIG for primary actions
+
 ### Key Architectural Patterns
 
 **Repository Pattern:**
@@ -121,6 +154,44 @@ Targets/
 - Components should be stateless/dumb and reusable
 - Never pass ViewModels to components
 - Pass only required data and callbacks
+
+**ViewModel Patterns:**
+- **IMPORTANT:** Always follow existing code patterns when creating or modifying ViewModels
+- Use `UIState<T>` from Core module for state management (never create custom state enums)
+- Structure pattern (see `ProfileViewModel.swift` or `HomeViewModel.swift` as reference):
+  ```swift
+  @MainActor
+  @Observable
+  final class MyViewModel {
+      var state: UIState<MyDataType> = .loading
+
+      private var isPreview: Bool = false
+      private let repository: MyRepository
+
+      init(repository: MyRepository = MyRepository()) {
+          self.repository = repository
+      }
+
+      func loadData() async {
+          guard !isPreview else { return }
+          state = .loading
+          // ... fetch data logic
+      }
+  }
+
+  #if DEBUG
+  extension MyViewModel {
+      convenience init(forPreview: Bool, isLoading: Bool, isError: Bool) {
+          self.init()
+          isPreview = true
+          // ... set preview state
+      }
+  }
+  #endif
+  ```
+- Preview initializers must be `convenience init` in a separate extension under `#if DEBUG`
+- Always guard against `isPreview` in methods that perform network/data operations
+- Use `state.isLoading`, `state.isError`, `state.hasData`, `state.getData()` for state checks
 
 **Localization:**
 - **Home module:** Uses `Localizable.xcstrings` for string resources with `NSLocalizedString("key", bundle: .module, comment: "")`

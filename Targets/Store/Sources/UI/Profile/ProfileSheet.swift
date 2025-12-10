@@ -181,7 +181,7 @@ struct ProfileSheet: View {
                     .tint(.red)
                 }
             .sheet(isPresented: $showLanguageSettings) {
-                LanguageSettingsScreen()
+                LanguageSettingsSheet()
             }
             .onLanguageChange()
         }

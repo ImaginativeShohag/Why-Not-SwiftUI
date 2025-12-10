@@ -76,13 +76,8 @@ public final class LanguageMerger {
             updatedModules[moduleName] = updatedStrings
         }
 
-        let dateFormatter = ISO8601DateFormatter()
-        let generatedAt = dateFormatter.string(from: Date())
-
         return TargetTranslationFile(
             version: base.version,
-            language: target.language,
-            generatedAt: generatedAt,
             modules: updatedModules
         )
     }
@@ -111,13 +106,8 @@ public final class LanguageMerger {
             targetModules[moduleName] = targetStrings
         }
 
-        let dateFormatter = ISO8601DateFormatter()
-        let generatedAt = dateFormatter.string(from: Date())
-
         return TargetTranslationFile(
             version: base.version,
-            language: language,
-            generatedAt: generatedAt,
             modules: targetModules
         )
     }

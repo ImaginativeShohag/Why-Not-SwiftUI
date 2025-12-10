@@ -31,8 +31,6 @@ public struct BaseMetadata: Codable {
 /// Target language file structure (simplified, no metadata)
 public struct TargetTranslationFile: Codable {
     public let version: Int
-    public let language: String
-    public let generatedAt: String
     public let modules: [String: [String: TargetTranslationEntry]]
 }
 

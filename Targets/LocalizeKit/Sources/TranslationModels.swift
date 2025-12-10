@@ -5,14 +5,10 @@ import Foundation
 /// Root translation file structure
 public struct TranslationFile: Codable, Sendable {
     public let version: Int
-    public let language: String
-    public let generatedAt: String
     public let modules: [String: ModuleTranslations]
 
-    public init(version: Int, language: String, generatedAt: String, modules: [String: ModuleTranslations]) {
+    public init(version: Int, modules: [String: ModuleTranslations]) {
         self.version = version
-        self.language = language
-        self.generatedAt = generatedAt
         self.modules = modules
     }
 }
@@ -136,26 +132,51 @@ public enum TranslationValidationStatus: String, Codable, Sendable {
 
 // MARK: - Available Languages
 
-/// Available languages response from server
+/// Available languages response from server (grouped by country)
 public struct AvailableLanguages: Codable, Sendable {
-    public let languages: [Language]
+    /// Dictionary mapping country names to their available languages
+    public let data: [String: [Language]]
 
-    public init(languages: [Language]) {
-        self.languages = languages
+    public init(data: [String: [Language]]) {
+        self.data = data
+    }
+
+    /// Get all countries sorted alphabetically
+    public var countries: [String] {
+        data.keys.sorted()
+    }
+
+    /// Get languages for a specific country
+    public func languages(for country: String) -> [Language] {
+        data[country] ?? []
+    }
+
+    /// Get all languages (flattened from all countries)
+    public var allLanguages: [Language] {
+        data.values.flatMap { $0 }
     }
 }
 
 /// Language information
 public struct Language: Codable, Sendable, Identifiable {
     public let code: String
-    public let name: String
-    public let nativeName: String
+    public let nameEn: String
+    public let nameLocale: String
+    public let version: Int
 
     public var id: String { code }
 
-    public init(code: String, name: String, nativeName: String) {
+    enum CodingKeys: String, CodingKey {
+        case code
+        case nameEn = "name_en"
+        case nameLocale = "name_locale"
+        case version
+    }
+
+    public init(code: String, nameEn: String, nameLocale: String, version: Int) {
         self.code = code
-        self.name = name
-        self.nativeName = nativeName
+        self.nameEn = nameEn
+        self.nameLocale = nameLocale
+        self.version = version
     }
 }

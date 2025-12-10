@@ -2,6 +2,7 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Core
 import Foundation
 import LocalizeKit
 import SuperLog
@@ -9,18 +10,13 @@ import SuperLog
 @MainActor
 @Observable
 final class LanguageSettingsViewModel {
-    enum State {
-        case loading
-        case data
-        case error(String)
-    }
-
-    var state: State = .loading
-    var availableLanguages: [Language] = []
+    var state: UIState<AvailableLanguages> = .loading
+    var selectedCountry: String? = nil
     var selectedLanguage: String = "en"
     var pendingLanguage: String? = nil
     var isChangingLanguage: Bool = false
 
+    private var isPreview: Bool = false
     private let localizationManager: LocalizationManager
     private let translationRepository: TranslationRepository
 
@@ -33,30 +29,21 @@ final class LanguageSettingsViewModel {
         selectedLanguage = localizationManager.currentLanguage
     }
 
-    // MARK: - Preview Initializer
+    // MARK: - Public Properties
 
-    #if DEBUG
-    init(forPreview: Bool, isLoading: Bool = false, isError: Bool = false) {
-        self.localizationManager = .shared
-        self.translationRepository = TranslationRepository()
-
-        if isLoading {
-            state = .loading
-        } else if isError {
-            state = .error("Failed to load languages")
-        } else {
-            state = .data
-            availableLanguages = [
-                Language(code: "en", name: "English", nativeName: "English"),
-                Language(code: "bn", name: "Bengali", nativeName: "বাংলা"),
-                Language(code: "ar", name: "Arabic", nativeName: "العربية")
-            ]
-            selectedLanguage = "en"
-        }
+    var countries: [String] {
+        state.getData()?.countries ?? []
     }
-    #endif
+
+    func languages(for country: String) -> [Language] {
+        state.getData()?.languages(for: country) ?? []
+    }
 
     // MARK: - Public Methods
+
+    func selectCountry(_ country: String) {
+        selectedCountry = country
+    }
 
     func selectLanguage(_ languageCode: String) {
         pendingLanguage = languageCode
@@ -74,20 +61,21 @@ final class LanguageSettingsViewModel {
     }
 
     func loadLanguages() async {
+        guard !isPreview, !state.hasData else { return }
+
         state = .loading
 
         let result = await translationRepository.fetchAvailableLanguages()
 
         switch result {
         case .success(let languages):
-            localizationManager.setAvailableLanguages(languages)
-            availableLanguages = languages
+            localizationManager.setAvailableLanguages(languages.allLanguages)
+            state = .data(data: languages)
             selectedLanguage = localizationManager.currentLanguage
-            state = .data
-            SuperLog.d("LanguageSettingsViewModel: Loaded \(languages.count) languages")
+            SuperLog.d("LanguageSettingsViewModel: Loaded languages from \(languages.countries.count) countries")
 
         case .failure(let error):
-            state = .error(error.localizedDescription)
+            state = .error(message: error.localizedDescription)
             SuperLog.e("LanguageSettingsViewModel: Failed to load languages - \(error)")
         }
     }
@@ -124,3 +112,40 @@ final class LanguageSettingsViewModel {
         pendingLanguage ?? selectedLanguage == languageCode
     }
 }
+
+#if DEBUG
+
+extension LanguageSettingsViewModel {
+    convenience init(
+        forPreview: Bool,
+        isLoading: Bool,
+        isError: Bool
+    ) {
+        self.init()
+
+        isPreview = true
+
+        if isLoading {
+            state = .loading
+        } else if isError {
+            state = .error(message: "Failed to load languages")
+        } else {
+            // Create preview data with country grouping
+            let previewData: [String: [Language]] = [
+                "Bangladesh": [
+                    Language(code: "bn_BD", nameEn: "Bengali", nameLocale: "বাংলা", version: 12),
+                    Language(code: "en_US", nameEn: "English", nameLocale: "English", version: 4)
+                ],
+                "United Arab Emirates": [
+                    Language(code: "ar_AE", nameEn: "Arabic (U.A.E.)", nameLocale: "العربية", version: 2),
+                    Language(code: "en_US", nameEn: "English", nameLocale: "English", version: 4)
+                ]
+            ]
+            state = .data(data: AvailableLanguages(data: previewData))
+            selectedLanguage = "en"
+        }
+    }
+}
+
+#endif
+

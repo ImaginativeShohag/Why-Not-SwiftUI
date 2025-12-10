@@ -13,8 +13,8 @@ import SuperLog
 final class TranslationRepository: Sendable {
 
     /// Fetch available languages from the server
-    /// - Returns: Result containing array of available languages or error
-    func fetchAvailableLanguages() async -> Result<[Language], Error> {
+    /// - Returns: Result containing AvailableLanguages (country-grouped) or error
+    func fetchAvailableLanguages() async -> Result<AvailableLanguages, Error> {
         SuperLog.d("TranslationRepository: Fetching available languages...")
 
         let result: ApiResult<AvailableLanguages> = await DataSource.Localization.request(
@@ -23,8 +23,8 @@ final class TranslationRepository: Sendable {
 
         switch result {
         case .success(let response):
-            SuperLog.d("TranslationRepository: Fetched \(response.languages.count) languages")
-            return .success(response.languages)
+            SuperLog.d("TranslationRepository: Fetched languages from \(response.countries.count) countries")
+            return .success(response)
 
         case .failure(_, let errorMessage, let statusCode):
             SuperLog.e("TranslationRepository: Failed to fetch languages - \(errorMessage) (Status: \(statusCode))")
@@ -33,7 +33,7 @@ final class TranslationRepository: Sendable {
     }
 
     /// Fetch translation file for a specific language
-    /// - Parameter languageCode: Language code (e.g., "en", "bn", "ar")
+    /// - Parameter languageCode: Language code (e.g., "en_US", "bn_BD", "ar_AE")
     /// - Returns: Result containing translation file or error
     func fetchTranslations(for languageCode: String) async -> Result<TranslationFile, Error> {
         SuperLog.d("TranslationRepository: Fetching translations for \(languageCode)...")

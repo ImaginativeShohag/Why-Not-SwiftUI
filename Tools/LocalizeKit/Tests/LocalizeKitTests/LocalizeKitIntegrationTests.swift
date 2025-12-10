@@ -188,15 +188,12 @@ final class LocalizeKitIntegrationTests: XCTestCase {
         // Create empty target file
         let emptyTarget = TargetTranslationFile(
             version: 0,
-            language: "ar",
-            generatedAt: ISO8601DateFormatter().string(from: Date()),
             modules: [:]
         )
 
         let targetFile = merger.sync(base: baseFile, target: emptyTarget)
 
         XCTAssertEqual(targetFile.version, baseFile.version)
-        XCTAssertEqual(targetFile.language, "ar")
         XCTAssertEqual(targetFile.modules.count, baseFile.modules.count)
 
         // All keys should be added
@@ -229,8 +226,6 @@ final class LocalizeKitIntegrationTests: XCTestCase {
 
         let oldTarget = TargetTranslationFile(
             version: 1,
-            language: "ar",
-            generatedAt: ISO8601DateFormatter().string(from: Date()),
             modules: targetModules
         )
 
@@ -266,8 +261,6 @@ final class LocalizeKitIntegrationTests: XCTestCase {
         // Create old target file with version 1
         let oldTarget = TargetTranslationFile(
             version: 1,
-            language: "ar",
-            generatedAt: ISO8601DateFormatter().string(from: Date()),
             modules: ["Store": [:]]
         )
 
@@ -315,8 +308,6 @@ final class LocalizeKitIntegrationTests: XCTestCase {
 
         let targetFile = TargetTranslationFile(
             version: 1,
-            language: "ar",
-            generatedAt: ISO8601DateFormatter().string(from: Date()),
             modules: [
                 "Store": [
                     "key1": TargetTranslationEntry(
@@ -368,8 +359,6 @@ final class LocalizeKitIntegrationTests: XCTestCase {
 
         let targetFile = TargetTranslationFile(
             version: 1,
-            language: "ar",
-            generatedAt: ISO8601DateFormatter().string(from: Date()),
             modules: [
                 "Store": [
                     "greeting": TargetTranslationEntry(
@@ -412,8 +401,6 @@ final class LocalizeKitIntegrationTests: XCTestCase {
         let merger = LanguageMerger()
         let emptyTarget = TargetTranslationFile(
             version: 0,
-            language: "ar",
-            generatedAt: ISO8601DateFormatter().string(from: Date()),
             modules: [:]
         )
         let targetFile = merger.sync(base: baseFile, target: emptyTarget)
@@ -479,8 +466,6 @@ final class LocalizeKitIntegrationTests: XCTestCase {
 
         let properTarget = TargetTranslationFile(
             version: 1,
-            language: "ar",
-            generatedAt: ISO8601DateFormatter().string(from: Date()),
             modules: translatedModules
         )
 
@@ -527,8 +512,6 @@ final class LocalizeKitIntegrationTests: XCTestCase {
 
         let emptyTarget = TargetTranslationFile(
             version: 0,
-            language: "ar",
-            generatedAt: ISO8601DateFormatter().string(from: Date()),
             modules: [:]
         )
 

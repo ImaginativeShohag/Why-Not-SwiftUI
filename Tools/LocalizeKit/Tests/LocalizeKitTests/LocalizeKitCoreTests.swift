@@ -79,8 +79,6 @@ final class LocalizeKitCoreTests: XCTestCase {
     func testTargetTranslationFileEncoding() throws {
         let targetFile = TargetTranslationFile(
             version: 1,
-            language: "ar",
-            generatedAt: "2025-12-04T00:00:00Z",
             modules: [
                 "TestModule": [
                     "test_key": TargetTranslationEntry(
@@ -99,7 +97,6 @@ final class LocalizeKitCoreTests: XCTestCase {
         let decoded = try decoder.decode(TargetTranslationFile.self, from: data)
 
         XCTAssertEqual(decoded.version, 1)
-        XCTAssertEqual(decoded.language, "ar")
         XCTAssertEqual(decoded.modules.count, 1)
     }
 
@@ -161,8 +158,6 @@ final class LocalizeKitCoreTests: XCTestCase {
         let jsonString = """
         {
             "version": 1,
-            "language": "ar",
-            "generatedAt": "2025-12-04T00:00:00Z",
             "modules": {
                 "Store": {
                     "store_welcome": {
@@ -179,7 +174,6 @@ final class LocalizeKitCoreTests: XCTestCase {
         let targetFile = try decoder.decode(TargetTranslationFile.self, from: data)
 
         XCTAssertEqual(targetFile.version, 1)
-        XCTAssertEqual(targetFile.language, "ar")
         XCTAssertEqual(targetFile.modules.count, 1)
 
         let entry = targetFile.modules["Store"]?["store_welcome"]

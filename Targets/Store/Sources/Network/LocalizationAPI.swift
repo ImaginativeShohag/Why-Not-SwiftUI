@@ -96,23 +96,60 @@ extension LocalizationAPI: ApiEndpoint {
     private var availableLanguagesStubData: Data {
         let json = """
         {
-          "languages": [
-            {
-              "code": "en",
-              "name": "English",
-              "nativeName": "English"
-            },
-            {
-              "code": "bn",
-              "name": "Bengali",
-              "nativeName": "বাংলা"
-            },
-            {
-              "code": "ar",
-              "name": "Arabic",
-              "nativeName": "العربية"
-            }
-          ]
+          "success": true,
+          "message": "Request processed successfully",
+          "data": {
+            "Bangladesh": [
+              {
+                "code": "bn_BD",
+                "name_en": "Bengali",
+                "name_locale": "বাংলা",
+                "version": 12
+              },
+              {
+                "code": "en_US",
+                "name_en": "English",
+                "name_locale": "English",
+                "version": 4
+              }
+            ],
+            "United Arab Emirates": [
+              {
+                "code": "ar_AE",
+                "name_en": "Arabic (U.A.E.)",
+                "name_locale": "العربية",
+                "version": 2
+              },
+              {
+                "code": "en_US",
+                "name_en": "English",
+                "name_locale": "English",
+                "version": 4
+              }
+            ],
+            "United States": [
+              {
+                "code": "en_US",
+                "name_en": "English",
+                "name_locale": "English",
+                "version": 4
+              }
+            ],
+            "China": [
+              {
+                "code": "zh_CN",
+                "name_en": "Chinese (China)",
+                "name_locale": "中文",
+                "version": 1
+              },
+              {
+                "code": "en_US",
+                "name_en": "English",
+                "name_locale": "English",
+                "version": 4
+              }
+            ]
+          }
         }
         """
         return json.data(using: .utf8)!
@@ -123,9 +160,9 @@ extension LocalizationAPI: ApiEndpoint {
     /// - Returns: Stub translation JSON data
     private func translationFileStubData(for languageCode: String) -> Data {
         switch languageCode {
-        case "bn":
+        case "bn_BD":
             return bengaliStubData
-        case "ar":
+        case "ar_AE":
             return arabicStubData
         default:
             return englishStubData
@@ -137,8 +174,6 @@ extension LocalizationAPI: ApiEndpoint {
         let json = """
         {
           "version": 1,
-          "language": "en",
-          "generatedAt": "2025-11-27T10:30:00Z",
           "modules": {
             "Store": {
               "store_welcome": {
@@ -393,8 +428,6 @@ extension LocalizationAPI: ApiEndpoint {
         let json = """
         {
           "version": 1,
-          "language": "bn",
-          "generatedAt": "2025-11-27T10:35:00Z",
           "modules": {
             "Store": {
               "store_welcome": {
@@ -649,8 +682,6 @@ extension LocalizationAPI: ApiEndpoint {
         let json = """
         {
           "version": 1,
-          "language": "ar",
-          "generatedAt": "2025-11-27T10:40:00Z",
           "modules": {
             "Store": {
               "store_welcome": {

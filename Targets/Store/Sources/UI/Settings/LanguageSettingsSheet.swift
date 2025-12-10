@@ -2,10 +2,11 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import Core
 import LocalizeKit
 import SwiftUI
 
-struct LanguageSettingsScreen: View {
+struct LanguageSettingsSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var viewModel = LanguageSettingsViewModel()
@@ -14,17 +15,19 @@ struct LanguageSettingsScreen: View {
         self.viewModel = viewModel
     }
 
+    private var state: UIState<AvailableLanguages> {
+        viewModel.state
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
-                switch viewModel.state {
-                case .loading:
+                if state.isLoading {
                     ProgressView("store_language_loading".localize(default: "Loading languages...", comment: "Loading text while fetching languages"))
-
-                case .error(let message):
+                } else if state.isError {
                     ContentUnavailableView(
                         label: {
-                            Label(message, systemImage: "exclamationmark.triangle")
+                            Label(state.getErrorMessage() ?? "Error", systemImage: "exclamationmark.triangle")
                         },
                         actions: {
                             Button("store_retry".localize(default: "Retry", comment: "Retry button text")) {
@@ -36,39 +39,17 @@ struct LanguageSettingsScreen: View {
                             .padding(.top)
                         }
                     )
-
-                case .data:
-                    languageListView
+                } else if state.hasData {
+                    countryListView
                 }
             }
             .navigationTitle("store_language_title".localize(default: "Language", comment: "Language settings screen title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        Task {
-                            if viewModel.hasPendingChanges() {
-                                await viewModel.applyPendingLanguageChange()
-                            }
-                            dismiss()
-                        }
-                    } label: {
-                        if viewModel.hasPendingChanges() {
-                            Text.localized(
-                                "store_apply",
-                                default: "Apply",
-                                comment: "Apply button text to confirm language change"
-                            )
-                            .fontWeight(.semibold)
-                        } else {
-                            Text.localized(
-                                "store_done",
-                                default: "Done",
-                                comment: "Done button text"
-                            )
-                        }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("store_done".localize(default: "Done", comment: "Done button text"), role: .close) {
+                        dismiss()
                     }
-                    .disabled(viewModel.isChangingLanguage)
                 }
             }
             .task {
@@ -89,10 +70,54 @@ struct LanguageSettingsScreen: View {
     }
 
     @ViewBuilder
-    private var languageListView: some View {
+    private var countryListView: some View {
         List {
             Section {
-                ForEach(viewModel.availableLanguages) { language in
+                ForEach(viewModel.countries, id: \.self) { country in
+                    NavigationLink(destination: languageListView(for: country)) {
+                        HStack {
+                            Text(country)
+                                .font(.body)
+                                .foregroundStyle(.primary)
+
+                            Spacer()
+
+                            // Show count badge
+                            let languageCount = viewModel.languages(for: country).count
+                            Text("\(languageCount)")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(
+                                    Capsule()
+                                        .fill(Color(.systemGray5))
+                                )
+                        }
+                    }
+                }
+            } header: {
+                Text.localized(
+                    "store_country_select_header",
+                    default: "Select Country",
+                    comment: "Header for country selection list"
+                )
+            } footer: {
+                Text.localized(
+                    "store_country_select_footer",
+                    default: "Choose a country to see available languages.",
+                    comment: "Footer explaining country selection"
+                )
+                .font(.footnote)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func languageListView(for country: String) -> some View {
+        List {
+            Section {
+                ForEach(viewModel.languages(for: country)) { language in
                     languageRow(language)
                 }
             } header: {
@@ -110,6 +135,26 @@ struct LanguageSettingsScreen: View {
                 .font(.footnote)
             }
         }
+        .navigationTitle(country)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if viewModel.hasPendingChanges() {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(role: .confirm) {
+                        Task {
+                            await viewModel.applyPendingLanguageChange()
+                        }
+                    } label: {
+                        Text.localized(
+                            "store_apply",
+                            default: "Apply",
+                            comment: "Apply button text to confirm language change"
+                        )
+                    }
+                    .disabled(viewModel.isChangingLanguage)
+                }
+            }
+        }
     }
 
     @ViewBuilder
@@ -119,11 +164,11 @@ struct LanguageSettingsScreen: View {
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(language.nativeName)
+                    Text(language.nameLocale)
                         .font(.body)
                         .foregroundStyle(.primary)
 
-                    Text(language.name)
+                    Text(language.nameEn)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -144,7 +189,7 @@ struct LanguageSettingsScreen: View {
 #if DEBUG
 
 #Preview("With Data") {
-    LanguageSettingsScreen(
+    LanguageSettingsSheet(
         viewModel: .init(
             forPreview: true,
             isLoading: false,
@@ -154,7 +199,7 @@ struct LanguageSettingsScreen: View {
 }
 
 #Preview("Loading") {
-    LanguageSettingsScreen(
+    LanguageSettingsSheet(
         viewModel: .init(
             forPreview: true,
             isLoading: true,
@@ -164,7 +209,7 @@ struct LanguageSettingsScreen: View {
 }
 
 #Preview("Error") {
-    LanguageSettingsScreen(
+    LanguageSettingsSheet(
         viewModel: .init(
             forPreview: true,
             isLoading: false,
