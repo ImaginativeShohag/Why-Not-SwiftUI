@@ -18,6 +18,7 @@ final class LanguageSettingsViewModel {
     var state: State = .loading
     var availableLanguages: [Language] = []
     var selectedLanguage: String = "en"
+    var pendingLanguage: String? = nil
     var isChangingLanguage: Bool = false
 
     private let localizationManager: LocalizationManager
@@ -56,6 +57,21 @@ final class LanguageSettingsViewModel {
     #endif
 
     // MARK: - Public Methods
+
+    func selectLanguage(_ languageCode: String) {
+        pendingLanguage = languageCode
+    }
+
+    func applyPendingLanguageChange() async {
+        guard let languageCode = pendingLanguage else { return }
+        await changeLanguage(to: languageCode)
+        pendingLanguage = nil
+    }
+
+    func hasPendingChanges() -> Bool {
+        guard let pending = pendingLanguage else { return false }
+        return pending != selectedLanguage
+    }
 
     func loadLanguages() async {
         state = .loading
@@ -105,6 +121,6 @@ final class LanguageSettingsViewModel {
     }
 
     func isSelected(_ languageCode: String) -> Bool {
-        selectedLanguage == languageCode
+        pendingLanguage ?? selectedLanguage == languageCode
     }
 }

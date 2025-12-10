@@ -46,14 +46,29 @@ struct LanguageSettingsScreen: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        dismiss()
+                        Task {
+                            if viewModel.hasPendingChanges() {
+                                await viewModel.applyPendingLanguageChange()
+                            }
+                            dismiss()
+                        }
                     } label: {
-                        Text.localized(
-                            "store_done",
-                            default: "Done",
-                            comment: "Done button text"
-                        )
+                        if viewModel.hasPendingChanges() {
+                            Text.localized(
+                                "store_apply",
+                                default: "Apply",
+                                comment: "Apply button text to confirm language change"
+                            )
+                            .fontWeight(.semibold)
+                        } else {
+                            Text.localized(
+                                "store_done",
+                                default: "Done",
+                                comment: "Done button text"
+                            )
+                        }
                     }
+                    .disabled(viewModel.isChangingLanguage)
                 }
             }
             .task {
@@ -100,9 +115,7 @@ struct LanguageSettingsScreen: View {
     @ViewBuilder
     private func languageRow(_ language: Language) -> some View {
         Button {
-            Task {
-                await viewModel.changeLanguage(to: language.code)
-            }
+            viewModel.selectLanguage(language.code)
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {

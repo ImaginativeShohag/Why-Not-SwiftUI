@@ -1,5 +1,5 @@
 {
-  "generatedAt" : "2025-12-03T22:16:45Z",
+  "generatedAt" : "2025-12-10T01:16:58Z",
   "language" : "en",
   "modules" : {
     "Store" : {
@@ -7,7 +7,7 @@
         "comment" : "Address label",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Address",
@@ -17,17 +17,27 @@
         "comment" : "Navigation title",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Store Overflow",
         "version" : 1
       },
+      "store_apply" : {
+        "comment" : "Apply button text to confirm language change",
+        "metadata" : {
+          "addedInVersion" : 2,
+          "status" : "new"
+        },
+        "type" : "simple",
+        "value" : "Apply",
+        "version" : 2
+      },
       "store_cart_checkout" : {
         "comment" : "Button to proceed to checkout",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Check Out",
@@ -37,7 +47,7 @@
         "comment" : "Description for empty cart state",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Add some products to continue.",
@@ -47,7 +57,7 @@
         "comment" : "Title shown when cart has no items",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Your Cart is Empty.",
@@ -57,7 +67,7 @@
         "comment" : "Menu item to view orders",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Orders",
@@ -67,7 +77,7 @@
         "comment" : "Cart screen title",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Cart",
@@ -77,7 +87,7 @@
         "comment" : "Label for total price in cart",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Total",
@@ -87,7 +97,7 @@
         "comment" : "Categories screen title",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Categories",
@@ -97,7 +107,7 @@
         "comment" : "Address TextField placeholder",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Address...",
@@ -107,7 +117,7 @@
         "comment" : "Description for completed checkout",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Add some products to continue again.",
@@ -117,7 +127,7 @@
         "comment" : "Title shown when checkout is complete",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Checkout is completed.",
@@ -127,7 +137,7 @@
         "comment" : "Name TextField placeholder",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Your name...",
@@ -137,7 +147,7 @@
         "comment" : "Phone TextField placeholder",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Phone number...",
@@ -147,7 +157,7 @@
         "comment" : "Button to place order",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Place Order",
@@ -157,7 +167,7 @@
         "comment" : "Button text while placing order",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Placing Order...",
@@ -167,7 +177,7 @@
         "comment" : "Label for shipping address section",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Shipping Address",
@@ -177,7 +187,7 @@
         "comment" : "Success alert title",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Order placed successfully!",
@@ -187,7 +197,7 @@
         "comment" : "Checkout screen title",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Checkout",
@@ -197,7 +207,7 @@
         "comment" : "Label for total price in checkout",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Total",
@@ -207,7 +217,7 @@
         "comment" : "Profile details section header",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Details",
@@ -217,7 +227,7 @@
         "comment" : "Done button text",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Done",
@@ -227,7 +237,7 @@
         "comment" : "Email address label",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Email",
@@ -237,7 +247,7 @@
         "comment" : "Progress message while changing language",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Changing language...",
@@ -247,7 +257,7 @@
         "comment" : "Loading text while fetching languages",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Loading languages...",
@@ -257,7 +267,7 @@
         "comment" : "Footer explaining language selection",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Choose your preferred language for the app. The interface will be translated immediately.",
@@ -267,7 +277,7 @@
         "comment" : "Header for language selection list",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Select Language",
@@ -277,7 +287,7 @@
         "comment" : "Language settings button text",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Language Settings",
@@ -287,7 +297,7 @@
         "comment" : "Language settings screen title",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Language",
@@ -297,7 +307,7 @@
         "comment" : "Login button text",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Login",
@@ -307,7 +317,7 @@
         "comment" : "User name label",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Name",
@@ -317,7 +327,7 @@
         "comment" : "OK button text",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Ok",
@@ -327,7 +337,7 @@
         "comment" : "Orders button text",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Orders",
@@ -337,7 +347,7 @@
         "comment" : "Orders screen title",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Orders",
@@ -347,7 +357,7 @@
         "comment" : "Password field placeholder",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Password",
@@ -357,7 +367,7 @@
         "comment" : "Phone number label",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Phone",
@@ -367,7 +377,7 @@
         "comment" : "Product details screen title",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Product Details",
@@ -377,7 +387,7 @@
         "comment" : "Title showing the current category name",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "interpolation",
         "value" : "Category: %@",
@@ -387,7 +397,7 @@
         "comment" : "Profile screen title",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Profile",
@@ -397,7 +407,7 @@
         "comment" : "Retry button text",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Retry",
@@ -407,7 +417,7 @@
         "comment" : "Sign out confirmation button",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Sign Out",
@@ -417,7 +427,7 @@
         "comment" : "Alert title for sign out confirmation",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Sign out from Store?",
@@ -427,7 +437,7 @@
         "comment" : "Tab bar label for shopping bag",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Bag",
@@ -437,7 +447,7 @@
         "comment" : "Tab bar label for categories",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Categories",
@@ -447,7 +457,7 @@
         "comment" : "Tab bar label for home",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Home",
@@ -457,7 +467,7 @@
         "comment" : "Username field placeholder",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Username",
@@ -467,7 +477,7 @@
         "comment" : "Welcome message with user's full name on home screen",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "interpolation",
         "value" : "Welcome, **%@**!",
@@ -477,7 +487,7 @@
         "comment" : "Login screen welcome text",
         "metadata" : {
           "addedInVersion" : 1,
-          "status" : "new"
+          "status" : "unchanged"
         },
         "type" : "simple",
         "value" : "Welcome to",
@@ -485,5 +495,5 @@
       }
     }
   },
-  "version" : 1
+  "version" : 2
 }

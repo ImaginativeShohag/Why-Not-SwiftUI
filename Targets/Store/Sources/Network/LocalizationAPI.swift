@@ -4,6 +4,7 @@
 
 import Foundation
 import Moya
+import NetworkKit
 
 public extension DataSource {
     /// Localization API backend for fetching translations
