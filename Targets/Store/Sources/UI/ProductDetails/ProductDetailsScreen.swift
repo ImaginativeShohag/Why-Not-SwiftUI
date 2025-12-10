@@ -148,7 +148,8 @@ struct ProductDetailsScreen: View {
                         }
                         .frame(maxWidth: 150)
                     }
-                    .buttonStyle(.borderedProminent)
+                    .padding(.horizontal)
+                    .padding(.vertical, 4)
                     .frame(maxWidth: .infinity)
                 }
             }

@@ -232,40 +232,23 @@ ls .build/release/LocalizeKit
 
 ```json
 {
-  "version": "1.0.0",
-  "language": "bn",
-  "generatedAt": "2025-11-27T10:30:00Z",
+  "version": 1,
   "modules": {
     "Store": {
       "store_welcome": {
         "value": "স্বাগতম, **%@**!",
         "type": "interpolation",
-        "comment": "Welcome message with user's full name on home screen",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "status": "new",
-          "translationStatus": "validated"
-        }
+        "comment": "Welcome message with user's full name on home screen"
       },
       "store_profile": {
         "value": "প্রোফাইল",
         "type": "simple",
-        "comment": "Profile screen title",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "status": "new",
-          "translationStatus": "validated"
-        }
+        "comment": "Profile screen title"
       },
       "store_orders": {
         "value": "অর্ডার",
         "type": "simple",
-        "comment": "Orders button text",
-        "metadata": {
-          "addedInVersion": "1.0.0",
-          "status": "new",
-          "translationStatus": "validated"
-        }
+        "comment": "Orders button text"
       }
     }
   }

@@ -191,9 +191,7 @@ Select an option (1-6): _
 **JSON Structure by Module:**
 ```json
 {
-  "version": "1.1",
-  "language": "bn",
-  "generatedAt": "2025-11-27T10:30:00Z",
+  "version": 1,
   "modules": {
     "Store": {
       "store_welcome": {
@@ -1077,9 +1075,7 @@ Text("store_item_count".localize(
    - Response: Single language JSON file organized by modules
      ```json
      {
-       "version": "1.0",
-       "language": "bn",
-       "generatedAt": "2025-11-27T10:30:00Z",
+       "version": 1,
        "modules": {
          "Store": {
            "store_welcome": {
