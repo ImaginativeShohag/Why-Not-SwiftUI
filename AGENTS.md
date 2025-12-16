@@ -46,7 +46,26 @@ tuist edit
 # Run all tests except NetworkProdTests
 tuist test 'WhyNotSwiftUI Development' \
     --skip-test-targets NetworkKitTests/NetworkProdTests
+
+# Run Store module UI tests
+tuist test 'WhyNotSwiftUI Development' \
+    --test-targets StoreUITests
 ```
+
+**UI Testing Infrastructure:**
+- `TestUtils` module provides shared UI testing utilities:
+  - `XCUIApplication+` extensions for common operations
+  - `MockResponse` system for API stubbing in UI tests
+  - `launchApp(with:userData:)` for launching with mock data
+- **Store Module UI Tests** (37 tests across 4 suites):
+  - `StoreHomeUITests`: Home screen, products, categories, profile navigation
+  - `StoreCartUITests`: Cart operations, quantity management, checkout flow
+  - `StoreProductsUITests`: Product listing, details, error handling
+  - `StoreLanguageUITests`: Language settings and country selection
+- **Accessibility Identifiers:** All interactive elements have identifiers for reliable UI testing
+- **Mock User Data:** Tests can inject mock user data via `uiTestEnvKeyUserData` environment variable
+- **API Mocking:** Both `StoreAPI` and `LocalizationAPI` support error status codes in UI test mode
+- See `Docs/StoreUITestsReport.md` for comprehensive test results and known issues
 
 ## Architecture
 
@@ -66,10 +85,13 @@ The project is organized into modular frameworks defined in `Project.swift`:
 - `Home`: Main home screen with navigation to all examples
 - `Todo`: Todo app with SwiftData and CoreData implementations
 - `News`: News module with mock data for UI testing
-- `Store`: Store/shop example module with runtime localization (Bengali, Arabic)
+- `Store`: Store/shop example module with runtime localization (Bengali, Arabic) and comprehensive UI test coverage (37 tests)
 
 **Translation Management:**
 - `Tools/LocalizeKit`: CLI tool for extracting, merging, validating, and diffing translations
+
+**Testing Modules:**
+- `TestUtils`: Shared utilities for UI tests including API mocking, app launch helpers, and XCUIApplication extensions
 
 **Main Target:**
 - `WhyNotSwiftUI`: Main app target that depends on all modules
