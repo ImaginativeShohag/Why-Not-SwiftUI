@@ -47,6 +47,7 @@ struct LanguageListSheet: View {
                             comment: "Apply button text to confirm language change"
                         )
                     }
+                    .accessibilityIdentifier("apply_button")
                     .disabled(viewModel.isChangingLanguage)
                 }
             }
@@ -88,6 +89,7 @@ struct LanguageListSheet: View {
                 }
             }
         }
+        .accessibilityIdentifier(language.nameLocale)
         .disabled(viewModel.isChangingLanguage)
     }
 }

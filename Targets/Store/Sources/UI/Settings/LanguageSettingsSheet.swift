@@ -35,10 +35,12 @@ struct LanguageSettingsSheet: View {
                                     await viewModel.loadLanguages()
                                 }
                             }
+                            .accessibilityIdentifier("retry_button")
                             .buttonStyle(.borderedProminent)
                             .padding(.top)
                         }
                     )
+                    .accessibilityIdentifier("error_view")
                 } else if state.hasData {
                     countryListView
                 }
@@ -85,6 +87,7 @@ struct LanguageSettingsSheet: View {
                                 )
                         }
                     }
+                    .accessibilityIdentifier(country)
                 }
             } header: {
                 Text.localized(

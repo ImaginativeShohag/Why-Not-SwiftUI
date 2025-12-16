@@ -44,6 +44,7 @@ struct HomeScreen: View {
                                         id: user.id
                                     )
                                 }
+                                .accessibilityIdentifier("profile_button")
                             }
                             .padding()
                         }
@@ -399,6 +400,7 @@ private struct CategorySection: View {
                                 }
                             }
                             .buttonStyle(.plain)
+                            .accessibilityIdentifier(category)
                         }
                     }
                     .padding(.horizontal)

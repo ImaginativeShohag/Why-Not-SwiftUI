@@ -131,7 +131,9 @@ let project = Project.app(
         Module(
             name: "Store",
             hasResources: true,
-            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "NetworkKit"), .target(name: "NavigationKit"), .target(name: "LocalizeKit")]
+            hasUITest: true,
+            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "NetworkKit"), .target(name: "NavigationKit"), .target(name: "LocalizeKit")],
+            uiTestDependencies: [.target(name: "TestUtils")]
         ),
         Module(
             name: "TestUtils",

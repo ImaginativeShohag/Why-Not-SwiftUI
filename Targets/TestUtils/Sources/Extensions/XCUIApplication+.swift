@@ -31,8 +31,10 @@ public extension XCUIApplication {
     ///
     /// ```
     ///
-    /// - Parameter responses: An array of `MockResponse` objects that define the mock network behavior for this launch.
-    func launchApp(with responses: [MockResponse] = []) {
+    /// - Parameters:
+    ///   - responses: An array of `MockResponse` objects that define the mock network behavior for this launch.
+    ///   - userData: Optional user data to be set in Preferences during UI tests.
+    func launchApp(with responses: [MockResponse] = [], userData: (any Encodable)? = nil) {
         // Add UI test flag argument
         launchArguments += [uiTestArgEnable]
 
@@ -42,6 +44,15 @@ public extension XCUIApplication {
                 launchEnvironment["\(response.route)"] = try? data.toJSONString()
             }
             launchEnvironment["\(uiTestEnvKeyResponseStatusCode)-\(response.route)"] = "\(response.statusCode)"
+        }
+
+        // Set user data if provided
+        if let userData = userData {
+            let encoder = JSONEncoder()
+            if let jsonData = try? encoder.encode(userData),
+               let jsonString = String(data: jsonData, encoding: .utf8) {
+                launchEnvironment[uiTestEnvKeyUserData] = jsonString
+            }
         }
 
         // Launch the app

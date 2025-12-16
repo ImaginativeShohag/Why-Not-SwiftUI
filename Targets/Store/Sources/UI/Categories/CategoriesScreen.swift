@@ -32,6 +32,7 @@ struct CategoriesScreen: View {
                                         await viewModel.loadProducts(forced: true)
                                     }
                                 }
+                                .accessibilityIdentifier("retry_button")
                                 .buttonStyle(.borderedProminent)
                                 .padding(.top)
                             }
@@ -91,6 +92,7 @@ struct CategoriesScreen: View {
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
                                     }
                                     .buttonStyle(.plain)
+                                    .accessibilityIdentifier(category)
                                 }
                             }
                             .padding()

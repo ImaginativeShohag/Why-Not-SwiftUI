@@ -40,6 +40,7 @@ struct MainScreen: View {
             {
                 HomeScreen()
             }
+            .accessibilityIdentifier("home_tab")
 
             Tab(
                 "store_tab_categories".localize(default: "Categories", comment: "Tab bar label for categories"),
@@ -48,6 +49,7 @@ struct MainScreen: View {
             {
                 CategoriesScreen()
             }
+            .accessibilityIdentifier("categories_tab")
 
             Tab(
                 "store_tab_bag".localize(default: "Bag", comment: "Tab bar label for shopping bag"),
@@ -56,6 +58,7 @@ struct MainScreen: View {
             {
                 CartScreen()
             }
+            .accessibilityIdentifier("bag_tab")
         }
         .tabViewStyle(.sidebarAdaptable)
         .toolbarVisibility(.hidden, for: .navigationBar)

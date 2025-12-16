@@ -18,10 +18,12 @@ struct ErrorView: View {
                 Button("store_retry".localize(default: "Retry", comment: "Retry button text")) {
                     onRetryClick()
                 }
+                .accessibilityIdentifier("retry_button")
                 .buttonStyle(.borderedProminent)
                 .padding(.top)
             }
         )
+        .accessibilityIdentifier("error_view")
     }
 }
 

@@ -39,6 +39,7 @@ struct ProfileSheet: View {
                                     await viewModel.getUserDetails()
                                 }
                             }
+                            .accessibilityIdentifier("retry_button")
                             .buttonStyle(.borderedProminent)
                             .padding(.top)
                         }
@@ -73,6 +74,8 @@ struct ProfileSheet: View {
                                     ),
                                     value: user.name.getFullName()
                                 )
+                                .accessibilityIdentifier("profile_name_\(user.name.getFullName())")
+
                                 LabeledContent(
                                     "store_username".localize(
                                         default: "Username",
@@ -80,6 +83,8 @@ struct ProfileSheet: View {
                                     ),
                                     value: user.username
                                 )
+                                .accessibilityIdentifier("profile_username_\(user.username)")
+
                                 LabeledContent(
                                     "store_email".localize(
                                         default: "Email",
@@ -87,6 +92,8 @@ struct ProfileSheet: View {
                                     ),
                                     value: user.email
                                 )
+                                .accessibilityIdentifier("profile_email_\(user.email)")
+
                                 LabeledContent(
                                     "store_phone".localize(
                                         default: "Phone",
@@ -94,6 +101,8 @@ struct ProfileSheet: View {
                                     ),
                                     value: user.phone
                                 )
+                                .accessibilityIdentifier("profile_phone_\(user.phone)")
+
                                 LabeledContent(
                                     "store_address".localize(
                                         default: "Address",
@@ -114,6 +123,7 @@ struct ProfileSheet: View {
                                         Destination.Orders()
                                     )
                                 }
+                                .accessibilityIdentifier("orders_button")
 
                                 Button("store_language_settings".localize(
                                     default: "Language Settings",
@@ -121,6 +131,7 @@ struct ProfileSheet: View {
                                 )) {
                                     showLanguageSettings.toggle()
                                 }
+                                .accessibilityIdentifier("language_settings_button")
                             }
 
                             Section {
@@ -130,6 +141,7 @@ struct ProfileSheet: View {
                                 )) {
                                     showSignOutAlert.toggle()
                                 }
+                                .accessibilityIdentifier("sign_out_button")
                                 .tint(.red)
                             }
                         }

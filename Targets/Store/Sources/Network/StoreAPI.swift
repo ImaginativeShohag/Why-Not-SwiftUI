@@ -95,6 +95,10 @@ extension StoreAPI: ApiEndpoint {
     }
     
     public var stubResponseType: StubResponseType {
+        // Check if we're in UI test mode with error status code
+        if let statusCode = uiTestStatusCode, statusCode >= 400 {
+            return .failure
+        }
         return .disabled
     }
     

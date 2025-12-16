@@ -10,5 +10,8 @@ public let uiTestArgEnable = "ui-testing-enable"
 /// This environment key will be use to pass the status code.
 public let uiTestEnvKeyResponseStatusCode = "ui-testing-response-code"
 
+/// This environment key will be used to pass user data for UI tests.
+public let uiTestEnvKeyUserData = "ui-testing-user-data"
+
 /// This returns `true` if the UI testing flag passed to the argument.
 public let isUITestEnvironment = CommandLine.arguments.contains(uiTestArgEnable)

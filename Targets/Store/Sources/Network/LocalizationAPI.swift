@@ -66,6 +66,10 @@ extension LocalizationAPI: ApiEndpoint {
     // MARK: - Stub Configuration
 
     public var stubResponseType: StubResponseType {
+        // Check if we're in UI test mode with error status code
+        if let statusCode = uiTestStatusCode, statusCode >= 400 {
+            return .failure
+        }
         // Use success stub for development
         return .success
     }
