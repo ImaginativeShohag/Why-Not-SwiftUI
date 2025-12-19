@@ -37,7 +37,7 @@ class StoreCartUITests: XCTestCase {
         runAppAndGoToModule()
 
         // Navigate to cart tab
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         XCTAssertTrue(cartTab.waitForExistence(timeout: 5), "Cart tab should exist")
         cartTab.tap()
 
@@ -77,7 +77,7 @@ class StoreCartUITests: XCTestCase {
         plusButton.tap()
 
         // Navigate to cart tab
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         XCTAssertTrue(cartTab.waitForExistence(timeout: 5), "Cart tab should exist")
         cartTab.tap()
 
@@ -112,7 +112,7 @@ class StoreCartUITests: XCTestCase {
         app.buttons["plus.square"].firstMatch.tap()
 
         // Navigate to cart tab
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         cartTab.tap()
 
         // Wait for cart to show
@@ -159,7 +159,7 @@ class StoreCartUITests: XCTestCase {
         app.buttons["plus.square"].firstMatch.tap()
 
         // Navigate to cart tab
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         cartTab.tap()
 
         // Wait for cart to show
@@ -199,7 +199,7 @@ class StoreCartUITests: XCTestCase {
         app.buttons["plus.square"].firstMatch.tap()
 
         // Navigate to cart tab
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         cartTab.tap()
 
         // Wait for cart to show
@@ -245,7 +245,7 @@ class StoreCartUITests: XCTestCase {
         plusButtons.element(boundBy: 1).tap()
 
         // Navigate to cart tab
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         cartTab.tap()
 
         // Verify both products are in cart
@@ -276,7 +276,7 @@ class StoreCartUITests: XCTestCase {
         app.buttons["plus.square"].firstMatch.tap()
 
         // Navigate to cart tab
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         cartTab.tap()
 
         // Wait for cart to show
@@ -310,7 +310,7 @@ class StoreCartUITests: XCTestCase {
         runAppAndGoToModule()
 
         // Navigate to cart tab
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         XCTAssertTrue(cartTab.waitForExistence(timeout: 5), "Cart tab should exist")
         cartTab.tap()
 

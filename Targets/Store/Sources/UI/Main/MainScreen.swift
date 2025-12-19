@@ -33,34 +33,37 @@ struct MainScreen: View {
 
     var body: some View {
         TabView(selection: $selection) {
-            Tab(
-                "store_tab_home".localize(default: "Home", comment: "Tab bar label for home"),
-                systemImage: "text.rectangle.page.fill",
-                value: .home)
-            {
-                HomeScreen()
-            }
-            .accessibilityIdentifier("home_tab")
+            HomeScreen()
+                .tag(TabItem.home)
+                .tabItem {
+                    Label(
+                        "store_tab_home".localize(default: "Home", comment: "Tab bar label for home"),
+                        systemImage: "text.rectangle.page.fill"
+                    )
+                }
+                .accessibilityIdentifier("home_tab")
 
-            Tab(
-                "store_tab_categories".localize(default: "Categories", comment: "Tab bar label for categories"),
-                systemImage: "shippingbox",
-                value: .categories)
-            {
-                CategoriesScreen()
-            }
-            .accessibilityIdentifier("categories_tab")
+            CategoriesScreen()
+                .tag(TabItem.categories)
+                .tabItem {
+                    Label(
+                        "store_tab_categories".localize(default: "Categories", comment: "Tab bar label for categories"),
+                        systemImage: "shippingbox"
+                    )
+                }
+                .accessibilityIdentifier("categories_tab")
 
-            Tab(
-                "store_tab_bag".localize(default: "Bag", comment: "Tab bar label for shopping bag"),
-                systemImage: "bag",
-                value: .bag)
-            {
-                CartScreen()
-            }
-            .accessibilityIdentifier("bag_tab")
+            CartScreen()
+                .tag(TabItem.bag)
+                .tabItem {
+                    Label(
+                        "store_tab_bag".localize(default: "Bag", comment: "Tab bar label for shopping bag"),
+                        systemImage: "bag"
+                    )
+                }
+                .accessibilityIdentifier("bag_tab")
         }
-        .tabViewStyle(.sidebarAdaptable)
+        .tabViewStyle(.automatic)
         .toolbarVisibility(.hidden, for: .navigationBar)
         .onLanguageChange()
     }

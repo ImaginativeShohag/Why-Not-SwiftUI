@@ -17,7 +17,10 @@ class SplashViewModel {
     func checkNextAction() async {
         guard !isPreview else { return }
 
-        try? await Task.sleep(for: .seconds(1))
+        // Skip delay in UI test mode for faster test execution
+        if !ProcessInfo.processInfo.arguments.contains("ui-testing-enable") {
+            try? await Task.sleep(for: .seconds(1))
+        }
 
         if Preferences.user != nil {
             nextAction = .home

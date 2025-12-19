@@ -51,6 +51,7 @@ struct ProductsScreen: View {
                                 }
                             }
                             .buttonStyle(.borderedProminent)
+                            .accessibilityIdentifier("retry_button")
                             .padding(.top)
                         }
                     )

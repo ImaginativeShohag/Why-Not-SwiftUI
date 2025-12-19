@@ -236,7 +236,7 @@ class StoreProductsUITests: XCTestCase {
         // Navigate back to home and then to cart to verify
         app.navigationBars.buttons.element(boundBy: 0).tap()
 
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         cartTab.tap()
 
         // Verify product is in cart
@@ -297,7 +297,7 @@ class StoreProductsUITests: XCTestCase {
         // Navigate back and check cart is empty
         app.navigationBars.buttons.element(boundBy: 0).tap()
 
-        let cartTab = app.tabBars.buttons["bag_tab"]
+        let cartTab = app.tabBarButton(withLabel: "Bag")
         cartTab.tap()
 
         // Verify cart is empty
@@ -366,7 +366,7 @@ class StoreProductsUITests: XCTestCase {
         runAppAndGoToModule()
 
         // Navigate to categories tab
-        let categoriesTab = app.tabBars.buttons["categories_tab"]
+        let categoriesTab = app.tabBarButton(withLabel: "Categories")
         XCTAssertTrue(categoriesTab.waitForExistence(timeout: 5), "Categories tab should exist")
         categoriesTab.tap()
 
