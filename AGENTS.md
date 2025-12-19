@@ -55,6 +55,7 @@ tuist test 'WhyNotSwiftUI Development' \
 **UI Testing Infrastructure:**
 - `TestUtils` module provides shared UI testing utilities:
   - `XCUIApplication+` extensions for common operations
+  - `XCUIElement+` extensions with `tabBarButton(withLabel:)` for reliable tab selection
   - `MockResponse` system for API stubbing in UI tests
   - `launchApp(with:userData:)` for launching with mock data
 - **Store Module UI Tests** (37 tests across 4 suites):
@@ -62,6 +63,10 @@ tuist test 'WhyNotSwiftUI Development' \
   - `StoreCartUITests`: Cart operations, quantity management, checkout flow
   - `StoreProductsUITests`: Product listing, details, error handling
   - `StoreLanguageUITests`: Language settings and country selection
+- **UI Test Best Practices:**
+  - Use `tabBarButton(withLabel:)` for tab selection (more reliable than accessibility IDs for SwiftUI TabView)
+  - Splash screen delays are automatically skipped in UI test mode for faster execution
+  - TabView uses `.automatic` style for better test behavior across devices
 - **Accessibility Identifiers:** All interactive elements have identifiers for reliable UI testing
 - **Mock User Data:** Tests can inject mock user data via `uiTestEnvKeyUserData` environment variable
 - **API Mocking:** Both `StoreAPI` and `LocalizationAPI` support error status codes in UI test mode
