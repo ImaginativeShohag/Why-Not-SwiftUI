@@ -44,7 +44,7 @@ final class TranslationRepository: Sendable {
 
         switch result {
         case .success(let translationFile):
-            SuperLog.d("TranslationRepository: Fetched translations for \(languageCode), version: \(translationFile.version)")
+            SuperLog.d("TranslationRepository: Fetched translations for \(languageCode)")
             return .success(translationFile)
 
         case .failure(_, let errorMessage, let statusCode):

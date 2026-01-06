@@ -27,24 +27,28 @@ public actor TranslationStorage {
 
     // MARK: - Public Methods
 
-    /// Save translation file to cache
+    /// Save translation file to cache with version from Language API
     /// - Parameters:
-    ///   - translationFile: Translation file to save
+    ///   - translationFile: Translation file from server (no version)
     ///   - languageCode: Language code (e.g., "en", "bn")
-    public func save(_ translationFile: TranslationFile, for languageCode: String) throws {
+    ///   - version: Version from Language.version in available languages API
+    public func save(_ translationFile: TranslationFile, for languageCode: String, version: Int) throws {
         let fileURL = cacheDirectory.appendingPathComponent("\(languageCode).json")
+
+        // Create cached translation file with version
+        let cachedFile = CachedTranslationFile(version: version, translationFile: translationFile)
 
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(translationFile)
+        let data = try encoder.encode(cachedFile)
 
         try data.write(to: fileURL, options: .atomic)
     }
 
-    /// Load translation file from cache
+    /// Load cached translation file from cache
     /// - Parameter languageCode: Language code (e.g., "en", "bn")
-    /// - Returns: Translation file if exists, nil otherwise
-    public func load(for languageCode: String) throws -> TranslationFile? {
+    /// - Returns: Cached translation file if exists, nil otherwise
+    public func load(for languageCode: String) throws -> CachedTranslationFile? {
         let fileURL = cacheDirectory.appendingPathComponent("\(languageCode).json")
 
         guard fileManager.fileExists(atPath: fileURL.path) else {
@@ -53,7 +57,7 @@ public actor TranslationStorage {
 
         let data = try Data(contentsOf: fileURL)
         let decoder = JSONDecoder()
-        return try decoder.decode(TranslationFile.self, from: data)
+        return try decoder.decode(CachedTranslationFile.self, from: data)
     }
 
     /// Check cache state by loading file and comparing version with server version

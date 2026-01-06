@@ -2,14 +2,23 @@ import Foundation
 
 // MARK: - Translation Models
 
-/// Root translation file structure
+/// Server translation file structure (no version)
 public struct TranslationFile: Codable, Sendable {
-    public let version: Int
     public let modules: [String: ModuleTranslations]
 
-    public init(version: Int, modules: [String: ModuleTranslations]) {
-        self.version = version
+    public init(modules: [String: ModuleTranslations]) {
         self.modules = modules
+    }
+}
+
+/// Local storage model with version from Language API
+public struct CachedTranslationFile: Codable, Sendable {
+    public let version: Int  // From Language.version in available languages API
+    public let translationFile: TranslationFile
+
+    public init(version: Int, translationFile: TranslationFile) {
+        self.version = version
+        self.translationFile = translationFile
     }
 }
 
@@ -178,5 +187,23 @@ public struct Language: Codable, Sendable, Identifiable {
         self.nameEn = nameEn
         self.nameLocale = nameLocale
         self.version = version
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        code = try container.decode(String.self, forKey: .code)
+        nameEn = try container.decode(String.self, forKey: .nameEn)
+        nameLocale = try container.decode(String.self, forKey: .nameLocale)
+
+        // Try to decode version as Int first, then as String, converting to Int
+        // Default to 0 if version is missing or invalid
+        if let versionInt = try? container.decode(Int.self, forKey: .version) {
+            version = versionInt
+        } else if let versionString = try? container.decode(String.self, forKey: .version),
+                  let versionInt = Int(versionString) {
+            version = versionInt
+        } else {
+            version = 0
+        }
     }
 }

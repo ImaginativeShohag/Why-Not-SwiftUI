@@ -11,9 +11,9 @@ import SuperLog
 @Observable
 final class LanguageSettingsViewModel {
     var state: UIState<AvailableLanguages> = .loading
-    var selectedCountry: String? = nil
-    var selectedLanguage: String = "en"
-    var pendingLanguage: String? = nil
+    var selectedCountry: String?
+    var selectedLanguage: String?
+    var pendingLanguage: String?
     var isChangingLanguage: Bool = false
 
     private var isPreview: Bool = false
@@ -26,7 +26,11 @@ final class LanguageSettingsViewModel {
     ) {
         self.localizationManager = localizationManager
         self.translationRepository = translationRepository
-        selectedLanguage = localizationManager.currentLanguage
+
+        Task { @MainActor in
+            selectedCountry = localizationManager.currentCountry
+            selectedLanguage = localizationManager.currentLanguage
+        }
     }
 
     // MARK: - Public Properties
@@ -45,8 +49,8 @@ final class LanguageSettingsViewModel {
         selectedCountry = country
     }
 
-    func selectLanguage(_ languageCode: String) {
-        pendingLanguage = languageCode
+    func selectLanguage(_ language: Language) {
+        pendingLanguage = language.code
     }
 
     func applyPendingLanguageChange() async {
@@ -71,32 +75,40 @@ final class LanguageSettingsViewModel {
         case .success(let languages):
             localizationManager.setAvailableLanguages(languages.allLanguages)
             state = .data(data: languages)
+            selectedCountry = localizationManager.currentCountry
             selectedLanguage = localizationManager.currentLanguage
-            SuperLog.d("LanguageSettingsViewModel: Loaded languages from \(languages.countries.count) countries")
+            SuperLog.d("LanguageChangeViewModel: Loaded languages from \(languages.countries.count) countries")
 
         case .failure(let error):
             state = .error(message: error.localizedDescription)
-            SuperLog.e("LanguageSettingsViewModel: Failed to load languages - \(error)")
+            SuperLog.e("LanguageChangeViewModel: Failed to load languages - \(error)")
         }
     }
 
     func changeLanguage(to languageCode: String) async {
         guard languageCode != selectedLanguage else { return }
         guard let language = findLanguage(code: languageCode) else {
-            SuperLog.e("LanguageSettingsViewModel: Language not found: \(languageCode)")
+            SuperLog.e("LanguageChangeViewModel: Language not found: \(languageCode)")
             return
         }
 
-        SuperLog.d("LanguageSettingsViewModel: Changing language to: \(languageCode)")
+        SuperLog.d("LanguageChangeViewModel: Changing language to: \(languageCode)")
         isChangingLanguage = true
 
         // Special case: Default English language doesn't need API call (uses code defaults)
-        if languageCode == "en_US" {
-            SuperLog.d("LanguageSettingsViewModel: Using default English (no API call needed)")
+        if languageCode == "en" || languageCode == "en_US" {
+            SuperLog.d("LanguageChangeViewModel: Using default English (no API call needed)")
             // Create empty translation file - localize() will use default values
-            let emptyTranslation = TranslationFile(version: language.version, modules: [:])
-            localizationManager.activateLanguage(emptyTranslation, code: languageCode)
+            let emptyTranslation = TranslationFile(modules: [:])
+            localizationManager.activateLanguage(languageCode: languageCode, languageName: "English", country: "United States", version: 0, emptyTranslation)
             selectedLanguage = languageCode
+            selectedCountry = "United States"
+            isChangingLanguage = false
+            return
+        }
+
+        guard let country = selectedCountry else {
+            SuperLog.e("LanguageChangeViewModel: Country not selected")
             isChangingLanguage = false
             return
         }
@@ -107,25 +119,25 @@ final class LanguageSettingsViewModel {
         switch cacheState {
         case .valid(let cachedFile):
             // Cache is valid and version matches - use it directly (instant, no API call)
-            SuperLog.d("LanguageSettingsViewModel: Using cached translation (v\(cachedFile.version))")
-            localizationManager.activateLanguage(cachedFile, code: languageCode)
+            SuperLog.d("LanguageChangeViewModel: Using cached translation (v\(cachedFile.version))")
+            localizationManager.activateLanguage(languageCode: languageCode, languageName: language.nameLocale, country: country, version: language.version, cachedFile.translationFile)
             selectedLanguage = languageCode
 
         case .stale(let cachedVersion):
             // Cache exists but version is outdated - fetch fresh from network
-            SuperLog.d("LanguageSettingsViewModel: Cache stale (v\(cachedVersion)), fetching v\(language.version)")
-            await fetchAndCache(languageCode: languageCode)
+            SuperLog.d("LanguageChangeViewModel: Cache stale (v\(cachedVersion)), fetching v\(language.version)")
+            await fetchAndCache(languageCode: languageCode, version: language.version, languageName: language.nameLocale, country: country)
 
         case .missing:
             // No cache exists - fetch from network
-            SuperLog.d("LanguageSettingsViewModel: No cache found, fetching from network")
-            await fetchAndCache(languageCode: languageCode)
+            SuperLog.d("LanguageChangeViewModel: No cache found, fetching from network")
+            await fetchAndCache(languageCode: languageCode, version: language.version, languageName: language.nameLocale, country: country)
 
         case .corrupted:
             // Cache file is corrupted - delete and fetch fresh
-            SuperLog.w("LanguageSettingsViewModel: Cache corrupted, deleting and re-fetching")
+            SuperLog.w("LanguageChangeViewModel: Cache corrupted, deleting and re-fetching")
             try? await localizationManager.deleteCacheFile(for: languageCode)
-            await fetchAndCache(languageCode: languageCode)
+            await fetchAndCache(languageCode: languageCode, version: language.version, languageName: language.nameLocale, country: country)
         }
 
         isChangingLanguage = false
@@ -133,21 +145,22 @@ final class LanguageSettingsViewModel {
 
     // MARK: - Private Helpers
 
-    private func fetchAndCache(languageCode: String) async {
+    private func fetchAndCache(languageCode: String, version: Int, languageName: String, country: String) async {
         let result = await translationRepository.fetchTranslations(for: languageCode)
 
         switch result {
         case .success(let translationFile):
             // Cache and activate
-            await localizationManager.setTranslations(translationFile, for: languageCode)
-            localizationManager.activateLanguage(translationFile, code: languageCode)
+            await localizationManager.setTranslations(translationFile, for: languageCode, version: version)
+            localizationManager.activateLanguage(languageCode: languageCode, languageName: languageName, country: country, version: version, translationFile)
+
             selectedLanguage = languageCode
-            SuperLog.d("LanguageSettingsViewModel: Language changed to \(selectedLanguage), version: \(translationFile.version)")
+            SuperLog.d("LanguageChangeViewModel: Language changed to \(selectedLanguage ?? "nil"), version: \(version)")
 
         case .failure(let error):
             // Show error (offline or network issue)
             state = .error(message: error.localizedDescription)
-            SuperLog.e("LanguageSettingsViewModel: Failed to fetch translations - \(error)")
+            SuperLog.e("LanguageChangeViewModel: Failed to fetch translations - \(error)")
         }
     }
 
@@ -156,7 +169,7 @@ final class LanguageSettingsViewModel {
     }
 
     func isSelected(_ languageCode: String) -> Bool {
-        pendingLanguage ?? selectedLanguage == languageCode
+        (pendingLanguage ?? selectedLanguage) == languageCode
     }
 }
 
@@ -189,10 +202,10 @@ extension LanguageSettingsViewModel {
                 ]
             ]
             state = .data(data: AvailableLanguages(data: previewData))
-            selectedLanguage = "en"
+            selectedCountry = "United States"
+            selectedLanguage = "en_US"
         }
     }
 }
 
 #endif
-

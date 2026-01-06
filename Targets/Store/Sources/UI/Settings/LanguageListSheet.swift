@@ -67,7 +67,7 @@ struct LanguageListSheet: View {
     @ViewBuilder
     private func languageRow(_ language: Language) -> some View {
         Button {
-            viewModel.selectLanguage(language.code)
+            viewModel.selectLanguage(language)
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
@@ -122,7 +122,7 @@ struct LanguageListSheet: View {
             viewModel: viewModel
         )
         .onAppear {
-            viewModel.selectLanguage("bn_BD")
+            viewModel.selectLanguage(Language.init(code: "bn_BD", nameEn: "Bengali", nameLocale: "বাংলা", version: 1))
         }
     }
 }

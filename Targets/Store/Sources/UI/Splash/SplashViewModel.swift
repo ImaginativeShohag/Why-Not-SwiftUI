@@ -4,6 +4,7 @@
 
 import Core
 import Foundation
+import NetworkKit
 
 @MainActor
 @Observable
@@ -18,7 +19,7 @@ class SplashViewModel {
         guard !isPreview else { return }
 
         // Skip delay in UI test mode for faster test execution
-        if !ProcessInfo.processInfo.arguments.contains("ui-testing-enable") {
+        if !ProcessInfo.processInfo.arguments.contains(uiTestArgEnable) {
             try? await Task.sleep(for: .seconds(1))
         }
 

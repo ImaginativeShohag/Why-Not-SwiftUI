@@ -5,7 +5,7 @@ import Foundation
 /// Represents the state of a cached translation file
 public enum CacheState: Sendable {
     /// Cache exists and version matches server version (includes cached file)
-    case valid(cachedFile: TranslationFile)
+    case valid(cachedFile: CachedTranslationFile)
     /// Cache exists but version is outdated (includes old version number)
     case stale(cachedVersion: Int)
     /// No cache exists for this language
@@ -28,7 +28,16 @@ public final class LocalizationManager {
     // MARK: - Observable Properties
 
     /// Current selected language code
-    public private(set) var currentLanguage: String = "en"
+    public private(set) var currentLanguage: String = "en_US"
+
+    /// Current selected country name
+    public private(set) var currentCountry: String = "United States"
+
+    /// Current language version from available languages API
+    public private(set) var currentLanguageVersion: Int?
+
+    /// Current language name in its native locale (from nameLocale field in API)
+    public private(set) var currentLanguageName: String = "English"
 
     /// Available languages fetched from server
     public private(set) var availableLanguages: [Language] = []
@@ -62,6 +71,19 @@ public final class LocalizationManager {
             Task {
                 await loadCachedTranslations(for: savedLanguage)
             }
+        }
+
+        // Load saved country preference (default to "United States")
+        if let savedCountry = LocalizeKitStorage.shared.selectedCountry {
+            self.currentCountry = savedCountry
+        }
+
+        // Load saved language version
+        self.currentLanguageVersion = LocalizeKitStorage.shared.selectedLanguageVersion
+
+        // Load saved language name (default to "English")
+        if let savedLanguageName = LocalizeKitStorage.shared.selectedLanguageName {
+            self.currentLanguageName = savedLanguageName
         }
     }
 
@@ -108,11 +130,12 @@ public final class LocalizationManager {
 
     /// Set translations from external source and cache them
     /// - Parameters:
-    ///   - translationFile: Translation file to set and cache
+    ///   - translationFile: Translation file from server (no version)
     ///   - languageCode: Language code for the translations
-    public func setTranslations(_ translationFile: TranslationFile, for languageCode: String) async {
-        // Cache the translations (version is embedded in file)
-        await cacheTranslations(translationFile, for: languageCode)
+    ///   - version: Version from Language.version in available languages API
+    public func setTranslations(_ translationFile: TranslationFile, for languageCode: String, version: Int) async {
+        // Cache the translations with version from Language API
+        await cacheTranslations(translationFile, for: languageCode, version: version)
 
         // If this is the current language, set it as active
         if languageCode == currentLanguage {
@@ -137,13 +160,22 @@ public final class LocalizationManager {
 
     /// Activate language from provided TranslationFile
     /// - Parameters:
+    ///   - languageCode: Language code
+    ///   - languageName: Language name in native locale (from nameLocale field)
+    ///   - country: Country name
+    ///   - version: Language version from available languages API
     ///   - translationFile: Translation file to activate
-    ///   - code: Language code
-    public func activateLanguage(_ translationFile: TranslationFile, code: String) {
+    public func activateLanguage(languageCode: String, languageName: String, country: String, version: Int, _ translationFile: TranslationFile) {
         currentTranslations = translationFile
-        currentLanguage = code
-        LocalizeKitStorage.shared.selectedLanguage = code
-        LocalizeKitLogger.d("LocalizationManager: Activated language \(code), version: \(translationFile.version)")
+        currentLanguage = languageCode
+        currentCountry = country
+        currentLanguageVersion = version
+        currentLanguageName = languageName
+        LocalizeKitStorage.shared.selectedLanguage = languageCode
+        LocalizeKitStorage.shared.selectedCountry = country
+        LocalizeKitStorage.shared.selectedLanguageVersion = version
+        LocalizeKitStorage.shared.selectedLanguageName = languageName
+        LocalizeKitLogger.d("LocalizationManager: Activated language \(languageCode) (\(languageName)) for country \(country), version: \(version)")
     }
 
     /// Delete corrupted cache file
@@ -260,7 +292,7 @@ public final class LocalizationManager {
 
         do {
             if let cached = try await storage.load(for: languageCode) {
-                currentTranslations = cached
+                currentTranslations = cached.translationFile
                 LocalizeKitLogger.d("Loaded cached translations for \(languageCode), version: \(cached.version)")
                 return true
             }
@@ -273,17 +305,18 @@ public final class LocalizationManager {
 
     /// Save translations to cache
     /// - Parameters:
-    ///   - translations: Translation file to cache
+    ///   - translations: Translation file from server (no version)
     ///   - languageCode: Language code
-    public func cacheTranslations(_ translations: TranslationFile, for languageCode: String) async {
+    ///   - version: Version from Language.version in available languages API
+    public func cacheTranslations(_ translations: TranslationFile, for languageCode: String, version: Int) async {
         guard let storage = translationStorage else {
             LocalizeKitLogger.e("TranslationStorage not initialized")
             return
         }
 
         do {
-            try await storage.save(translations, for: languageCode)
-            LocalizeKitLogger.d("Cached translations for \(languageCode), version: \(translations.version)")
+            try await storage.save(translations, for: languageCode, version: version)
+            LocalizeKitLogger.d("Cached translations for \(languageCode), version: \(version)")
         } catch {
             LocalizeKitLogger.e("Failed to cache translations: \(error)")
         }

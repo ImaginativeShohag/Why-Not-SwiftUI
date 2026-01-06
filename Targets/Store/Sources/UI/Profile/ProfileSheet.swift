@@ -13,6 +13,11 @@ struct ProfileSheet: View {
     @State private var viewModel: ProfileViewModel
     @State private var showSignOutAlert: Bool = false
     @State private var showLanguageSettings: Bool = false
+    private let localizationManager = LocalizationManager.shared
+
+    private var currentLanguageDisplay: String {
+        return "\(localizationManager.currentCountry) - \(localizationManager.currentLanguageName)"
+    }
 
     init(viewModel: ProfileViewModel = ProfileViewModel()) {
         self.viewModel = viewModel
@@ -125,11 +130,18 @@ struct ProfileSheet: View {
                                 }
                                 .accessibilityIdentifier("orders_button")
 
-                                Button("store_language_settings".localize(
-                                    default: "Language Settings",
-                                    comment: "Language settings button text"
-                                )) {
+                                Button {
                                     showLanguageSettings.toggle()
+                                } label: {
+                                    HStack {
+                                        Text("store_language_settings".localize(
+                                            default: "Language Settings",
+                                            comment: "Language settings button text"
+                                        ))
+                                        Spacer()
+                                        Text(currentLanguageDisplay)
+                                            .foregroundStyle(.secondary)
+                                    }
                                 }
                                 .accessibilityIdentifier("language_settings_button")
                             }
