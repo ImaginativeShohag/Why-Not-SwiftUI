@@ -20,6 +20,9 @@ A comprehensive guide to using LocalizeKit for runtime localization in Swift app
 - [General Swift Usage](#general-swift-usage)
 - [Language Management](#language-management)
 - [Caching System](#caching-system)
+- [Migration Guides](#migration-guides)
+  - [From NSLocalizedString](#from-nslocalizedstring)
+  - [From SwiftUI Native Plurals](#from-swiftui-native-plurals)
 - [Best Practices](#best-practices)
 - [API Reference](#api-reference)
 - [Troubleshooting](#troubleshooting)
@@ -1049,6 +1052,165 @@ try await manager.deleteCacheFile(for: "bn_BD")
 
 // Get cache directory path (for debugging)
 let cachePath = await manager.getCacheDirectory()
+```
+
+---
+
+## Migration Guides
+
+Comprehensive guides for migrating from various localization systems to LocalizeKit.
+
+---
+
+### From NSLocalizedString
+
+Migrating from Apple's `NSLocalizedString` to LocalizeKit.
+
+**NSLocalizedString Syntax:**
+
+```swift
+// Old: NSLocalizedString with .strings files
+let title = NSLocalizedString("home_title", comment: "Home screen title")
+let greeting = String(format: NSLocalizedString("user_greeting", comment: ""), userName)
+```
+
+**LocalizeKit Equivalent:**
+
+```swift
+// New: LocalizeKit with runtime translation
+let title = "home_title".localize(
+    default: "Home",
+    comment: "Home screen title"
+)
+
+let greeting = "user_greeting".localize(
+    default: "Hello, %@!",
+    comment: "Greeting with user name",
+    with: userName
+)
+```
+
+**Migration Steps:**
+
+1. **Replace function call**: `NSLocalizedString("key", comment: "...")` → `"key".localize(default: "...", comment: "...")`
+2. **Add default value**: Include English text as the `default` parameter
+3. **Simplify interpolation**: Remove `String(format:)` wrapper, use `with` parameter
+4. **Remove bundle parameter**: LocalizeKit manages translations internally
+
+**Before:**
+```swift
+// Multiple lines, manual formatting
+let message = String(
+    format: NSLocalizedString("items_in_cart", comment: "Cart summary"),
+    itemCount
+)
+```
+
+**After:**
+```swift
+// Single call with inline default
+let message = "items_in_cart".localize(
+    default: "You have %d items in your cart",
+    comment: "Cart summary",
+    with: itemCount
+)
+```
+
+---
+
+### From SwiftUI Native Plurals
+
+Migrating from SwiftUI's native plural syntax (`^[text](count)`) to LocalizeKit.
+
+**SwiftUI Native Plural Syntax:**
+
+```swift
+// Old: SwiftUI's native plural interpolation
+Text("\(itemCount) ^[Products](\(itemCount))")
+// Renders: "1 Product" or "2 Products"
+
+Text("You have \(count) ^[items](\(count)) in your cart")
+// Renders: "You have 1 item in your cart" or "You have 5 items in your cart"
+```
+
+**LocalizeKit Equivalent:**
+
+```swift
+// New: LocalizeKit plural API
+Text("product_count".localize(
+    defaultPlural: [
+        .one: "1 Product",
+        .other: "%d Products"
+    ],
+    comment: "Product count display",
+    count: itemCount,
+    with: itemCount
+))
+
+Text("cart_item_count".localize(
+    defaultPlural: [
+        .one: "You have 1 item in your cart",
+        .other: "You have %d items in your cart"
+    ],
+    comment: "Cart item count message",
+    count: count,
+    with: count
+))
+```
+
+**Migration Steps:**
+
+1. **Identify the pattern**: `^[singular](count)` automatically pluralizes
+2. **Create explicit plural forms**: Define `.one` and `.other` (minimum)
+3. **Use format specifiers**: Replace count interpolation with `%d` for integers
+4. **Add comment**: Provide translator context
+5. **Pass count twice**: Once for category selection, once for interpolation
+
+**Common Patterns:**
+
+| SwiftUI Native | LocalizeKit Equivalent |
+|----------------|------------------------|
+| `Text("\(n) ^[day](\(n))")` | `.localize(defaultPlural: [.one: "1 day", .other: "%d days"], count: n, with: n)` |
+| `Text("^[\(n) item](\(n))")` | `.localize(defaultPlural: [.one: "1 item", .other: "%d items"], count: n, with: n)` |
+| `Text("\(n) ^[person is](\(n)) online")` | `.localize(defaultPlural: [.one: "1 person is online", .other: "%d people are online"], count: n, with: n)` |
+
+**Complex Migration Example:**
+
+```swift
+// Old: SwiftUI with multiple variables
+Text("\(userName) has \(messageCount) ^[unread message](\(messageCount))")
+
+// New: LocalizeKit with proper interpolation
+Text("user_unread_messages".localize(
+    defaultPlural: [
+        .zero: "%@ has no unread messages",
+        .one: "%@ has 1 unread message",
+        .other: "%@ has %d unread messages"
+    ],
+    comment: "User's unread message count",
+    count: messageCount,
+    with: userName, messageCount
+))
+```
+
+**Edge Cases:**
+
+```swift
+// Zero state handling
+// Old: SwiftUI doesn't handle zero differently
+Text("\(0) ^[items](\(0))")  // Renders: "0 items"
+
+// New: LocalizeKit supports custom zero state
+Text("cart_items".localize(
+    defaultPlural: [
+        .zero: "No items",           // Custom zero message
+        .one: "1 item",
+        .other: "%d items"
+    ],
+    comment: "Cart item count",
+    count: itemCount,
+    with: itemCount
+))
 ```
 
 ---
