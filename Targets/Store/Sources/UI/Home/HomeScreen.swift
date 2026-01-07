@@ -27,7 +27,7 @@ struct HomeScreen: View {
                         if let user = viewModel.user {
                             HStack {
                                 Text.localized(
-                                    "store_welcome",
+                                    "welcome",
                                     default: "Welcome, **%@**!",
                                     comment: "Welcome message with user's full name on home screen",
                                     with: user.name.getFullName()

@@ -180,7 +180,7 @@ extension LocalizationAPI: ApiEndpoint {
           "version": 1,
           "modules": {
             "Store": {
-              "store_welcome": {
+              "welcome": {
                 "value": "Welcome, **%@**!",
                 "type": "interpolation",
                 "comment": "Welcome message with user's full name on home screen"
@@ -434,7 +434,7 @@ extension LocalizationAPI: ApiEndpoint {
           "version": 1,
           "modules": {
             "Store": {
-              "store_welcome": {
+              "welcome": {
                 "value": "স্বাগতম, **%@**!",
                 "type": "interpolation",
                 "comment": "Welcome message with user's full name on home screen"
@@ -688,7 +688,7 @@ extension LocalizationAPI: ApiEndpoint {
           "version": 1,
           "modules": {
             "Store": {
-              "store_welcome": {
+              "welcome": {
                 "value": "!**%@** ،مرحباً",
                 "type": "interpolation",
                 "comment": "Welcome message with user's full name on home screen"

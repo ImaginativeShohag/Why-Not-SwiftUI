@@ -15,10 +15,10 @@ struct MenuCommand: AsyncParsableCommand {
     func run() async throws {
         print("""
 
-        ╔═══════════════════════════════════════════════════════╗
-        ║         LocalizeKit - Translation Manager            ║
-        ║                     v1.0.0                           ║
-        ╚═══════════════════════════════════════════════════════╝
+        ╔══════════════════════════════════════════════════════╗
+        ║          LocalizeKit - Translation Manager           ║
+        ║                      v1.0.0                          ║
+        ╚══════════════════════════════════════════════════════╝
 
         Please select an option:
 

@@ -83,14 +83,14 @@ extension String {
     ///
     /// Example:
     /// ```swift
-    /// Text("store_apple_count".localize(
+    /// Text("cart_status".localize(
     ///     defaultPlural: [
-    ///         .zero: "No apples",
-    ///         .one: "1 apple",
-    ///         .other: "%d apples"
+    ///         .zero: "Cart is empty",
+    ///         .one: "One item in cart",
+    ///         .other: "Multiple items in cart"
     ///     ],
-    ///     comment: "Apple count in shopping cart",
-    ///     count: appleCount
+    ///     comment: "Cart status message",
+    ///     count: itemCount
     /// ))
     /// ```
     @MainActor
