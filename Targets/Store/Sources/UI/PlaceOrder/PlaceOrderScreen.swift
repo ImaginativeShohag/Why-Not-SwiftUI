@@ -83,7 +83,15 @@ struct PlaceOrderScreen: View {
 
                         HStack {
                             Image(systemName: "cube.box")
-                            Text("\(viewModel.cartManager.items.count) ^[Products](\(viewModel.cartManager.items.count))")
+                            Text("store_checkout_product_count".localize(
+                                defaultPlural: [
+                                    .one: "1 Product",
+                                    .other: "%d Products"
+                                ],
+                                comment: "Product count in checkout",
+                                count: viewModel.cartManager.items.count,
+                                with: viewModel.cartManager.items.count
+                            ))
                         }
 
                         ForEach(Array(viewModel.cartManager.items)) { product in

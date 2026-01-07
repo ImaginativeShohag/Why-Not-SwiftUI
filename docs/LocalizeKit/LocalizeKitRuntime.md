@@ -21,6 +21,7 @@ A comprehensive guide to using LocalizeKit for runtime localization in Swift app
 - [Language Management](#language-management)
 - [Caching System](#caching-system)
 - [Migration Guides](#migration-guides)
+  - [Pre-Migration Audit Checklist](#pre-migration-audit-checklist)
   - [From NSLocalizedString](#from-nslocalizedstring)
   - [From SwiftUI Native Plurals](#from-swiftui-native-plurals)
 - [Best Practices](#best-practices)
@@ -481,6 +482,34 @@ Text.localized(
     comment: "Promotional banner text"
 )
 ```
+
+**Important Note:**
+
+`Text.localized()` should **only** be used when you need markdown formatting support (bold, italic, links, etc.). For plain text without markdown, use the standard approach:
+
+```swift
+// ✅ Correct: Plain text without markdown
+Text("home_title".localize(
+    default: "Home",
+    comment: "Home screen title"
+))
+
+// ❌ Incorrect: Using Text.localized() for plain text (unnecessary overhead)
+Text.localized(
+    "home_title",
+    default: "Home",
+    comment: "Home screen title"
+)
+
+// ✅ Correct: Text with markdown formatting
+Text.localized(
+    "welcome_message",
+    default: "Welcome, **John**!",
+    comment: "Welcome message with bold name"
+)
+```
+
+The `Text.localized()` method attempts to parse markdown on every call, which adds processing overhead. Only use it when markdown features are actually needed.
 
 ### Navigation and Toolbars
 
@@ -1062,6 +1091,126 @@ Comprehensive guides for migrating from various localization systems to Localize
 
 ---
 
+### Pre-Migration Audit Checklist
+
+Before migrating to LocalizeKit, audit your codebase to identify all strings that need migration. Use these grep patterns to find each type:
+
+#### 1. Find NSLocalizedString Usage
+
+```bash
+# Search for NSLocalizedString calls
+grep -r "NSLocalizedString" --include="*.swift" Targets/YourModule/
+
+# Expected pattern:
+# NSLocalizedString("key", comment: "...")
+# String(format: NSLocalizedString("key", comment: ""), arg1)
+```
+
+**What to look for:**
+- `NSLocalizedString("key", comment: "...")`
+- `String(format: NSLocalizedString(...), ...)`
+- Bundle-specific calls: `NSLocalizedString("key", bundle: .module, comment: "")`
+
+---
+
+#### 2. Find SwiftUI Native Plural Syntax
+
+```bash
+# Search for SwiftUI plural interpolation (critical - easy to miss!)
+grep -r '\^\[' --include="*.swift" Targets/YourModule/
+
+# Expected patterns:
+# Text("\(count) ^[item](\(count))")
+# Text("^[\(count) day](\(count))")
+# Text("Total ^[\(count) product](inflect: true)")
+```
+
+**What to look for:**
+- `^[text](count)` - SwiftUI's automatic pluralization
+- `^[text](count) (inflect: true)` - with inflection parameter
+- Any `^[...]` pattern inside Text() or string interpolation
+
+**Common locations:**
+- List item counts: "5 ^[items](5)"
+- Summary text: "Total ^[\(count) product](inflect: true)"
+- Badge labels: "\(count) ^[notifications](count)"
+
+---
+
+#### 3. Find Hardcoded User-Facing Strings
+
+```bash
+# Find Text() views with literal strings (manual review needed)
+grep -r 'Text("' --include="*.swift" Targets/YourModule/ | grep -v '".localize'
+
+# Find Button labels with literal strings
+grep -r 'Button("' --include="*.swift" Targets/YourModule/ | grep -v '".localize'
+
+# Find navigationTitle with literal strings
+grep -r '.navigationTitle("' --include="*.swift" Targets/YourModule/ | grep -v '".localize'
+```
+
+**What to look for:**
+- `Text("Hardcoded String")` without `.localize()`
+- `Button("Hardcoded")` without localization
+- `.navigationTitle("Hardcoded")`
+- Alert titles and messages
+- Placeholder text in TextFields
+
+**Exclude from audit:**
+- Preview-only strings in `#if DEBUG` blocks
+- Dynamic content: `Text("\(count)")`, `Text("\(price)")`
+- System symbols: `Image(systemName: "star")`
+
+---
+
+#### 4. Verification Checklist
+
+After migration, verify completeness:
+
+- Run all 3 grep patterns above - should return zero results (except previews)
+- Search for `.localize(` - all user-facing strings should use this
+- Check empty states, error messages, alerts
+- Review navigation titles and tab labels
+- Verify button labels and actions
+- Check form placeholders and validation messages
+
+---
+
+#### 5. Quick Audit Script
+
+Create a script to run all checks:
+
+```bash
+#!/bin/bash
+echo "=== LocalizeKit Migration Audit ==="
+echo ""
+
+echo "1. NSLocalizedString usage:"
+grep -r "NSLocalizedString" --include="*.swift" Targets/YourModule/ | wc -l
+
+echo "2. SwiftUI native plurals (CRITICAL):"
+grep -r '\^\[' --include="*.swift" Targets/YourModule/
+
+echo "3. Hardcoded Text() strings:"
+grep -r 'Text("' --include="*.swift" Targets/YourModule/ | grep -v '".localize' | grep -v '#if DEBUG' | wc -l
+
+echo ""
+echo "Review each pattern above. Zero results (except previews) means migration is complete."
+```
+
+---
+
+**Important:** The SwiftUI native plural pattern (`^\[`) is the easiest to miss because:
+- It looks like dynamic content
+- It's less common than plain Text() strings
+- Grep requires escaping: `'\^\['`
+- Often mixed with actual dynamic values
+
+Always run the plural pattern search explicitly during audits.
+
+---
+
 ### From NSLocalizedString
 
 Migrating from Apple's `NSLocalizedString` to LocalizeKit.
@@ -1096,6 +1245,36 @@ let greeting = "user_greeting".localize(
 2. **Add default value**: Include English text as the `default` parameter
 3. **Simplify interpolation**: Remove `String(format:)` wrapper, use `with` parameter
 4. **Remove bundle parameter**: LocalizeKit manages translations internally
+
+**Important: Use Text.localized() Only for Markdown**
+
+When migrating to SwiftUI views, choose the appropriate method:
+
+- **Use `Text("key".localize(...))`** for plain text without markdown (recommended for most cases)
+- **Use `Text.localized("key", ...)`** ONLY when you need markdown support (bold, italic, links, etc.)
+
+```swift
+// ✅ Correct: Plain text in SwiftUI
+Text("home_title".localize(
+    default: "Home",
+    comment: "Home screen title"
+))
+
+// ❌ Incorrect: Using Text.localized() without markdown (unnecessary)
+Text.localized(
+    "home_title",
+    default: "Home",
+    comment: "Home screen title"
+)
+
+// ✅ Correct: Text with markdown formatting
+Text.localized(
+    "welcome_message",
+    default: "Welcome, **%@**!",
+    comment: "Welcome with bold name",
+    with: userName
+)
+```
 
 **Before:**
 ```swift
@@ -1165,6 +1344,40 @@ Text("cart_item_count".localize(
 3. **Use format specifiers**: Replace count interpolation with `%d` for integers
 4. **Add comment**: Provide translator context
 5. **Pass count twice**: Once for category selection, once for interpolation
+
+**Important: Choosing Between Text.localized() and Text() with .localize()**
+
+When migrating strings to LocalizeKit, choose the appropriate method:
+
+- **Use `Text("key".localize(...))`** for plain text without markdown formatting (recommended for most cases)
+- **Use `Text.localized("key", ...)`** ONLY when you need markdown support (bold, italic, links, etc.)
+
+```swift
+// ✅ Correct: Plain text plural (no markdown needed)
+Text("product_count".localize(
+    defaultPlural: [.one: "1 Product", .other: "%d Products"],
+    count: count,
+    with: count
+))
+
+// ❌ Incorrect: Using Text.localized() without markdown (unnecessary overhead)
+Text.localized(
+    "product_count",
+    defaultPlural: [.one: "1 Product", .other: "%d Products"],
+    count: count,
+    with: count
+)
+
+// ✅ Correct: Plural with markdown formatting
+Text.localized(
+    "product_count_styled",
+    defaultPlural: [.one: "**1** Product", .other: "**%d** Products"],
+    count: count,
+    with: count
+)
+```
+
+The `Text.localized()` method attempts markdown parsing on every call. Only use it when markdown features are actually required.
 
 **Common Patterns:**
 

@@ -82,7 +82,15 @@ private struct OrderItem: View {
                 }
             } label: {
                 HStack {
-                    Text("Total ^[\(order.products.count) product](inflect: true)")
+                    Text("store_orders_product_count".localize(
+                        defaultPlural: [
+                            .one: "Total 1 product",
+                            .other: "Total %d products"
+                        ],
+                        comment: "Total product count in order",
+                        count: order.products.count,
+                        with: order.products.count
+                    ))
 
                     Spacer()
 
