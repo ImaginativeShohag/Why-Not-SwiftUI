@@ -249,18 +249,25 @@ Targets/
 **String Localization API:**
 ```swift
 // Simple string
-"key".localize(default: "English text", comment: "Description")
+"cart_title".localize(default: "Cart", comment: "Cart screen title")
 
 // With interpolation
-"key".localize(default: "Hello, %@!", comment: "Greeting", with: name)
+"greeting".localize(default: "Hello, %@!", comment: "Greeting", with: name)
 
 // With plurals
-"key".localize(
+"items_count".localize(
     defaultPlural: [.one: "1 item", .other: "%d items"],
     comment: "Item count",
-    count: itemCount
+    count: itemCount,
+    with: itemCount
 )
 ```
+
+**Module Detection:**
+- LocalizeKit automatically detects module name using Swift's `#fileID` compile-time literal
+- Keys are clean without module prefix (e.g., `"cart_title"` not `"store_cart_title"`)
+- Module extracted from file path: `Store/Sources/UI/CartScreen.swift` → `"Store"`
+- Zero runtime overhead, privacy-safe (no full paths exposed)
 
 **Translation Management Workflow:**
 1. Add `.localize()` calls in code with English defaults

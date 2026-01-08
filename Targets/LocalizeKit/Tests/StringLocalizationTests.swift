@@ -4,6 +4,11 @@ import XCTest
 /// Unit tests for String+Localization extension methods
 @MainActor
 final class StringLocalizationTests: XCTestCase {
+    // MARK: - Constants
+
+    /// Mock file path for Store module to simulate calling from Store module
+    private let storeModuleFile = "Store/Sources/UI/TestScreen.swift"
+
     // MARK: - Setup / Teardown
 
     override func setUp() async throws {
@@ -20,23 +25,71 @@ final class StringLocalizationTests: XCTestCase {
 
     // MARK: - Helper Methods
 
+    // MARK: - Module Name Extraction Tests
+
+    func testExtractModuleName_ValidStoreModule() {
+        let moduleName = String.extractModuleName(from: "Store/Sources/UI/CartScreen.swift")
+        XCTAssertEqual(moduleName, "Store")
+    }
+
+    func testExtractModuleName_ValidHomeModule() {
+        let moduleName = String.extractModuleName(from: "Home/Sources/HomeScreen.swift")
+        XCTAssertEqual(moduleName, "Home")
+    }
+
+    func testExtractModuleName_SingleComponent() {
+        let moduleName = String.extractModuleName(from: "SomeModule")
+        XCTAssertEqual(moduleName, "SomeModule")
+    }
+
+    func testExtractModuleName_EmptyString() {
+        let moduleName = String.extractModuleName(from: "")
+        XCTAssertEqual(moduleName, "Unknown")
+    }
+
+    func testExtractModuleName_WithMultipleSlashes() {
+        let moduleName = String.extractModuleName(from: "LocalizeKit/Tests/StringLocalizationTests.swift")
+        XCTAssertEqual(moduleName, "LocalizeKit")
+    }
+
+    func testExtractModuleName_ActualFileID() {
+        // This test verifies that #fileID in actual runtime works as expected
+        // The test file itself is in LocalizeKit module
+        let moduleName = String.extractModuleName(from: #fileID)
+        XCTAssertEqual(moduleName, "LocalizeKit", "Module extraction should work with actual #fileID from LocalizeKit module")
+    }
+
+    func testExtractModuleName_PathWithOnlySlash() {
+        // Edge case: path is just "/"
+        let moduleName = String.extractModuleName(from: "/")
+        XCTAssertEqual(moduleName, "Unknown")
+    }
+
+    func testExtractModuleName_PathStartingWithSlash() {
+        // Edge case: path starts with "/" (shouldn't happen with #fileID, but test defensively)
+        let moduleName = String.extractModuleName(from: "/Store/Sources/UI/CartScreen.swift")
+        XCTAssertEqual(moduleName, "Unknown", "Leading slash should result in empty first component")
+    }
+
+    // MARK: - Helper Methods
+
     /// Sets up mock translations for testing
     private func setupMockTranslations() {
         let mockTranslations = TranslationFile(modules: [
             "Store": ModuleTranslations(translations: [
-                "store_welcome": TranslationEntry(
+                "welcome": TranslationEntry(
                     value: .simple("Welcome Translated"),
                     type: .simple
                 ),
-                "store_greeting": TranslationEntry(
+                "greeting": TranslationEntry(
                     value: .simple("Hello, %@! Welcome."),
                     type: .interpolation
                 ),
-                "store_order_summary": TranslationEntry(
+                "order_summary": TranslationEntry(
                     value: .simple("Order #%@ has %d items"),
                     type: .interpolation
                 ),
-                "store_items_count": TranslationEntry(
+                "items_count": TranslationEntry(
                     value: .plural([
                         .zero: "No items in cart",
                         .one: "1 item in cart",
@@ -44,7 +97,7 @@ final class StringLocalizationTests: XCTestCase {
                     ]),
                     type: .plural
                 ),
-                "store_apple_count": TranslationEntry(
+                "apple_count": TranslationEntry(
                     value: .plural([
                         .zero: "No apples",
                         .one: "One apple",
@@ -52,7 +105,7 @@ final class StringLocalizationTests: XCTestCase {
                     ]),
                     type: .plural
                 ),
-                "store_cart_summary": TranslationEntry(
+                "cart_summary": TranslationEntry(
                     value: .plural([
                         .zero: "Your cart is empty",
                         .one: "You have 1 item worth %@",
@@ -77,11 +130,11 @@ final class StringLocalizationTests: XCTestCase {
     func testSimpleLocalize_WhenTranslationExists_ReturnsTranslation() {
         // Given
         setupMockTranslations()
-        let key = "store_welcome"
+        let key = "welcome"
         let defaultValue = "Welcome to Store!"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Welcome Translated")
@@ -89,11 +142,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testSimpleLocalize_WhenTranslationMissing_ReturnsDefault() {
         // Given - no translations set up
-        let key = "store_nonexistent"
+        let key = "nonexistent"
         let defaultValue = "Default Text"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, defaultValue)
@@ -106,7 +159,7 @@ final class StringLocalizationTests: XCTestCase {
         let defaultValue = "Fallback Text"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, defaultValue)
@@ -115,11 +168,11 @@ final class StringLocalizationTests: XCTestCase {
     func testSimpleLocalize_WithComment_Works() {
         // Given
         setupMockTranslations()
-        let key = "store_welcome"
+        let key = "welcome"
         let defaultValue = "Welcome!"
 
         // When
-        let result = key.localize(default: defaultValue, comment: "Greeting on home screen")
+        let result = key.localize(default: defaultValue, comment: "Greeting on home screen", file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Welcome Translated")
@@ -130,12 +183,12 @@ final class StringLocalizationTests: XCTestCase {
     func testLocalizeWithSingleArg_StringPlaceholder() {
         // Given
         setupMockTranslations()
-        let key = "store_greeting"
+        let key = "greeting"
         let defaultValue = "Hello, %@!"
         let name = "John"
 
         // When
-        let result = key.localize(default: defaultValue, with: name)
+        let result = key.localize(default: defaultValue, with: name, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Hello, John! Welcome.")
@@ -143,12 +196,12 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalizeWithSingleArg_IntPlaceholder() {
         // Given - no translations, uses default
-        let key = "store_count"
+        let key = "count"
         let defaultValue = "You have %d messages"
         let count = 42
 
         // When
-        let result = key.localize(default: defaultValue, with: count)
+        let result = key.localize(default: defaultValue, with: count, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "You have 42 messages")
@@ -156,12 +209,12 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalizeWithSingleArg_DoublePlaceholder() {
         // Given - no translations, uses default
-        let key = "store_price"
+        let key = "price"
         let defaultValue = "Total: $%.2f"
         let price = 19.99
 
         // When
-        let result = key.localize(default: defaultValue, with: price)
+        let result = key.localize(default: defaultValue, with: price, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Total: $19.99")
@@ -169,12 +222,12 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalizeWithSingleArg_WhenTranslationMissing_UsesDefault() {
         // Given - no translations set up
-        let key = "store_missing"
+        let key = "missing"
         let defaultValue = "Welcome, %@!"
         let name = "Alice"
 
         // When
-        let result = key.localize(default: defaultValue, with: name)
+        let result = key.localize(default: defaultValue, with: name, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Welcome, Alice!")
@@ -185,13 +238,13 @@ final class StringLocalizationTests: XCTestCase {
     func testLocalizeWithMultipleArgs_ReplacesAllPlaceholders() {
         // Given
         setupMockTranslations()
-        let key = "store_order_summary"
+        let key = "order_summary"
         let defaultValue = "Order #%@ contains %d items"
         let orderId = "ABC123"
         let itemCount = 5
 
         // When
-        let result = key.localize(default: defaultValue, with: orderId, itemCount)
+        let result = key.localize(default: defaultValue, with: orderId, itemCount, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Order #ABC123 has 5 items")
@@ -199,14 +252,14 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalizeWithMultipleArgs_MixedTypes() {
         // Given - no translations, uses default
-        let key = "store_summary"
+        let key = "summary"
         let defaultValue = "%@ bought %d items for $%.2f"
         let name = "Bob"
         let count = 3
         let total = 45.50
 
         // When
-        let result = key.localize(default: defaultValue, with: name, count, total)
+        let result = key.localize(default: defaultValue, with: name, count, total, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Bob bought 3 items for $45.50")
@@ -214,13 +267,13 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalizeWithMultipleArgs_WhenTranslationMissing_UsesDefault() {
         // Given - no translations set up
-        let key = "store_nonexistent"
+        let key = "nonexistent"
         let defaultValue = "Hello %@, you have %d new messages"
         let name = "Charlie"
         let count = 10
 
         // When
-        let result = key.localize(default: defaultValue, with: name, count)
+        let result = key.localize(default: defaultValue, with: name, count, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Hello Charlie, you have 10 new messages")
@@ -230,7 +283,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_ZeroCount_ReturnsZeroForm() {
         // Given - using default plurals (no server translation)
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Cart is empty",
             .one: "One item",
@@ -238,7 +291,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 0)
+        let result = key.localize(defaultPlural: defaultPlural, count: 0, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Cart is empty")
@@ -246,7 +299,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_OneCount_ReturnsOneForm() {
         // Given - using default plurals (no server translation)
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Cart is empty",
             .one: "One item",
@@ -254,7 +307,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 1)
+        let result = key.localize(defaultPlural: defaultPlural, count: 1, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "One item")
@@ -262,7 +315,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_MultipleCount_ReturnsOtherForm() {
         // Given - using default plurals (no server translation)
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Cart is empty",
             .one: "One item",
@@ -270,7 +323,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 5)
+        let result = key.localize(defaultPlural: defaultPlural, count: 5, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Multiple items")
@@ -278,13 +331,13 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_FallbackChain_WhenExactCategoryMissing() {
         // Given - only "other" form provided
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .other: "Items available"
         ]
 
         // When - count is 0 but .zero not defined, should fallback to .other
-        let result = key.localize(defaultPlural: defaultPlural, count: 0)
+        let result = key.localize(defaultPlural: defaultPlural, count: 0, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Items available")
@@ -292,20 +345,20 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_ReturnsKey_WhenNoDefaultsProvided() {
         // Given - empty dictionary
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [:]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 5)
+        let result = key.localize(defaultPlural: defaultPlural, count: 5, file: storeModuleFile)
 
         // Then - should return key as last resort
-        XCTAssertEqual(result, "store_items")
+        XCTAssertEqual(result, "items")
     }
 
     func testPluralLocalize_TranslationExists_ReturnsTranslated() {
         // Given
         setupMockTranslations()
-        let key = "store_items_count"
+        let key = "items_count"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Default zero",
             .one: "Default one",
@@ -313,7 +366,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 5)
+        let result = key.localize(defaultPlural: defaultPlural, count: 5, file: storeModuleFile)
 
         // Then - should use translated value format string, not default
         // Note: This returns the format string; use the `with:` variant for interpolation
@@ -323,7 +376,7 @@ final class StringLocalizationTests: XCTestCase {
     func testPluralLocalize_TranslatedZeroForm() {
         // Given
         setupMockTranslations()
-        let key = "store_items_count"
+        let key = "items_count"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Default empty",
             .one: "Default one",
@@ -331,7 +384,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 0)
+        let result = key.localize(defaultPlural: defaultPlural, count: 0, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "No items in cart")
@@ -340,7 +393,7 @@ final class StringLocalizationTests: XCTestCase {
     func testPluralLocalize_TranslatedOneForm() {
         // Given
         setupMockTranslations()
-        let key = "store_items_count"
+        let key = "items_count"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Default empty",
             .one: "Default one",
@@ -348,7 +401,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 1)
+        let result = key.localize(defaultPlural: defaultPlural, count: 1, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "1 item in cart")
@@ -358,7 +411,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalizeWithSingleArg_ZeroCount() {
         // Given - using default plurals
-        let key = "store_apples"
+        let key = "apples"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "No apples",
             .one: "%d apple",
@@ -366,7 +419,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 0, with: 0)
+        let result = key.localize(defaultPlural: defaultPlural, count: 0, with: 0, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "No apples")
@@ -374,7 +427,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalizeWithSingleArg_OneCount() {
         // Given - using default plurals
-        let key = "store_apples"
+        let key = "apples"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "No apples",
             .one: "%d apple",
@@ -382,7 +435,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 1, with: 1)
+        let result = key.localize(defaultPlural: defaultPlural, count: 1, with: 1, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "1 apple")
@@ -390,7 +443,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalizeWithSingleArg_MultipleCount() {
         // Given - using default plurals
-        let key = "store_apples"
+        let key = "apples"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "No apples",
             .one: "%d apple",
@@ -398,7 +451,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 10, with: 10)
+        let result = key.localize(defaultPlural: defaultPlural, count: 10, with: 10, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "10 apples")
@@ -407,7 +460,7 @@ final class StringLocalizationTests: XCTestCase {
     func testPluralLocalizeWithSingleArg_TranslationExists() {
         // Given
         setupMockTranslations()
-        let key = "store_apple_count"
+        let key = "apple_count"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Default no apples",
             .one: "Default %d apple",
@@ -415,7 +468,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 5, with: 5)
+        let result = key.localize(defaultPlural: defaultPlural, count: 5, with: 5, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "5 apples")
@@ -425,7 +478,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalizeWithMultipleArgs_ZeroCount() {
         // Given - using default plurals
-        let key = "store_cart"
+        let key = "cart"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Your cart is empty",
             .one: "1 item costing %@",
@@ -433,7 +486,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 0, with: 0, "$0.00")
+        let result = key.localize(defaultPlural: defaultPlural, count: 0, with: 0, "$0.00", file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "Your cart is empty")
@@ -441,7 +494,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalizeWithMultipleArgs_OneCount() {
         // Given - using default plurals
-        let key = "store_cart"
+        let key = "cart"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Your cart is empty",
             .one: "You have %d item worth %@",
@@ -449,7 +502,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 1, with: 1, "$25.00")
+        let result = key.localize(defaultPlural: defaultPlural, count: 1, with: 1, "$25.00", file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "You have 1 item worth $25.00")
@@ -457,7 +510,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalizeWithMultipleArgs_MultipleCount() {
         // Given - using default plurals
-        let key = "store_cart"
+        let key = "cart"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Your cart is empty",
             .one: "1 item costing %@",
@@ -465,7 +518,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 3, with: 3, "$99.99")
+        let result = key.localize(defaultPlural: defaultPlural, count: 3, with: 3, "$99.99", file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "3 items costing $99.99")
@@ -474,7 +527,7 @@ final class StringLocalizationTests: XCTestCase {
     func testPluralLocalizeWithMultipleArgs_TranslationExists() {
         // Given
         setupMockTranslations()
-        let key = "store_cart_summary"
+        let key = "cart_summary"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Default empty",
             .one: "Default 1 item worth %@",
@@ -482,7 +535,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 5, with: 5, "$150.00")
+        let result = key.localize(defaultPlural: defaultPlural, count: 5, with: 5, "$150.00", file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "You have 5 items worth $150.00")
@@ -493,7 +546,7 @@ final class StringLocalizationTests: XCTestCase {
     func testPluralLocalize_TwoCategory() {
         // Given - testing .two category (used in Arabic for dual forms)
         // Note: In English locale, count=2 falls back to .other
-        let key = "store_books"
+        let key = "books"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "No books",
             .one: "One book",
@@ -502,7 +555,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When - In English locale, count=2 selects .other, not .two
-        let result = key.localize(defaultPlural: defaultPlural, count: 2, with: 2)
+        let result = key.localize(defaultPlural: defaultPlural, count: 2, with: 2, file: storeModuleFile)
 
         // Then - Falls back to .other for English
         XCTAssertEqual(result, "2 books")
@@ -510,7 +563,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_FewCategory() {
         // Given - testing .few category (used in Slavic languages)
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .one: "One item",
             .few: "A few items",
@@ -518,7 +571,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When - simulating a count that would trigger .few in Polish/Russian
-        let result = key.localize(defaultPlural: defaultPlural, count: 3, with: 3)
+        let result = key.localize(defaultPlural: defaultPlural, count: 3, with: 3, file: storeModuleFile)
 
         // Then - falls back to .other since we don't have language-specific plural rules
         XCTAssertEqual(result, "3 items")
@@ -527,7 +580,7 @@ final class StringLocalizationTests: XCTestCase {
     func testPluralLocalize_ManyCategory() {
         // Given - testing .many category
         // Note: In English locale, large counts fall back to .other
-        let key = "store_products"
+        let key = "products"
         let defaultPlural: [PluralCategory: String] = [
             .one: "One product",
             .many: "Many products", // Only used in Polish/Russian, not English
@@ -535,7 +588,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When - In English locale, count=100 selects .other, not .many
-        let result = key.localize(defaultPlural: defaultPlural, count: 100, with: 100)
+        let result = key.localize(defaultPlural: defaultPlural, count: 100, with: 100, file: storeModuleFile)
 
         // Then - Falls back to .other for English
         XCTAssertEqual(result, "100 products")
@@ -543,14 +596,14 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_FallbackFromTwoToOne() {
         // Given - .two not defined, should fallback to .one then .other
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .one: "Single item",
             .other: "Multiple items"
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 2)
+        let result = key.localize(defaultPlural: defaultPlural, count: 2, file: storeModuleFile)
 
         // Then - should fallback to .other
         XCTAssertEqual(result, "Multiple items")
@@ -558,14 +611,14 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_FallbackFromFewToOther() {
         // Given - .few not defined
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .one: "One item",
             .other: "%d items"
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 3, with: 3)
+        let result = key.localize(defaultPlural: defaultPlural, count: 3, with: 3, file: storeModuleFile)
 
         // Then - should fallback to .other
         XCTAssertEqual(result, "3 items")
@@ -573,14 +626,14 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_FallbackFromManyToOther() {
         // Given - .many not defined
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .one: "One item",
             .other: "%d items"
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 100, with: 100)
+        let result = key.localize(defaultPlural: defaultPlural, count: 100, with: 100, file: storeModuleFile)
 
         // Then - should fallback to .other
         XCTAssertEqual(result, "100 items")
@@ -590,7 +643,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_NegativeCount() {
         // Given
-        let key = "store_balance"
+        let key = "balance"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "No balance",
             .one: "One unit",
@@ -598,7 +651,7 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: -5, with: -5)
+        let result = key.localize(defaultPlural: defaultPlural, count: -5, with: -5, file: storeModuleFile)
 
         // Then - negative treated as .other
         XCTAssertEqual(result, "-5 units")
@@ -606,7 +659,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_VeryLargeCount() {
         // Given
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .one: "One item",
             .other: "%d items"
@@ -615,7 +668,7 @@ final class StringLocalizationTests: XCTestCase {
         // When - Note: %d format specifier has limitations with Int.max (64-bit)
         // Using a large but safe value instead
         let largeCount = 999_999_999
-        let result = key.localize(defaultPlural: defaultPlural, count: largeCount, with: largeCount)
+        let result = key.localize(defaultPlural: defaultPlural, count: largeCount, with: largeCount, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "\(largeCount) items")
@@ -623,14 +676,14 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalizeWithArgs_NegativeCountAsArgument() {
         // Given
-        let key = "store_temperature"
+        let key = "temperature"
         let defaultPlural: [PluralCategory: String] = [
             .one: "%d degree",
             .other: "%d degrees"
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: -10, with: -10)
+        let result = key.localize(defaultPlural: defaultPlural, count: -10, with: -10, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "-10 degrees")
@@ -638,13 +691,13 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_ZeroWithOnlyOtherForm() {
         // Given - no .zero form provided
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .other: "%d items available"
         ]
 
         // When
-        let result = key.localize(defaultPlural: defaultPlural, count: 0, with: 0)
+        let result = key.localize(defaultPlural: defaultPlural, count: 0, with: 0, file: storeModuleFile)
 
         // Then - should fallback to .other
         XCTAssertEqual(result, "0 items available")
@@ -658,7 +711,7 @@ final class StringLocalizationTests: XCTestCase {
         let defaultValue = "Fallback"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should return default
         XCTAssertEqual(result, defaultValue)
@@ -667,11 +720,11 @@ final class StringLocalizationTests: XCTestCase {
     func testSimpleLocalize_KeyWithMultipleUnderscores() {
         // Given
         setupMockTranslations()
-        let key = "store_user_profile_name_label"
+        let key = "user_profile_name_label"
         let defaultValue = "Name Label"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should handle multiple underscores (module is "store")
         XCTAssertEqual(result, defaultValue) // No translation exists
@@ -679,11 +732,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testSimpleLocalize_KeyWithUnicodeCharacters() {
         // Given
-        let key = "store_emoji_🎉_test"
+        let key = "emoji_🎉_test"
         let defaultValue = "Party Test"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should return default (non-standard key)
         XCTAssertEqual(result, defaultValue)
@@ -696,7 +749,7 @@ final class StringLocalizationTests: XCTestCase {
         let defaultValue = "Welcome"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - case sensitive, should not find translation
         XCTAssertEqual(result, defaultValue)
@@ -704,11 +757,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testSimpleLocalize_VeryLongKey() {
         // Given
-        let key = "store_" + String(repeating: "a", count: 1000)
+        let key = "" + String(repeating: "a", count: 1000)
         let defaultValue = "Long Key Test"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should handle gracefully
         XCTAssertEqual(result, defaultValue)
@@ -720,7 +773,7 @@ final class StringLocalizationTests: XCTestCase {
         let defaultValue = "Underscore Only"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - invalid format
         XCTAssertEqual(result, defaultValue)
@@ -732,7 +785,7 @@ final class StringLocalizationTests: XCTestCase {
         let defaultValue = "Welcome"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - module would be empty
         XCTAssertEqual(result, defaultValue)
@@ -742,11 +795,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testSimpleLocalize_EmptyDefaultValue() {
         // Given
-        let key = "store_empty"
+        let key = "empty"
         let defaultValue = ""
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should return empty string
         XCTAssertEqual(result, "")
@@ -754,11 +807,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testSimpleLocalize_DefaultValueWithUnicode() {
         // Given
-        let key = "store_greeting"
+        let key = "greeting"
         let defaultValue = "Hello 👋 مرحبا নমস্কার"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, defaultValue)
@@ -766,11 +819,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testSimpleLocalize_DefaultValueWithEmoji() {
         // Given
-        let key = "store_party"
+        let key = "party"
         let defaultValue = "🎉🎊🥳"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, defaultValue)
@@ -778,11 +831,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testSimpleLocalize_VeryLongDefaultValue() {
         // Given
-        let key = "store_long"
+        let key = "long"
         let defaultValue = String(repeating: "Lorem ipsum dolor sit amet. ", count: 100)
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should handle large strings
         XCTAssertEqual(result, defaultValue)
@@ -790,11 +843,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testSimpleLocalize_DefaultValueWithNewlines() {
         // Given
-        let key = "store_multiline"
+        let key = "multiline"
         let defaultValue = "Line 1\nLine 2\nLine 3"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, defaultValue)
@@ -802,11 +855,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testSimpleLocalize_DefaultValueWithSpecialCharacters() {
         // Given
-        let key = "store_special"
+        let key = "special"
         let defaultValue = "Test: @#$%^&*(){}[]|\\/<>?"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, defaultValue)
@@ -816,11 +869,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalizeWithArgs_MorePlaceholdersThanArguments() {
         // Given
-        let key = "store_format"
+        let key = "format"
         let defaultValue = "Name: %@, Age: %d, City: %@"
 
         // When - only providing 2 arguments for 3 placeholders
-        let result = key.localize(default: defaultValue, with: "John", 30, "Bangladesh")
+        let result = key.localize(default: defaultValue, with: "John", 30, "Bangladesh", file: storeModuleFile)
 
         // Then - String(format:) behavior: extra placeholder remains or crashes
         // This tests that the implementation handles this edge case
@@ -831,11 +884,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalizeWithArgs_FewerPlaceholdersThanArguments() {
         // Given
-        let key = "store_format"
+        let key = "format"
         let defaultValue = "Name: %@"
 
         // When - providing 2 arguments for 1 placeholder
-        let result = key.localize(default: defaultValue, with: "John", 30)
+        let result = key.localize(default: defaultValue, with: "John", 30, file: storeModuleFile)
 
         // Then - extra argument is ignored
         XCTAssertEqual(result, "Name: John")
@@ -843,11 +896,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalizeWithArgs_EscapedPercentSign() {
         // Given
-        let key = "store_discount"
+        let key = "discount"
         let defaultValue = "Save %%d off!" // Escaped %
 
         // When
-        let result = key.localize(default: defaultValue, with: 20)
+        let result = key.localize(default: defaultValue, with: 20, file: storeModuleFile)
 
         // Then - %% becomes single %
         XCTAssertTrue(result.contains("%"))
@@ -855,11 +908,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalizeWithArgs_NoPlaceholdersButArgumentsProvided() {
         // Given
-        let key = "store_static"
+        let key = "static"
         let defaultValue = "Static text without placeholders"
 
         // When - providing arguments that won't be used
-        let result = key.localize(default: defaultValue, with: "Ignored", 42)
+        let result = key.localize(default: defaultValue, with: "Ignored", 42, file: storeModuleFile)
 
         // Then - arguments ignored, returns static text
         XCTAssertEqual(result, defaultValue)
@@ -867,14 +920,14 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalizeWithArgs_MismatchedPlaceholderTypes() {
         // Given
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .one: "One item: %@", // String placeholder
             .other: "%d items" // Integer placeholder
         ]
 
         // When - passing integer to .other (correct), but string if .one selected
-        let result = key.localize(defaultPlural: defaultPlural, count: 5, with: 5)
+        let result = key.localize(defaultPlural: defaultPlural, count: 5, with: 5, file: storeModuleFile)
 
         // Then
         XCTAssertEqual(result, "5 items")
@@ -885,11 +938,11 @@ final class StringLocalizationTests: XCTestCase {
     func testSimpleLocalize_OnPluralTranslation() {
         // Given - setup translation marked as plural type
         setupMockTranslations()
-        let key = "store_items_count" // This is a plural type in mock
+        let key = "items_count" // This is a plural type in mock
         let defaultValue = "Default items"
 
         // When - calling simple localize on a plural translation
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should return the translation's first available value or default
         // Implementation dependent - might return key, default, or first plural form
@@ -899,14 +952,14 @@ final class StringLocalizationTests: XCTestCase {
     func testPluralLocalize_OnSimpleTranslation() {
         // Given
         setupMockTranslations()
-        let key = "store_welcome" // This is a simple type in mock
+        let key = "welcome" // This is a simple type in mock
         let defaultPlural: [PluralCategory: String] = [
             .one: "One welcome",
             .other: "%d welcomes"
         ]
 
         // When - calling plural localize on a simple translation
-        let result = key.localize(defaultPlural: defaultPlural, count: 5)
+        let result = key.localize(defaultPlural: defaultPlural, count: 5, file: storeModuleFile)
 
         // Then - might return the simple value or fallback to default plural
         XCTAssertFalse(result.isEmpty)
@@ -915,14 +968,14 @@ final class StringLocalizationTests: XCTestCase {
     func testPluralLocalize_OnInterpolationTranslation() {
         // Given
         setupMockTranslations()
-        let key = "store_greeting" // This is interpolation type in mock
+        let key = "greeting" // This is interpolation type in mock
         let defaultPlural: [PluralCategory: String] = [
             .one: "One greeting",
             .other: "%d greetings"
         ]
 
         // When - calling plural localize on interpolation translation
-        let result = key.localize(defaultPlural: defaultPlural, count: 5)
+        let result = key.localize(defaultPlural: defaultPlural, count: 5, file: storeModuleFile)
 
         // Then - implementation should handle gracefully
         XCTAssertFalse(result.isEmpty)
@@ -932,11 +985,11 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalize_WhenNoLanguageActivated() {
         // Given - fresh state, no language activated (already cleared in setUp)
-        let key = "store_test"
+        let key = "test"
         let defaultValue = "Test Value"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should return default
         XCTAssertEqual(result, defaultValue)
@@ -947,13 +1000,13 @@ final class StringLocalizationTests: XCTestCase {
         setupMockTranslations() // English
 
         // Verify first language works
-        let result1 = "store_welcome".localize(default: "Welcome")
+        let result1 = "welcome".localize(default: "Welcome", file: storeModuleFile)
         XCTAssertEqual(result1, "Welcome Translated")
 
         // When - activate another language
         let spanishTranslations = TranslationFile(modules: [
             "Store": ModuleTranslations(translations: [
-                "store_welcome": TranslationEntry(
+                "welcome": TranslationEntry(
                     value: .simple("Bienvenido"),
                     type: .simple
                 )
@@ -969,7 +1022,7 @@ final class StringLocalizationTests: XCTestCase {
         )
 
         // Then - should use new language
-        let result2 = "store_welcome".localize(default: "Welcome")
+        let result2 = "welcome".localize(default: "Welcome", file: storeModuleFile)
         XCTAssertEqual(result2, "Bienvenido")
     }
 
@@ -978,14 +1031,14 @@ final class StringLocalizationTests: XCTestCase {
         setupMockTranslations()
 
         // Verify translation exists
-        let result1 = "store_welcome".localize(default: "Welcome")
+        let result1 = "welcome".localize(default: "Welcome", file: storeModuleFile)
         XCTAssertEqual(result1, "Welcome Translated")
 
         // When - clear cache
         await LocalizationManager.shared.clearCache()
 
         // Then - should fallback to default
-        let result2 = "store_welcome".localize(default: "Welcome")
+        let result2 = "welcome".localize(default: "Welcome", file: storeModuleFile)
         XCTAssertEqual(result2, "Welcome")
     }
 
@@ -998,9 +1051,9 @@ final class StringLocalizationTests: XCTestCase {
             for i in 0 ..< 100 {
                 group.addTask { @MainActor in
                     if i % 2 == 0 {
-                        return "store_welcome".localize(default: "Welcome")
+                        return "welcome".localize(default: "Welcome", file: self.storeModuleFile)
                     } else {
-                        return "store_greeting".localize(default: "Hello, %@!", with: "User\(i)")
+                        return "greeting".localize(default: "Hello, %@!", with: "User\(i)")
                     }
                 }
             }
@@ -1024,7 +1077,7 @@ final class StringLocalizationTests: XCTestCase {
         let defaultValue = "Test"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should return default
         XCTAssertEqual(result, defaultValue)
@@ -1037,7 +1090,7 @@ final class StringLocalizationTests: XCTestCase {
         let defaultValue = "Home Welcome"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should return default (not found in Home module)
         XCTAssertEqual(result, defaultValue)
@@ -1046,11 +1099,11 @@ final class StringLocalizationTests: XCTestCase {
     func testLocalize_CaseSensitiveModuleName() {
         // Given
         setupMockTranslations() // Module is "Store"
-        let key = "store_welcome" // lowercase module
+        let key = "welcome" // lowercase module
         let defaultValue = "Welcome"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should find translation (depends on implementation case sensitivity)
         XCTAssertEqual(result, "Welcome Translated")
@@ -1058,12 +1111,12 @@ final class StringLocalizationTests: XCTestCase {
 
     func testLocalize_CaseSensitiveKeyName() {
         // Given
-        setupMockTranslations() // Key is "store_welcome"
-        let key = "store_Welcome" // Different case
+        setupMockTranslations() // Key is "welcome"
+        let key = "Welcome" // Different case
         let defaultValue = "Welcome"
 
         // When
-        let result = key.localize(default: defaultValue)
+        let result = key.localize(default: defaultValue, file: storeModuleFile)
 
         // Then - should not find (case sensitive)
         XCTAssertEqual(result, defaultValue)
@@ -1074,7 +1127,7 @@ final class StringLocalizationTests: XCTestCase {
     func testLocalizeWithSingleArg_WithComment() {
         // Given
         setupMockTranslations()
-        let key = "store_greeting"
+        let key = "greeting"
         let defaultValue = "Hello, %@!"
         let name = "Alice"
 
@@ -1082,7 +1135,8 @@ final class StringLocalizationTests: XCTestCase {
         let result = key.localize(
             default: defaultValue,
             comment: "User greeting with name",
-            with: name
+            with: name,
+            file: storeModuleFile
         )
 
         // Then
@@ -1092,14 +1146,15 @@ final class StringLocalizationTests: XCTestCase {
     func testLocalizeWithMultipleArgs_WithComment() {
         // Given
         setupMockTranslations()
-        let key = "store_order_summary"
+        let key = "order_summary"
         let defaultValue = "Order #%@ with %d items"
 
         // When
         let result = key.localize(
             default: defaultValue,
             comment: "Order summary with ID and count",
-            with: "ORD123", 5
+            with: "ORD123", 5,
+            file: storeModuleFile
         )
 
         // Then
@@ -1108,7 +1163,7 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_WithComment() {
         // Given
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "No items",
             .one: "One item",
@@ -1130,7 +1185,7 @@ final class StringLocalizationTests: XCTestCase {
     func testPluralLocalizeWithArgs_WithComment() {
         // Given
         setupMockTranslations()
-        let key = "store_cart_summary"
+        let key = "cart_summary"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Empty cart",
             .one: "One item worth %@",
@@ -1142,7 +1197,8 @@ final class StringLocalizationTests: XCTestCase {
             defaultPlural: defaultPlural,
             comment: "Cart summary with count and total",
             count: 5,
-            with: 5, "$99.99"
+            with: 5, "$99.99",
+            file: storeModuleFile
         )
 
         // Then
@@ -1153,37 +1209,37 @@ final class StringLocalizationTests: XCTestCase {
 
     func testPluralLocalize_ComplexFallbackChain() {
         // Given - only .other defined
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .other: "%d items"
         ]
 
         // When/Then - test various counts all fallback to .other
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 0, with: 0), "0 items")
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 1, with: 1), "1 items")
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 2, with: 2), "2 items")
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 3, with: 3), "3 items")
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 100, with: 100), "100 items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 0, with: 0, file: storeModuleFile), "0 items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 1, with: 1, file: storeModuleFile), "1 items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 2, with: 2, file: storeModuleFile), "2 items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 3, with: 3, file: storeModuleFile), "3 items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 100, with: 100, file: storeModuleFile), "100 items")
     }
 
     func testPluralLocalize_PartialPluralDefinitions() {
         // Given - only .zero and .other defined, missing .one, .two, .few, .many
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "No items",
             .other: "%d items"
         ]
 
         // When/Then
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 0), "No items")
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 1, with: 1), "1 items")
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 2, with: 2), "2 items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 0, file: storeModuleFile), "No items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 1, with: 1, file: storeModuleFile), "1 items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 2, with: 2, file: storeModuleFile), "2 items")
     }
 
     func testPluralLocalize_AllCategoriesDefined() {
         // Given - all six CLDR categories defined
         // Note: In English locale, only .zero, .one, and .other are used
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Zero items",
             .one: "One item",
@@ -1194,23 +1250,23 @@ final class StringLocalizationTests: XCTestCase {
         ]
 
         // When/Then - verify correct category selection for English locale
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 0), "Zero items")
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 1), "One item")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 0, file: storeModuleFile), "Zero items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 1, file: storeModuleFile), "One item")
         // Count 2 and 100 fall back to .other in English
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 2, with: 2), "2 items")
-        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 100, with: 100), "100 items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 2, with: 2, file: storeModuleFile), "2 items")
+        XCTAssertEqual(key.localize(defaultPlural: defaultPlural, count: 100, with: 100, file: storeModuleFile), "100 items")
     }
 
     func testPluralLocalize_MissingOtherCategory() {
         // Given - unusual case where .other is not defined
-        let key = "store_items"
+        let key = "items"
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Zero",
             .one: "One"
         ]
 
         // When/Then - count that doesn't match defined categories
-        let result = key.localize(defaultPlural: defaultPlural, count: 5)
+        let result = key.localize(defaultPlural: defaultPlural, count: 5, file: storeModuleFile)
 
         // Then - should fallback to .one then return key as last resort
         XCTAssertEqual(result, "One")

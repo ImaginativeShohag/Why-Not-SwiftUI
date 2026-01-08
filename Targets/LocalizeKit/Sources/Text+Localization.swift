@@ -8,12 +8,13 @@ extension Text {
     ///   - key: Translation key.
     ///   - defaultValue: Default markdown string.
     ///   - comment: Comment for translators.
+    ///   - file: Source file identifier (automatic via #fileID).
     /// - Returns: Text view with rendered markdown.
     ///
     /// Example:
     /// ```swift
     /// Text.localized(
-    ///     "store_welcome",
+    ///     "welcome",
     ///     default: "Welcome, **%@**!",
     ///     comment: "Welcome message",
     ///     with: userName
@@ -23,9 +24,10 @@ extension Text {
     public static func localized(
         _ key: String,
         default defaultValue: String,
-        comment: String = ""
+        comment: String = "",
+        file: String = #fileID
     ) -> Text {
-        let localizedString = key.localize(default: defaultValue, comment: comment)
+        let localizedString = key.localize(default: defaultValue, comment: comment, file: file)
 
         // Try to parse as markdown, fallback to plain text if fails
         if let attributedString = try? AttributedString(markdown: localizedString) {
@@ -41,15 +43,17 @@ extension Text {
     ///   - defaultValue: Default markdown format string.
     ///   - comment: Comment for translators.
     ///   - argument: Value to interpolate.
+    ///   - file: Source file identifier (automatic via #fileID).
     /// - Returns: Text view with rendered markdown.
     @MainActor
     public static func localized(
         _ key: String,
         default defaultValue: String,
         comment: String = "",
-        with argument: CVarArg
+        with argument: CVarArg,
+        file: String = #fileID
     ) -> Text {
-        let localizedString = key.localize(default: defaultValue, comment: comment, with: argument)
+        let localizedString = key.localize(default: defaultValue, comment: comment, with: argument, file: file)
 
         // Try to parse as markdown, fallback to plain text if fails
         if let attributedString = try? AttributedString(markdown: localizedString) {
@@ -65,15 +69,17 @@ extension Text {
     ///   - defaultValue: Default markdown format string.
     ///   - comment: Comment for translators.
     ///   - arguments: Values to interpolate.
+    ///   - file: Source file identifier (automatic via #fileID).
     /// - Returns: Text view with rendered markdown.
     @MainActor
     public static func localized(
         _ key: String,
         default defaultValue: String,
         comment: String = "",
-        with arguments: CVarArg...
+        with arguments: CVarArg...,
+        file: String = #fileID
     ) -> Text {
-        let format = key.localize(default: defaultValue, comment: comment)
+        let format = key.localize(default: defaultValue, comment: comment, file: file)
         let localizedString = String(format: format, arguments: arguments)
 
         // Try to parse as markdown, fallback to plain text if fails
@@ -92,6 +98,7 @@ extension Text {
     ///   - defaultPlural: Dictionary of plural forms with English defaults.
     ///   - comment: Comment for translators.
     ///   - count: Count value for plural category selection.
+    ///   - file: Source file identifier (automatic via #fileID).
     /// - Returns: Text view with rendered markdown.
     ///
     /// Example:
@@ -112,12 +119,14 @@ extension Text {
         _ key: String,
         defaultPlural: [PluralCategory: String],
         comment: String = "",
-        count: Int
+        count: Int,
+        file: String = #fileID
     ) -> Text {
         let localizedString = key.localize(
             defaultPlural: defaultPlural,
             comment: comment,
-            count: count
+            count: count,
+            file: file
         )
 
         // Try to parse as markdown, fallback to plain text if fails
@@ -135,6 +144,7 @@ extension Text {
     ///   - comment: Comment for translators.
     ///   - count: Count value for plural category selection.
     ///   - argument: Value to interpolate.
+    ///   - file: Source file identifier (automatic via #fileID).
     /// - Returns: Text view with rendered markdown.
     ///
     /// Example:
@@ -156,13 +166,15 @@ extension Text {
         defaultPlural: [PluralCategory: String],
         comment: String = "",
         count: Int,
-        with argument: CVarArg
+        with argument: CVarArg,
+        file: String = #fileID
     ) -> Text {
         let localizedString = key.localize(
             defaultPlural: defaultPlural,
             comment: comment,
             count: count,
-            with: argument
+            with: argument,
+            file: file
         )
 
         // Try to parse as markdown, fallback to plain text if fails
@@ -180,12 +192,13 @@ extension Text {
     ///   - comment: Comment for translators.
     ///   - count: Count value for plural category selection.
     ///   - arguments: Values to interpolate.
+    ///   - file: Source file identifier (automatic via #fileID).
     /// - Returns: Text view with rendered markdown.
     ///
     /// Example:
     /// ```swift
     /// Text.localized(
-    ///     "store_item_summary",
+    ///     "item_summary",
     ///     defaultPlural: [
     ///         .zero: "Your cart is empty",
     ///         .one: "You have 1 item worth %@",
@@ -202,13 +215,15 @@ extension Text {
         defaultPlural: [PluralCategory: String],
         comment: String = "",
         count: Int,
-        with arguments: CVarArg...
+        with arguments: CVarArg...,
+        file: String = #fileID
     ) -> Text {
         let localizedString = key.localize(
             defaultPlural: defaultPlural,
             comment: comment,
             count: count,
-            with: arguments
+            with: arguments,
+            file: file
         )
 
         // Try to parse as markdown, fallback to plain text if fails

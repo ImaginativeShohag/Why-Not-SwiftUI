@@ -192,26 +192,18 @@ public final class LocalizationManager {
     // MARK: - Translation Retrieval
 
     /// Get simple translated string
-    /// - Parameter key: Translation key (e.g., "store_welcome")
+    /// - Parameters:
+    ///   - key: Translation key (e.g., "cart_title")
+    ///   - moduleName: Module name (e.g., "Store")
     /// - Returns: Translated string or nil if not found
-    public func string(for key: String) -> String? {
+    public func string(for key: String, in moduleName: String) -> String? {
         guard let translations = currentTranslations else {
             return nil
         }
 
-        // Extract module and key from format "module_key"
-        let components = key.split(separator: "_", maxSplits: 1)
-        guard components.count >= 2 else {
-            LocalizeKitLogger.w("Invalid key format: \(key). Expected 'module_key'")
-            return nil
-        }
-
-        let moduleName = String(components[0]).capitalized
-        let translationKey = String(components[1])
-
-        // Look up in module translations
+        // Direct lookup using module name and key
         guard let moduleTranslations = translations.modules[moduleName]?.translations[key] else {
-            LocalizeKitLogger.w("Translation not found for key: \(key)")
+            LocalizeKitLogger.w("Translation not found for key: \(key) in module: \(moduleName)")
             return nil
         }
 
@@ -220,40 +212,31 @@ public final class LocalizationManager {
         case .simple(let value):
             return value
         case .plural:
-            LocalizeKitLogger.w("Key \(key) is plural, use pluralString() instead")
+            LocalizeKitLogger.w("Key \(key) in module \(moduleName) is plural, use pluralString() instead")
             return nil
         }
     }
 
     /// Get plural translated string
     /// - Parameters:
-    ///   - key: Translation key (e.g., "store_items_count")
+    ///   - key: Translation key (e.g., "items_count")
+    ///   - moduleName: Module name (e.g., "Store")
     ///   - count: Count to determine plural form
     /// - Returns: Translated plural string or nil if not found
-    public func pluralString(for key: String, count: Int) -> String? {
+    public func pluralString(for key: String, in moduleName: String, count: Int) -> String? {
         guard let translations = currentTranslations else {
             return nil
         }
 
-        // Extract module and key from format "module_key"
-        let components = key.split(separator: "_", maxSplits: 1)
-        guard components.count >= 2 else {
-            LocalizeKitLogger.w("Invalid key format: \(key). Expected 'module_key'")
-            return nil
-        }
-
-        let moduleName = String(components[0]).capitalized
-        let translationKey = String(components[1])
-
-        // Look up in module translations
+        // Direct lookup using module name and key
         guard let moduleTranslations = translations.modules[moduleName]?.translations[key] else {
-            LocalizeKitLogger.w("Translation not found for key: \(key)")
+            LocalizeKitLogger.w("Translation not found for key: \(key) in module: \(moduleName)")
             return nil
         }
 
         // Extract plural dictionary
         guard case .plural(let pluralDict) = moduleTranslations.value else {
-            LocalizeKitLogger.w("Key \(key) is not plural, use string() instead")
+            LocalizeKitLogger.w("Key \(key) in module \(moduleName) is not plural, use string() instead")
             return nil
         }
 

@@ -3,37 +3,61 @@ import Foundation
 // MARK: - String Localization Extension
 
 extension String {
-    /// Simple localization with default fallback
+    /// Extract module name from `#fileID`.
+    /// - Parameter fileID: Compile-time file identifier (e.g., `"Store/Sources/UI/CartScreen.swift"`).
+    /// - Returns: Module name (e.g., `"Store"`).
+    internal static func extractModuleName(from fileID: String) -> String {
+        // #fileID format: "ModuleName/Sources/..."
+        // Extract first component before "/"
+        let components = fileID.split(separator: "/", maxSplits: 1)
+
+        guard let moduleName = components.first.map(String.init), !moduleName.isEmpty else {
+            #if DEBUG
+            LocalizeKitLogger.w("Failed to extract module name from fileID: '\(fileID)'")
+            assertionFailure("Module extraction failed for fileID: '\(fileID)'. Translation lookups will fail.")
+            #endif
+            LocalizeKitLogger.e("Module extraction failed for fileID: '\(fileID)'. Returning 'Unknown'.")
+            return "Unknown"
+        }
+
+        return moduleName
+    }
+
+    /// Simple localization with default fallback.
     /// - Parameters:
-    ///   - defaultValue: English text to show if translation not found
-    ///   - comment: Context for translators (optional)
-    /// - Returns: Localized string or default value
+    ///   - defaultValue: English text to show if translation not found.
+    ///   - comment: Context for translators (optional).
+    ///   - file: Source file identifier (automatic via `#fileID`).
+    /// - Returns: Localized string or default value.
     ///
     /// Example:
     /// ```swift
-    /// Text("store_welcome".localize(
-    ///     default: "Welcome to the Store!",
-    ///     comment: "Greeting shown on store home screen"
+    /// Text("cart_title".localize(
+    ///     default: "Cart",
+    ///     comment: "Cart screen title"
     /// ))
     /// ```
     @MainActor
     public func localize(
         default defaultValue: String,
-        comment: String? = nil
+        comment: String? = nil,
+        file: String = #fileID
     ) -> String {
-        LocalizationManager.shared.string(for: self) ?? defaultValue
+        let moduleName = Self.extractModuleName(from: file)
+        return LocalizationManager.shared.string(for: self, in: moduleName) ?? defaultValue
     }
 
-    /// Localization with string interpolation (single parameter)
+    /// Localization with string interpolation (single parameter).
     /// - Parameters:
-    ///   - defaultValue: English format string with placeholder (e.g., "Hello, %@!")
-    ///   - comment: Context for translators
-    ///   - argument: Value to interpolate
-    /// - Returns: Formatted localized string
+    ///   - defaultValue: English format string with placeholder (e.g., `"Hello, %@!"`).
+    ///   - comment: Context for translators.
+    ///   - argument: Value to interpolate.
+    ///   - file: Source file identifier (automatic via `#fileID`).
+    /// - Returns: Formatted localized string.
     ///
     /// Example:
     /// ```swift
-    /// Text("store_greeting".localize(
+    /// Text("greeting".localize(
     ///     default: "Hello, %@!",
     ///     comment: "Personal greeting with user's name",
     ///     with: userName
@@ -43,22 +67,24 @@ extension String {
     public func localize(
         default defaultValue: String,
         comment: String? = nil,
-        with argument: CVarArg
+        with argument: CVarArg,
+        file: String = #fileID
     ) -> String {
-        let format = localize(default: defaultValue, comment: comment)
+        let format = localize(default: defaultValue, comment: comment, file: file)
         return String(format: format, argument)
     }
 
-    /// Localization with string interpolation (multiple parameters)
+    /// Localization with string interpolation (multiple parameters).
     /// - Parameters:
-    ///   - defaultValue: English format string with placeholders (e.g., "Order #%@ contains %d items")
-    ///   - comment: Context for translators
-    ///   - arguments: Values to interpolate
-    /// - Returns: Formatted localized string
+    ///   - defaultValue: English format string with placeholders (e.g., `"Order #%@ contains %d items"`).
+    ///   - comment: Context for translators.
+    ///   - arguments: Values to interpolate.
+    ///   - file: Source file identifier (automatic via `#fileID`).
+    /// - Returns: Formatted localized string.
     ///
     /// Example:
     /// ```swift
-    /// Text("store_order_summary".localize(
+    /// Text("order_summary".localize(
     ///     default: "Order #%@ contains %d items",
     ///     comment: "Order summary with ID and item count",
     ///     with: orderID, itemCount
@@ -68,18 +94,20 @@ extension String {
     public func localize(
         default defaultValue: String,
         comment: String? = nil,
-        with arguments: CVarArg...
+        with arguments: CVarArg...,
+        file: String = #fileID
     ) -> String {
-        let format = localize(default: defaultValue, comment: comment)
+        let format = localize(default: defaultValue, comment: comment, file: file)
         return String(format: format, arguments: arguments)
     }
 
-    /// Localization with plural support
+    /// Localization with plural support.
     /// - Parameters:
-    ///   - defaultPlural: Dictionary of plural forms for English
-    ///   - comment: Context for translators
-    ///   - count: The count to determine plural form
-    /// - Returns: Localized plural string
+    ///   - defaultPlural: Dictionary of plural forms for English.
+    ///   - comment: Context for translators.
+    ///   - count: The count to determine plural form.
+    ///   - file: Source file identifier (automatic via `#fileID`).
+    /// - Returns: Localized plural string.
     ///
     /// Example:
     /// ```swift
@@ -97,10 +125,12 @@ extension String {
     public func localize(
         defaultPlural: [PluralCategory: String],
         comment: String? = nil,
-        count: Int
+        count: Int,
+        file: String = #fileID
     ) -> String {
         // Try to get from server/cache first
-        if let translated = LocalizationManager.shared.pluralString(for: self, count: count) {
+        let moduleName = Self.extractModuleName(from: file)
+        if let translated = LocalizationManager.shared.pluralString(for: self, in: moduleName, count: count) {
             return translated
         }
 
@@ -125,17 +155,18 @@ extension String {
             ?? self  // Last resort: return key
     }
 
-    /// Localization with plural and interpolation (single parameter)
+    /// Localization with plural and interpolation (single parameter).
     /// - Parameters:
-    ///   - defaultPlural: Dictionary of plural format strings for English
-    ///   - comment: Context for translators
-    ///   - count: The count for plural form
-    ///   - argument: Value to interpolate
-    /// - Returns: Formatted localized plural string
+    ///   - defaultPlural: Dictionary of plural format strings for English.
+    ///   - comment: Context for translators.
+    ///   - count: The count for plural form.
+    ///   - argument: Value to interpolate.
+    ///   - file: Source file identifier (automatic via `#fileID`).
+    /// - Returns: Formatted localized plural string.
     ///
     /// Example:
     /// ```swift
-    /// Text("store_apple_count".localize(
+    /// Text("apple_count".localize(
     ///     defaultPlural: [
     ///         .zero: "No apples",
     ///         .one: "1 apple",
@@ -151,23 +182,25 @@ extension String {
         defaultPlural: [PluralCategory: String],
         comment: String? = nil,
         count: Int,
-        with argument: CVarArg
+        with argument: CVarArg,
+        file: String = #fileID
     ) -> String {
-        let format = localize(defaultPlural: defaultPlural, comment: comment, count: count)
+        let format = localize(defaultPlural: defaultPlural, comment: comment, count: count, file: file)
         return String(format: format, argument)
     }
 
-    /// Localization with plural and interpolation (multiple parameters)
+    /// Localization with plural and interpolation (multiple parameters).
     /// - Parameters:
-    ///   - defaultPlural: Dictionary of plural format strings for English
-    ///   - comment: Context for translators
-    ///   - count: The count for plural form
-    ///   - arguments: Values to interpolate
-    /// - Returns: Formatted localized plural string
+    ///   - defaultPlural: Dictionary of plural format strings for English.
+    ///   - comment: Context for translators.
+    ///   - count: The count for plural form.
+    ///   - arguments: Values to interpolate.
+    ///   - file: Source file identifier (automatic via `#fileID`).
+    /// - Returns: Formatted localized plural string.
     ///
     /// Example:
     /// ```swift
-    /// Text("store_item_summary".localize(
+    /// Text("item_summary".localize(
     ///     defaultPlural: [
     ///         .zero: "Your cart is empty",
     ///         .one: "You have 1 item worth %@",
@@ -183,9 +216,10 @@ extension String {
         defaultPlural: [PluralCategory: String],
         comment: String? = nil,
         count: Int,
-        with arguments: CVarArg...
+        with arguments: CVarArg...,
+        file: String = #fileID
     ) -> String {
-        let format = localize(defaultPlural: defaultPlural, comment: comment, count: count)
+        let format = localize(defaultPlural: defaultPlural, comment: comment, count: count, file: file)
         return String(format: format, arguments: arguments)
     }
 }

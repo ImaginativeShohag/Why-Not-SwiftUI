@@ -142,7 +142,7 @@ struct MyApp: App {
 ### 3. Localize Strings
 
 ```swift
-Text("welcome_message".localize(
+Text("welcome".localize(
     default: "Welcome to our app!",
     comment: "Main screen greeting"
 ))
@@ -216,9 +216,26 @@ LocalizationManager.shared.setAvailableLanguages(languages)
 ## String Localization API
 
 LocalizeKit extends `String` with localization methods. All methods follow the pattern:
-- **Key**: The string itself (e.g., `"store_welcome"`)
+- **Key**: Clean key name without module prefix (e.g., `"cart_title"`, not `"store_cart_title"`)
 - **Default**: English text to display if translation not found
 - **Comment**: Context for translators (optional but recommended)
+- **Module Detection**: Automatic via `#fileID` (no extra parameters needed)
+
+### Automatic Module Detection
+
+LocalizeKit automatically detects the module name from the source file path using Swift's `#fileID` compile-time literal:
+
+```swift
+// In Store/Sources/UI/CartScreen.swift
+"cart_title".localize(default: "Cart")
+// Module "Store" is auto-detected from file path
+```
+
+**How it works:**
+- `#fileID` provides module-relative path: `"Store/Sources/UI/CartScreen.swift"`
+- First path component is extracted: `"Store"`
+- Translation lookup: `Store → cart_title → "Cart" or translated value`
+- Zero runtime overhead, privacy-safe (no full paths)
 
 ### Simple Strings
 
@@ -235,19 +252,19 @@ func localize(
 
 ```swift
 // Basic usage
-let title = "app_title".localize(
+let title = "title".localize(
     default: "My App",
     comment: "App name shown in navigation bar"
 )
 
 // In SwiftUI
-Text("welcome_message".localize(
+Text("welcome".localize(
     default: "Welcome to our app!",
     comment: "Main screen greeting"
 ))
 
 // Button text
-Button("save_button".localize(
+Button("save".localize(
     default: "Save",
     comment: "Save button in form"
 )) {
@@ -291,21 +308,21 @@ func localize(
 
 ```swift
 // Single variable
-let greeting = "user_greeting".localize(
+let greeting = "greeting".localize(
     default: "Hello, %@!",
     comment: "Personalized greeting",
     with: userName
 )
 
 // Multiple variables
-let orderSummary = "order_summary".localize(
+let orderSummary = "summary".localize(
     default: "Order #%@ contains %d items totaling %@",
     comment: "Order summary with ID, count, and total",
     with: orderID, itemCount, formattedTotal
 )
 
 // Percentage
-let discount = "discount_label".localize(
+let discount = "discount".localize(
     default: "Save %d%%",
     comment: "Discount percentage",
     with: discountPercent
@@ -350,7 +367,7 @@ func localize(
 
 ```swift
 // Basic plural without interpolation (no format specifiers)
-let status = "cart_status".localize(
+let status = "status".localize(
     defaultPlural: [
         .zero: "Cart is empty",
         .one: "One item in cart",
@@ -361,7 +378,7 @@ let status = "cart_status".localize(
 )
 
 // Plural with interpolation (has format specifiers)
-let itemCount = "cart_items".localize(
+let itemCount = "items".localize(
     defaultPlural: [
         .one: "1 item in cart",
         .other: "%d items in cart"
@@ -372,7 +389,7 @@ let itemCount = "cart_items".localize(
 )
 
 // Comprehensive plural (for Arabic/Russian support)
-let daysRemaining = "days_remaining".localize(
+let daysRemaining = "remaining".localize(
     defaultPlural: [
         .zero: "No days remaining",
         .one: "1 day remaining",
@@ -387,7 +404,7 @@ let daysRemaining = "days_remaining".localize(
 )
 
 // Zero state with interpolation
-let notifications = "notifications_count".localize(
+let notifications = "count".localize(
     defaultPlural: [
         .zero: "No new notifications",
         .one: "1 new notification",
@@ -399,7 +416,7 @@ let notifications = "notifications_count".localize(
 )
 
 // Plural with multiple interpolation arguments
-Text("store_item_summary".localize(
+Text("item_summary".localize(
     defaultPlural: [
         .zero: "Your cart is empty",
         .one: "You have 1 item worth %@",
@@ -430,13 +447,13 @@ import LocalizeKit
 struct HomeScreen: View {
     var body: some View {
         VStack {
-            Text("home_title".localize(
+            Text("title".localize(
                 default: "Home",
                 comment: "Home screen title"
             ))
             .font(.largeTitle)
 
-            Text("home_subtitle".localize(
+            Text("subtitle".localize(
                 default: "Welcome back!",
                 comment: "Home screen subtitle"
             ))
@@ -489,21 +506,21 @@ Text.localized(
 
 ```swift
 // ✅ Correct: Plain text without markdown
-Text("home_title".localize(
+Text("title".localize(
     default: "Home",
     comment: "Home screen title"
 ))
 
 // ❌ Incorrect: Using Text.localized() for plain text (unnecessary overhead)
 Text.localized(
-    "home_title",
+    "title",
     default: "Home",
     comment: "Home screen title"
 )
 
 // ✅ Correct: Text with markdown formatting
 Text.localized(
-    "welcome_message",
+    "welcome",
     default: "Welcome, **John**!",
     comment: "Welcome message with bold name"
 )
@@ -522,13 +539,13 @@ struct ProfileScreen: View {
             Form {
                 // Form content
             }
-            .navigationTitle("profile_title".localize(
+            .navigationTitle("title".localize(
                 default: "Profile",
                 comment: "Profile screen title"
             ))
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("done_button".localize(
+                    Button("done".localize(
                         default: "Done",
                         comment: "Dismiss button"
                     )) {
@@ -548,20 +565,20 @@ struct DeleteButton: View {
     @State private var showingAlert = false
 
     var body: some View {
-        Button("delete_button".localize(
+        Button("delete".localize(
             default: "Delete",
             comment: "Delete action button"
         )) {
             showingAlert = true
         }
         .alert(
-            "delete_alert_title".localize(
+            "alert_title".localize(
                 default: "Delete Item?",
                 comment: "Delete confirmation title"
             ),
             isPresented: $showingAlert
         ) {
-            Button("cancel_button".localize(
+            Button("cancel".localize(
                 default: "Cancel",
                 comment: "Cancel action"
             ), role: .cancel) { }
@@ -620,12 +637,12 @@ class HomeViewController: UIViewController {
     }
 
     private func updateLocalizedStrings() {
-        titleLabel.text = "home_title".localize(
+        titleLabel.text = "title".localize(
             default: "Home",
             comment: "Home screen title"
         )
 
-        subtitleLabel.text = "home_subtitle".localize(
+        subtitleLabel.text = "subtitle".localize(
             default: "Welcome back!",
             comment: "Home screen subtitle"
         )
@@ -660,7 +677,7 @@ class CartViewController: UIViewController {
 class ProfileViewController: UIViewController {
     func showDeleteConfirmation() {
         let alert = UIAlertController(
-            title: "delete_alert_title".localize(
+            title: "alert_title".localize(
                 default: "Delete Account?",
                 comment: "Account deletion alert title"
             ),
@@ -672,7 +689,7 @@ class ProfileViewController: UIViewController {
         )
 
         alert.addAction(UIAlertAction(
-            title: "cancel_button".localize(
+            title: "cancel".localize(
                 default: "Cancel",
                 comment: "Cancel action"
             ),
@@ -680,7 +697,7 @@ class ProfileViewController: UIViewController {
         ))
 
         alert.addAction(UIAlertAction(
-            title: "delete_button".localize(
+            title: "delete".localize(
                 default: "Delete",
                 comment: "Confirm delete"
             ),
@@ -1219,20 +1236,20 @@ Migrating from Apple's `NSLocalizedString` to LocalizeKit.
 
 ```swift
 // Old: NSLocalizedString with .strings files
-let title = NSLocalizedString("home_title", comment: "Home screen title")
-let greeting = String(format: NSLocalizedString("user_greeting", comment: ""), userName)
+let title = NSLocalizedString("title", comment: "Home screen title")
+let greeting = String(format: NSLocalizedString("greeting", comment: ""), userName)
 ```
 
 **LocalizeKit Equivalent:**
 
 ```swift
 // New: LocalizeKit with runtime translation
-let title = "home_title".localize(
+let title = "title".localize(
     default: "Home",
     comment: "Home screen title"
 )
 
-let greeting = "user_greeting".localize(
+let greeting = "greeting".localize(
     default: "Hello, %@!",
     comment: "Greeting with user name",
     with: userName
@@ -1255,21 +1272,21 @@ When migrating to SwiftUI views, choose the appropriate method:
 
 ```swift
 // ✅ Correct: Plain text in SwiftUI
-Text("home_title".localize(
+Text("title".localize(
     default: "Home",
     comment: "Home screen title"
 ))
 
 // ❌ Incorrect: Using Text.localized() without markdown (unnecessary)
 Text.localized(
-    "home_title",
+    "title",
     default: "Home",
     comment: "Home screen title"
 )
 
 // ✅ Correct: Text with markdown formatting
 Text.localized(
-    "welcome_message",
+    "welcome",
     default: "Welcome, **%@**!",
     comment: "Welcome with bold name",
     with: userName
@@ -1414,7 +1431,7 @@ Text("user_unread_messages".localize(
 Text("\(0) ^[items](\(0))")  // Renders: "0 items"
 
 // New: LocalizeKit supports custom zero state
-Text("cart_items".localize(
+Text("items".localize(
     defaultPlural: [
         .zero: "No items",           // Custom zero message
         .one: "1 item",

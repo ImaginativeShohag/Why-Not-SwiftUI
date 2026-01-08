@@ -292,8 +292,8 @@ swift run LocalizeKit validate --language ar --check-plurals --check-format
    Format issues:   0 ✅
 
 ⚠️  Issues Found:
-   • store_welcome: Untranslated (same as English)
-   • store_greeting: Untranslated (same as English)
+   • welcome: Untranslated (same as English)
+   • greeting: Untranslated (same as English)
 ```
 
 **Validation Checks:**
@@ -353,13 +353,13 @@ Summary:
 
 🆕 NEW KEYS (not in bn.json):
   Module: Store
-    • store_checkout_button
-    • store_cart_empty
-    • store_order_placed
+    • checkout_button
+    • cart_empty
+    • order_placed
 
 🔄 MODIFIED (base changed since translation):
   Module: Store
-    • store_welcome (v1 → v2)
+    • welcome (v1 → v2)
 ```
 
 **Use Cases:**
@@ -414,7 +414,7 @@ The source file containing English strings and metadata:
   "generatedAt": "2025-01-07T10:30:00Z",
   "modules": {
     "Store": {
-      "store_welcome": {
+      "welcome": {
         "value": "Welcome, %@!",
         "type": "interpolation",
         "version": 2,
@@ -425,7 +425,7 @@ The source file containing English strings and metadata:
           "status": "modified"
         }
       },
-      "store_item_count": {
+      "item_count": {
         "value": {
           "zero": "No items",
           "one": "1 item",
@@ -449,12 +449,12 @@ Simplified format for translators:
   "version": 3,
   "modules": {
     "Store": {
-      "store_welcome": {
+      "welcome": {
         "value": "স্বাগতম, %@!",
         "type": "interpolation",
         "comment": "Welcome message with user's full name"
       },
-      "store_item_count": {
+      "item_count": {
         "value": {
           "zero": "কোন আইটেম নেই",
           "one": "১টি আইটেম",
@@ -568,7 +568,7 @@ Use consistent, descriptive keys with module prefixes:
 
 ```swift
 // Good
-"store_welcome"
+"welcome"
 "store_add_to_cart"
 "checkout_payment_method"
 "profile_edit_name"
@@ -586,13 +586,13 @@ Provide context for translators:
 
 ```swift
 // Good - specific context
-"store_cart_empty".localize(
+"cart_empty".localize(
     default: "Your cart is empty",
     comment: "Shown on cart screen when no items added"
 )
 
 // Bad - vague or missing
-"store_cart_empty".localize(
+"cart_empty".localize(
     default: "Your cart is empty"
 )
 ```
