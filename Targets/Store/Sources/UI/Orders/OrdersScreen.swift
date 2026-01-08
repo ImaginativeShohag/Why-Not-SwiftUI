@@ -49,7 +49,7 @@ struct OrdersScreen: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .navigationBarTitle("store_orders_title".localize(default: "Orders", comment: "Orders screen title"))
+        .navigationBarTitle("orders_title".localize(default: "Orders", comment: "Orders screen title"))
         .refreshable {
             await viewModel.loadOrders(forced: true)
         }
@@ -82,7 +82,7 @@ private struct OrderItem: View {
                 }
             } label: {
                 HStack {
-                    Text("store_orders_product_count".localize(
+                    Text("orders_product_count".localize(
                         defaultPlural: [
                             .one: "Total 1 product",
                             .other: "Total %d products"

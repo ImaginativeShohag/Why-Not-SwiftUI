@@ -43,14 +43,14 @@ struct PlaceOrderScreen: View {
                         HStack {
                             Image(systemName: "map")
                             Text.localized(
-                                "store_checkout_shipping_address",
+                                "checkout_shipping_address",
                                 default: "Shipping Address",
                                 comment: "Label for shipping address section"
                             )
                         }
 
                         TextField(
-                            "store_checkout_name_placeholder".localize(default: "Your name...", comment: "Name TextField placeholder"),
+                            "checkout_name_placeholder".localize(default: "Your name...", comment: "Name TextField placeholder"),
                             text: $viewModel.nameText
                         )
                         .padding()
@@ -60,7 +60,7 @@ struct PlaceOrderScreen: View {
                         }
 
                         TextField(
-                            "store_checkout_phone_placeholder".localize(default: "Phone number...", comment: "Phone TextField placeholder"),
+                            "checkout_phone_placeholder".localize(default: "Phone number...", comment: "Phone TextField placeholder"),
                             text: $viewModel.phoneNumberText
                         )
                         .padding()
@@ -70,7 +70,7 @@ struct PlaceOrderScreen: View {
                         }
 
                         TextField(
-                            "store_checkout_address_placeholder".localize(default: "Address...", comment: "Address TextField placeholder"),
+                            "checkout_address_placeholder".localize(default: "Address...", comment: "Address TextField placeholder"),
                             text: $viewModel.addressText,
                             axis: .vertical
                         )
@@ -83,7 +83,7 @@ struct PlaceOrderScreen: View {
 
                         HStack {
                             Image(systemName: "cube.box")
-                            Text("store_checkout_product_count".localize(
+                            Text("checkout_product_count".localize(
                                 defaultPlural: [
                                     .one: "1 Product",
                                     .other: "%d Products"
@@ -114,7 +114,7 @@ struct PlaceOrderScreen: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.systemGroupedBackground)
-        .navigationTitle("store_checkout_title".localize(default: "Checkout", comment: "Checkout screen title"))
+        .navigationTitle("checkout_title".localize(default: "Checkout", comment: "Checkout screen title"))
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
             VStack {
@@ -122,7 +122,7 @@ struct PlaceOrderScreen: View {
 
                 HStack {
                     Text.localized(
-                        "store_checkout_total",
+                        "checkout_total",
                         default: "Total",
                         comment: "Label for total price in checkout"
                     )
@@ -144,7 +144,7 @@ struct PlaceOrderScreen: View {
                         ProgressView()
 
                         Text.localized(
-                            "store_checkout_placing_order",
+                            "checkout_placing_order",
                             default: "Placing Order...",
                             comment: "Button text while placing order"
                         )
@@ -152,7 +152,7 @@ struct PlaceOrderScreen: View {
                             .frame(maxWidth: .infinity)
                     } else {
                         Text.localized(
-                            "store_checkout_place_order",
+                            "checkout_place_order",
                             default: "Place Order",
                             comment: "Button to place order"
                         )
@@ -177,14 +177,14 @@ struct PlaceOrderScreen: View {
             }
         }
         .alert(
-            "store_checkout_success_title".localize(default: "Order placed successfully!", comment: "Success alert title"),
+            "checkout_success_title".localize(default: "Order placed successfully!", comment: "Success alert title"),
             isPresented: $showSuccessAlert
         ) {
             Button {
                 NavController.shared.popBackStack()
             } label: {
                 Text.localized(
-                    "store_ok",
+                    "ok",
                     default: "Ok",
                     comment: "OK button text"
                 )
@@ -197,13 +197,13 @@ struct PlaceOrderScreen: View {
     private var emptyStateView: some View {
         ContentUnavailableView {
             Text.localized(
-                "store_checkout_completed_title",
+                "checkout_completed_title",
                 default: "Checkout is completed.",
                 comment: "Title shown when checkout is complete"
             )
         } description: {
             Text.localized(
-                "store_checkout_completed_description",
+                "checkout_completed_description",
                 default: "Add some products to continue again.",
                 comment: "Description for completed checkout"
             )

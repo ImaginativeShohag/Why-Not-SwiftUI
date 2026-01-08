@@ -27,7 +27,7 @@ struct CategoriesScreen: View {
                                 Label(message, systemImage: "exclamationmark.triangle")
                             },
                             actions: {
-                                Button("store_retry".localize(default: "Retry", comment: "Retry button text")) {
+                                Button("retry".localize(default: "Retry", comment: "Retry button text")) {
                                     Task {
                                         await viewModel.loadProducts(forced: true)
                                     }
@@ -102,7 +102,7 @@ struct CategoriesScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.systemGroupedBackground)
-            .navigationTitle("store_categories_title".localize(default: "Categories", comment: "Categories screen title"))
+            .navigationTitle("categories_title".localize(default: "Categories", comment: "Categories screen title"))
             .refreshable {
                 await viewModel.loadProducts(forced: true)
             }

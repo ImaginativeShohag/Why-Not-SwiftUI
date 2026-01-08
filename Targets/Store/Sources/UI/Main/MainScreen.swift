@@ -37,7 +37,7 @@ struct MainScreen: View {
                 .tag(TabItem.home)
                 .tabItem {
                     Label(
-                        "store_tab_home".localize(default: "Home", comment: "Tab bar label for home"),
+                        "tab_home".localize(default: "Home", comment: "Tab bar label for home"),
                         systemImage: "text.rectangle.page.fill"
                     )
                 }
@@ -47,7 +47,7 @@ struct MainScreen: View {
                 .tag(TabItem.categories)
                 .tabItem {
                     Label(
-                        "store_tab_categories".localize(default: "Categories", comment: "Tab bar label for categories"),
+                        "tab_categories".localize(default: "Categories", comment: "Tab bar label for categories"),
                         systemImage: "shippingbox"
                     )
                 }
@@ -57,7 +57,7 @@ struct MainScreen: View {
                 .tag(TabItem.bag)
                 .tabItem {
                     Label(
-                        "store_tab_bag".localize(default: "Bag", comment: "Tab bar label for shopping bag"),
+                        "tab_bag".localize(default: "Bag", comment: "Tab bar label for shopping bag"),
                         systemImage: "bag"
                     )
                 }

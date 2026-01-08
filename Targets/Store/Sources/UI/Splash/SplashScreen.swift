@@ -29,7 +29,7 @@ struct SplashScreen: View {
         ZStack {
             VStack(spacing: 8) {
                 Text.localized(
-                    "store_welcome_to",
+                    "welcome_to",
                     default: "Welcome to",
                     comment: "Splash screen welcome text"
                 )
@@ -38,7 +38,7 @@ struct SplashScreen: View {
                 .foregroundStyle(.white)
 
                 Text.localized(
-                    "store_app_name",
+                    "app_name",
                     default: "Store Overflow",
                     comment: "Application name"
                 )

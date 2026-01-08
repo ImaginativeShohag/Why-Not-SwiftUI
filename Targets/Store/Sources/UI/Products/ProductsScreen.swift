@@ -45,7 +45,7 @@ struct ProductsScreen: View {
                             Label(message, systemImage: "exclamationmark.triangle")
                         },
                         actions: {
-                            Button("store_retry".localize(default: "Retry", comment: "Retry button text")) {
+                            Button("retry".localize(default: "Retry", comment: "Retry button text")) {
                                 Task {
                                     await viewModel.loadProducts(forced: true)
                                 }
@@ -96,7 +96,7 @@ struct ProductsScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(
             Text.localized(
-                "store_products_category_title",
+                "products_category_title",
                 default: "Category: %@",
                 comment: "Title showing the current category name",
                 with: viewModel.categoryId.capitalized

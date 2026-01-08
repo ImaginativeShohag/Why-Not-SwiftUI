@@ -185,237 +185,237 @@ extension LocalizationAPI: ApiEndpoint {
                 "type": "interpolation",
                 "comment": "Welcome message with user's full name on home screen"
               },
-              "store_welcome_to": {
+              "welcome_to": {
                 "value": "Welcome to",
                 "type": "simple",
                 "comment": "Splash screen welcome text"
               },
-              "store_app_name": {
+              "app_name": {
                 "value": "Store Overflow",
                 "type": "simple",
                 "comment": "Application name"
               },
-              "store_login": {
+              "login": {
                 "value": "Login",
                 "type": "simple",
                 "comment": "Login button text"
               },
-              "store_username": {
+              "username": {
                 "value": "Username",
                 "type": "simple",
                 "comment": "Username field placeholder"
               },
-              "store_password": {
+              "password": {
                 "value": "Password",
                 "type": "simple",
                 "comment": "Password field placeholder"
               },
-              "store_tab_home": {
+              "tab_home": {
                 "value": "Home",
                 "type": "simple",
                 "comment": "Tab bar label for home"
               },
-              "store_tab_categories": {
+              "tab_categories": {
                 "value": "Categories",
                 "type": "simple",
                 "comment": "Tab bar label for categories"
               },
-              "store_tab_bag": {
+              "tab_bag": {
                 "value": "Bag",
                 "type": "simple",
                 "comment": "Tab bar label for shopping bag"
               },
-              "store_cart_empty_title": {
+              "cart_empty_title": {
                 "value": "Your Cart is Empty.",
                 "type": "simple",
                 "comment": "Title shown when cart has no items"
               },
-              "store_cart_empty_description": {
+              "cart_empty_description": {
                 "value": "Add some products to continue.",
                 "type": "simple",
                 "comment": "Description for empty cart state"
               },
-              "store_cart_total": {
+              "cart_total": {
                 "value": "Total",
                 "type": "simple",
                 "comment": "Label for total price in cart"
               },
-              "store_cart_checkout": {
+              "cart_checkout": {
                 "value": "Check Out",
                 "type": "simple",
                 "comment": "Button to proceed to checkout"
               },
-              "store_cart_title": {
+              "cart_title": {
                 "value": "Cart",
                 "type": "simple",
                 "comment": "Cart screen title"
               },
-              "store_cart_menu_orders": {
+              "cart_menu_orders": {
                 "value": "Orders",
                 "type": "simple",
                 "comment": "Menu item to view orders"
               },
-              "store_product_details_title": {
+              "product_details_title": {
                 "value": "Product Details",
                 "type": "simple",
                 "comment": "Product details screen title"
               },
-              "store_retry": {
+              "retry": {
                 "value": "Retry",
                 "type": "simple",
                 "comment": "Retry button text"
               },
-              "store_products_category_title": {
+              "products_category_title": {
                 "value": "Category: %@",
                 "type": "interpolation",
                 "comment": "Title showing the current category name"
               },
-              "store_categories_title": {
+              "categories_title": {
                 "value": "Categories",
                 "type": "simple",
                 "comment": "Categories screen title"
               },
-              "store_checkout_completed_title": {
+              "checkout_completed_title": {
                 "value": "Checkout is completed.",
                 "type": "simple",
                 "comment": "Title shown when checkout is complete"
               },
-              "store_checkout_completed_description": {
+              "checkout_completed_description": {
                 "value": "Add some products to continue again.",
                 "type": "simple",
                 "comment": "Description for completed checkout"
               },
-              "store_checkout_title": {
+              "checkout_title": {
                 "value": "Checkout",
                 "type": "simple",
                 "comment": "Checkout screen title"
               },
-              "store_checkout_shipping_address": {
+              "checkout_shipping_address": {
                 "value": "Shipping Address",
                 "type": "simple",
                 "comment": "Label for shipping address section"
               },
-              "store_checkout_name_placeholder": {
+              "checkout_name_placeholder": {
                 "value": "Your name...",
                 "type": "simple",
                 "comment": "Name TextField placeholder"
               },
-              "store_checkout_phone_placeholder": {
+              "checkout_phone_placeholder": {
                 "value": "Phone number...",
                 "type": "simple",
                 "comment": "Phone TextField placeholder"
               },
-              "store_checkout_address_placeholder": {
+              "checkout_address_placeholder": {
                 "value": "Address...",
                 "type": "simple",
                 "comment": "Address TextField placeholder"
               },
-              "store_checkout_total": {
+              "checkout_total": {
                 "value": "Total",
                 "type": "simple",
                 "comment": "Label for total price in checkout"
               },
-              "store_checkout_placing_order": {
+              "checkout_placing_order": {
                 "value": "Placing Order...",
                 "type": "simple",
                 "comment": "Button text while placing order"
               },
-              "store_checkout_place_order": {
+              "checkout_place_order": {
                 "value": "Place Order",
                 "type": "simple",
                 "comment": "Button to place order"
               },
-              "store_checkout_success_title": {
+              "checkout_success_title": {
                 "value": "Order placed successfully!",
                 "type": "simple",
                 "comment": "Success alert title"
               },
-              "store_ok": {
+              "ok": {
                 "value": "Ok",
                 "type": "simple",
                 "comment": "OK button text"
               },
-              "store_orders_title": {
+              "orders_title": {
                 "value": "Orders",
                 "type": "simple",
                 "comment": "Orders screen title"
               },
-              "store_language_loading": {
+              "language_loading": {
                 "value": "Loading languages...",
                 "type": "simple",
                 "comment": "Loading text while fetching languages"
               },
-              "store_language_title": {
+              "language_title": {
                 "value": "Language",
                 "type": "simple",
                 "comment": "Language settings screen title"
               },
-              "store_done": {
+              "done": {
                 "value": "Done",
                 "type": "simple",
                 "comment": "Done button text"
               },
-              "store_language_changing": {
+              "language_changing": {
                 "value": "Changing language...",
                 "type": "simple",
                 "comment": "Progress message while changing language"
               },
-              "store_language_select_header": {
+              "language_select_header": {
                 "value": "Select Language",
                 "type": "simple",
                 "comment": "Header for language selection list"
               },
-              "store_language_select_footer": {
+              "language_select_footer": {
                 "value": "Choose your preferred language for the app. The interface will be translated immediately.",
                 "type": "simple",
                 "comment": "Footer explaining language selection"
               },
-              "store_profile": {
+              "profile": {
                 "value": "Profile",
                 "type": "simple",
                 "comment": "Profile screen title"
               },
-              "store_details": {
+              "details": {
                 "value": "Details",
                 "type": "simple",
                 "comment": "Profile details section header"
               },
-              "store_name": {
+              "name": {
                 "value": "Name",
                 "type": "simple",
                 "comment": "User name label"
               },
-              "store_email": {
+              "email": {
                 "value": "Email",
                 "type": "simple",
                 "comment": "Email address label"
               },
-              "store_phone": {
+              "phone": {
                 "value": "Phone",
                 "type": "simple",
                 "comment": "Phone number label"
               },
-              "store_address": {
+              "address": {
                 "value": "Address",
                 "type": "simple",
                 "comment": "Address label"
               },
-              "store_orders": {
+              "orders": {
                 "value": "Orders",
                 "type": "simple",
                 "comment": "Orders button text"
               },
-              "store_language_settings": {
+              "language_settings": {
                 "value": "Language Settings",
                 "type": "simple",
                 "comment": "Language settings button text"
               },
-              "store_sign_out": {
+              "sign_out": {
                 "value": "Sign Out",
                 "type": "simple",
                 "comment": "Sign out button text"
               },
-              "store_sign_out_alert_title": {
+              "sign_out_alert_title": {
                 "value": "Sign out from Store?",
                 "type": "simple",
                 "comment": "Alert title for sign out confirmation"
@@ -439,237 +439,237 @@ extension LocalizationAPI: ApiEndpoint {
                 "type": "interpolation",
                 "comment": "Welcome message with user's full name on home screen"
               },
-              "store_welcome_to": {
+              "welcome_to": {
                 "value": "স্বাগতম",
                 "type": "simple",
                 "comment": "Splash screen welcome text"
               },
-              "store_app_name": {
+              "app_name": {
                 "value": "স্টোর ওভারফ্লো",
                 "type": "simple",
                 "comment": "Application name"
               },
-              "store_login": {
+              "login": {
                 "value": "লগইন",
                 "type": "simple",
                 "comment": "Login button text"
               },
-              "store_username": {
+              "username": {
                 "value": "ব্যবহারকারীর নাম",
                 "type": "simple",
                 "comment": "Username field placeholder"
               },
-              "store_password": {
+              "password": {
                 "value": "পাসওয়ার্ড",
                 "type": "simple",
                 "comment": "Password field placeholder"
               },
-              "store_tab_home": {
+              "tab_home": {
                 "value": "হোম",
                 "type": "simple",
                 "comment": "Tab bar label for home"
               },
-              "store_tab_categories": {
+              "tab_categories": {
                 "value": "ক্যাটাগরি",
                 "type": "simple",
                 "comment": "Tab bar label for categories"
               },
-              "store_tab_bag": {
+              "tab_bag": {
                 "value": "ব্যাগ",
                 "type": "simple",
                 "comment": "Tab bar label for shopping bag"
               },
-              "store_cart_empty_title": {
+              "cart_empty_title": {
                 "value": "আপনার কার্ট খালি।",
                 "type": "simple",
                 "comment": "Title shown when cart has no items"
               },
-              "store_cart_empty_description": {
+              "cart_empty_description": {
                 "value": "চালিয়ে যেতে কিছু পণ্য যোগ করুন।",
                 "type": "simple",
                 "comment": "Description for empty cart state"
               },
-              "store_cart_total": {
+              "cart_total": {
                 "value": "মোট",
                 "type": "simple",
                 "comment": "Label for total price in cart"
               },
-              "store_cart_checkout": {
+              "cart_checkout": {
                 "value": "চেকআউট",
                 "type": "simple",
                 "comment": "Button to proceed to checkout"
               },
-              "store_cart_title": {
+              "cart_title": {
                 "value": "কার্ট",
                 "type": "simple",
                 "comment": "Cart screen title"
               },
-              "store_cart_menu_orders": {
+              "cart_menu_orders": {
                 "value": "অর্ডার",
                 "type": "simple",
                 "comment": "Menu item to view orders"
               },
-              "store_product_details_title": {
+              "product_details_title": {
                 "value": "পণ্যের বিবরণ",
                 "type": "simple",
                 "comment": "Product details screen title"
               },
-              "store_retry": {
+              "retry": {
                 "value": "পুনরায় চেষ্টা করুন",
                 "type": "simple",
                 "comment": "Retry button text"
               },
-              "store_products_category_title": {
+              "products_category_title": {
                 "value": "ক্যাটাগরি: %@",
                 "type": "interpolation",
                 "comment": "Title showing the current category name"
               },
-              "store_categories_title": {
+              "categories_title": {
                 "value": "ক্যাটাগরি",
                 "type": "simple",
                 "comment": "Categories screen title"
               },
-              "store_checkout_completed_title": {
+              "checkout_completed_title": {
                 "value": "চেকআউট সম্পন্ন হয়েছে।",
                 "type": "simple",
                 "comment": "Title shown when checkout is complete"
               },
-              "store_checkout_completed_description": {
+              "checkout_completed_description": {
                 "value": "আবার চালিয়ে যেতে কিছু পণ্য যোগ করুন।",
                 "type": "simple",
                 "comment": "Description for completed checkout"
               },
-              "store_checkout_title": {
+              "checkout_title": {
                 "value": "চেকআউট",
                 "type": "simple",
                 "comment": "Checkout screen title"
               },
-              "store_checkout_shipping_address": {
+              "checkout_shipping_address": {
                 "value": "শিপিং ঠিকানা",
                 "type": "simple",
                 "comment": "Label for shipping address section"
               },
-              "store_checkout_name_placeholder": {
+              "checkout_name_placeholder": {
                 "value": "আপনার নাম...",
                 "type": "simple",
                 "comment": "Name TextField placeholder"
               },
-              "store_checkout_phone_placeholder": {
+              "checkout_phone_placeholder": {
                 "value": "ফোন নম্বর...",
                 "type": "simple",
                 "comment": "Phone TextField placeholder"
               },
-              "store_checkout_address_placeholder": {
+              "checkout_address_placeholder": {
                 "value": "ঠিকানা...",
                 "type": "simple",
                 "comment": "Address TextField placeholder"
               },
-              "store_checkout_total": {
+              "checkout_total": {
                 "value": "মোট",
                 "type": "simple",
                 "comment": "Label for total price in checkout"
               },
-              "store_checkout_placing_order": {
+              "checkout_placing_order": {
                 "value": "অর্ডার করা হচ্ছে...",
                 "type": "simple",
                 "comment": "Button text while placing order"
               },
-              "store_checkout_place_order": {
+              "checkout_place_order": {
                 "value": "অর্ডার করুন",
                 "type": "simple",
                 "comment": "Button to place order"
               },
-              "store_checkout_success_title": {
+              "checkout_success_title": {
                 "value": "অর্ডার সফলভাবে সম্পন্ন হয়েছে!",
                 "type": "simple",
                 "comment": "Success alert title"
               },
-              "store_ok": {
+              "ok": {
                 "value": "ঠিক আছে",
                 "type": "simple",
                 "comment": "OK button text"
               },
-              "store_orders_title": {
+              "orders_title": {
                 "value": "অর্ডার",
                 "type": "simple",
                 "comment": "Orders screen title"
               },
-              "store_language_loading": {
+              "language_loading": {
                 "value": "ভাষা লোড হচ্ছে...",
                 "type": "simple",
                 "comment": "Loading text while fetching languages"
               },
-              "store_language_title": {
+              "language_title": {
                 "value": "ভাষা",
                 "type": "simple",
                 "comment": "Language settings screen title"
               },
-              "store_done": {
+              "done": {
                 "value": "সম্পন্ন",
                 "type": "simple",
                 "comment": "Done button text"
               },
-              "store_language_changing": {
+              "language_changing": {
                 "value": "ভাষা পরিবর্তন করা হচ্ছে...",
                 "type": "simple",
                 "comment": "Progress message while changing language"
               },
-              "store_language_select_header": {
+              "language_select_header": {
                 "value": "ভাষা নির্বাচন করুন",
                 "type": "simple",
                 "comment": "Header for language selection list"
               },
-              "store_language_select_footer": {
+              "language_select_footer": {
                 "value": "অ্যাপের জন্য আপনার পছন্দের ভাষা চয়ন করুন। ইন্টারফেস অবিলম্বে অনুবাদ করা হবে।",
                 "type": "simple",
                 "comment": "Footer explaining language selection"
               },
-              "store_profile": {
+              "profile": {
                 "value": "প্রোফাইল",
                 "type": "simple",
                 "comment": "Profile screen title"
               },
-              "store_details": {
+              "details": {
                 "value": "বিস্তারিত",
                 "type": "simple",
                 "comment": "Profile details section header"
               },
-              "store_name": {
+              "name": {
                 "value": "নাম",
                 "type": "simple",
                 "comment": "User name label"
               },
-              "store_email": {
+              "email": {
                 "value": "ইমেইল",
                 "type": "simple",
                 "comment": "Email address label"
               },
-              "store_phone": {
+              "phone": {
                 "value": "ফোন",
                 "type": "simple",
                 "comment": "Phone number label"
               },
-              "store_address": {
+              "address": {
                 "value": "ঠিকানা",
                 "type": "simple",
                 "comment": "Address label"
               },
-              "store_orders": {
+              "orders": {
                 "value": "অর্ডার",
                 "type": "simple",
                 "comment": "Orders button text"
               },
-              "store_language_settings": {
+              "language_settings": {
                 "value": "ভাষা সেটিংস",
                 "type": "simple",
                 "comment": "Language settings button text"
               },
-              "store_sign_out": {
+              "sign_out": {
                 "value": "সাইন আউট",
                 "type": "simple",
                 "comment": "Sign out button text"
               },
-              "store_sign_out_alert_title": {
+              "sign_out_alert_title": {
                 "value": "স্টোর থেকে সাইন আউট করবেন?",
                 "type": "simple",
                 "comment": "Alert title for sign out confirmation"
@@ -693,237 +693,237 @@ extension LocalizationAPI: ApiEndpoint {
                 "type": "interpolation",
                 "comment": "Welcome message with user's full name on home screen"
               },
-              "store_welcome_to": {
+              "welcome_to": {
                 "value": "مرحباً بك في",
                 "type": "simple",
                 "comment": "Splash screen welcome text"
               },
-              "store_app_name": {
+              "app_name": {
                 "value": "متجر أوفرفلو",
                 "type": "simple",
                 "comment": "Application name"
               },
-              "store_login": {
+              "login": {
                 "value": "تسجيل الدخول",
                 "type": "simple",
                 "comment": "Login button text"
               },
-              "store_username": {
+              "username": {
                 "value": "اسم المستخدم",
                 "type": "simple",
                 "comment": "Username field placeholder"
               },
-              "store_password": {
+              "password": {
                 "value": "كلمة المرور",
                 "type": "simple",
                 "comment": "Password field placeholder"
               },
-              "store_tab_home": {
+              "tab_home": {
                 "value": "الرئيسية",
                 "type": "simple",
                 "comment": "Tab bar label for home"
               },
-              "store_tab_categories": {
+              "tab_categories": {
                 "value": "الفئات",
                 "type": "simple",
                 "comment": "Tab bar label for categories"
               },
-              "store_tab_bag": {
+              "tab_bag": {
                 "value": "الحقيبة",
                 "type": "simple",
                 "comment": "Tab bar label for shopping bag"
               },
-              "store_cart_empty_title": {
+              "cart_empty_title": {
                 "value": "عربة التسوق فارغة.",
                 "type": "simple",
                 "comment": "Title shown when cart has no items"
               },
-              "store_cart_empty_description": {
+              "cart_empty_description": {
                 "value": "أضف بعض المنتجات للمتابعة.",
                 "type": "simple",
                 "comment": "Description for empty cart state"
               },
-              "store_cart_total": {
+              "cart_total": {
                 "value": "المجموع",
                 "type": "simple",
                 "comment": "Label for total price in cart"
               },
-              "store_cart_checkout": {
+              "cart_checkout": {
                 "value": "الدفع",
                 "type": "simple",
                 "comment": "Button to proceed to checkout"
               },
-              "store_cart_title": {
+              "cart_title": {
                 "value": "عربة التسوق",
                 "type": "simple",
                 "comment": "Cart screen title"
               },
-              "store_cart_menu_orders": {
+              "cart_menu_orders": {
                 "value": "الطلبات",
                 "type": "simple",
                 "comment": "Menu item to view orders"
               },
-              "store_product_details_title": {
+              "product_details_title": {
                 "value": "تفاصيل المنتج",
                 "type": "simple",
                 "comment": "Product details screen title"
               },
-              "store_retry": {
+              "retry": {
                 "value": "إعادة المحاولة",
                 "type": "simple",
                 "comment": "Retry button text"
               },
-              "store_products_category_title": {
+              "products_category_title": {
                 "value": "الفئة: %@",
                 "type": "interpolation",
                 "comment": "Title showing the current category name"
               },
-              "store_categories_title": {
+              "categories_title": {
                 "value": "الفئات",
                 "type": "simple",
                 "comment": "Categories screen title"
               },
-              "store_checkout_completed_title": {
+              "checkout_completed_title": {
                 "value": "اكتمل الدفع.",
                 "type": "simple",
                 "comment": "Title shown when checkout is complete"
               },
-              "store_checkout_completed_description": {
+              "checkout_completed_description": {
                 "value": "أضف بعض المنتجات للمتابعة مرة أخرى.",
                 "type": "simple",
                 "comment": "Description for completed checkout"
               },
-              "store_checkout_title": {
+              "checkout_title": {
                 "value": "الدفع",
                 "type": "simple",
                 "comment": "Checkout screen title"
               },
-              "store_checkout_shipping_address": {
+              "checkout_shipping_address": {
                 "value": "عنوان الشحن",
                 "type": "simple",
                 "comment": "Label for shipping address section"
               },
-              "store_checkout_name_placeholder": {
+              "checkout_name_placeholder": {
                 "value": "اسمك...",
                 "type": "simple",
                 "comment": "Name TextField placeholder"
               },
-              "store_checkout_phone_placeholder": {
+              "checkout_phone_placeholder": {
                 "value": "رقم الهاتف...",
                 "type": "simple",
                 "comment": "Phone TextField placeholder"
               },
-              "store_checkout_address_placeholder": {
+              "checkout_address_placeholder": {
                 "value": "العنوان...",
                 "type": "simple",
                 "comment": "Address TextField placeholder"
               },
-              "store_checkout_total": {
+              "checkout_total": {
                 "value": "المجموع",
                 "type": "simple",
                 "comment": "Label for total price in checkout"
               },
-              "store_checkout_placing_order": {
+              "checkout_placing_order": {
                 "value": "جاري تقديم الطلب...",
                 "type": "simple",
                 "comment": "Button text while placing order"
               },
-              "store_checkout_place_order": {
+              "checkout_place_order": {
                 "value": "تقديم الطلب",
                 "type": "simple",
                 "comment": "Button to place order"
               },
-              "store_checkout_success_title": {
+              "checkout_success_title": {
                 "value": "تم تقديم الطلب بنجاح!",
                 "type": "simple",
                 "comment": "Success alert title"
               },
-              "store_ok": {
+              "ok": {
                 "value": "حسناً",
                 "type": "simple",
                 "comment": "OK button text"
               },
-              "store_orders_title": {
+              "orders_title": {
                 "value": "الطلبات",
                 "type": "simple",
                 "comment": "Orders screen title"
               },
-              "store_language_loading": {
+              "language_loading": {
                 "value": "جاري تحميل اللغات...",
                 "type": "simple",
                 "comment": "Loading text while fetching languages"
               },
-              "store_language_title": {
+              "language_title": {
                 "value": "اللغة",
                 "type": "simple",
                 "comment": "Language settings screen title"
               },
-              "store_done": {
+              "done": {
                 "value": "تم",
                 "type": "simple",
                 "comment": "Done button text"
               },
-              "store_language_changing": {
+              "language_changing": {
                 "value": "جاري تغيير اللغة...",
                 "type": "simple",
                 "comment": "Progress message while changing language"
               },
-              "store_language_select_header": {
+              "language_select_header": {
                 "value": "اختر اللغة",
                 "type": "simple",
                 "comment": "Header for language selection list"
               },
-              "store_language_select_footer": {
+              "language_select_footer": {
                 "value": "اختر لغتك المفضلة للتطبيق. سيتم ترجمة الواجهة على الفور.",
                 "type": "simple",
                 "comment": "Footer explaining language selection"
               },
-              "store_profile": {
+              "profile": {
                 "value": "الملف الشخصي",
                 "type": "simple",
                 "comment": "Profile screen title"
               },
-              "store_details": {
+              "details": {
                 "value": "التفاصيل",
                 "type": "simple",
                 "comment": "Profile details section header"
               },
-              "store_name": {
+              "name": {
                 "value": "الاسم",
                 "type": "simple",
                 "comment": "User name label"
               },
-              "store_email": {
+              "email": {
                 "value": "البريد الإلكتروني",
                 "type": "simple",
                 "comment": "Email address label"
               },
-              "store_phone": {
+              "phone": {
                 "value": "الهاتف",
                 "type": "simple",
                 "comment": "Phone number label"
               },
-              "store_address": {
+              "address": {
                 "value": "العنوان",
                 "type": "simple",
                 "comment": "Address label"
               },
-              "store_orders": {
+              "orders": {
                 "value": "الطلبات",
                 "type": "simple",
                 "comment": "Orders button text"
               },
-              "store_language_settings": {
+              "language_settings": {
                 "value": "إعدادات اللغة",
                 "type": "simple",
                 "comment": "Language settings button text"
               },
-              "store_sign_out": {
+              "sign_out": {
                 "value": "تسجيل الخروج",
                 "type": "simple",
                 "comment": "Sign out button text"
               },
-              "store_sign_out_alert_title": {
+              "sign_out_alert_title": {
                 "value": "تسجيل الخروج من المتجر؟",
                 "type": "simple",
                 "comment": "Alert title for sign out confirmation"

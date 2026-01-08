@@ -117,7 +117,7 @@ struct ProductDetailsScreen: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .navigationBarTitle("store_product_details_title".localize(default: "Product Details", comment: "Product details screen title"))
+        .navigationBarTitle("product_details_title".localize(default: "Product Details", comment: "Product details screen title"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if let product = viewModel.productState.getData() {

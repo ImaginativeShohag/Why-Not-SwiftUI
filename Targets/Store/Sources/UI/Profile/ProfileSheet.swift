@@ -36,7 +36,7 @@ struct ProfileSheet: View {
                             Label(message, systemImage: "exclamationmark.triangle")
                         },
                         actions: {
-                            Button("store_retry".localize(
+                            Button("retry".localize(
                                 default: "Retry",
                                 comment: "Retry button text"
                             )) {
@@ -68,12 +68,12 @@ struct ProfileSheet: View {
                             }
                             .frame(maxWidth: .infinity)
 
-                            Section("store_details".localize(
+                            Section("details".localize(
                                 default: "Details",
                                 comment: "Profile details section header"
                             )) {
                                 LabeledContent(
-                                    "store_name".localize(
+                                    "name".localize(
                                         default: "Name",
                                         comment: "User name label"
                                     ),
@@ -82,7 +82,7 @@ struct ProfileSheet: View {
                                 .accessibilityIdentifier("profile_name_\(user.name.getFullName())")
 
                                 LabeledContent(
-                                    "store_username".localize(
+                                    "username".localize(
                                         default: "Username",
                                         comment: "Username label"
                                     ),
@@ -91,7 +91,7 @@ struct ProfileSheet: View {
                                 .accessibilityIdentifier("profile_username_\(user.username)")
 
                                 LabeledContent(
-                                    "store_email".localize(
+                                    "email".localize(
                                         default: "Email",
                                         comment: "Email address label"
                                     ),
@@ -100,7 +100,7 @@ struct ProfileSheet: View {
                                 .accessibilityIdentifier("profile_email_\(user.email)")
 
                                 LabeledContent(
-                                    "store_phone".localize(
+                                    "phone".localize(
                                         default: "Phone",
                                         comment: "Phone number label"
                                     ),
@@ -109,7 +109,7 @@ struct ProfileSheet: View {
                                 .accessibilityIdentifier("profile_phone_\(user.phone)")
 
                                 LabeledContent(
-                                    "store_address".localize(
+                                    "address".localize(
                                         default: "Address",
                                         comment: "Address label"
                                     ),
@@ -118,7 +118,7 @@ struct ProfileSheet: View {
                             }
 
                             Section {
-                                Button("store_orders".localize(
+                                Button("orders".localize(
                                     default: "Orders",
                                     comment: "Orders button text"
                                 )) {
@@ -134,7 +134,7 @@ struct ProfileSheet: View {
                                     showLanguageSettings.toggle()
                                 } label: {
                                     HStack {
-                                        Text("store_language_settings".localize(
+                                        Text("language_settings".localize(
                                             default: "Language Settings",
                                             comment: "Language settings button text"
                                         ))
@@ -147,7 +147,7 @@ struct ProfileSheet: View {
                             }
 
                             Section {
-                                Button("store_sign_out".localize(
+                                Button("sign_out".localize(
                                     default: "Sign Out",
                                     comment: "Sign out button text"
                                 )) {
@@ -160,7 +160,7 @@ struct ProfileSheet: View {
                     }
                 }
             }
-            .navigationTitle("store_profile".localize(
+            .navigationTitle("profile".localize(
                 default: "Profile",
                 comment: "Profile screen title"
             ))
@@ -171,7 +171,7 @@ struct ProfileSheet: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("store_done".localize(
+                        Text("done".localize(
                             default: "Done",
                             comment: "Done button text"
                         ))
@@ -185,12 +185,12 @@ struct ProfileSheet: View {
                 await viewModel.getUserDetails()
             }
             .alert(
-                "store_sign_out_alert_title".localize(
+                "sign_out_alert_title".localize(
                     default: "Sign out from Store?",
                     comment: "Alert title for sign out confirmation"
                 ),
                 isPresented: $showSignOutAlert) {
-                    Button("store_sign_out".localize(
+                    Button("sign_out".localize(
                         default: "Sign Out",
                         comment: "Sign out confirmation button"
                     ), role: .destructive) {

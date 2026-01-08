@@ -1,252 +1,278 @@
 {
   "modules" : {
     "Store" : {
-      "store_address" : {
+      "address" : {
         "comment" : "Address label",
         "type" : "simple",
         "value" : "Address"
       },
-      "store_app_name" : {
+      "app_name" : {
         "comment" : "Navigation title",
         "type" : "simple",
         "value" : "Store Overflow"
       },
-      "store_apply" : {
+      "apply" : {
         "comment" : "Apply button text to confirm language change",
         "type" : "simple",
         "value" : "Apply"
       },
-      "store_cart_checkout" : {
+      "cart_checkout" : {
         "comment" : "Button to proceed to checkout",
         "type" : "simple",
         "value" : "Check Out"
       },
-      "store_cart_empty_description" : {
+      "cart_empty_description" : {
         "comment" : "Description for empty cart state",
         "type" : "simple",
         "value" : "Add some products to continue."
       },
-      "store_cart_empty_title" : {
+      "cart_empty_title" : {
         "comment" : "Title shown when cart has no items",
         "type" : "simple",
         "value" : "Your Cart is Empty."
       },
-      "store_cart_menu_orders" : {
+      "cart_menu_orders" : {
         "comment" : "Menu item to view orders",
         "type" : "simple",
         "value" : "Orders"
       },
-      "store_cart_title" : {
+      "cart_title" : {
         "comment" : "Cart screen title",
         "type" : "simple",
         "value" : "Cart"
       },
-      "store_cart_total" : {
+      "cart_total" : {
         "comment" : "Label for total price in cart",
         "type" : "simple",
         "value" : "Total"
       },
-      "store_categories_title" : {
+      "categories_title" : {
         "comment" : "Categories screen title",
         "type" : "simple",
         "value" : "Categories"
       },
-      "store_checkout_address_placeholder" : {
+      "checkout_address_placeholder" : {
         "comment" : "Address TextField placeholder",
         "type" : "simple",
         "value" : "Address..."
       },
-      "store_checkout_completed_description" : {
+      "checkout_completed_description" : {
         "comment" : "Description for completed checkout",
         "type" : "simple",
         "value" : "Add some products to continue again."
       },
-      "store_checkout_completed_title" : {
+      "checkout_completed_title" : {
         "comment" : "Title shown when checkout is complete",
         "type" : "simple",
         "value" : "Checkout is completed."
       },
-      "store_checkout_name_placeholder" : {
+      "checkout_name_placeholder" : {
         "comment" : "Name TextField placeholder",
         "type" : "simple",
         "value" : "Your name..."
       },
-      "store_checkout_phone_placeholder" : {
+      "checkout_phone_placeholder" : {
         "comment" : "Phone TextField placeholder",
         "type" : "simple",
         "value" : "Phone number..."
       },
-      "store_checkout_place_order" : {
+      "checkout_place_order" : {
         "comment" : "Button to place order",
         "type" : "simple",
         "value" : "Place Order"
       },
-      "store_checkout_placing_order" : {
+      "checkout_placing_order" : {
         "comment" : "Button text while placing order",
         "type" : "simple",
         "value" : "Placing Order..."
       },
-      "store_checkout_shipping_address" : {
+      "checkout_product_count" : {
+        "comment" : "Product count in checkout",
+        "type" : "plural",
+        "value" : {
+          "one" : "1 Product",
+          "other" : "%d Products"
+        }
+      },
+      "checkout_shipping_address" : {
         "comment" : "Label for shipping address section",
         "type" : "simple",
         "value" : "Shipping Address"
       },
-      "store_checkout_success_title" : {
+      "checkout_success_title" : {
         "comment" : "Success alert title",
         "type" : "simple",
         "value" : "Order placed successfully!"
       },
-      "store_checkout_title" : {
+      "checkout_title" : {
         "comment" : "Checkout screen title",
         "type" : "simple",
         "value" : "Checkout"
       },
-      "store_checkout_total" : {
+      "checkout_total" : {
         "comment" : "Label for total price in checkout",
         "type" : "simple",
         "value" : "Total"
       },
-      "store_details" : {
+      "country_select_footer" : {
+        "comment" : "Footer explaining country selection",
+        "type" : "simple",
+        "value" : "Choose a country to see available languages."
+      },
+      "country_select_header" : {
+        "comment" : "Header for country selection list",
+        "type" : "simple",
+        "value" : "Select Country"
+      },
+      "details" : {
         "comment" : "Profile details section header",
         "type" : "simple",
         "value" : "Details"
       },
-      "store_done" : {
+      "done" : {
         "comment" : "Done button text",
         "type" : "simple",
         "value" : "Done"
       },
-      "store_email" : {
+      "email" : {
         "comment" : "Email address label",
         "type" : "simple",
         "value" : "Email"
       },
-      "store_language_changing" : {
+      "language_changing" : {
         "comment" : "Progress message while changing language",
         "type" : "simple",
         "value" : "Changing language..."
       },
-      "store_language_loading" : {
+      "language_loading" : {
         "comment" : "Loading text while fetching languages",
         "type" : "simple",
         "value" : "Loading languages..."
       },
-      "store_language_select_footer" : {
+      "language_select_footer" : {
         "comment" : "Footer explaining language selection",
         "type" : "simple",
         "value" : "Choose your preferred language for the app. The interface will be translated immediately."
       },
-      "store_language_select_header" : {
+      "language_select_header" : {
         "comment" : "Header for language selection list",
         "type" : "simple",
         "value" : "Select Language"
       },
-      "store_language_settings" : {
+      "language_settings" : {
         "comment" : "Language settings button text",
         "type" : "simple",
         "value" : "Language Settings"
       },
-      "store_language_title" : {
+      "language_title" : {
         "comment" : "Language settings screen title",
         "type" : "simple",
         "value" : "Language"
       },
-      "store_login" : {
+      "login" : {
         "comment" : "Login button text",
         "type" : "simple",
         "value" : "Login"
       },
-      "store_name" : {
+      "name" : {
         "comment" : "User name label",
         "type" : "simple",
         "value" : "Name"
       },
-      "store_ok" : {
+      "ok" : {
         "comment" : "OK button text",
         "type" : "simple",
         "value" : "Ok"
       },
-      "store_orders" : {
+      "orders" : {
         "comment" : "Orders button text",
         "type" : "simple",
         "value" : "Orders"
       },
-      "store_orders_title" : {
+      "orders_product_count" : {
+        "comment" : "Total product count in order",
+        "type" : "plural",
+        "value" : {
+          "one" : "Total 1 product",
+          "other" : "Total %d products"
+        }
+      },
+      "orders_title" : {
         "comment" : "Orders screen title",
         "type" : "simple",
         "value" : "Orders"
       },
-      "store_password" : {
+      "password" : {
         "comment" : "Password field placeholder",
         "type" : "simple",
         "value" : "Password"
       },
-      "store_phone" : {
+      "phone" : {
         "comment" : "Phone number label",
         "type" : "simple",
         "value" : "Phone"
       },
-      "store_product_details_title" : {
+      "product_details_title" : {
         "comment" : "Product details screen title",
         "type" : "simple",
         "value" : "Product Details"
       },
-      "store_products_category_title" : {
+      "products_category_title" : {
         "comment" : "Title showing the current category name",
         "type" : "interpolation",
         "value" : "Category: %@"
       },
-      "store_profile" : {
+      "profile" : {
         "comment" : "Profile screen title",
         "type" : "simple",
         "value" : "Profile"
       },
-      "store_retry" : {
+      "retry" : {
         "comment" : "Retry button text",
         "type" : "simple",
         "value" : "Retry"
       },
-      "store_sign_out" : {
+      "sign_out" : {
         "comment" : "Sign out confirmation button",
         "type" : "simple",
         "value" : "Sign Out"
       },
-      "store_sign_out_alert_title" : {
+      "sign_out_alert_title" : {
         "comment" : "Alert title for sign out confirmation",
         "type" : "simple",
         "value" : "Sign out from Store?"
       },
-      "store_tab_bag" : {
+      "tab_bag" : {
         "comment" : "Tab bar label for shopping bag",
         "type" : "simple",
         "value" : "Bag"
       },
-      "store_tab_categories" : {
+      "tab_categories" : {
         "comment" : "Tab bar label for categories",
         "type" : "simple",
         "value" : "Categories"
       },
-      "store_tab_home" : {
+      "tab_home" : {
         "comment" : "Tab bar label for home",
         "type" : "simple",
         "value" : "Home"
       },
-      "store_username" : {
+      "username" : {
         "comment" : "Username field placeholder",
         "type" : "simple",
         "value" : "Username"
       },
-      "store_welcome" : {
+      "welcome" : {
         "comment" : "Welcome message with user's full name on home screen",
         "type" : "interpolation",
         "value" : "Welcome, **%@**!"
       },
-      "store_welcome_to" : {
+      "welcome_to" : {
         "comment" : "Login screen welcome text",
         "type" : "simple",
         "value" : "Welcome to"
       }
     }
   },
-  "version" : 2
+  "version" : 4
 }

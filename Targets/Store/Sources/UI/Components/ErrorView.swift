@@ -15,7 +15,7 @@ struct ErrorView: View {
                 Label(message, systemImage: "exclamationmark.triangle")
             },
             actions: {
-                Button("store_retry".localize(default: "Retry", comment: "Retry button text")) {
+                Button("retry".localize(default: "Retry", comment: "Retry button text")) {
                     onRetryClick()
                 }
                 .accessibilityIdentifier("retry_button")

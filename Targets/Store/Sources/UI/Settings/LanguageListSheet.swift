@@ -18,13 +18,13 @@ struct LanguageListSheet: View {
                 }
             } header: {
                 Text.localized(
-                    "store_language_select_header",
+                    "language_select_header",
                     default: "Select Language",
                     comment: "Header for language selection list"
                 )
             } footer: {
                 Text.localized(
-                    "store_language_select_footer",
+                    "language_select_footer",
                     default: "Choose your preferred language for the app. The interface will be translated immediately.",
                     comment: "Footer explaining language selection"
                 )
@@ -42,7 +42,7 @@ struct LanguageListSheet: View {
                         }
                     } label: {
                         Text.localized(
-                            "store_apply",
+                            "apply",
                             default: "Apply",
                             comment: "Apply button text to confirm language change"
                         )
@@ -55,7 +55,7 @@ struct LanguageListSheet: View {
         .overlay {
             if viewModel.isChangingLanguage {
                 LoadingOverlay(
-                    message: "store_language_changing".localize(
+                    message: "language_changing".localize(
                         default: "Changing language...",
                         comment: "Progress message while changing language"
                     )

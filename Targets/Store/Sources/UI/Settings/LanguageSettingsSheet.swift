@@ -23,14 +23,14 @@ struct LanguageSettingsSheet: View {
         NavigationStack {
             ZStack {
                 if state.isLoading {
-                    ProgressView("store_language_loading".localize(default: "Loading languages...", comment: "Loading text while fetching languages"))
+                    ProgressView("language_loading".localize(default: "Loading languages...", comment: "Loading text while fetching languages"))
                 } else if state.isError {
                     ContentUnavailableView(
                         label: {
                             Label(state.getErrorMessage() ?? "Error", systemImage: "exclamationmark.triangle")
                         },
                         actions: {
-                            Button("store_retry".localize(default: "Retry", comment: "Retry button text")) {
+                            Button("retry".localize(default: "Retry", comment: "Retry button text")) {
                                 Task {
                                     await viewModel.loadLanguages()
                                 }
@@ -45,11 +45,11 @@ struct LanguageSettingsSheet: View {
                     countryListView
                 }
             }
-            .navigationTitle("store_language_title".localize(default: "Language", comment: "Language settings screen title"))
+            .navigationTitle("language_title".localize(default: "Language", comment: "Language settings screen title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("store_done".localize(default: "Done", comment: "Done button text"), role: .close) {
+                    Button("done".localize(default: "Done", comment: "Done button text"), role: .close) {
                         dismiss()
                     }
                 }
@@ -91,13 +91,13 @@ struct LanguageSettingsSheet: View {
                 }
             } header: {
                 Text.localized(
-                    "store_country_select_header",
+                    "country_select_header",
                     default: "Select Country",
                     comment: "Header for country selection list"
                 )
             } footer: {
                 Text.localized(
-                    "store_country_select_footer",
+                    "country_select_footer",
                     default: "Choose a country to see available languages.",
                     comment: "Footer explaining country selection"
                 )

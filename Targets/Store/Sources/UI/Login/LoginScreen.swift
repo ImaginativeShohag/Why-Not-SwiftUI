@@ -33,7 +33,7 @@ struct LoginScreen: View {
             VStack(spacing: 16) {
                 VStack(spacing: 8) {
                     Text.localized(
-                        "store_welcome_to",
+                        "welcome_to",
                         default: "Welcome to",
                         comment: "Login screen welcome text"
                     )
@@ -41,7 +41,7 @@ struct LoginScreen: View {
                     .foregroundStyle(.white)
 
                     Text.localized(
-                        "store_app_name",
+                        "app_name",
                         default: "Store Overflow",
                         comment: "Application name"
                     )
@@ -73,7 +73,7 @@ struct LoginScreen: View {
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text.localized(
-                            "store_username",
+                            "username",
                             default: "Username",
                             comment: "Username field label"
                         )
@@ -81,7 +81,7 @@ struct LoginScreen: View {
                         .foregroundStyle(.gray)
 
                         TextField(
-                            "store_username".localize(default: "Username", comment: "Username field placeholder"),
+                            "username".localize(default: "Username", comment: "Username field placeholder"),
                             text: $username
                         )
                     }
@@ -91,7 +91,7 @@ struct LoginScreen: View {
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text.localized(
-                            "store_password",
+                            "password",
                             default: "Password",
                             comment: "Password field label"
                         )
@@ -99,7 +99,7 @@ struct LoginScreen: View {
                         .foregroundStyle(.gray)
 
                         TextField(
-                            "store_password".localize(default: "Password", comment: "Password field placeholder"),
+                            "password".localize(default: "Password", comment: "Password field placeholder"),
                             text: $password
                         )
                     }
@@ -120,7 +120,7 @@ struct LoginScreen: View {
                                 ProgressView()
                             } else {
                                 Text.localized(
-                                    "store_login",
+                                    "login",
                                     default: "Login",
                                     comment: "Login button text"
                                 )
@@ -142,7 +142,7 @@ struct LoginScreen: View {
             }
             .disabled(viewModel.state?.isLoading == true)
         }
-        .navigationTitle("store_app_name".localize(default: "Store Overflow", comment: "Navigation title"))
+        .navigationTitle("app_name".localize(default: "Store Overflow", comment: "Navigation title"))
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: viewModel.state) { _, newState in
             if let state = newState, state.getData() == true {

@@ -22,14 +22,14 @@ struct CartScreen: View {
                 if viewModel.cartManager.items.isEmpty {
                     ContentUnavailableView {
                         Text.localized(
-                            "store_cart_empty_title",
+                            "cart_empty_title",
                             default: "Your Cart is Empty.",
                             comment: "Title shown when cart has no items"
                         )
                         .accessibilityIdentifier("cart_empty_title")
                     } description: {
                         Text.localized(
-                            "store_cart_empty_description",
+                            "cart_empty_description",
                             default: "Add some products to continue.",
                             comment: "Description for empty cart state"
                         )
@@ -59,14 +59,14 @@ struct CartScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.systemGroupedBackground)
-            .navigationTitle("store_cart_title".localize(default: "Cart", comment: "Cart screen title"))
+            .navigationTitle("cart_title".localize(default: "Cart", comment: "Cart screen title"))
             .safeAreaInset(edge: .bottom) {
                 VStack {
                     Divider()
 
                     HStack {
                         Text.localized(
-                            "store_cart_total",
+                            "cart_total",
                             default: "Total",
                             comment: "Label for total price in cart"
                         )
@@ -85,7 +85,7 @@ struct CartScreen: View {
                             .navigateTo(Destination.PlaceOrder())
                     } label: {
                         Text.localized(
-                            "store_cart_checkout",
+                            "cart_checkout",
                             default: "Check Out",
                             comment: "Button to proceed to checkout"
                         )
@@ -103,7 +103,7 @@ struct CartScreen: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Menu {
-                        Button("store_cart_menu_orders".localize(default: "Orders", comment: "Menu item to view orders")) {
+                        Button("cart_menu_orders".localize(default: "Orders", comment: "Menu item to view orders")) {
                             NavController.shared.navigateTo(Destination.Orders())
                         }
                         .accessibilityIdentifier("orders_menu_item")
