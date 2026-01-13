@@ -11,6 +11,7 @@ A comprehensive guide to using LocalizeKit for runtime localization in Swift app
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Configuration](#configuration)
+  - [RTL (Right-to-Left) Language Support](#rtl-right-to-left-language-support)
 - [String Localization API](#string-localization-api)
   - [Simple Strings](#simple-strings)
   - [String Interpolation](#string-interpolation)
@@ -210,6 +211,25 @@ let languages = [
 
 LocalizationManager.shared.setAvailableLanguages(languages)
 ```
+
+### RTL (Right-to-Left) Language Support
+
+LocalizeKit automatically supports RTL languages (Arabic, Hebrew, Urdu, Persian). No configuration needed - the UI automatically mirrors when switching to an RTL language.
+
+```swift
+// Check RTL status
+if LocalizationManager.shared.isRightToLeft {
+    // Custom RTL logic
+}
+
+// Configure custom RTL languages (optional)
+LocalizationManager.shared.configure(rtlLanguages: ["ar", "he", "ur", "fa", "yi"])
+```
+
+**Automatic behavior:**
+- SwiftUI: Applies layout direction via `.onLanguageChange()`
+- UIKit: Sets `semanticContentAttribute` on all components
+- Persists to UserDefaults across app launches
 
 ---
 
@@ -478,6 +498,8 @@ struct MyApp: App {
     }
 }
 ```
+
+**Note:** `.onLanguageChange()` also automatically applies RTL/LTR layout direction based on the active language.
 
 ### Text with Markdown Support
 
@@ -1510,10 +1532,10 @@ defaultPlural: [
 ]
 ```
 
-### 5. Test Multiple Languages
+### 5. Test Multiple Languages and Layout Directions
 
 - Test with **longer text** (German, Russian) for layout issues
-- Test **RTL languages** (Arabic, Hebrew) for mirroring
+- Test **RTL languages** (Arabic, Hebrew) for proper mirroring
 - Test **plural forms** with various counts (0, 1, 2, 5, 11, 21, 100)
 - Test **offline mode** by disabling network
 
@@ -1552,8 +1574,14 @@ public final class LocalizationManager {
     public private(set) var availableLanguages: [Language]
     public private(set) var isLoading: Bool
 
+    // RTL Support
+    public var isRightToLeft: Bool { get }
+    public var layoutDirection: LayoutDirection { get }
+    public var rtlLanguages: [String]
+
     // Configuration
     public func configure(pluralRules: [String: PluralRule])
+    public func configure(rtlLanguages: [String])
 
     // Language Management
     public func changeLanguage(to languageCode: String) async
