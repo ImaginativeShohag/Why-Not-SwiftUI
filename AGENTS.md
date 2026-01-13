@@ -292,6 +292,19 @@ Targets/
 - Built-in test suite: `swift test --package-path Tools/LocalizeKit --disable-sandbox`
 - **Portable**: Can be copied to any Swift/iOS project or extracted as a standalone Swift Package
 
+**RTL (Right-to-Left) Support:**
+- **Automatic RTL Detection**: Detects RTL languages (Arabic, Hebrew, Urdu, Persian) based on configurable language prefixes
+- **Default RTL Languages**: `ar` (Arabic), `he` (Hebrew), `ur` (Urdu), `fa` (Persian/Farsi)
+- **Configurable RTL Languages**: Use `LocalizationManager.shared.configure(rtlLanguages:)` to customize which languages use RTL
+- **SwiftUI Integration**: Automatic `.environment(\.layoutDirection, ...)` applied via `.onLanguageChange()` modifier
+- **UIKit Integration**: Automatic `semanticContentAttribute` applied to all UIKit components (navigation bars, buttons, text fields, etc.)
+- **Persistent Storage**: Layout direction persisted to UserDefaults and automatically restored on app launch
+- **Properties Available**:
+  - `LocalizationManager.shared.isRightToLeft` - Boolean indicating if current language is RTL
+  - `LocalizationManager.shared.layoutDirection` - SwiftUI LayoutDirection (.leftToRight or .rightToLeft)
+  - `LocalizationManager.shared.rtlLanguages` - Configurable array of RTL language prefixes
+- **Usage**: Simply call `.onLanguageChange()` in your root view and RTL/LTR will be applied automatically when language changes
+
 ## Build Configuration
 
 The project has three build environments defined in `Tuist/ProjectDescriptionHelpers/BuildEnvironment.swift`:
