@@ -39,7 +39,6 @@ public final class LanguageMerger {
                         // Replace with English value from base
                         let updated = TargetTranslationEntry(
                             value: baseEntry.value,
-                            type: baseEntry.type,
                             comment: baseEntry.comment
                         )
                         updatedStrings[key] = updated
@@ -48,7 +47,6 @@ public final class LanguageMerger {
                         // Keep existing translation but update comment from base
                         let kept = TargetTranslationEntry(
                             value: targetEntry.value,
-                            type: targetEntry.type,
                             comment: baseEntry.comment
                         )
                         updatedStrings[key] = kept
@@ -58,7 +56,6 @@ public final class LanguageMerger {
                     // NEW KEY - add from base with English value
                     let newEntry = TargetTranslationEntry(
                         value: baseEntry.value,
-                        type: baseEntry.type,
                         comment: baseEntry.comment
                     )
                     updatedStrings[key] = newEntry
@@ -96,7 +93,6 @@ public final class LanguageMerger {
             for (key, baseEntry) in baseStrings {
                 let entry = TargetTranslationEntry(
                     value: baseEntry.value,
-                    type: baseEntry.type,
                     comment: baseEntry.comment
                 )
                 targetStrings[key] = entry

@@ -37,7 +37,6 @@ public struct TargetTranslationFile: Codable {
 /// Translation entry in target language files (simplified)
 public struct TargetTranslationEntry: Codable {
     public let value: TranslationValue
-    public let type: TranslationType
     public let comment: String?
 }
 

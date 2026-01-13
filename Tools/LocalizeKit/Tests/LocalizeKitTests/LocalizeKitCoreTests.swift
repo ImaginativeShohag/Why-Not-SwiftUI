@@ -2,12 +2,11 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
-import XCTest
 @testable import LocalizeKitCore
+import XCTest
 
 /// Comprehensive test suite for LocalizeKit core functionality
 final class LocalizeKitCoreTests: XCTestCase {
-
     // MARK: - Translation Models Tests
 
     func testTranslationValueSimpleEncoding() throws {
@@ -83,7 +82,6 @@ final class LocalizeKitCoreTests: XCTestCase {
                 "TestModule": [
                     "test_key": TargetTranslationEntry(
                         value: .simple("القيمة"),
-                        type: .simple,
                         comment: nil
                     )
                 ]
@@ -161,8 +159,7 @@ final class LocalizeKitCoreTests: XCTestCase {
             "modules": {
                 "Store": {
                     "store_welcome": {
-                        "value": "مرحبا",
-                        "type": "simple"
+                        "value": "مرحبا"
                     }
                 }
             }
@@ -178,7 +175,9 @@ final class LocalizeKitCoreTests: XCTestCase {
 
         let entry = targetFile.modules["Store"]?["store_welcome"]
         XCTAssertNotNil(entry)
-        XCTAssertEqual(entry?.type, .simple)
+        if case .simple(let value) = entry?.value {
+            XCTAssertEqual(value, "مرحبا")
+        }
     }
 
     // MARK: - Plural Forms Tests

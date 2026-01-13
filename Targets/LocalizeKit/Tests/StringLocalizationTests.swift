@@ -56,7 +56,7 @@ final class StringLocalizationTests: XCTestCase {
         // This test verifies that #fileID in actual runtime works as expected
         // The test file itself is in LocalizeKit module
         let moduleName = String.extractModuleName(from: #fileID)
-        XCTAssertEqual(moduleName, "LocalizeKit", "Module extraction should work with actual #fileID from LocalizeKit module")
+        XCTAssertEqual(moduleName, "LocalizeKitTests", "Module extraction should work with actual #fileID from LocalizeKit module")
     }
 
     func testExtractModuleName_PathWithOnlySlash() {
@@ -78,40 +78,34 @@ final class StringLocalizationTests: XCTestCase {
         let mockTranslations = TranslationFile(modules: [
             "Store": ModuleTranslations(translations: [
                 "welcome": TranslationEntry(
-                    value: .simple("Welcome Translated"),
-                    type: .simple
+                    value: .simple("Welcome Translated")
                 ),
                 "greeting": TranslationEntry(
-                    value: .simple("Hello, %@! Welcome."),
-                    type: .interpolation
+                    value: .simple("Hello, %@! Welcome.")
                 ),
                 "order_summary": TranslationEntry(
-                    value: .simple("Order #%@ has %d items"),
-                    type: .interpolation
+                    value: .simple("Order #%@ has %d items")
                 ),
                 "items_count": TranslationEntry(
                     value: .plural([
                         .zero: "No items in cart",
                         .one: "1 item in cart",
                         .other: "%d items in cart"
-                    ]),
-                    type: .plural
+                    ])
                 ),
                 "apple_count": TranslationEntry(
                     value: .plural([
                         .zero: "No apples",
                         .one: "One apple",
                         .other: "%d apples"
-                    ]),
-                    type: .plural
+                    ])
                 ),
                 "cart_summary": TranslationEntry(
                     value: .plural([
                         .zero: "Your cart is empty",
                         .one: "You have 1 item worth %@",
                         .other: "You have %d items worth %@"
-                    ]),
-                    type: .plural
+                    ])
                 )
             ])
         ])
@@ -1007,8 +1001,7 @@ final class StringLocalizationTests: XCTestCase {
         let spanishTranslations = TranslationFile(modules: [
             "Store": ModuleTranslations(translations: [
                 "welcome": TranslationEntry(
-                    value: .simple("Bienvenido"),
-                    type: .simple
+                    value: .simple("Bienvenido")
                 )
             ])
         ])

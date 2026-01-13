@@ -3,92 +3,74 @@
     "Store" : {
       "address" : {
         "comment" : "Address label",
-        "type" : "simple",
         "value" : "ঠিকানা"
       },
       "app_name" : {
         "comment" : "Navigation title",
-        "type" : "simple",
         "value" : "Store Overflow"
       },
       "apply" : {
         "comment" : "Apply button text to confirm language change",
-        "type" : "simple",
         "value" : "প্রয়োগ করুন"
       },
       "cart_checkout" : {
         "comment" : "Button to proceed to checkout",
-        "type" : "simple",
         "value" : "চেকআউট করুন"
       },
       "cart_empty_description" : {
         "comment" : "Description for empty cart state",
-        "type" : "simple",
         "value" : "কিছু পণ্য যোগ করুন চালিয়ে যেতে।"
       },
       "cart_empty_title" : {
         "comment" : "Title shown when cart has no items",
-        "type" : "simple",
         "value" : "আপনার কার্ট খালি।"
       },
       "cart_menu_orders" : {
         "comment" : "Menu item to view orders",
-        "type" : "simple",
         "value" : "অর্ডার"
       },
       "cart_title" : {
         "comment" : "Cart screen title",
-        "type" : "simple",
         "value" : "কার্ট"
       },
       "cart_total" : {
         "comment" : "Label for total price in cart",
-        "type" : "simple",
         "value" : "মোট"
       },
       "categories_title" : {
         "comment" : "Categories screen title",
-        "type" : "simple",
         "value" : "ক্যাটাগরি"
       },
       "checkout_address_placeholder" : {
         "comment" : "Address TextField placeholder",
-        "type" : "simple",
         "value" : "ঠিকানা..."
       },
       "checkout_completed_description" : {
         "comment" : "Description for completed checkout",
-        "type" : "simple",
         "value" : "আবার চালিয়ে যেতে কিছু পণ্য যোগ করুন।"
       },
       "checkout_completed_title" : {
         "comment" : "Title shown when checkout is complete",
-        "type" : "simple",
         "value" : "চেকআউট সম্পন্ন হয়েছে।"
       },
       "checkout_name_placeholder" : {
         "comment" : "Name TextField placeholder",
-        "type" : "simple",
         "value" : "আপনার নাম..."
       },
       "checkout_phone_placeholder" : {
         "comment" : "Phone TextField placeholder",
-        "type" : "simple",
         "value" : "ফোন নম্বর..."
       },
       "checkout_place_order" : {
         "comment" : "Button to place order",
-        "type" : "simple",
         "value" : "অর্ডার করুন"
       },
       "checkout_placing_order" : {
         "comment" : "Button text while placing order",
-        "type" : "simple",
         "value" : "অর্ডার করা হচ্ছে..."
       },
       "checkout_product_count" : {
         "comment" : "Product count in checkout",
-        "type" : "plural",
         "value" : {
           "one" : "১টি পণ্য",
           "other" : "%d টি পণ্য"
@@ -96,102 +78,82 @@
       },
       "checkout_shipping_address" : {
         "comment" : "Label for shipping address section",
-        "type" : "simple",
         "value" : "ডেলিভারি ঠিকানা"
       },
       "checkout_success_title" : {
         "comment" : "Success alert title",
-        "type" : "simple",
         "value" : "অর্ডার সফলভাবে সম্পন্ন হয়েছে!"
       },
       "checkout_title" : {
         "comment" : "Checkout screen title",
-        "type" : "simple",
         "value" : "চেকআউট"
       },
       "checkout_total" : {
         "comment" : "Label for total price in checkout",
-        "type" : "simple",
         "value" : "মোট"
       },
       "country_select_footer" : {
         "comment" : "Footer explaining country selection",
-        "type" : "simple",
         "value" : "উপলব্ধ ভাষা দেখতে একটি দেশ নির্বাচন করুন।"
       },
       "country_select_header" : {
         "comment" : "Header for country selection list",
-        "type" : "simple",
         "value" : "দেশ নির্বাচন করুন"
       },
       "details" : {
         "comment" : "Profile details section header",
-        "type" : "simple",
         "value" : "বিস্তারিত"
       },
       "done" : {
         "comment" : "Done button text",
-        "type" : "simple",
         "value" : "সম্পন্ন"
       },
       "email" : {
         "comment" : "Email address label",
-        "type" : "simple",
         "value" : "ইমেইল"
       },
       "language_changing" : {
         "comment" : "Progress message while changing language",
-        "type" : "simple",
         "value" : "ভাষা পরিবর্তন করা হচ্ছে..."
       },
       "language_loading" : {
         "comment" : "Loading text while fetching languages",
-        "type" : "simple",
         "value" : "ভাষা লোড হচ্ছে..."
       },
       "language_select_footer" : {
         "comment" : "Footer explaining language selection",
-        "type" : "simple",
         "value" : "আপনার পছন্দের ভাষা নির্বাচন করুন। ইন্টারফেস তৎক্ষণাৎ অনুবাদ করা হবে।"
       },
       "language_select_header" : {
         "comment" : "Header for language selection list",
-        "type" : "simple",
         "value" : "ভাষা নির্বাচন করুন"
       },
       "language_settings" : {
         "comment" : "Language settings button text",
-        "type" : "simple",
         "value" : "ভাষা সেটিংস"
       },
       "language_title" : {
         "comment" : "Language settings screen title",
-        "type" : "simple",
         "value" : "ভাষা"
       },
       "login" : {
         "comment" : "Login button text",
-        "type" : "simple",
         "value" : "লগইন"
       },
       "name" : {
         "comment" : "User name label",
-        "type" : "simple",
         "value" : "নাম"
       },
       "ok" : {
         "comment" : "OK button text",
-        "type" : "simple",
         "value" : "ঠিক আছে"
       },
       "orders" : {
         "comment" : "Orders button text",
-        "type" : "simple",
         "value" : "অর্ডার"
       },
       "orders_product_count" : {
         "comment" : "Total product count in order",
-        "type" : "plural",
         "value" : {
           "one" : "মোট ১টি পণ্য",
           "other" : "মোট %d টি পণ্য"
@@ -199,77 +161,62 @@
       },
       "orders_title" : {
         "comment" : "Orders screen title",
-        "type" : "simple",
         "value" : "অর্ডার"
       },
       "password" : {
         "comment" : "Password field placeholder",
-        "type" : "simple",
         "value" : "পাসওয়ার্ড"
       },
       "phone" : {
         "comment" : "Phone number label",
-        "type" : "simple",
         "value" : "ফোন"
       },
       "product_details_title" : {
         "comment" : "Product details screen title",
-        "type" : "simple",
         "value" : "পণ্যের বিবরণ"
       },
       "products_category_title" : {
         "comment" : "Title showing the current category name",
-        "type" : "interpolation",
         "value" : "ক্যাটাগরি: %@"
       },
       "profile" : {
         "comment" : "Profile screen title",
-        "type" : "simple",
         "value" : "প্রোফাইল"
       },
       "retry" : {
         "comment" : "Retry button text",
-        "type" : "simple",
         "value" : "পুনরায় চেষ্টা করুন"
       },
       "sign_out" : {
         "comment" : "Sign out confirmation button",
-        "type" : "simple",
         "value" : "সাইন আউট"
       },
       "sign_out_alert_title" : {
         "comment" : "Alert title for sign out confirmation",
-        "type" : "simple",
         "value" : "Store থেকে সাইন আউট করবেন?"
       },
       "tab_bag" : {
         "comment" : "Tab bar label for shopping bag",
-        "type" : "simple",
         "value" : "ব্যাগ"
       },
       "tab_categories" : {
         "comment" : "Tab bar label for categories",
-        "type" : "simple",
         "value" : "ক্যাটাগরি"
       },
       "tab_home" : {
         "comment" : "Tab bar label for home",
-        "type" : "simple",
         "value" : "হোম"
       },
       "username" : {
         "comment" : "Username field placeholder",
-        "type" : "simple",
         "value" : "ইউজারনেম"
       },
       "welcome" : {
         "comment" : "Welcome message with user's full name on home screen",
-        "type" : "interpolation",
         "value" : "স্বাগতম, **%@**!"
       },
       "welcome_to" : {
         "comment" : "Login screen welcome text",
-        "type" : "simple",
         "value" : "স্বাগতম"
       }
     }

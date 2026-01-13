@@ -44,15 +44,9 @@ public struct ModuleTranslations: Codable, Sendable {
 /// Individual translation entry
 public struct TranslationEntry: Codable, Sendable {
     public let value: TranslationValue
-    public let type: TranslationType
-    public let comment: String?
-    public let metadata: TranslationMetadata?
 
-    public init(value: TranslationValue, type: TranslationType, comment: String? = nil, metadata: TranslationMetadata? = nil) {
+    public init(value: TranslationValue) {
         self.value = value
-        self.type = type
-        self.comment = comment
-        self.metadata = metadata
     }
 }
 
@@ -92,51 +86,6 @@ public enum TranslationValue: Codable, Sendable {
             try container.encode(stringDict)
         }
     }
-}
-
-/// Translation type
-public enum TranslationType: String, Codable, Sendable {
-    case simple
-    case plural
-    case interpolation
-}
-
-/// Translation metadata for tracking
-public struct TranslationMetadata: Codable, Sendable {
-    public let addedInVersion: String?
-    public let lastModifiedVersion: String?
-    public let status: TranslationStatus?
-    public let translationStatus: TranslationValidationStatus?
-    public let changeReason: String?
-
-    public init(
-        addedInVersion: String? = nil,
-        lastModifiedVersion: String? = nil,
-        status: TranslationStatus? = nil,
-        translationStatus: TranslationValidationStatus? = nil,
-        changeReason: String? = nil
-    ) {
-        self.addedInVersion = addedInVersion
-        self.lastModifiedVersion = lastModifiedVersion
-        self.status = status
-        self.translationStatus = translationStatus
-        self.changeReason = changeReason
-    }
-}
-
-/// Translation status for version tracking
-public enum TranslationStatus: String, Codable, Sendable {
-    case new
-    case modified
-    case unchanged
-    case removed
-}
-
-/// Translation validation status for translator workflow
-public enum TranslationValidationStatus: String, Codable, Sendable {
-    case untranslated
-    case needsReview = "needs_review"
-    case validated
 }
 
 // MARK: - Available Languages

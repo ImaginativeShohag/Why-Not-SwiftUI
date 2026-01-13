@@ -17,6 +17,7 @@ final class LocalizeKitStorage: @unchecked Sendable {
         case selectedCountry
         case selectedLanguageVersion
         case selectedLanguageName
+        case layoutDirection
     }
 
     // MARK: - Properties
@@ -98,6 +99,23 @@ final class LocalizeKitStorage: @unchecked Sendable {
         }
     }
 
+    // MARK: - Layout Direction
+
+    /// Get the stored layout direction preference
+    /// - Returns: Layout direction string ("rtl" or "ltr") or nil if not set
+    var layoutDirection: String? {
+        get {
+            userDefaults.string(forKey: StorageKey.layoutDirection.rawValue)
+        }
+        set {
+            if let newValue {
+                userDefaults.set(newValue, forKey: StorageKey.layoutDirection.rawValue)
+            } else {
+                userDefaults.removeObject(forKey: StorageKey.layoutDirection.rawValue)
+            }
+        }
+    }
+
     // MARK: - Utilities
 
     /// Clear all LocalizeKit storage
@@ -106,5 +124,6 @@ final class LocalizeKitStorage: @unchecked Sendable {
         selectedCountry = nil
         selectedLanguageVersion = nil
         selectedLanguageName = nil
+        layoutDirection = nil
     }
 }

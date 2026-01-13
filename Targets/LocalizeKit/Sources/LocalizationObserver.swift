@@ -8,6 +8,7 @@ private struct LocalizationObserverModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .environment(\.layoutDirection, localizationManager.layoutDirection)
             .id(localizationManager.currentLanguage) // Force view refresh on language change
     }
 }

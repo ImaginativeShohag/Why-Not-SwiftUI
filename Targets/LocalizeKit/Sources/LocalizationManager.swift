@@ -1,4 +1,6 @@
 import Foundation
+import SwiftUI
+import UIKit
 
 // MARK: - Cache State
 
@@ -45,6 +47,56 @@ public final class LocalizationManager {
     /// Loading state
     public private(set) var isLoading: Bool = false
 
+    /// Whether the current language uses right-to-left layout direction.
+    ///
+    /// This computed property checks if the `currentLanguage` starts with any
+    /// of the prefixes in the `rtlLanguages` array. Matching is case-insensitive.
+    ///
+    /// **Prefix Matching Examples:**
+    /// - `"ar"` matches `"ar"`, `"ar_AE"`, `"ar_SA"`, `"AR"`, `"AR_EG"`
+    /// - `"he"` matches `"he"`, `"he_IL"`, `"HE"`
+    /// - `"en"` does NOT match any default RTL prefix → returns `false`
+    ///
+    /// **Usage:**
+    /// ```swift
+    /// if LocalizationManager.shared.isRightToLeft {
+    ///     // Apply RTL-specific UI adjustments
+    /// }
+    /// ```
+    ///
+    /// **Performance:** O(n) where n is the size of `rtlLanguages` array.
+    ///
+    /// - SeeAlso: `rtlLanguages`, `layoutDirection`, `configure(rtlLanguages:)`
+    public var isRightToLeft: Bool {
+        let lowercased = currentLanguage.lowercased()
+        return rtlLanguages.contains { lowercased.hasPrefix($0) }
+    }
+
+    /// Current layout direction based on the active language.
+    ///
+    /// Returns `.rightToLeft` if `isRightToLeft` is `true`, otherwise `.leftToRight`.
+    /// This value is automatically applied to SwiftUI's environment when using
+    /// the `.onLanguageChange()` view modifier.
+    ///
+    /// **SwiftUI Integration:**
+    /// ```swift
+    /// ContentView()
+    ///     .onLanguageChange()  // Automatically applies layoutDirection
+    /// ```
+    ///
+    /// **Manual Usage:**
+    /// ```swift
+    /// let direction = LocalizationManager.shared.layoutDirection
+    /// if direction == .rightToLeft {
+    ///     // Apply custom RTL logic
+    /// }
+    /// ```
+    ///
+    /// - SeeAlso: `isRightToLeft`, `rtlLanguages`, `onLanguageChange()`
+    public var layoutDirection: LayoutDirection {
+        isRightToLeft ? .rightToLeft : .leftToRight
+    }
+
     // MARK: - Private Properties
 
     private var translationStorage: TranslationStorage?
@@ -54,6 +106,48 @@ public final class LocalizationManager {
 
     /// Custom plural rules per language (Vue-i18n style)
     public var pluralRules: [String: PluralRule] = [:]
+
+    /// Language prefixes that use right-to-left (RTL) layout direction.
+    ///
+    /// This array contains lowercase two-letter ISO 639-1 language code prefixes
+    /// used to determine if a language uses RTL layout. Prefix matching is used
+    /// to support language variants (e.g., "ar" matches "ar_AE", "ar_SA").
+    ///
+    /// **Default RTL Languages:**
+    /// - `"ar"` - Arabic (العربية) - Used in 22+ countries
+    /// - `"he"` - Hebrew (עברית) - Used in Israel
+    /// - `"ur"` - Urdu (اردو) - Used in Pakistan, India
+    /// - `"fa"` - Persian/Farsi (فارسی) - Used in Iran, Afghanistan (as Dari)
+    ///
+    /// **Other RTL Languages** (not included by default):
+    /// - `"yi"` - Yiddish (ייִדיש)
+    /// - `"ps"` - Pashto
+    /// - `"sd"` - Sindhi (Arabic script variant)
+    /// - `"ug"` - Uyghur
+    ///
+    /// **Format Requirements:**
+    /// - Use lowercase two-letter codes only (e.g., `"ar"`, not `"AR"` or `"ara"`)
+    /// - Matching is case-insensitive at runtime (e.g., "AR_AE" will match "ar")
+    /// - Codes are prefix-matched, so "ar" matches "ar", "ar_AE", "ar_SA", etc.
+    ///
+    /// **Usage Example:**
+    /// ```swift
+    /// // Add support for additional RTL languages
+    /// LocalizationManager.shared.configure(rtlLanguages: [
+    ///     "ar", "he", "ur", "fa", "yi", "ps"
+    /// ])
+    ///
+    /// // Check if current language is RTL
+    /// if LocalizationManager.shared.isRightToLeft {
+    ///     print("Current language uses RTL layout")
+    /// }
+    /// ```
+    ///
+    /// **Performance:** RTL detection is O(n) where n is the size of this array.
+    /// Keep the array small for optimal performance.
+    ///
+    /// - SeeAlso: `configure(rtlLanguages:)`, `isRightToLeft`, `layoutDirection`
+    public var rtlLanguages: [String] = ["ar", "he", "ur", "fa"]
 
     // MARK: - Initialization
 
@@ -85,6 +179,16 @@ public final class LocalizationManager {
         if let savedLanguageName = LocalizeKitStorage.shared.selectedLanguageName {
             self.currentLanguageName = savedLanguageName
         }
+
+        // Validate stored layout direction matches current language
+        let expectedDirection = isLanguageRTL(currentLanguage) ? "rtl" : "ltr"
+        if LocalizeKitStorage.shared.layoutDirection != expectedDirection {
+            LocalizeKitStorage.shared.layoutDirection = expectedDirection
+            LocalizeKitLogger.d("LocalizationManager: Corrected layout direction to \(expectedDirection)")
+        }
+
+        // Apply RTL/LTR to app at launch
+        applySemanticContentAttributeToApp()
     }
 
     // MARK: - Configuration
@@ -94,6 +198,65 @@ public final class LocalizationManager {
     public func configure(pluralRules: [String: PluralRule]) {
         self.pluralRules = pluralRules
         LocalizeKitLogger.d("LocalizationManager configured with \(pluralRules.count) custom plural rules")
+    }
+
+    /// Configure which languages should use right-to-left (RTL) layout direction.
+    ///
+    /// This method allows customization of the RTL language list at runtime.
+    /// Call this method early in your app lifecycle (e.g., in `AppDelegate` or
+    /// `App.init()`) before activating any languages.
+    ///
+    /// **When to Use:**
+    /// - Add support for RTL languages not included by default (e.g., Yiddish, Pashto)
+    /// - Remove RTL languages if your app doesn't support them
+    /// - Override default behavior for testing purposes
+    ///
+    /// - Parameter rtlLanguages: Array of lowercase two-letter ISO 639-1 language
+    ///   code prefixes (e.g., `["ar", "he", "yi"]`). Use empty array `[]` to treat
+    ///   all languages as left-to-right (useful for testing).
+    ///
+    /// **Example: Add Yiddish Support**
+    /// ```swift
+    /// LocalizationManager.shared.configure(rtlLanguages: [
+    ///     "ar", "he", "ur", "fa", "yi"  // Add Yiddish
+    /// ])
+    /// ```
+    ///
+    /// **Example: Minimal RTL Support**
+    /// ```swift
+    /// // Only support Arabic and Hebrew
+    /// LocalizationManager.shared.configure(rtlLanguages: ["ar", "he"])
+    /// ```
+    ///
+    /// **Example: App Initialization**
+    /// ```swift
+    /// @main
+    /// struct MyApp: App {
+    ///     init() {
+    ///         LocalizationManager.shared.configure(rtlLanguages: [
+    ///             "ar", "he", "ur", "fa", "yi", "ps"
+    ///         ])
+    ///     }
+    ///
+    ///     var body: some Scene {
+    ///         WindowGroup {
+    ///             ContentView()
+    ///                 .onLanguageChange()
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// **Behavior:**
+    /// - Changes take effect immediately for the current language
+    /// - Affects `isRightToLeft`, `layoutDirection`, and storage persistence
+    /// - Applies to all subsequent language activations
+    ///
+    /// - SeeAlso: `rtlLanguages`, `isRightToLeft`, `layoutDirection`
+    /// - Important: Call before activating any languages for consistent behavior.
+    public func configure(rtlLanguages: [String]) {
+        self.rtlLanguages = rtlLanguages
+        LocalizeKitLogger.d("LocalizationManager configured with RTL languages: \(rtlLanguages.joined(separator: ", "))")
     }
 
     // MARK: - Language Management
@@ -124,7 +287,7 @@ public final class LocalizationManager {
     /// Set available languages from external source
     /// - Parameter languages: Array of available languages
     public func setAvailableLanguages(_ languages: [Language]) {
-        self.availableLanguages = languages
+        availableLanguages = languages
         LocalizeKitLogger.d("LocalizationManager: Set \(languages.count) available languages")
     }
 
@@ -175,7 +338,20 @@ public final class LocalizationManager {
         LocalizeKitStorage.shared.selectedCountry = country
         LocalizeKitStorage.shared.selectedLanguageVersion = version
         LocalizeKitStorage.shared.selectedLanguageName = languageName
+        LocalizeKitStorage.shared.layoutDirection = isLanguageRTL(languageCode) ? "rtl" : "ltr"
+
+        // Automatically apply RTL/LTR to UIKit windows
+        applySemanticContentAttributeToApp()
+
         LocalizeKitLogger.d("LocalizationManager: Activated language \(languageCode) (\(languageName)) for country \(country), version: \(version)")
+    }
+
+    /// Determine if a language code is RTL based on configured RTL languages
+    /// - Parameter languageCode: Language code to check
+    /// - Returns: True if language is RTL
+    private func isLanguageRTL(_ languageCode: String) -> Bool {
+        let lowercased = languageCode.lowercased()
+        return rtlLanguages.contains { lowercased.hasPrefix($0) }
     }
 
     /// Delete corrupted cache file
@@ -346,5 +522,69 @@ public final class LocalizationManager {
         }
 
         return await storage.getCacheDirectoryPath()
+    }
+
+    // MARK: - UIKit Integration
+
+    /// Apply semantic content attribute to app windows based on current language direction
+    /// This ensures navigation transitions and all UIKit animations respect RTL
+    @MainActor
+    private func applySemanticContentAttributeToApp() {
+        let attribute: UISemanticContentAttribute = isRightToLeft ? .forceRightToLeft : .forceLeftToRight
+
+        // Update appearance for all UIKit components
+
+        // Base view
+        UIView.appearance().semanticContentAttribute = attribute
+
+        // Navigation & Bars
+        UINavigationBar.appearance().semanticContentAttribute = attribute
+        UITabBar.appearance().semanticContentAttribute = attribute
+        UIToolbar.appearance().semanticContentAttribute = attribute
+        UISearchBar.appearance().semanticContentAttribute = attribute
+
+        // Controls
+        UIButton.appearance().semanticContentAttribute = attribute
+        UITextField.appearance().semanticContentAttribute = attribute
+        UITextView.appearance().semanticContentAttribute = attribute
+        UISegmentedControl.appearance().semanticContentAttribute = attribute
+        UISlider.appearance().semanticContentAttribute = attribute
+        UIStepper.appearance().semanticContentAttribute = attribute
+        UISwitch.appearance().semanticContentAttribute = attribute
+        UIProgressView.appearance().semanticContentAttribute = attribute
+        UIPageControl.appearance().semanticContentAttribute = attribute
+        UIDatePicker.appearance().semanticContentAttribute = attribute
+        UIRefreshControl.appearance().semanticContentAttribute = attribute
+
+        // Containers
+        UIScrollView.appearance().semanticContentAttribute = attribute
+        UIStackView.appearance().semanticContentAttribute = attribute
+        UITableView.appearance().semanticContentAttribute = attribute
+        UICollectionView.appearance().semanticContentAttribute = attribute
+
+        // Cells
+        UITableViewCell.appearance().semanticContentAttribute = attribute
+        UICollectionViewCell.appearance().semanticContentAttribute = attribute
+        UITableViewHeaderFooterView.appearance().semanticContentAttribute = attribute
+        UICollectionReusableView.appearance().semanticContentAttribute = attribute
+
+        // Other Views
+        UILabel.appearance().semanticContentAttribute = attribute
+        UIImageView.appearance().semanticContentAttribute = attribute
+        UIPickerView.appearance().semanticContentAttribute = attribute
+        UIActivityIndicatorView.appearance().semanticContentAttribute = attribute
+        UIVisualEffectView.appearance().semanticContentAttribute = attribute
+        UIInputView.appearance().semanticContentAttribute = attribute
+
+        // Apply to all existing windows
+        for scene in UIApplication.shared.connectedScenes {
+            if let windowScene = scene as? UIWindowScene {
+                for window in windowScene.windows {
+                    window.semanticContentAttribute = attribute
+                    window.rootViewController?.view.semanticContentAttribute = attribute
+                    window.setNeedsLayout()
+                }
+            }
+        }
     }
 }

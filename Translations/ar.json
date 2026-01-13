@@ -3,92 +3,74 @@
     "Store" : {
       "address" : {
         "comment" : "Address label",
-        "type" : "simple",
         "value" : "العنوان"
       },
       "app_name" : {
         "comment" : "Navigation title",
-        "type" : "simple",
         "value" : "Store Overflow"
       },
       "apply" : {
         "comment" : "Apply button text to confirm language change",
-        "type" : "simple",
         "value" : "تطبيق"
       },
       "cart_checkout" : {
         "comment" : "Button to proceed to checkout",
-        "type" : "simple",
         "value" : "الدفع"
       },
       "cart_empty_description" : {
         "comment" : "Description for empty cart state",
-        "type" : "simple",
         "value" : "أضف بعض المنتجات للمتابعة."
       },
       "cart_empty_title" : {
         "comment" : "Title shown when cart has no items",
-        "type" : "simple",
         "value" : "سلة التسوق فارغة."
       },
       "cart_menu_orders" : {
         "comment" : "Menu item to view orders",
-        "type" : "simple",
         "value" : "الطلبات"
       },
       "cart_title" : {
         "comment" : "Cart screen title",
-        "type" : "simple",
         "value" : "السلة"
       },
       "cart_total" : {
         "comment" : "Label for total price in cart",
-        "type" : "simple",
         "value" : "المجموع"
       },
       "categories_title" : {
         "comment" : "Categories screen title",
-        "type" : "simple",
         "value" : "الفئات"
       },
       "checkout_address_placeholder" : {
         "comment" : "Address TextField placeholder",
-        "type" : "simple",
         "value" : "العنوان..."
       },
       "checkout_completed_description" : {
         "comment" : "Description for completed checkout",
-        "type" : "simple",
         "value" : "أضف بعض المنتجات للمتابعة مرة أخرى."
       },
       "checkout_completed_title" : {
         "comment" : "Title shown when checkout is complete",
-        "type" : "simple",
         "value" : "اكتمل الدفع."
       },
       "checkout_name_placeholder" : {
         "comment" : "Name TextField placeholder",
-        "type" : "simple",
         "value" : "اسمك..."
       },
       "checkout_phone_placeholder" : {
         "comment" : "Phone TextField placeholder",
-        "type" : "simple",
         "value" : "رقم الهاتف..."
       },
       "checkout_place_order" : {
         "comment" : "Button to place order",
-        "type" : "simple",
         "value" : "تأكيد الطلب"
       },
       "checkout_placing_order" : {
         "comment" : "Button text while placing order",
-        "type" : "simple",
         "value" : "جاري تقديم الطلب..."
       },
       "checkout_product_count" : {
         "comment" : "Product count in checkout",
-        "type" : "plural",
         "value" : {
           "one" : "منتج واحد",
           "other" : "%d منتجات"
@@ -96,102 +78,82 @@
       },
       "checkout_shipping_address" : {
         "comment" : "Label for shipping address section",
-        "type" : "simple",
         "value" : "عنوان الشحن"
       },
       "checkout_success_title" : {
         "comment" : "Success alert title",
-        "type" : "simple",
         "value" : "تم تقديم الطلب بنجاح!"
       },
       "checkout_title" : {
         "comment" : "Checkout screen title",
-        "type" : "simple",
         "value" : "الدفع"
       },
       "checkout_total" : {
         "comment" : "Label for total price in checkout",
-        "type" : "simple",
         "value" : "المجموع"
       },
       "country_select_footer" : {
         "comment" : "Footer explaining country selection",
-        "type" : "simple",
         "value" : "اختر دولة لرؤية اللغات المتاحة."
       },
       "country_select_header" : {
         "comment" : "Header for country selection list",
-        "type" : "simple",
         "value" : "اختر الدولة"
       },
       "details" : {
         "comment" : "Profile details section header",
-        "type" : "simple",
         "value" : "التفاصيل"
       },
       "done" : {
         "comment" : "Done button text",
-        "type" : "simple",
         "value" : "تم"
       },
       "email" : {
         "comment" : "Email address label",
-        "type" : "simple",
         "value" : "البريد الإلكتروني"
       },
       "language_changing" : {
         "comment" : "Progress message while changing language",
-        "type" : "simple",
         "value" : "جاري تغيير اللغة..."
       },
       "language_loading" : {
         "comment" : "Loading text while fetching languages",
-        "type" : "simple",
         "value" : "جاري تحميل اللغات..."
       },
       "language_select_footer" : {
         "comment" : "Footer explaining language selection",
-        "type" : "simple",
         "value" : "اختر لغتك المفضلة للتطبيق. سيتم ترجمة الواجهة فورًا."
       },
       "language_select_header" : {
         "comment" : "Header for language selection list",
-        "type" : "simple",
         "value" : "اختر اللغة"
       },
       "language_settings" : {
         "comment" : "Language settings button text",
-        "type" : "simple",
         "value" : "إعدادات اللغة"
       },
       "language_title" : {
         "comment" : "Language settings screen title",
-        "type" : "simple",
         "value" : "اللغة"
       },
       "login" : {
         "comment" : "Login button text",
-        "type" : "simple",
         "value" : "تسجيل الدخول"
       },
       "name" : {
         "comment" : "User name label",
-        "type" : "simple",
         "value" : "الاسم"
       },
       "ok" : {
         "comment" : "OK button text",
-        "type" : "simple",
         "value" : "موافق"
       },
       "orders" : {
         "comment" : "Orders button text",
-        "type" : "simple",
         "value" : "الطلبات"
       },
       "orders_product_count" : {
         "comment" : "Total product count in order",
-        "type" : "plural",
         "value" : {
           "one" : "منتج واحد إجمالي",
           "other" : "إجمالي %d منتجات"
@@ -199,77 +161,62 @@
       },
       "orders_title" : {
         "comment" : "Orders screen title",
-        "type" : "simple",
         "value" : "الطلبات"
       },
       "password" : {
         "comment" : "Password field placeholder",
-        "type" : "simple",
         "value" : "كلمة المرور"
       },
       "phone" : {
         "comment" : "Phone number label",
-        "type" : "simple",
         "value" : "الهاتف"
       },
       "product_details_title" : {
         "comment" : "Product details screen title",
-        "type" : "simple",
         "value" : "تفاصيل المنتج"
       },
       "products_category_title" : {
         "comment" : "Title showing the current category name",
-        "type" : "interpolation",
         "value" : "الفئة: %@"
       },
       "profile" : {
         "comment" : "Profile screen title",
-        "type" : "simple",
         "value" : "الملف الشخصي"
       },
       "retry" : {
         "comment" : "Retry button text",
-        "type" : "simple",
         "value" : "إعادة المحاولة"
       },
       "sign_out" : {
         "comment" : "Sign out confirmation button",
-        "type" : "simple",
         "value" : "تسجيل الخروج"
       },
       "sign_out_alert_title" : {
         "comment" : "Alert title for sign out confirmation",
-        "type" : "simple",
         "value" : "تسجيل الخروج من Store؟"
       },
       "tab_bag" : {
         "comment" : "Tab bar label for shopping bag",
-        "type" : "simple",
         "value" : "الحقيبة"
       },
       "tab_categories" : {
         "comment" : "Tab bar label for categories",
-        "type" : "simple",
         "value" : "الفئات"
       },
       "tab_home" : {
         "comment" : "Tab bar label for home",
-        "type" : "simple",
         "value" : "الرئيسية"
       },
       "username" : {
         "comment" : "Username field placeholder",
-        "type" : "simple",
         "value" : "اسم المستخدم"
       },
       "welcome" : {
         "comment" : "Welcome message with user's full name on home screen",
-        "type" : "interpolation",
         "value" : "مرحبًا، **%@**!"
       },
       "welcome_to" : {
         "comment" : "Login screen welcome text",
-        "type" : "simple",
         "value" : "مرحبًا بك في"
       }
     }

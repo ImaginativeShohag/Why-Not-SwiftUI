@@ -129,6 +129,43 @@ struct HomeScreen: View {
 EOF
 }
 
+# Create Swift file with optional interpolation
+create_greeting_file() {
+    local with_interpolation=$1
+    local file_path="$TEST_DIR/Targets/Store/Sources/GreetingScreen.swift"
+
+    if [ "$with_interpolation" = "true" ]; then
+        # With interpolation (%@)
+        cat > "$file_path" << 'EOF'
+import SwiftUI
+
+struct GreetingScreen: View {
+    var body: some View {
+        Text("store_greeting".localize(
+            default: "Welcome, %@!",
+            comment: "Greeting with name",
+            with: userName
+        ))
+    }
+}
+EOF
+    else
+        # Without interpolation (simple)
+        cat > "$file_path" << 'EOF'
+import SwiftUI
+
+struct GreetingScreen: View {
+    var body: some View {
+        Text("store_greeting".localize(
+            default: "Welcome",
+            comment: "Simple greeting"
+        ))
+    }
+}
+EOF
+    fi
+}
+
 # Test 1: Extract Command
 test_extract_command() {
     echo "📋 Test Group: Extract Command"
@@ -307,12 +344,79 @@ test_help_and_errors() {
     echo ""
 }
 
+# Test 7: Type Change Workflow
+test_type_change_workflow() {
+    echo "📋 Test Group: Type Change Workflow"
+
+    # Create clean test environment (don't use setup_test_project - it has conflicting keys)
+    # Clean up any existing files first
+    rm -rf "$TEST_DIR/Targets"
+    rm -rf "$TEST_DIR/Translations"
+    mkdir -p "$TEST_DIR/Targets/Store/Sources"
+    mkdir -p "$TEST_DIR/Translations"
+
+    # Step 1: Create Swift file with simple string (no interpolation)
+    create_greeting_file false
+
+    # Step 2: First extraction (Version 1) - Extract simple string
+    run_test "Step 1: Extract simple string (v1)" \
+        swift run --disable-sandbox LocalizeKit extract --project-path "$TEST_DIR"
+
+    run_test "Step 1: Verify base.json exists" \
+        file_exists "$TEST_DIR/Translations/base.json"
+
+    # Step 3: Merge to create target file
+    run_test "Step 2: Merge to create ar.json" \
+        swift run --disable-sandbox LocalizeKit merge --project-path "$TEST_DIR" --language ar
+
+    run_test "Step 2: Verify ar.json exists" \
+        file_exists "$TEST_DIR/Translations/ar.json"
+
+    # Verify initial version
+    run_test "Step 2: Verify base.json is version 1" \
+        sh -c "cat '$TEST_DIR/Translations/base.json' | grep -q '\"version\" *: *1'"
+
+    # Step 4: Verify initial value is simple
+    run_test "Step 2: Verify greeting has simple value" \
+        sh -c "cat '$TEST_DIR/Translations/base.json' | grep -q '\"store_greeting\"'"
+
+    # Step 5: Modify source code - Add interpolation (type change)
+    create_greeting_file true
+
+    # Step 6: Second extraction - Extract string with interpolation
+    run_test "Step 3: Re-extract with interpolation (v2)" \
+        swift run --disable-sandbox LocalizeKit extract --project-path "$TEST_DIR"
+
+    # Step 7: Verify version incremented
+    run_test "Step 3: Verify base.json is now version 2" \
+        sh -c "cat '$TEST_DIR/Translations/base.json' | grep -q '\"version\" *: *2'"
+
+    # Step 8: Verify new value has interpolation
+    run_test "Step 3: Verify greeting has interpolation" \
+        sh -c "cat '$TEST_DIR/Translations/base.json' | grep -q 'Welcome, %@!'"
+
+    # Step 9: Merge again - should update target file
+    run_test "Step 4: Re-merge after type change" \
+        swift run --disable-sandbox LocalizeKit merge --project-path "$TEST_DIR" --language ar
+
+    # Step 10: Verify target file was updated with new value
+    run_test "Step 4: Verify ar.json has updated value" \
+        sh -c "cat '$TEST_DIR/Translations/ar.json' | grep -q 'Welcome, %@!'"
+
+    # Step 11: Verify target file version matches base
+    run_test "Step 4: Verify ar.json version is 2" \
+        sh -c "cat '$TEST_DIR/Translations/ar.json' | grep -q '\"version\" *: *2'"
+
+    echo ""
+}
+
 # Run all tests
 test_extract_command
 test_merge_command
 test_validate_command
 test_diff_command
 test_full_workflow
+test_type_change_workflow
 test_help_and_errors
 
 # Print summary

@@ -110,6 +110,41 @@ final class LocalizeKitIntegrationTests: XCTestCase {
         try productScreenCode.write(to: productScreenPath, atomically: true, encoding: .utf8)
     }
 
+    private func createSwiftFileWithGreeting(in directory: URL, withInterpolation: Bool) throws {
+        let greetingCode: String
+        if withInterpolation {
+            greetingCode = """
+            import SwiftUI
+
+            struct GreetingScreen: View {
+                var body: some View {
+                    Text("store_greeting".localize(
+                        default: "Welcome, %@!",
+                        comment: "Greeting with name",
+                        with: userName
+                    ))
+                }
+            }
+            """
+        } else {
+            greetingCode = """
+            import SwiftUI
+
+            struct GreetingScreen: View {
+                var body: some View {
+                    Text("store_greeting".localize(
+                        default: "Welcome",
+                        comment: "Simple greeting"
+                    ))
+                }
+            }
+            """
+        }
+
+        let greetingPath = directory.appendingPathComponent("GreetingScreen.swift")
+        try greetingCode.write(to: greetingPath, atomically: true, encoding: .utf8)
+    }
+
     // MARK: - Extract Command Tests
 
     func testExtractCommand_CreatesBaseFile() throws {
@@ -214,12 +249,10 @@ final class LocalizeKitIntegrationTests: XCTestCase {
         targetModules["Store"] = [
             "store_welcome": TargetTranslationEntry(
                 value: .simple("مرحبا بك في متجرنا!"),
-                type: .simple,
                 comment: nil
             ),
             "old_key": TargetTranslationEntry(
                 value: .simple("قيمة قديمة"),
-                type: .simple,
                 comment: nil
             )
         ]
@@ -312,7 +345,6 @@ final class LocalizeKitIntegrationTests: XCTestCase {
                 "Store": [
                     "key1": TargetTranslationEntry(
                         value: .simple("القيمة 1"),
-                        type: .simple,
                         comment: nil
                     )
                     // key2 is missing
@@ -363,7 +395,6 @@ final class LocalizeKitIntegrationTests: XCTestCase {
                 "Store": [
                     "greeting": TargetTranslationEntry(
                         value: .simple("مرحبا"), // Missing %@ specifier
-                        type: .interpolation,
                         comment: nil
                     )
                 ]
@@ -432,12 +463,10 @@ final class LocalizeKitIntegrationTests: XCTestCase {
         translatedModules["Store"] = [
             "store_welcome": TargetTranslationEntry(
                 value: .simple("مرحبا بك في متجرنا!"),
-                type: .simple,
                 comment: nil
             ),
             "store_greeting": TargetTranslationEntry(
                 value: .simple("!**%@** ،مرحبا"),
-                type: .interpolation,
                 comment: nil
             ),
             "store_items_count": TargetTranslationEntry(
@@ -449,17 +478,14 @@ final class LocalizeKitIntegrationTests: XCTestCase {
                     "many": "%d عنصرًا في السلة",
                     "other": "%d عنصر في السلة"
                 ]),
-                type: .plural,
                 comment: nil
             ),
             "store_product_title": TargetTranslationEntry(
                 value: .simple("تفاصيل المنتج"),
-                type: .simple,
                 comment: nil
             ),
             "store_price": TargetTranslationEntry(
                 value: .simple("$%.2f :السعر"),
-                type: .interpolation,
                 comment: nil
             )
         ]
@@ -491,6 +517,135 @@ final class LocalizeKitIntegrationTests: XCTestCase {
             XCTAssertTrue(forms.keys.contains("other"), "Step 8: Arabic should have 'other' plural form")
         } else {
             XCTFail("Step 8: Expected plural value for items_count")
+        }
+    }
+
+    // MARK: - Type Change Integration Tests
+
+    func testTypeChange_SimpleToInterpolation_UpdatesBothBaseAndTarget() async throws {
+        // Create a separate module directory for this test to avoid interference
+        let typeTestModulePath = tempProjectDir.appendingPathComponent("Targets/TypeTest/Sources")
+        try FileManager.default.createDirectory(at: typeTestModulePath, withIntermediateDirectories: true)
+
+        // Step 1: Create Swift file with simple string (no interpolation)
+        try createSwiftFileWithGreeting(in: typeTestModulePath, withInterpolation: false)
+
+        // Step 2: First extraction (Version 1) - Extract simple string
+        let extractor = StringExtractor(projectPath: tempProjectDir.path, verbose: false)
+        let firstExtractedStrings = try extractor.extract()
+
+        // Verify extracted string has type = .simple
+        let greetingString = firstExtractedStrings.first { $0.key == "store_greeting" }
+        XCTAssertNotNil(greetingString, "Step 2: Should extract store_greeting")
+        XCTAssertEqual(greetingString?.type, .simple, "Step 2: Type should be .simple")
+        XCTAssertEqual(greetingString?.defaultValue, "Welcome", "Step 2: Value should be 'Welcome'")
+
+        // Step 3: Generate base.json with version 1
+        let generator = BaseTranslationFileGenerator(version: 1, verbose: false)
+        let firstBaseFile = generator.generate(from: firstExtractedStrings)
+
+        XCTAssertEqual(firstBaseFile.version, 1, "Step 3: Base file should have version 1")
+
+        // Verify base file entry
+        let baseEntry = firstBaseFile.modules["TypeTest"]?["store_greeting"]
+        XCTAssertNotNil(baseEntry, "Step 3: Base file should contain store_greeting")
+        XCTAssertEqual(baseEntry?.type, .simple, "Step 3: Base entry type should be .simple")
+        XCTAssertEqual(baseEntry?.version, 1, "Step 3: Base entry version should be 1")
+        if case .simple(let value) = baseEntry?.value {
+            XCTAssertEqual(value, "Welcome", "Step 3: Base entry value should be 'Welcome'")
+        } else {
+            XCTFail("Step 3: Expected simple value")
+        }
+
+        // Step 4: Create empty target file (Arabic) and sync
+        let languageMerger = LanguageMerger()
+        let emptyTarget = TargetTranslationFile(
+            version: 0,
+            modules: [:]
+        )
+        let firstTargetFile = languageMerger.sync(base: firstBaseFile, target: emptyTarget)
+
+        // Verify target file entry has type = .simple
+        let firstTargetEntry = firstTargetFile.modules["TypeTest"]?["store_greeting"]
+        XCTAssertNotNil(firstTargetEntry, "Step 4: Target file should contain store_greeting")
+        // Note: type field removed from TargetTranslationEntry
+        if case .simple(let value) = firstTargetEntry?.value {
+            XCTAssertEqual(value, "Welcome", "Step 4: Target entry should have English default")
+        } else {
+            XCTFail("Step 4: Expected simple value")
+        }
+
+        // Step 5: Simulate translation - Add Arabic translation
+        var translatedModules: [String: [String: TargetTranslationEntry]] = [:]
+        translatedModules["TypeTest"] = [
+            "store_greeting": TargetTranslationEntry(
+                value: .simple("مرحبا"),
+                comment: nil
+            )
+        ]
+        let translatedTarget = TargetTranslationFile(
+            version: 1,
+            modules: translatedModules
+        )
+
+        // Verify Arabic translation
+        if case .simple(let value) = translatedTarget.modules["TypeTest"]!["store_greeting"]!.value {
+            XCTAssertEqual(value, "مرحبا", "Step 5: Should have Arabic translation")
+        }
+
+        // Step 6: Modify source code - Add interpolation (type change)
+        try createSwiftFileWithGreeting(in: typeTestModulePath, withInterpolation: true)
+
+        // Step 7: Second extraction - Extract string with interpolation
+        let secondExtractedStrings = try extractor.extract()
+
+        // Verify extracted string now has type = .interpolation
+        let updatedGreetingString = secondExtractedStrings.first { $0.key == "store_greeting" }
+        XCTAssertNotNil(updatedGreetingString, "Step 7: Should extract updated store_greeting")
+        XCTAssertEqual(updatedGreetingString?.type, .interpolation, "Step 7: Type should be .interpolation")
+        XCTAssertEqual(updatedGreetingString?.defaultValue, "Welcome, %@!", "Step 7: Value should be 'Welcome, %@!'")
+
+        // Step 8: Merge with existing base file using BaseFileMerger
+        let baseFileMerger = BaseFileMerger()
+        let updatedBaseFile = try await baseFileMerger.merge(
+            existing: firstBaseFile,
+            extracted: secondExtractedStrings,
+            newVersion: 2
+        )
+
+        // Verify base file entry was updated
+        let updatedBaseEntry: BaseTranslationEntry? = updatedBaseFile.modules["TypeTest"]?["store_greeting"]
+        XCTAssertNotNil(updatedBaseEntry, "Step 8: Updated base file should contain store_greeting")
+        XCTAssertEqual(updatedBaseEntry?.type, .interpolation, "Step 8: Base entry type should be .interpolation (changed from .simple)")
+        XCTAssertEqual(updatedBaseEntry?.version, 2, "Step 8: Base entry version should be incremented to 2")
+        XCTAssertEqual(updatedBaseEntry?.metadata?.status, .modified, "Step 8: Base entry should be marked as .modified")
+        if case .simple(let value) = updatedBaseEntry?.value {
+            XCTAssertEqual(value, "Welcome, %@!", "Step 8: Base entry value should be 'Welcome, %@!'")
+        } else {
+            XCTFail("Step 8: Expected simple value with interpolation")
+        }
+
+        // Step 9: Sync updated base with target file
+        let updatedTargetFile = languageMerger.sync(base: updatedBaseFile, target: translatedTarget)
+
+        // Verify target file entry was updated with new type
+        let updatedTargetEntry: TargetTranslationEntry? = updatedTargetFile.modules["TypeTest"]?["store_greeting"]
+        XCTAssertNotNil(updatedTargetEntry, "Step 9: Updated target file should contain store_greeting")
+        // Note: type field removed from TargetTranslationEntry
+
+        // Because version changed, translation should be reset to English default
+        if case .simple(let value) = updatedTargetEntry?.value {
+            XCTAssertEqual(value, "Welcome, %@!", "Step 9: Target entry should be reset to English default because type changed")
+            XCTAssertTrue(value.contains("%@"), "Step 9: Target entry should preserve format specifier")
+        } else {
+            XCTFail("Step 9: Expected simple value with interpolation")
+        }
+
+        // Step 10: Verify both base and target contain the updated value
+        // Note: type field removed from TargetTranslationEntry, so we only verify values match
+        if case .simple(let baseValue) = updatedBaseEntry?.value,
+           case .simple(let targetValue) = updatedTargetEntry?.value {
+            XCTAssertEqual(baseValue, targetValue, "Step 10: Base and target values should match after sync")
         }
     }
 
