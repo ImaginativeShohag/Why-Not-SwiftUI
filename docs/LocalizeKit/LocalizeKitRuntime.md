@@ -1469,18 +1469,45 @@ Text("items".localize(
 
 ## Best Practices
 
-### 1. Use Descriptive Keys
+### 1. Key Naming Convention
+
+**Format:** `screen_element_description` (snake_case)
+
+| Component | Description | Examples |
+|-----------|-------------|----------|
+| **screen** | Context/location | `cart`, `profile`, `settings`, `home`, `login` |
+| **element** | UI component type | `button`, `title`, `label`, `message`, `hint`, `error` |
+| **description** | Content identifier | `checkout`, `empty`, `email`, `network`, `items` |
+
+**Examples:**
 
 ```swift
-// Good - descriptive with module prefix
-"cart_checkout_button"
-"profile_edit_name"
-"settings_notifications_toggle"
+// Buttons
+"cart_button_checkout"
+"profile_button_save"
 
-// Bad - vague or generic
-"button1"
-"text"
-"label"
+// Titles & Labels
+"cart_title"
+"profile_label_email"
+
+// Messages & States
+"cart_message_empty"
+"error_message_network"
+
+// Plurals
+"cart_count_items"
+
+// Hints & Placeholders
+"login_hint_password"
+```
+
+**Avoid:**
+```swift
+// ❌ Bad - vague or generic
+"button1", "text", "label"
+
+// ❌ Bad - inconsistent casing
+"cartCheckoutButton", "Cart_Button_Checkout"
 ```
 
 ### 2. Always Provide English Defaults
@@ -1754,3 +1781,7 @@ print("Cache: \(path)")
 ---
 
 *LocalizeKit v1.0.0*
+
+---
+
+**Last Updated:** January 14, 2026

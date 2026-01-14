@@ -746,3 +746,7 @@ swift run LocalizeKit menu
 ---
 
 *LocalizeKit CLI v1.0.0*
+
+---
+
+**Last Updated:** January 14, 2026
