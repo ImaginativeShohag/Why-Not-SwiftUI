@@ -2,6 +2,7 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import CommonUI
 import Core
 import Foundation
 import LocalizeKit
@@ -15,6 +16,7 @@ final class LanguageSettingsViewModel {
     var selectedLanguage: String?
     var pendingLanguage: String?
     var isChangingLanguage: Bool = false
+    var alert: NativeAlertData? = nil
 
     private var isPreview: Bool = false
     private let localizationManager: LocalizationManager
@@ -59,7 +61,7 @@ final class LanguageSettingsViewModel {
         pendingLanguage = nil
     }
 
-    func hasPendingChanges() -> Bool {
+    var hasPendingChanges: Bool {
         guard let pending = pendingLanguage else { return false }
         return pending != selectedLanguage
     }
@@ -95,20 +97,20 @@ final class LanguageSettingsViewModel {
         SuperLog.d("LanguageChangeViewModel: Changing language to: \(languageCode)")
         isChangingLanguage = true
 
+        guard let country = selectedCountry else {
+            SuperLog.e("LanguageChangeViewModel: Country not selected")
+            isChangingLanguage = false
+            return
+        }
+        
         // Special case: Default English language doesn't need API call (uses code defaults)
         if languageCode == "en" || languageCode == "en_US" {
             SuperLog.d("LanguageChangeViewModel: Using default English (no API call needed)")
             // Create empty translation file - localize() will use default values
             let emptyTranslation = TranslationFile(modules: [:])
-            localizationManager.activateLanguage(languageCode: languageCode, languageName: "English", country: "United States", version: 0, emptyTranslation)
+            localizationManager.activateLanguage(languageCode: languageCode, languageName: "English", country: country, version: 0, emptyTranslation)
             selectedLanguage = languageCode
             selectedCountry = "United States"
-            isChangingLanguage = false
-            return
-        }
-
-        guard let country = selectedCountry else {
-            SuperLog.e("LanguageChangeViewModel: Country not selected")
             isChangingLanguage = false
             return
         }
@@ -158,8 +160,15 @@ final class LanguageSettingsViewModel {
             SuperLog.d("LanguageChangeViewModel: Language changed to \(selectedLanguage ?? "nil"), version: \(version)")
 
         case .failure(let error):
-            // Show error (offline or network issue)
-            state = .error(message: error.localizedDescription)
+            // Show error via alert instead of changing state
+            alert = NativeAlertData(
+                title: "language_fetch_error_title".localize(
+                    default: "Failed to Change Language",
+                    comment: "Alert title when language change fails"
+                ),
+                message: error.localizedDescription,
+                primaryButtonText: "ok".localize(default: "OK", comment: "OK button text")
+            )
             SuperLog.e("LanguageChangeViewModel: Failed to fetch translations - \(error)")
         }
     }

@@ -21,13 +21,13 @@ struct ValidateCommand: AsyncParsableCommand {
     @Option(name: .long, help: "Root directory of the project (default: current directory)")
     var projectPath: String = FileManager.default.currentDirectoryPath
 
-    @Flag(name: .long, help: "Check for missing translations")
+    @Flag(name: .long, inversion: .prefixedNo, help: "Check for missing translations (default: enabled)")
     var checkMissing: Bool = true
 
-    @Flag(name: .long, help: "Check for format string mismatches")
+    @Flag(name: .long, inversion: .prefixedNo, help: "Check for format string mismatches (default: enabled)")
     var checkFormat: Bool = true
 
-    @Flag(name: .long, help: "Check for plural forms")
+    @Flag(name: .long, inversion: .prefixedNo, help: "Check for plural forms (default: enabled)")
     var checkPlurals: Bool = true
 
     @Flag(name: .long, help: "Verbose output")

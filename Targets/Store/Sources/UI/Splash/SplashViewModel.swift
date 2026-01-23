@@ -77,13 +77,8 @@ class SplashViewModel {
                 return
             }
 
-            // Step 3.5: Find the country for this language
-            guard let country = availableLanguages.data.first(where: { _, languages in
-                languages.contains(where: { $0.code == currentLang })
-            })?.key else {
-                SuperLog.w("MainViewModel: Country not found for language '\(currentLang)'")
-                return
-            }
+            // Use saved country if available, otherwise default to "United States"
+            let country = localizationManager.currentCountry
 
             // Step 4: Check cache state and apply accordingly
             let cacheState = await localizationManager.getCacheState(for: language)

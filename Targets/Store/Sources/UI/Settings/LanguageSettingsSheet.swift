@@ -57,6 +57,7 @@ struct LanguageSettingsSheet: View {
             .task {
                 await viewModel.loadLanguages()
             }
+            .alert(data: $viewModel.alert)
             .onLanguageChange()
         }
     }

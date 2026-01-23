@@ -34,7 +34,7 @@ struct LanguageListSheet: View {
         .navigationTitle(country)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if viewModel.hasPendingChanges() {
+            if viewModel.hasPendingChanges {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(role: .confirm) {
                         Task {
@@ -62,6 +62,7 @@ struct LanguageListSheet: View {
                 )
             }
         }
+        .alert(data: $viewModel.alert)
     }
 
     @ViewBuilder

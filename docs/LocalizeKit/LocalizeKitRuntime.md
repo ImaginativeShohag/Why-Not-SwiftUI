@@ -349,6 +349,14 @@ let discount = "discount".localize(
 )
 ```
 
+**Writing Comments for Interpolated Strings:**
+
+When using format specifiers, always describe what each argument represents in the comment. This is crucial for translators who may need to reorder arguments for different languages.
+
+Examples:
+- For `"Welcome, %@! You're in %@"`: Comment should be "Welcome message with location. Arguments: 1) user name, 2) city name"
+- For `"Order #%@ contains %d items totaling %@"`: Comment should be "Order summary. Arguments: 1) order ID, 2) item count, 3) formatted total price"
+
 ---
 
 ### Plural Forms
@@ -1178,28 +1186,66 @@ grep -r '\^\[' --include="*.swift" Targets/YourModule/
 
 #### 3. Find Hardcoded User-Facing Strings
 
+**Strategy:** Find ALL string literals (`"` and `"""`) in Swift files, then filter out non-user-facing strings.
+
 ```bash
-# Find Text() views with literal strings (manual review needed)
-grep -r 'Text("' --include="*.swift" Targets/YourModule/ | grep -v '".localize'
+# Find all string literals (single and multi-line)
+grep -rn '"' --include="*.swift" Targets/YourModule/ | \
+  grep -v '".localize' | \
+  grep -v '^\s*//' | \
+  grep -v '#if DEBUG' | \
+  grep -v 'systemName:' | \
+  grep -v 'accessibilityIdentifier' | \
+  grep -v '^\s*import'
 
-# Find Button labels with literal strings
-grep -r 'Button("' --include="*.swift" Targets/YourModule/ | grep -v '".localize'
-
-# Find navigationTitle with literal strings
-grep -r '.navigationTitle("' --include="*.swift" Targets/YourModule/ | grep -v '".localize'
+# Find multi-line strings specifically
+grep -rn '"""' --include="*.swift" Targets/YourModule/ | \
+  grep -v '".localize'
 ```
 
-**What to look for:**
-- `Text("Hardcoded String")` without `.localize()`
-- `Button("Hardcoded")` without localization
-- `.navigationTitle("Hardcoded")`
-- Alert titles and messages
-- Placeholder text in TextFields
+**Manual Review Checklist:**
 
-**Exclude from audit:**
-- Preview-only strings in `#if DEBUG` blocks
-- Dynamic content: `Text("\(count)")`, `Text("\(price)")`
-- System symbols: `Image(systemName: "star")`
+After running the grep, manually review each result and ask:
+1. **Is this shown to the user?** → Localize it
+2. **Is this a system identifier?** (SF Symbol, accessibility ID, notification name) → Skip
+3. **Is this configuration?** (URL, API endpoint, file path) → Skip
+4. **Is this preview/debug only?** → Skip
+5. **Is it purely dynamic?** (`"\(variable)"` with no static text) → Skip
+
+**Examples of What to Localize:**
+
+```swift
+✅ Text("Welcome")
+✅ Button("Save") { }
+✅ Label("Settings", systemImage: "gear")
+✅ Toggle("Enable notifications", isOn: $enabled)
+✅ Picker("Language", selection: $lang) { }
+✅ TextField("Enter email", text: $email)
+✅ .navigationTitle("Profile")
+✅ .alert("Error", message: Text("Something went wrong"))
+✅ .confirmationDialog("Delete item?")
+✅ .accessibilityLabel("Close button")
+✅ .accessibilityHint("Double tap to dismiss")
+✅ .swipeActions { Button("Delete") { } }
+✅ Section(header: Text("Account Details"))
+✅ .contextMenu { Button("Copy") { } }
+✅ throw AppError.custom("Invalid input")  // Error messages shown to users
+```
+
+**Examples of What NOT to Localize:**
+
+```swift
+❌ Image(systemName: "star.fill")  // SF Symbol name
+❌ .accessibilityIdentifier("home_tab")  // Internal test ID
+❌ NotificationCenter.default.post(name: "UserDidLogin")  // Notification name
+❌ let url = "https://api.example.com"  // API endpoint
+❌ let key = "userPreferences"  // UserDefaults key
+❌ .fileExporter(fileExtension: ".pdf")  // File extension
+❌ Text("\(price)")  // Purely dynamic, no static text
+❌ #Preview { Text("Preview Only") }  // Preview code
+❌ // "This is a comment"  // Code comment
+❌ struct User: Codable { let id = "user_123" }  // Data model
+```
 
 ---
 
@@ -1222,20 +1268,45 @@ Create a script to run all checks:
 
 ```bash
 #!/bin/bash
+MODULE_PATH="Targets/YourModule"
+
 echo "=== LocalizeKit Migration Audit ==="
 echo ""
 
 echo "1. NSLocalizedString usage:"
-grep -r "NSLocalizedString" --include="*.swift" Targets/YourModule/ | wc -l
-
-echo "2. SwiftUI native plurals (CRITICAL):"
-grep -r '\^\[' --include="*.swift" Targets/YourModule/
-
-echo "3. Hardcoded Text() strings:"
-grep -r 'Text("' --include="*.swift" Targets/YourModule/ | grep -v '".localize' | grep -v '#if DEBUG' | wc -l
-
+NSLOCAL_COUNT=$(grep -r "NSLocalizedString" --include="*.swift" $MODULE_PATH | wc -l)
+echo "   Found: $NSLOCAL_COUNT occurrences"
 echo ""
-echo "Review each pattern above. Zero results (except previews) means migration is complete."
+
+echo "2. SwiftUI native plurals (CRITICAL - easy to miss):"
+PLURAL_COUNT=$(grep -r '\^\[' --include="*.swift" $MODULE_PATH | wc -l)
+echo "   Found: $PLURAL_COUNT occurrences"
+if [ $PLURAL_COUNT -gt 0 ]; then
+    grep -rn '\^\[' --include="*.swift" $MODULE_PATH
+fi
+echo ""
+
+echo "3. Hardcoded string literals:"
+STRING_COUNT=$(grep -rn '"' --include="*.swift" $MODULE_PATH | \
+  grep -v '".localize' | \
+  grep -v '^\s*//' | \
+  grep -v '#if DEBUG' | \
+  grep -v 'systemName:' | \
+  grep -v 'accessibilityIdentifier' | \
+  grep -v '^\s*import' | wc -l)
+echo "   Found: $STRING_COUNT potential strings (requires manual review)"
+echo ""
+
+echo "4. Multi-line strings:"
+MULTILINE_COUNT=$(grep -rn '"""' --include="*.swift" $MODULE_PATH | grep -v '".localize' | wc -l)
+echo "   Found: $MULTILINE_COUNT occurrences"
+echo ""
+
+echo "=== Summary ==="
+echo "Target: All counts should be 0 after migration (except preview strings)"
+echo ""
+echo "To review hardcoded strings in detail, run:"
+echo "  grep -rn '\"' --include=\"*.swift\" $MODULE_PATH | grep -v '\".localize' | grep -v 'systemName:' | less"
 ```
 
 ---
@@ -1471,6 +1542,8 @@ Text("items".localize(
 
 ### 1. Key Naming Convention
 
+**IMPORTANT: Always use snake_case for all localization keys. Never mix camelCase with snake_case.**
+
 **Format:** `screen_element_description` (snake_case)
 
 | Component | Description | Examples |
@@ -1482,23 +1555,22 @@ Text("items".localize(
 **Examples:**
 
 ```swift
-// Buttons
+// ✅ Correct - consistent snake_case
 "cart_button_checkout"
 "profile_button_save"
-
-// Titles & Labels
 "cart_title"
 "profile_label_email"
-
-// Messages & States
 "cart_message_empty"
 "error_message_network"
-
-// Plurals
 "cart_count_items"
-
-// Hints & Placeholders
 "login_hint_password"
+"order_summary_total_price"
+"user_settings_notification_preferences"
+
+// Accessibility modifiers
+"store_accessibility_action_delete"
+"cart_accessibility_label_checkout"
+"profile_accessibility_hint_save"
 ```
 
 **Avoid:**
@@ -1506,8 +1578,20 @@ Text("items".localize(
 // ❌ Bad - vague or generic
 "button1", "text", "label"
 
-// ❌ Bad - inconsistent casing
-"cartCheckoutButton", "Cart_Button_Checkout"
+// ❌ Bad - camelCase (use snake_case instead)
+"cartCheckoutButton"      // Should be: "cart_button_checkout"
+"profileButtonSave"       // Should be: "profile_button_save"
+"orderSummaryTotalPrice"  // Should be: "order_summary_total_price"
+
+// ❌ Bad - mixed snake_case and camelCase
+"cart_checkoutButton"     // Inconsistent: mixing styles
+"profileButton_save"      // Inconsistent: mixing styles
+"order_summary_totalPrice" // Inconsistent: mixing styles
+
+// ❌ Bad - other inconsistent casing
+"Cart_Button_Checkout"    // PascalCase with underscores
+"CART_BUTTON_CHECKOUT"    // SCREAMING_SNAKE_CASE
+"cart-button-checkout"    // kebab-case (use underscores, not hyphens)
 ```
 
 ### 2. Always Provide English Defaults
@@ -1537,9 +1621,64 @@ Text("items".localize(
 "cart_empty".localize(
     default: "Your cart is empty"
 )
+
+// For interpolated strings - describe each argument
+// Good - explains what each argument represents
+"welcome_location".localize(
+    default: "Welcome, %@! You're in %@",
+    comment: "Welcome message with location. Arguments: 1) user name, 2) city name",
+    with: userName, cityName
+)
+
+// Good - clear argument description
+"order_summary".localize(
+    default: "Order #%@ contains %d items totaling %@",
+    comment: "Order summary displayed in header. Arguments: 1) order ID, 2) item count, 3) formatted total price",
+    with: orderID, itemCount, formattedTotal
+)
+
+// Bad - doesn't explain what the arguments are
+"welcome_location".localize(
+    default: "Welcome, %@! You're in %@",
+    comment: "Shows welcome message",
+    with: userName, cityName
+)
 ```
 
-### 4. Handle Plurals Correctly
+### 4. Describe Format Specifier Arguments
+
+When using string interpolation, always describe what each argument represents in order:
+
+```swift
+// Good - numbered arguments with descriptions
+"user_stats".localize(
+    default: "%@ has %d followers and %d following",
+    comment: "User statistics. Arguments: 1) username, 2) follower count, 3) following count",
+    with: username, followerCount, followingCount
+)
+
+// Good - positional description
+"delivery_eta".localize(
+    default: "Your order will arrive on %@ between %@ and %@",
+    comment: "Delivery estimate. Arguments: 1) delivery date, 2) start time, 3) end time",
+    with: deliveryDate, startTime, endTime
+)
+
+// Bad - doesn't explain arguments
+"user_stats".localize(
+    default: "%@ has %d followers and %d following",
+    comment: "Shows user statistics",
+    with: username, followerCount, followingCount
+)
+```
+
+**Why this matters:**
+- Translators need to understand what each `%@` or `%d` represents
+- Different languages may require different word orders
+- Prevents translation errors where arguments are misinterpreted
+- Makes the translation process more efficient and accurate
+
+### 5. Handle Plurals Correctly
 
 ```swift
 // Good - includes .other (required)
@@ -1559,14 +1698,14 @@ defaultPlural: [
 ]
 ```
 
-### 5. Test Multiple Languages and Layout Directions
+### 6. Test Multiple Languages and Layout Directions
 
 - Test with **longer text** (German, Russian) for layout issues
 - Test **RTL languages** (Arabic, Hebrew) for proper mirroring
 - Test **plural forms** with various counts (0, 1, 2, 5, 11, 21, 100)
 - Test **offline mode** by disabling network
 
-### 6. Avoid String Concatenation
+### 7. Avoid String Concatenation
 
 ```swift
 // Bad - concatenation breaks translation
