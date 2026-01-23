@@ -63,6 +63,7 @@ struct LanguageListSheet: View {
             }
         }
         .alert(data: $viewModel.alert)
+        .onLanguageChange()
     }
 
     @ViewBuilder
