@@ -27,7 +27,10 @@ struct LanguageSettingsSheet: View {
                 } else if state.isError {
                     ContentUnavailableView(
                         label: {
-                            Label(state.getErrorMessage() ?? "Error", systemImage: "exclamationmark.triangle")
+                            Label(state.getErrorMessage() ?? "error_generic".localize(
+                                default: "Error",
+                                comment: "Generic error label"
+                            ), systemImage: "exclamationmark.triangle")
                         },
                         actions: {
                             Button("retry".localize(default: "Retry", comment: "Retry button text")) {
