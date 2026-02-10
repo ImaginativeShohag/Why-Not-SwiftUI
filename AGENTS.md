@@ -281,6 +281,7 @@ Targets/
 **LocalizeKit Key Features:**
 - **Fully Independent Module**: Zero dependencies on Core, SuperLog, or any other project modules
 - **Internal Utilities**:
+  - `Constants`: Centralized configuration for all default values
   - `LocalizeKitStorage`: Minimal UserDefaults accessor for language preferences (backward compatible with existing keys)
   - `LocalizeKitLogger`: DEBUG-only logging using OSLog (zero overhead in Release builds)
 - No manual version specification (auto-managed integer versions)
