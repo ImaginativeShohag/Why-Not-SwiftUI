@@ -2,20 +2,6 @@ import Foundation
 import SwiftUI
 import UIKit
 
-// MARK: - Cache State
-
-/// Represents the state of a cached translation file
-public enum CacheState: Sendable {
-    /// Cache exists and version matches server version (includes cached file)
-    case valid(cachedFile: CachedTranslationFile)
-    /// Cache exists but version is outdated (includes old version number)
-    case stale(cachedVersion: Int)
-    /// No cache exists for this language
-    case missing
-    /// Cache file exists but is corrupted/invalid JSON
-    case corrupted
-}
-
 // MARK: - Localization Manager
 
 /// Main localization manager handling translation loading/retrieval
@@ -28,18 +14,18 @@ public final class LocalizationManager {
     public static let shared = LocalizationManager()
 
     // MARK: - Observable Properties
+    
+    /// Current selected country name
+    public private(set) var currentCountry: String = Constants.defaultCountry
 
     /// Current selected language code
-    public private(set) var currentLanguage: String = "en_US"
+    public private(set) var currentLanguage: String = Constants.defaultLanguageCode
 
-    /// Current selected country name
-    public private(set) var currentCountry: String = "United States"
+    /// Current language name in its native locale (from nameLocale field in API)
+    public private(set) var currentLanguageName: String = Constants.defaultLanguageName
 
     /// Current language version from available languages API
     public private(set) var currentLanguageVersion: Int?
-
-    /// Current language name in its native locale (from nameLocale field in API)
-    public private(set) var currentLanguageName: String = "English"
 
     /// Available languages fetched from server
     public private(set) var availableLanguages: [Language] = []
@@ -147,7 +133,7 @@ public final class LocalizationManager {
     /// Keep the array small for optimal performance.
     ///
     /// - SeeAlso: `configure(rtlLanguages:)`, `isRightToLeft`, `layoutDirection`
-    public var rtlLanguages: [String] = ["ar", "he", "ur", "fa"]
+    public var rtlLanguages: [String] = Constants.defaultRTLLanguages
 
     // MARK: - Initialization
 
@@ -587,4 +573,18 @@ public final class LocalizationManager {
             }
         }
     }
+}
+
+// MARK: - Cache State
+
+/// Represents the state of a cached translation file
+public enum CacheState: Sendable {
+    /// Cache exists and version matches server version (includes cached file)
+    case valid(cachedFile: CachedTranslationFile)
+    /// Cache exists but version is outdated (includes old version number)
+    case stale(cachedVersion: Int)
+    /// No cache exists for this language
+    case missing
+    /// Cache file exists but is corrupted/invalid JSON
+    case corrupted
 }

@@ -29,7 +29,7 @@ public enum PluralCategory: String, Codable, CaseIterable, Sendable {
         customRules: [String: PluralRule] = [:]
     ) -> PluralCategory {
         let allCategories: [PluralCategory] = [.zero, .one, .two, .few, .many, .other]
-        let languageCode = locale.language.languageCode?.identifier ?? "en"
+        let languageCode = locale.language.languageCode?.identifier ?? Constants.fallbackLanguageCode
 
         // 1. Check if custom rule exists for current language
         if let customRule = customRules[languageCode] {
