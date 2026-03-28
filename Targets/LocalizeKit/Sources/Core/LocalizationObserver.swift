@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Localization Observer View Modifier
 
-/// View modifier that refreshes the view when language changes
+/// View modifier that refreshes the view when language changes.
 private struct LocalizationObserverModifier: ViewModifier {
     @State private var localizationManager = LocalizationManager.shared
 
@@ -16,7 +16,7 @@ private struct LocalizationObserverModifier: ViewModifier {
 // MARK: - View Extension
 
 extension View {
-    /// Observe language changes and refresh view automatically
+    /// Observe language changes and refresh view automatically.
     ///
     /// Usage:
     /// ```swift

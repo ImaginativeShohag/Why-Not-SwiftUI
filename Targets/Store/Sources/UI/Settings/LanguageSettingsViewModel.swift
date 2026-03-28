@@ -108,7 +108,7 @@ final class LanguageSettingsViewModel {
             SuperLog.d("LanguageChangeViewModel: Using default English (no API call needed)")
             // Create empty translation file - localize() will use default values
             let emptyTranslation = TranslationFile(modules: [:])
-            localizationManager.activateLanguage(languageCode: languageCode, languageName: "English", country: country, version: 0, emptyTranslation)
+            localizationManager.activateLanguage(languageCode: languageCode, languageName: "English", country: country, version: 0, translationFile: emptyTranslation)
             selectedLanguage = languageCode
             selectedCountry = "United States"
             isChangingLanguage = false
@@ -122,7 +122,7 @@ final class LanguageSettingsViewModel {
         case .valid(let cachedFile):
             // Cache is valid and version matches - use it directly (instant, no API call)
             SuperLog.d("LanguageChangeViewModel: Using cached translation (v\(cachedFile.version))")
-            localizationManager.activateLanguage(languageCode: languageCode, languageName: language.nameLocale, country: country, version: language.version, cachedFile.translationFile)
+            localizationManager.activateLanguage(languageCode: languageCode, languageName: language.nameLocale, country: country, version: language.version, translationFile: cachedFile.translationFile)
             selectedLanguage = languageCode
 
         case .stale(let cachedVersion):
@@ -154,7 +154,7 @@ final class LanguageSettingsViewModel {
         case .success(let translationFile):
             // Cache and activate
             await localizationManager.setTranslations(translationFile, for: languageCode, version: version)
-            localizationManager.activateLanguage(languageCode: languageCode, languageName: languageName, country: country, version: version, translationFile)
+            localizationManager.activateLanguage(languageCode: languageCode, languageName: languageName, country: country, version: version, translationFile: translationFile)
 
             selectedLanguage = languageCode
             SuperLog.d("LanguageChangeViewModel: Language changed to \(selectedLanguage ?? "nil"), version: \(version)")

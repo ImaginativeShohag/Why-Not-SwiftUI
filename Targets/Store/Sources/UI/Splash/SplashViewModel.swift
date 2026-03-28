@@ -25,13 +25,13 @@ class SplashViewModel {
     func checkNextAction() async {
         guard !isPreview else { return }
 
+        // Load and apply user's selected language
+        await loadAndApplyUserLanguage()
+        
         // Skip delay in UI test mode for faster test execution
         if !ProcessInfo.processInfo.arguments.contains(uiTestArgEnable) {
             try? await Task.sleep(for: .seconds(1))
         }
-
-        // Load and apply user's selected language
-        await loadAndApplyUserLanguage()
 
         if Preferences.user != nil {
             nextAction = .home
@@ -57,7 +57,7 @@ class SplashViewModel {
 
             // Create empty translation file - localize() will use default values from code
             let emptyTranslation = TranslationFile(modules: [:])
-            localizationManager.activateLanguage(languageCode: currentLang, languageName: "English", country: country, version: 0, emptyTranslation)
+            localizationManager.activateLanguage(languageCode: currentLang, languageName: "English", country: country, version: 0, translationFile: emptyTranslation)
             SuperLog.d("MainViewModel: English language activated (v0, built-in)")
             return
         }
@@ -87,7 +87,7 @@ class SplashViewModel {
             case .valid(let cachedFile):
                 // Cache is valid - activate immediately
                 SuperLog.d("MainViewModel: Using cached translation for \(currentLang) (v\(cachedFile.version))")
-                localizationManager.activateLanguage(languageCode: currentLang, languageName: language.nameLocale, country: country, version: language.version, cachedFile.translationFile)
+                localizationManager.activateLanguage(languageCode: currentLang, languageName: language.nameLocale, country: country, version: language.version, translationFile: cachedFile.translationFile)
 
             case .stale(let cachedVersion):
                 // Cache is outdated - fetch fresh from network
@@ -123,7 +123,7 @@ class SplashViewModel {
         case .success(let translationFile):
             // Cache and activate the language
             await localizationManager.setTranslations(translationFile, for: languageCode, version: version)
-            localizationManager.activateLanguage(languageCode: languageCode, languageName: languageName, country: country, version: version, translationFile)
+            localizationManager.activateLanguage(languageCode: languageCode, languageName: languageName, country: country, version: version, translationFile: translationFile)
             SuperLog.d("MainViewModel: Language \(languageCode) fetched and applied (v\(version))")
 
         case .failure(let error):

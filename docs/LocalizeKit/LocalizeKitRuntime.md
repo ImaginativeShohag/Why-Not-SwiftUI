@@ -988,7 +988,7 @@ LocalizationManager.shared.activateLanguage(
     languageName: "বাংলা",
     country: "Bangladesh",
     version: 3,
-    translationFile
+    translationFile: translationFile
 )
 ```
 
@@ -1042,7 +1042,7 @@ class TranslationRepository {
                 languageName: language.nameLocale,
                 country: "Country",
                 version: cached.version,
-                cached.translationFile
+                translationFile: cached.translationFile
             )
 
         case .stale, .missing, .corrupted:

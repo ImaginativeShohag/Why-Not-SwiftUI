@@ -112,7 +112,8 @@ let project = Project.app(
             hasResources: true,
             hasUnitTest: true,
             hasUITest: true,
-            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "Todo"), .target(name: "News"), .target(name: "Store")]
+            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "Todo"), .target(name: "News"), .target(name: "Store")],
+            uiTestDependencies: [.target(name: "TestUtils")]
         ),
         Module(
             name: "Todo",

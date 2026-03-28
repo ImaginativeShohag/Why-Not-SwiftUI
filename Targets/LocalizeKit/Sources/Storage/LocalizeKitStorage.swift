@@ -1,8 +1,8 @@
 import Foundation
 
-/// Internal UserDefaults storage for LocalizeKit
-/// Handles persistent storage of language preferences
-/// - Note: Internal visibility - not part of LocalizeKit's public API
+/// Internal `UserDefaults` storage for LocalizeKit.
+/// Handles persistent storage of language preferences.
+/// - Note: Internal visibility - not part of LocalizeKit's public API.
 final class LocalizeKitStorage: @unchecked Sendable {
     // MARK: - Singleton
 
@@ -10,8 +10,6 @@ final class LocalizeKitStorage: @unchecked Sendable {
 
     // MARK: - Keys
 
-    /// Keys are kept identical to Preferences for backward compatibility
-    /// This ensures existing users don't lose their language selection
     private enum StorageKey: String {
         case selectedLanguage
         case selectedCountry
@@ -26,14 +24,18 @@ final class LocalizeKitStorage: @unchecked Sendable {
 
     // MARK: - Initialization
 
-    init(userDefaults: UserDefaults = .standard) {
+    /// Use ``shared`` instead of creating a new instance.
+    /// This initializer is exposed only for testing with a custom `UserDefaults`.
+    init(userDefaults: UserDefaults? = nil) {
         self.userDefaults = userDefaults
+            ?? UserDefaults(suiteName: Constants.userDefaultsSuiteName)
+            ?? .standard
     }
 
     // MARK: - Selected Language
 
-    /// Get the currently selected language code
-    /// - Returns: Language code (e.g., "en", "bn") or nil if not set
+    /// Get the currently selected language code.
+    /// - Returns: Language code (e.g., "en", "bn") or nil if not set.
     var selectedLanguage: String? {
         get {
             userDefaults.string(forKey: StorageKey.selectedLanguage.rawValue)
@@ -49,8 +51,8 @@ final class LocalizeKitStorage: @unchecked Sendable {
 
     // MARK: - Selected Country
 
-    /// Get the currently selected country name
-    /// - Returns: Country name (e.g., "United States", "Bangladesh") or nil if not set
+    /// Get the currently selected country name.
+    /// - Returns: Country name (e.g., "United States", "Bangladesh") or nil if not set.
     var selectedCountry: String? {
         get {
             userDefaults.string(forKey: StorageKey.selectedCountry.rawValue)
@@ -66,8 +68,8 @@ final class LocalizeKitStorage: @unchecked Sendable {
 
     // MARK: - Selected Language Version
 
-    /// Get the currently selected language version from API
-    /// - Returns: Version number from available languages API or nil if not set
+    /// Get the currently selected language version.
+    /// - Returns: Version number or nil if not set.
     var selectedLanguageVersion: Int? {
         get {
             let value = userDefaults.integer(forKey: StorageKey.selectedLanguageVersion.rawValue)
@@ -84,8 +86,8 @@ final class LocalizeKitStorage: @unchecked Sendable {
 
     // MARK: - Selected Language Name
 
-    /// Get the currently selected language name in its native locale (from nameLocale field)
-    /// - Returns: Language name (e.g., "English", "বাংলা", "العربية") or nil if not set
+    /// Get the currently selected language name in its native locale.
+    /// - Returns: Language name (e.g., "English", "বাংলা", "العربية") or nil if not set.
     var selectedLanguageName: String? {
         get {
             userDefaults.string(forKey: StorageKey.selectedLanguageName.rawValue)
@@ -101,8 +103,8 @@ final class LocalizeKitStorage: @unchecked Sendable {
 
     // MARK: - Layout Direction
 
-    /// Get the stored layout direction preference
-    /// - Returns: Layout direction string ("rtl" or "ltr") or nil if not set
+    /// Get the stored layout direction preference.
+    /// - Returns: Layout direction string ("rtl" or "ltr") or nil if not set.
     var layoutDirection: String? {
         get {
             userDefaults.string(forKey: StorageKey.layoutDirection.rawValue)

@@ -2,25 +2,25 @@ import Foundation
 
 // MARK: - LocalizeKit Constants
 
-/// Centralized constants for LocalizeKit configuration
-/// All default values and fallback configurations are defined here
+/// Centralized constants for LocalizeKit configuration.
+/// All default values and fallback configurations are defined here.
 public enum Constants {
     // MARK: - Default Locale Settings
 
-    /// Default language code used when no language preference is saved
+    /// Default language code used when no language preference is saved.
     /// - Example: "en_US" (US English)
     public static let defaultLanguageCode: String = "en_US"
 
-    /// Default language name displayed in UI when no preference is saved
+    /// Default language name displayed in UI when no preference is saved.
     /// - Example: "English"
     public static let defaultLanguageName: String = "English"
 
-    /// Default country name used when no country preference is saved
+    /// Default country name used when no country preference is saved.
     /// - Example: "United States"
     public static let defaultCountry: String = "United States"
 
-    /// Fallback language code for plural rules when locale cannot determine language
-    /// - Note: Two-letter ISO 639-1 code used in `PluralCategory` for rule matching
+    /// Fallback language code for plural rules when locale cannot determine language.
+    /// - Note: Two-letter ISO 639-1 code used in `PluralCategory` for rule matching.
     public static let fallbackLanguageCode: String = "en"
 
     // MARK: - RTL (Right-to-Left) Languages
@@ -44,4 +44,10 @@ public enum Constants {
     /// - `"sd"` - Sindhi (Arabic script variant)
     /// - `"ug"` - Uyghur
     public static let defaultRTLLanguages: [String] = ["ar", "he", "ur", "fa"]
+
+    // MARK: - Storage
+
+    /// `UserDefaults` suite name for LocalizeKit storage.
+    /// Uses a dedicated suite to avoid key conflicts with the host app or other modules.
+    static let userDefaultsSuiteName: String = "com.localizekit.storage"
 }

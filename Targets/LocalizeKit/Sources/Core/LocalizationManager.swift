@@ -4,8 +4,7 @@ import UIKit
 
 // MARK: - Localization Manager
 
-/// Main localization manager handling translation loading/retrieval
-/// Singleton pattern with observable language changes
+/// Main localization manager handling translation loading/retrieval.
 @MainActor
 @Observable
 public final class LocalizationManager {
@@ -14,23 +13,23 @@ public final class LocalizationManager {
     public static let shared = LocalizationManager()
 
     // MARK: - Observable Properties
-    
-    /// Current selected country name
+
+    /// Current selected country name.
     public private(set) var currentCountry: String = Constants.defaultCountry
 
-    /// Current selected language code
+    /// Current selected language code.
     public private(set) var currentLanguage: String = Constants.defaultLanguageCode
 
-    /// Current language name in its native locale (from nameLocale field in API)
+    /// Current language name in its native locale (from nameLocale field in API).
     public private(set) var currentLanguageName: String = Constants.defaultLanguageName
 
-    /// Current language version from available languages API
+    /// Current language version from available languages API.
     public private(set) var currentLanguageVersion: Int?
 
-    /// Available languages fetched from server
+    /// Available languages fetched from server.
     public private(set) var availableLanguages: [Language] = []
 
-    /// Loading state
+    /// Loading state.
     public private(set) var isLoading: Bool = false
 
     /// Whether the current language uses right-to-left layout direction.
@@ -91,7 +90,7 @@ public final class LocalizationManager {
     private var currentTranslations: TranslationFile?
 
     /// Custom plural rules per language (Vue-i18n style)
-    public var pluralRules: [String: PluralRule] = [:]
+    public private(set) var pluralRules: [String: PluralRule] = [:]
 
     /// Language prefixes that use right-to-left (RTL) layout direction.
     ///
@@ -133,54 +132,51 @@ public final class LocalizationManager {
     /// Keep the array small for optimal performance.
     ///
     /// - SeeAlso: `configure(rtlLanguages:)`, `isRightToLeft`, `layoutDirection`
-    public var rtlLanguages: [String] = Constants.defaultRTLLanguages
+    public private(set) var rtlLanguages: [String] = Constants.defaultRTLLanguages
 
     // MARK: - Initialization
 
     private init() {
-        // Initialize storage
+        // Initialize storage.
         do {
             self.translationStorage = try TranslationStorage()
         } catch {
             LocalizeKitLogger.e("Failed to initialize TranslationStorage: \(error)")
         }
 
-        // Load saved language preference
+        // Load saved language preference.
         if let savedLanguage = LocalizeKitStorage.shared.selectedLanguage {
             self.currentLanguage = savedLanguage
-            Task {
-                await loadCachedTranslations(for: savedLanguage)
-            }
         }
 
-        // Load saved country preference (default to "United States")
+        // Load saved country preference (default to "United States").
         if let savedCountry = LocalizeKitStorage.shared.selectedCountry {
             self.currentCountry = savedCountry
         }
 
-        // Load saved language version
-        self.currentLanguageVersion = LocalizeKitStorage.shared.selectedLanguageVersion
-
-        // Load saved language name (default to "English")
+        // Load saved language name (default to "English").
         if let savedLanguageName = LocalizeKitStorage.shared.selectedLanguageName {
             self.currentLanguageName = savedLanguageName
         }
 
-        // Validate stored layout direction matches current language
+        // Load saved language version.
+        self.currentLanguageVersion = LocalizeKitStorage.shared.selectedLanguageVersion
+
+        // Validate stored layout direction matches current language.
         let expectedDirection = isLanguageRTL(currentLanguage) ? "rtl" : "ltr"
         if LocalizeKitStorage.shared.layoutDirection != expectedDirection {
             LocalizeKitStorage.shared.layoutDirection = expectedDirection
             LocalizeKitLogger.d("LocalizationManager: Corrected layout direction to \(expectedDirection)")
         }
 
-        // Apply RTL/LTR to app at launch
+        // Apply RTL/LTR to app at launch.
         applySemanticContentAttributeToApp()
     }
 
     // MARK: - Configuration
 
-    /// Configure LocalizationManager with custom plural rules
-    /// - Parameter pluralRules: Dictionary of language code to plural rule function
+    /// Configure LocalizationManager with custom plural rules.
+    /// - Parameter pluralRules: Dictionary of language code to plural rule function.
     public func configure(pluralRules: [String: PluralRule]) {
         self.pluralRules = pluralRules
         LocalizeKitLogger.d("LocalizationManager configured with \(pluralRules.count) custom plural rules")
@@ -245,43 +241,20 @@ public final class LocalizationManager {
         LocalizeKitLogger.d("LocalizationManager configured with RTL languages: \(rtlLanguages.joined(separator: ", "))")
     }
 
-    // MARK: - Language Management
-
-    /// Change the current language
-    /// - Parameter languageCode: Language code (e.g., "en", "bn")
-    /// - Note: This method only loads from cache. Use repository layer to fetch new translations first.
-    public func changeLanguage(to languageCode: String) async {
-        guard languageCode != currentLanguage else { return }
-
-        LocalizeKitLogger.d("LocalizationManager: Changing language to: \(languageCode)")
-        isLoading = true
-
-        // Load from cache only
-        if await loadCachedTranslations(for: languageCode) {
-            currentLanguage = languageCode
-            LocalizeKitStorage.shared.selectedLanguage = languageCode
-            isLoading = false
-            LocalizeKitLogger.d("LocalizationManager: Language changed to \(languageCode) from cache")
-        } else {
-            isLoading = false
-            LocalizeKitLogger.w("LocalizationManager: No cached translations for \(languageCode). Repository must fetch first.")
-        }
-    }
-
     // MARK: - Data Setters (Called by Repository Layer)
 
-    /// Set available languages from external source
-    /// - Parameter languages: Array of available languages
+    /// Set available languages from external source.
+    /// - Parameter languages: Array of available languages.
     public func setAvailableLanguages(_ languages: [Language]) {
         availableLanguages = languages
         LocalizeKitLogger.d("LocalizationManager: Set \(languages.count) available languages")
     }
 
-    /// Set translations from external source and cache them
+    /// Set translations from external source and cache them.
     /// - Parameters:
-    ///   - translationFile: Translation file from server (no version)
-    ///   - languageCode: Language code for the translations
-    ///   - version: Version from Language.version in available languages API
+    ///   - translationFile: Translation file from server.
+    ///   - languageCode: Language code for the translations.
+    ///   - version: Version from Language.version in available languages API.
     public func setTranslations(_ translationFile: TranslationFile, for languageCode: String, version: Int) async {
         // Cache the translations with version from Language API
         await cacheTranslations(translationFile, for: languageCode, version: version)
@@ -295,9 +268,9 @@ public final class LocalizationManager {
         }
     }
 
-    /// Check cache state for a language (version comparison)
-    /// - Parameter language: Language object with code and server version
-    /// - Returns: Cache state (valid, stale, missing, or corrupted)
+    /// Check cache state for a language (version comparison).
+    /// - Parameter language: Language object with code and server version.
+    /// - Returns: Cache state (valid, stale, missing, or corrupted).
     public func getCacheState(for language: Language) async -> CacheState {
         guard let storage = translationStorage else {
             LocalizeKitLogger.e("TranslationStorage not initialized")
@@ -307,41 +280,42 @@ public final class LocalizationManager {
         return await storage.checkCacheState(for: language)
     }
 
-    /// Activate language from provided TranslationFile
+    /// Activate language from provided TranslationFile.
     /// - Parameters:
-    ///   - languageCode: Language code
-    ///   - languageName: Language name in native locale (from nameLocale field)
-    ///   - country: Country name
-    ///   - version: Language version from available languages API
-    ///   - translationFile: Translation file to activate
-    public func activateLanguage(languageCode: String, languageName: String, country: String, version: Int, _ translationFile: TranslationFile) {
+    ///   - languageCode: Language code.
+    ///   - languageName: Language name in native locale (from nameLocale field).
+    ///   - country: Country name.
+    ///   - version: Language version from available languages API.
+    ///   - translationFile: Translation file to activate.
+    public func activateLanguage(languageCode: String, languageName: String, country: String, version: Int, translationFile: TranslationFile) {
         currentTranslations = translationFile
         currentLanguage = languageCode
         currentCountry = country
         currentLanguageVersion = version
         currentLanguageName = languageName
+
         LocalizeKitStorage.shared.selectedLanguage = languageCode
         LocalizeKitStorage.shared.selectedCountry = country
         LocalizeKitStorage.shared.selectedLanguageVersion = version
         LocalizeKitStorage.shared.selectedLanguageName = languageName
         LocalizeKitStorage.shared.layoutDirection = isLanguageRTL(languageCode) ? "rtl" : "ltr"
 
-        // Automatically apply RTL/LTR to UIKit windows
+        // Automatically apply RTL/LTR to UIKit windows.
         applySemanticContentAttributeToApp()
 
         LocalizeKitLogger.d("LocalizationManager: Activated language \(languageCode) (\(languageName)) for country \(country), version: \(version)")
     }
 
-    /// Determine if a language code is RTL based on configured RTL languages
-    /// - Parameter languageCode: Language code to check
-    /// - Returns: True if language is RTL
+    /// Determine if a language code is RTL based on configured RTL languages.
+    /// - Parameter languageCode: Language code to check.
+    /// - Returns: True if language is RTL.
     private func isLanguageRTL(_ languageCode: String) -> Bool {
         let lowercased = languageCode.lowercased()
         return rtlLanguages.contains { lowercased.hasPrefix($0) }
     }
 
-    /// Delete corrupted cache file
-    /// - Parameter languageCode: Language code
+    /// Delete cached translation file for a language.
+    /// - Parameter languageCode: Language code.
     public func deleteCacheFile(for languageCode: String) async throws {
         guard let storage = translationStorage else {
             throw StorageError.cacheDirectoryNotFound
@@ -353,23 +327,23 @@ public final class LocalizationManager {
 
     // MARK: - Translation Retrieval
 
-    /// Get simple translated string
+    /// Get simple translated string.
     /// - Parameters:
-    ///   - key: Translation key (e.g., "cart_title")
-    ///   - moduleName: Module name (e.g., "Store")
-    /// - Returns: Translated string or nil if not found
+    ///   - key: Translation key (e.g., "cart_title").
+    ///   - moduleName: Module name (e.g., "Store").
+    /// - Returns: Translated string or `nil` if not found.
     public func string(for key: String, in moduleName: String) -> String? {
         guard let translations = currentTranslations else {
             return nil
         }
 
-        // Direct lookup using module name and key
+        // Direct lookup using module name and key.
         guard let moduleTranslations = translations.modules[moduleName]?.translations[key] else {
             LocalizeKitLogger.w("Translation not found for key: \(key) in module: \(moduleName)")
             return nil
         }
 
-        // Extract value based on type
+        // Extract value based on type.
         switch moduleTranslations.value {
         case .simple(let value):
             return value
@@ -379,30 +353,30 @@ public final class LocalizationManager {
         }
     }
 
-    /// Get plural translated string
+    /// Get plural translated string.
     /// - Parameters:
-    ///   - key: Translation key (e.g., "items_count")
-    ///   - moduleName: Module name (e.g., "Store")
-    ///   - count: Count to determine plural form
-    /// - Returns: Translated plural string or nil if not found
+    ///   - key: Translation key (e.g., "items_count").
+    ///   - moduleName: Module name (e.g., "Store").
+    ///   - count: Count to determine plural form.
+    /// - Returns: Translated plural string or `nil` if not found.
     public func pluralString(for key: String, in moduleName: String, count: Int) -> String? {
         guard let translations = currentTranslations else {
             return nil
         }
 
-        // Direct lookup using module name and key
+        // Direct lookup using module name and key.
         guard let moduleTranslations = translations.modules[moduleName]?.translations[key] else {
             LocalizeKitLogger.w("Translation not found for key: \(key) in module: \(moduleName)")
             return nil
         }
 
-        // Extract plural dictionary
+        // Extract plural dictionary.
         guard case .plural(let pluralDict) = moduleTranslations.value else {
             LocalizeKitLogger.w("Key \(key) in module \(moduleName) is not plural, use string() instead")
             return nil
         }
 
-        // Determine plural category
+        // Determine plural category.
         let locale = Locale(identifier: currentLanguage)
         let category = PluralCategory.category(
             for: count,
@@ -410,7 +384,7 @@ public final class LocalizationManager {
             customRules: pluralRules
         )
 
-        // Try exact category match first
+        // Try exact category match first.
         if let value = pluralDict[category] {
             return value
         }
@@ -426,33 +400,11 @@ public final class LocalizationManager {
 
     // MARK: - Cache Management
 
-    /// Load translations from cache
-    /// - Parameter languageCode: Language code
-    /// - Returns: True if loaded successfully
-    private func loadCachedTranslations(for languageCode: String) async -> Bool {
-        guard let storage = translationStorage else {
-            LocalizeKitLogger.e("TranslationStorage not initialized")
-            return false
-        }
-
-        do {
-            if let cached = try await storage.load(for: languageCode) {
-                currentTranslations = cached.translationFile
-                LocalizeKitLogger.d("Loaded cached translations for \(languageCode), version: \(cached.version)")
-                return true
-            }
-        } catch {
-            LocalizeKitLogger.e("Failed to load cached translations: \(error)")
-        }
-
-        return false
-    }
-
-    /// Save translations to cache
+    /// Save translations to cache.
     /// - Parameters:
-    ///   - translations: Translation file from server (no version)
-    ///   - languageCode: Language code
-    ///   - version: Version from Language.version in available languages API
+    ///   - translations: Translation file from server.
+    ///   - languageCode: Language code.
+    ///   - version: Version from Language.version in available languages API.
     public func cacheTranslations(_ translations: TranslationFile, for languageCode: String, version: Int) async {
         guard let storage = translationStorage else {
             LocalizeKitLogger.e("TranslationStorage not initialized")
@@ -467,7 +419,7 @@ public final class LocalizationManager {
         }
     }
 
-    /// Clear all cached translations
+    /// Clear all cached translations.
     public func clearCache() async {
         guard let storage = translationStorage else {
             LocalizeKitLogger.e("TranslationStorage not initialized")
@@ -483,8 +435,8 @@ public final class LocalizationManager {
         }
     }
 
-    /// Get cache info
-    /// - Returns: Array of cached language codes
+    /// Get cache info.
+    /// - Returns: Array of cached language codes.
     public func getCachedLanguages() async -> [String] {
         guard let storage = translationStorage else {
             LocalizeKitLogger.e("TranslationStorage not initialized")
@@ -501,7 +453,7 @@ public final class LocalizationManager {
 
     // MARK: - Debug
 
-    /// Get cache directory path for debugging
+    /// Get cache directory path for debugging.
     public func getCacheDirectory() async -> String {
         guard let storage = translationStorage else {
             return "Storage not initialized"
@@ -512,13 +464,12 @@ public final class LocalizationManager {
 
     // MARK: - UIKit Integration
 
-    /// Apply semantic content attribute to app windows based on current language direction
-    /// This ensures navigation transitions and all UIKit animations respect RTL
-    @MainActor
+    /// Apply semantic content attribute to app windows based on current language direction.
+    /// This ensures navigation transitions and all UIKit animations respect RTL.
     private func applySemanticContentAttributeToApp() {
         let attribute: UISemanticContentAttribute = isRightToLeft ? .forceRightToLeft : .forceLeftToRight
 
-        // Update appearance for all UIKit components
+        // Update appearance for all UIKit components.
 
         // Base view
         UIView.appearance().semanticContentAttribute = attribute
@@ -577,14 +528,14 @@ public final class LocalizationManager {
 
 // MARK: - Cache State
 
-/// Represents the state of a cached translation file
+/// Represents the state of a cached translation file.
 public enum CacheState: Sendable {
-    /// Cache exists and version matches server version (includes cached file)
+    /// Cache exists and version matches server version (includes cached file).
     case valid(cachedFile: CachedTranslationFile)
-    /// Cache exists but version is outdated (includes old version number)
+    /// Cache exists but version is outdated (includes old version number).
     case stale(cachedVersion: Int)
-    /// No cache exists for this language
+    /// No cache exists for this language.
     case missing
-    /// Cache file exists but is corrupted/invalid JSON
+    /// Cache file exists but is corrupted/invalid JSON.
     case corrupted
 }

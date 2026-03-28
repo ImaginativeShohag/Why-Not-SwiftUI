@@ -20,6 +20,8 @@ final class LocalizeKitStorageTests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - Selected Language
+
     func testSelectedLanguage_InitiallyNil() {
         XCTAssertNil(storage.selectedLanguage)
     }
@@ -34,6 +36,8 @@ final class LocalizeKitStorageTests: XCTestCase {
         storage.selectedLanguage = nil
         XCTAssertNil(storage.selectedLanguage)
     }
+
+    // MARK: - Selected Country
 
     func testSelectedCountry_InitiallyNil() {
         XCTAssertNil(storage.selectedCountry)
@@ -50,6 +54,8 @@ final class LocalizeKitStorageTests: XCTestCase {
         XCTAssertNil(storage.selectedCountry)
     }
 
+    // MARK: - Selected Language Version
+
     func testSelectedLanguageVersion_InitiallyNil() {
         XCTAssertNil(storage.selectedLanguageVersion)
     }
@@ -64,6 +70,8 @@ final class LocalizeKitStorageTests: XCTestCase {
         storage.selectedLanguageVersion = nil
         XCTAssertNil(storage.selectedLanguageVersion)
     }
+
+    // MARK: - Selected Language Name
 
     func testSelectedLanguageName_InitiallyNil() {
         XCTAssertNil(storage.selectedLanguageName)
@@ -80,6 +88,8 @@ final class LocalizeKitStorageTests: XCTestCase {
         XCTAssertNil(storage.selectedLanguageName)
     }
 
+    // MARK: - Clear All
+
     func testClearAll() {
         storage.selectedLanguage = "ar"
         storage.selectedCountry = "United Arab Emirates"
@@ -94,20 +104,37 @@ final class LocalizeKitStorageTests: XCTestCase {
         XCTAssertNil(storage.selectedLanguageName)
     }
 
-    func testBackwardCompatibility_SameKeysAsPreferences() {
+    // MARK: - UserDefaults Integration
+
+    func testStorageKeysAreWrittenToUserDefaults() {
         storage.selectedLanguage = "bn"
         storage.selectedCountry = "Bangladesh"
         storage.selectedLanguageVersion = 12
         storage.selectedLanguageName = "বাংলা"
 
-        let languageValue = mockUserDefaults.string(forKey: "selectedLanguage")
-        let countryValue = mockUserDefaults.string(forKey: "selectedCountry")
-        let versionValue = mockUserDefaults.integer(forKey: "selectedLanguageVersion")
-        let nameValue = mockUserDefaults.string(forKey: "selectedLanguageName")
+        XCTAssertEqual(mockUserDefaults.string(forKey: "selectedLanguage"), "bn")
+        XCTAssertEqual(mockUserDefaults.string(forKey: "selectedCountry"), "Bangladesh")
+        XCTAssertEqual(mockUserDefaults.integer(forKey: "selectedLanguageVersion"), 12)
+        XCTAssertEqual(mockUserDefaults.string(forKey: "selectedLanguageName"), "বাংলা")
+    }
 
-        XCTAssertEqual(languageValue, "bn")
-        XCTAssertEqual(countryValue, "Bangladesh")
-        XCTAssertEqual(versionValue, 12)
-        XCTAssertEqual(nameValue, "বাংলা")
+    // MARK: - Default Init
+
+    func testDefaultInitUsesCustomSuite() {
+        let key = "selectedLanguage"
+        let sentinel = "test_sentinel"
+
+        // Place a known sentinel in .standard so we can verify it stays untouched.
+        UserDefaults.standard.set(sentinel, forKey: key)
+
+        let defaultStorage = LocalizeKitStorage()
+        defaultStorage.selectedLanguage = "ar"
+
+        // .standard should still hold the sentinel, not the value we wrote
+        XCTAssertEqual(UserDefaults.standard.string(forKey: key), sentinel)
+
+        // Cleanup
+        defaultStorage.clearAll()
+        UserDefaults.standard.removeObject(forKey: key)
     }
 }

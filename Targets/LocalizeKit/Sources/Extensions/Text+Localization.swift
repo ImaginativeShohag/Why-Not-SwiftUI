@@ -29,7 +29,7 @@ extension Text {
     ) -> Text {
         let localizedString = key.localize(default: defaultValue, comment: comment, file: file)
 
-        // Try to parse as markdown, fallback to plain text if fails
+        // Try to parse as markdown, fallback to plain text if fails.
         if let attributedString = try? AttributedString(markdown: localizedString) {
             return Text(attributedString)
         } else {
@@ -55,7 +55,7 @@ extension Text {
     ) -> Text {
         let localizedString = key.localize(default: defaultValue, comment: comment, with: argument, file: file)
 
-        // Try to parse as markdown, fallback to plain text if fails
+        // Try to parse as markdown, fallback to plain text if fails.
         if let attributedString = try? AttributedString(markdown: localizedString) {
             return Text(attributedString)
         } else {
@@ -82,7 +82,7 @@ extension Text {
         let format = key.localize(default: defaultValue, comment: comment, file: file)
         let localizedString = String(format: format, arguments: arguments)
 
-        // Try to parse as markdown, fallback to plain text if fails
+        // Try to parse as markdown, fallback to plain text if fails.
         if let attributedString = try? AttributedString(markdown: localizedString) {
             return Text(attributedString)
         } else {
@@ -129,7 +129,7 @@ extension Text {
             file: file
         )
 
-        // Try to parse as markdown, fallback to plain text if fails
+        // Try to parse as markdown, fallback to plain text if fails.
         if let attributedString = try? AttributedString(markdown: localizedString) {
             return Text(attributedString)
         } else {
@@ -177,7 +177,7 @@ extension Text {
             file: file
         )
 
-        // Try to parse as markdown, fallback to plain text if fails
+        // Try to parse as markdown, fallback to plain text if fails.
         if let attributedString = try? AttributedString(markdown: localizedString) {
             return Text(attributedString)
         } else {
@@ -226,7 +226,7 @@ extension Text {
             file: file
         )
 
-        // Try to parse as markdown, fallback to plain text if fails
+        // Try to parse as markdown, fallback to plain text if fails.
         if let attributedString = try? AttributedString(markdown: localizedString) {
             return Text(attributedString)
         } else {

@@ -7,14 +7,14 @@ extension String {
     /// - Parameter fileID: Compile-time file identifier (e.g., `"Store/Sources/UI/CartScreen.swift"`).
     /// - Returns: Module name (e.g., `"Store"`).
     internal static func extractModuleName(from fileID: String) -> String {
-        // Early validation: paths starting with "/" are invalid #fileID format
+        // Early validation: paths starting with "/" are invalid #fileID format.
         guard !fileID.hasPrefix("/") else {
             LocalizeKitLogger.e("Module extraction failed for fileID: '\(fileID)'. Path starts with leading slash.")
             return "Unknown"
         }
 
         // #fileID format: "ModuleName/Sources/..."
-        // Extract first component before "/"
+        // Extract first component before "/".
         let components = fileID.split(separator: "/", maxSplits: 1)
 
         guard let moduleName = components.first.map(String.init), !moduleName.isEmpty else {
@@ -130,19 +130,19 @@ extension String {
         count: Int,
         file: String = #fileID
     ) -> String {
-        // Try to get from server/cache first
+        // Try to get from server/cache first.
         let moduleName = Self.extractModuleName(from: file)
         if let translated = LocalizationManager.shared.pluralString(for: self, in: moduleName, count: count) {
             return translated
         }
 
-        // Fallback to default plurals
+        // Fallback to default plurals.
         let category = PluralCategory.category(
             for: count,
             customRules: LocalizationManager.shared.pluralRules
         )
 
-        // Try exact category match first
+        // Try exact category match first.
         if let value = defaultPlural[category] {
             return value
         }

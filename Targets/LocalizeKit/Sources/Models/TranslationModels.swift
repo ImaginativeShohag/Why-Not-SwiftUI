@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - Translation Models
 
-/// Server translation file structure (no version)
+/// Server translation file structure.
 public struct TranslationFile: Codable, Sendable {
     public let modules: [String: ModuleTranslations]
 
@@ -11,7 +11,7 @@ public struct TranslationFile: Codable, Sendable {
     }
 }
 
-/// Local storage model with version from Language API
+/// Local storage model with version from Language API.
 public struct CachedTranslationFile: Codable, Sendable {
     public let version: Int  // From Language.version in available languages API
     public let translationFile: TranslationFile
@@ -22,7 +22,7 @@ public struct CachedTranslationFile: Codable, Sendable {
     }
 }
 
-/// Translation strings for a specific module
+/// Translation strings for a specific module.
 public struct ModuleTranslations: Codable, Sendable {
     public let translations: [String: TranslationEntry]
 
@@ -41,7 +41,7 @@ public struct ModuleTranslations: Codable, Sendable {
     }
 }
 
-/// Individual translation entry
+/// Individual translation entry.
 public struct TranslationEntry: Codable, Sendable {
     public let value: TranslationValue
 
@@ -50,7 +50,7 @@ public struct TranslationEntry: Codable, Sendable {
     }
 }
 
-/// Translation value (either simple string or plural dictionary)
+/// Translation value (either simple string or plural dictionary).
 public enum TranslationValue: Codable, Sendable {
     case simple(String)
     case plural([PluralCategory: String])
@@ -58,7 +58,7 @@ public enum TranslationValue: Codable, Sendable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
-        // Try to decode as dictionary first (plural)
+        // Try to decode as dictionary first (plural).
         if let pluralDict = try? container.decode([String: String].self) {
             var categoryDict: [PluralCategory: String] = [:]
             for (key, value) in pluralDict {
@@ -68,7 +68,7 @@ public enum TranslationValue: Codable, Sendable {
             }
             self = .plural(categoryDict)
         } else {
-            // Otherwise decode as simple string
+            // Otherwise decode as simple string.
             let simpleValue = try container.decode(String.self)
             self = .simple(simpleValue)
         }
@@ -90,32 +90,32 @@ public enum TranslationValue: Codable, Sendable {
 
 // MARK: - Available Languages
 
-/// Available languages response from server (grouped by country)
+/// Available languages response from server (grouped by country).
 public struct AvailableLanguages: Codable, Sendable {
-    /// Dictionary mapping country names to their available languages
+    /// Dictionary mapping country names to their available languages.
     public let data: [String: [Language]]
 
     public init(data: [String: [Language]]) {
         self.data = data
     }
 
-    /// Get all countries sorted alphabetically
+    /// Get all countries sorted alphabetically.
     public var countries: [String] {
         data.keys.sorted()
     }
 
-    /// Get languages for a specific country
+    /// Get languages for a specific country.
     public func languages(for country: String) -> [Language] {
         data[country] ?? []
     }
 
-    /// Get all languages (flattened from all countries)
+    /// Get all languages (flattened from all countries).
     public var allLanguages: [Language] {
         data.values.flatMap { $0 }
     }
 }
 
-/// Language information
+/// Language information.
 public struct Language: Codable, Sendable, Identifiable {
     public let code: String
     public let nameEn: String
@@ -144,8 +144,8 @@ public struct Language: Codable, Sendable, Identifiable {
         nameEn = try container.decode(String.self, forKey: .nameEn)
         nameLocale = try container.decode(String.self, forKey: .nameLocale)
 
-        // Try to decode version as Int first, then as String, converting to Int
-        // Default to 0 if version is missing or invalid
+        // Try to decode version as Int first, then as String, converting to Int.
+        // Default to 0 if version is missing or invalid.
         if let versionInt = try? container.decode(Int.self, forKey: .version) {
             version = versionInt
         } else if let versionString = try? container.decode(String.self, forKey: .version),
