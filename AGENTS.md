@@ -278,12 +278,22 @@ Targets/
 6. Preview changes: `localizekit diff --all`
 7. Upload JSON files to server or update stub data in `LocalizationAPI.swift`
 
+**LocalizeKit Source Organization:**
+```
+Targets/LocalizeKit/Sources/
+  ├── Core/           # LocalizationManager, LocalizationObserver
+  ├── Extensions/     # String+Localization, Text+Localization
+  ├── Models/         # PluralCategory, TranslationModels
+  ├── Storage/        # LocalizeKitStorage, TranslationStorage
+  └── Utils/          # Constants, LocalizeKitLogger
+```
+
 **LocalizeKit Key Features:**
 - **Fully Independent Module**: Zero dependencies on Core, SuperLog, or any other project modules
 - **Internal Utilities**:
-  - `Constants`: Centralized configuration for all default values
-  - `LocalizeKitStorage`: Minimal UserDefaults accessor for language preferences (backward compatible with existing keys)
-  - `LocalizeKitLogger`: DEBUG-only logging using OSLog (zero overhead in Release builds)
+  - `Constants`: Centralized configuration for all default values (in `Utils/`)
+  - `LocalizeKitStorage`: Minimal UserDefaults accessor for language preferences (in `Storage/`)
+  - `LocalizeKitLogger`: DEBUG-only logging using OSLog (in `Utils/`)
 - No manual version specification (auto-managed integer versions)
 - `base.json` instead of `en.json` for source language
 - Per-key version tracking (tracks which keys changed)
