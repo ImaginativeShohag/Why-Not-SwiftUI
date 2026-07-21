@@ -80,7 +80,12 @@ extension Text {
         file: String = #fileID
     ) -> Text {
         let format = key.localize(default: defaultValue, comment: comment, file: file)
-        let localizedString = String(format: format, arguments: arguments)
+        let localizedString = SafeFormat.string(
+            format,
+            arguments: arguments,
+            key: key,
+            module: String.extractModuleName(from: file)
+        )
 
         // Try to parse as markdown, fallback to plain text if fails.
         if let attributedString = try? AttributedString(markdown: localizedString) {
@@ -218,12 +223,19 @@ extension Text {
         with arguments: CVarArg...,
         file: String = #fileID
     ) -> Text {
-        let localizedString = key.localize(
+        // Resolve the plural format string first, then interpolate so the collected `arguments`
+        // array is applied via `String(format:arguments:)` rather than forwarded into a variadic.
+        let format = key.localize(
             defaultPlural: defaultPlural,
             comment: comment,
             count: count,
-            with: arguments,
             file: file
+        )
+        let localizedString = SafeFormat.string(
+            format,
+            arguments: arguments,
+            key: key,
+            module: String.extractModuleName(from: file)
         )
 
         // Try to parse as markdown, fallback to plain text if fails.

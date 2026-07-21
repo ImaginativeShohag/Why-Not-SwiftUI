@@ -73,7 +73,12 @@ extension String {
         file: String = #fileID
     ) -> String {
         let format = localize(default: defaultValue, comment: comment, file: file)
-        return String(format: format, argument)
+        return SafeFormat.string(
+            format,
+            arguments: [argument],
+            key: self,
+            module: Self.extractModuleName(from: file)
+        )
     }
 
     /// Localization with string interpolation (multiple parameters).
@@ -100,7 +105,12 @@ extension String {
         file: String = #fileID
     ) -> String {
         let format = localize(default: defaultValue, comment: comment, file: file)
-        return String(format: format, arguments: arguments)
+        return SafeFormat.string(
+            format,
+            arguments: arguments,
+            key: self,
+            module: Self.extractModuleName(from: file)
+        )
     }
 
     /// Localization with plural support.
@@ -188,7 +198,12 @@ extension String {
         file: String = #fileID
     ) -> String {
         let format = localize(defaultPlural: defaultPlural, comment: comment, count: count, file: file)
-        return String(format: format, argument)
+        return SafeFormat.string(
+            format,
+            arguments: [argument],
+            key: self,
+            module: Self.extractModuleName(from: file)
+        )
     }
 
     /// Localization with plural and interpolation (multiple parameters).
@@ -222,6 +237,11 @@ extension String {
         file: String = #fileID
     ) -> String {
         let format = localize(defaultPlural: defaultPlural, comment: comment, count: count, file: file)
-        return String(format: format, arguments: arguments)
+        return SafeFormat.string(
+            format,
+            arguments: arguments,
+            key: self,
+            module: Self.extractModuleName(from: file)
+        )
     }
 }
