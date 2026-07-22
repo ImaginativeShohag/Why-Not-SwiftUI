@@ -113,6 +113,14 @@ A beginner example for Maps in SwiftUI.
 
 Check out the "News" module to get an example of how to run a UI test using mock data.
 
+### LocalizeKit: Runtime Localization
+
+A fully independent runtime localization system with CLDR-compliant plurals, per-language version-aware caching, automatic RTL support, and crash-safe format interpolation. It ships with a companion CLI (`localizekit`) for extracting, merging, validating, diffing, and **linting** translation call sites. The `Store` module uses it for full Bengali and Arabic translations.
+
+- [LocalizeKit CLI (`Tools/LocalizeKit`)](Tools/LocalizeKit/README.md)
+- [LocalizeKit CLI Guide](docs/LocalizeKit/LocalizeKitCLI.md)
+- [LocalizeKit Runtime Guide](docs/LocalizeKit/LocalizeKitRuntime.md)
+
 ## Playground Books
 
 Check `Playgrounds` directory for the books.

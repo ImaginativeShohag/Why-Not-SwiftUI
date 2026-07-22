@@ -292,6 +292,100 @@ Summary:
    This will add 3 new keys and update 2 modified keys.
 ```
 
+#### Lint Call Sites
+
+Statically analyse every `.localize(...)` / `Text.localized(...)` call site and verify that the format specifiers in the default value (or each plural form) match the number and type of `with:` arguments supplied. Catches `String(format:)` crashes (e.g. `%d` given a `String`) before they reach runtime. Designed to run from a terminal or as an Xcode build phase.
+
+```bash
+# Pretty terminal report
+localizekit lint --project-path .
+
+# Xcode-parsable output (auto-selected inside a build phase)
+localizekit lint --reporter xcode --project-path .
+
+# Treat warnings as errors (CI gate)
+localizekit lint --strict --project-path .
+```
+
+**Options:**
+- `--project-path`: Root directory of the project (default: current directory)
+- `--reporter`: `pretty`, `xcode`, or `auto` (default — Xcode is auto-detected via build-phase environment variables)
+- `--strict`: Treat warnings as errors and exit non-zero on any issue
+- `--warn-unverified` / `--no-warn-unverified`: Warn for every call site whose argument type could not be resolved (custom type/typealias, complex expression, or stale index) so it can be checked by hand (default: on)
+- `--index-store-path`: Override Xcode's index store path (default: auto-discovered from `~/Library/Developer/Xcode/DerivedData`)
+- `--verbose`: Enable verbose extraction output
+
+**Requires an up-to-date Xcode index.** Literal arguments (`with: 42`, `with: "x"`) are classified directly from SwiftSyntax; every other argument's type is resolved authoritatively from Xcode's IndexStoreDB — the same symbol index the compiler produces. Open the project in Xcode and build (⌘B) before linting. If the index is missing, lint fails loudly with a remediation message; files newer than the indexed unit are skipped (reported as "stale index") and only their literal arguments are checked until you rebuild.
+
+**Rules:**
+
+| Rule ID | Severity | Triggered when |
+|---------|----------|----------------|
+| `empty_key` | error | The localization key is an empty string. |
+| `format_arg_count_mismatch` | error | Format specifier count ≠ `with:` argument count (non-positional formats), or a positional `%N$` references a slot beyond the supplied count. |
+| `format_missing_args` | error | Default contains specifiers but no `with:` was supplied. |
+| `format_unused_args` | error | Default has no specifiers but `with:` arguments were supplied. |
+| `format_arg_type_mismatch` | error / warning | Argument's resolved type is incompatible with its specifier. Demoted to warning for non-fatal mismatches (e.g. `Bool` for `%d`). |
+| `format_arg_type_unverified` | warning | Argument type could not be resolved; emitted only when `--warn-unverified` is on (default). |
+| `unescaped_percent` | error | Default contains an unescaped `%X` (non-specifier letter) **and** `with:` args are passed through `String(format:)`. Suggests `%%X` as the fix. Decorative `%` (e.g. `"%Compliance"`) with no `with:` args is allowed silently. |
+| `plural_empty` | error | `defaultPlural` dictionary is empty. |
+| `plural_missing_other` | error | `defaultPlural` is missing the CLDR-required `.other` form. |
+| `plural_form_inconsistent` | warning | Plural forms have differing specifier counts. Often legitimate, but surfaced for translators. |
+| `plural_count_type` | error | `count:` argument cannot resolve to an integer type. |
+
+**Type compatibility:**
+
+| Specifier | Accepts |
+|-----------|---------|
+| `%@` | `String` (auto-bridges to `NSString`) and `NSObject` subclasses. **Not** Swift `Int` / `Double` / `Bool` — those don't bridge through `CVarArg`; use `%d` / `%lld` / `%f`, or wrap with `String(value)`. |
+| `%d` `%i` `%ld` `%lld` `%u` `%x` `%X` `%o` | `Int` / `UInt` only |
+| `%f` `%.2f` `%g` `%e` | `Double` / `Float` / `Int` (auto-promoted) |
+| `%s` | `String` only (rare in Swift — usually a mistake) |
+| `%c` | Integer code point |
+
+Arguments that neither the literal nor the semantic resolver can classify resolve to `unknown`; the linter stays silent for that slot (unless `--warn-unverified` is on) rather than emitting a false positive.
+
+**Pretty reporter output:**
+```
+🔎 Linting localization call sites...
+
+Project:  /path/to/project
+Reporter: pretty
+Strict:   no
+
+📦 Scanned 68 localized call site(s)
+
+📄 Targets/Store/Sources/UI/Cart/CartScreen.swift
+   ❌ 42:18  [format_arg_type_mismatch] Argument 'userName' is String, but format specifier '%d' for key 'cart_score' expects Int.
+   ⚠️  56:9   [plural_form_inconsistent] Plural form '.one' for 'cart_items' has 0 format specifier(s); '.other' has 1.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Summary
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Call sites: 68
+Errors:     1
+Warnings:   1
+
+❌ Lint failed.
+```
+
+**Xcode reporter output:**
+```
+/path/to/file.swift:42:18: error: [LocalizeKit:format_arg_type_mismatch] Argument 'userName' is String, but format specifier '%d' for key 'cart_score' expects Int.
+```
+Xcode parses these lines into the issue navigator on the correct file and line.
+
+**Exit codes:** `0` when no errors are found (warnings are allowed), `1` when any error is reported or any issue exists under `--strict`.
+
+**Run as an Xcode build phase** (Target → Build Phases → "+" → New Run Script Phase):
+```bash
+# Run only on debug builds to keep release builds fast.
+if [ "${CONFIGURATION}" = "Debug" ]; then
+    "${SRCROOT}/Tools/LocalizeKit/.build/release/LocalizeKit" lint --project-path "${SRCROOT}"
+fi
+```
+With the default `auto` reporter, the tool detects the Xcode environment and emits `file:line:col:` diagnostics into the issue navigator. See the [LocalizeKit CLI Guide](../../docs/LocalizeKit/LocalizeKitCLI.md#lint-command) for full build-phase setup and the type-resolution details.
+
 ## Project Structure
 
 The CLI expects this structure:
@@ -590,6 +684,21 @@ After merge --language ar:
 ```bash
 swift build -c release --disable-sandbox
 ```
+
+### Lint cannot find the Xcode index
+
+**Problem:** `lint` reports it could not locate Xcode's index store.
+
+**Solutions:**
+- Open the project in Xcode and run a build (⌘B) so the index store is generated.
+- Override the path explicitly with `--index-store-path /path/to/DerivedData/<id>/Index.noindex/DataStore`.
+- Ensure `xcode-select -p` points at a valid Xcode toolchain (so `libIndexStore.dylib` is discoverable).
+
+### Lint reports "stale index" warnings
+
+**Problem:** Files changed since the last Xcode build are only literal-checked.
+
+**Solution:** Rebuild the project in Xcode (⌘B) to refresh the index, then re-run `lint`. Non-literal arguments in those files stay unchecked until the index catches up.
 
 ## Testing
 

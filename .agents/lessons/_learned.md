@@ -59,3 +59,20 @@
   (331+ tests). Add `--no-selective-testing` to force a full re-run when selective caching
   suppresses output for unchanged targets.
 
+## LocalizeKit — documenting the `lint` command
+
+- **README lives two levels under repo root.** `Tools/LocalizeKit/README.md` links to the
+  shared docs with `../../docs/LocalizeKit/...`, not `docs/...`. The root `README.md` links to
+  the tool with `Tools/LocalizeKit/README.md`.
+- **Source is the authority for rule IDs, not the existing prose.** Pulled the exact rule set
+  (`empty_key`, `format_arg_count_mismatch`, `format_missing_args`, `format_unused_args`,
+  `format_arg_type_mismatch`, `format_arg_type_unverified`, `unescaped_percent`, `plural_empty`,
+  `plural_missing_other`, `plural_form_inconsistent`, `plural_count_type`) and the
+  `%@`/`%d`/`%f`/`%s`/`%c` compatibility matrix from `FormatLinter.swift` and `LintModels.swift`.
+- **Document the full flag set from `LintCommand.swift`.** The CLI-guide options table had
+  omitted `--warn-unverified` / `--no-warn-unverified` (default on) — the README now lists it
+  alongside `--reporter`, `--strict`, `--index-store-path`, and `--verbose`.
+- **Lint needs a fresh Xcode index.** Non-literal argument types come from IndexStoreDB, so the
+  docs must call out building in Xcode (⌘B) first, the missing-index failure, and the
+  "stale index" skip behaviour — added both to the command section and Troubleshooting.
+
