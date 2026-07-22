@@ -226,6 +226,35 @@ tuist test 'WhyNotSwiftUI Development' \
     --skip-test-targets NetworkKitTests/NetworkProdTests
 ```
 
+## TODO
+
+```
+1. Inconsistent default text for same key (Bug)
+                                                                                                                                                                                                            
+  The key survey_answer_alert_answer_save_failed_title has two different default values used in the same file:                                                                                              
+                                                                                                                                                                                                            
+  - Line ~2228: default: "Failed to save the answer!"                                                                                                                                                       
+  - Line ~2577: default: "Answer save failed!"                                 
+                                                                                                                                                                                                            
+  Similarly, survey_answer_alert_error_title has:                                                                                                                                                           
+  - default: "Something went wrong!" in one place                                                                                                                                                           
+  - default: "Error" in another                                                                                                                                                                             
+                                                                               
+  Risk: If translations are missing, users will see inconsistent fallback text for the same scenario.                                                                                                       
+                                                                                                                                                                                                            
+  2. "OK" vs "Ok" inconsistency                                                                                                                                                                             
+                                                                                                                                                                                                            
+  survey_answer_button_ok uses default: "OK" in most places but default: "Ok" in two places (around lines 2531, 2630). Pick one casing and use it everywhere.   
+
+3. Duplicate localization keys for same concept
+
+  - survey_answer_button_cancel is used many times with identical text. This is fine for LocalizeKit's per-module approach but consider whether a shared key at a higher level (common_button_cancel) would
+  reduce translation effort.
+  - Same for survey_answer_button_ok, survey_answer_button_go_back, etc.
+
+4. `.onLanguageChange()` for sheets
+```
+
 ## Project Map
 
 ![Project Map](graph.png)
