@@ -6,7 +6,7 @@ import Foundation
 import SwiftParser
 import SwiftSyntax
 
-/// Extracts localization strings from Swift source files using SwiftSyntax
+/// Extracts localization strings from Swift source files using SwiftSyntax.
 public final class StringExtractor {
     private let projectPath: String
     private let verbose: Bool
@@ -16,19 +16,17 @@ public final class StringExtractor {
         self.verbose = verbose
     }
 
-    /// Extract all localization strings from the project
+    /// Extract all localization strings from the project.
     public func extract() throws -> [ExtractedString] {
         var extractedStrings: [ExtractedString] = []
         let fileManager = FileManager.default
 
-        // Find all Targets directories
         let targetsPath = (projectPath as NSString).appendingPathComponent("Targets")
 
         guard fileManager.fileExists(atPath: targetsPath) else {
             throw ExtractionError.targetsDirectoryNotFound(path: targetsPath)
         }
 
-        // Get all module directories
         let moduleDirectories = try fileManager.contentsOfDirectory(atPath: targetsPath)
             .filter { moduleName in
                 var isDirectory: ObjCBool = false
@@ -40,7 +38,9 @@ public final class StringExtractor {
             print("📦 Found \(moduleDirectories.count) modules")
         }
 
-        // Process each module
+        // Extract `.localize` / `Text.localized` call sites. Argument types are
+        // classified for literals only; non-literal types are resolved later by
+        // the semantic (IndexStoreDB) backend in `FormatLinter`.
         for moduleName in moduleDirectories {
             let modulePath = (targetsPath as NSString).appendingPathComponent(moduleName)
             let sourcesPath = (modulePath as NSString).appendingPathComponent("Sources")
@@ -72,7 +72,7 @@ public final class StringExtractor {
         return extractedStrings
     }
 
-    /// Recursively extract strings from a directory
+    /// Recursively extract strings from a directory.
     private func extractFromDirectory(
         _ directoryPath: String,
         moduleName: String,
@@ -85,7 +85,6 @@ public final class StringExtractor {
         while let relativePath = enumerator?.nextObject() as? String {
             let fullPath = (directoryPath as NSString).appendingPathComponent(relativePath)
 
-            // Only process Swift files
             guard relativePath.hasSuffix(".swift") else { continue }
 
             var isDirectory: ObjCBool = false
@@ -98,22 +97,29 @@ public final class StringExtractor {
                 print("   📄 \(relativePath)")
             }
 
-            let fileStrings = try extractFromFile(fullPath, moduleName: moduleName)
+            let fileStrings = try extractFromFile(
+                fullPath,
+                moduleName: moduleName
+            )
             extractedStrings.append(contentsOf: fileStrings)
         }
 
         return extractedStrings
     }
 
-    /// Extract strings from a single Swift file
-    private func extractFromFile(_ filePath: String, moduleName: String) throws -> [ExtractedString] {
+    /// Extract strings from a single Swift file.
+    private func extractFromFile(
+        _ filePath: String,
+        moduleName: String
+    ) throws -> [ExtractedString] {
         let sourceCode = try String(contentsOfFile: filePath, encoding: .utf8)
         let sourceFile = Parser.parse(source: sourceCode)
+        let converter = SourceLocationConverter(fileName: filePath, tree: sourceFile)
 
         let visitor = LocalizationVisitor(
             filePath: filePath,
             moduleName: moduleName,
-            sourceCode: sourceCode
+            converter: converter
         )
 
         visitor.walk(sourceFile)
@@ -124,108 +130,136 @@ public final class StringExtractor {
 
 // MARK: - Visitor
 
-/// SwiftSyntax visitor that finds `.localize()` and `Text.localized()` calls
+/// SwiftSyntax visitor that finds `.localize()` and `Text.localized()` calls.
 private final class LocalizationVisitor: SyntaxVisitor {
-    public let filePath: String
-    public let moduleName: String
-    public let sourceCode: String
+    let filePath: String
+    let moduleName: String
+    let converter: SourceLocationConverter
     private(set) var extractedStrings: [ExtractedString] = []
 
-    public init(filePath: String, moduleName: String, sourceCode: String) {
+    init(
+        filePath: String,
+        moduleName: String,
+        converter: SourceLocationConverter
+    ) {
         self.filePath = filePath
         self.moduleName = moduleName
-        self.sourceCode = sourceCode
+        self.converter = converter
         super.init(viewMode: .sourceAccurate)
     }
 
     override func visit(_ node: FunctionCallExprSyntax) -> SyntaxVisitorContinueKind {
-        // Try to extract from either pattern:
-        // 1. "key".localize(default: "value", comment: "...")
-        // 2. Text.localized("key", default: "value", comment: "...")
-
         if let extracted = extractFromStringLocalize(node) {
             extractedStrings.append(extracted)
         } else if let extracted = extractFromTextLocalized(node) {
             extractedStrings.append(extracted)
         }
-
         return .visitChildren
     }
 
-    /// Extract from pattern: "key".localize(default: "value", comment: "...")
+    /// `"key".localize(default:..., comment:..., with: ...)`
     private func extractFromStringLocalize(_ node: FunctionCallExprSyntax) -> ExtractedString? {
-        // Check if this is a .localize() call
         guard let memberAccess = node.calledExpression.as(MemberAccessExprSyntax.self),
               memberAccess.declName.baseName.text == "localize" else {
             return nil
         }
 
-        // Extract the key (base of the member access)
         guard let keyExpr = memberAccess.base?.as(StringLiteralExprSyntax.self),
-              let keySegment = keyExpr.segments.first?.as(StringSegmentSyntax.self) else {
+              let key = readStringLiteral(keyExpr) else {
             return nil
         }
 
-        let key = keySegment.content.text
         return extractStringData(from: node, key: key)
     }
 
-    /// Extract from pattern: Text.localized("key", default: "value", comment: "...")
+    /// `Text.localized("key", default:..., with: ...)`
     private func extractFromTextLocalized(_ node: FunctionCallExprSyntax) -> ExtractedString? {
-        // Check if this is Text.localized() call
         guard let memberAccess = node.calledExpression.as(MemberAccessExprSyntax.self),
               memberAccess.declName.baseName.text == "localized" else {
             return nil
         }
 
-        // Check if base is "Text"
         guard let baseIdentifier = memberAccess.base?.as(DeclReferenceExprSyntax.self),
               baseIdentifier.baseName.text == "Text" else {
             return nil
         }
 
-        // First argument should be the key
         guard let firstArg = node.arguments.first,
-              firstArg.label == nil, // unlabeled first argument
+              firstArg.label == nil,
               let keyExpr = firstArg.expression.as(StringLiteralExprSyntax.self),
-              let keySegment = keyExpr.segments.first?.as(StringSegmentSyntax.self) else {
+              let key = readStringLiteral(keyExpr) else {
             return nil
         }
 
-        let key = keySegment.content.text
-        return extractStringData(from: node, key: key)
+        return extractStringData(from: node, key: key, skipFirstArgument: true)
     }
 
-    /// Common extraction logic for both patterns
-    private func extractStringData(from node: FunctionCallExprSyntax, key: String) -> ExtractedString? {
-        // Parse arguments
+    /// Common extraction: parse all interesting arguments + capture source positions.
+    private func extractStringData(
+        from node: FunctionCallExprSyntax,
+        key: String,
+        skipFirstArgument: Bool = false
+    ) -> ExtractedString? {
         var defaultValue: String = ""
         var comment: String = ""
-        var count: String? = nil
         var defaultPlural: [String: String]? = nil
-        var withParameters: [String] = []
+        var withArguments: [LintArgument] = []
+        var countArgument: LintCountArgument? = nil
 
-        for argument in node.arguments {
-            let label = argument.label?.text ?? ""
+        // Walk arguments. Once we see `with:`, every subsequent argument (including
+        // any unlabeled trailing variadic arguments) belongs to the with-list, except
+        // for `file:` which is always the trailing #fileID slot — we skip it.
+        var inWithList = false
+        let argList = Array(node.arguments)
 
-            switch label {
+        for (index, argument) in argList.enumerated() {
+            if skipFirstArgument && index == 0 {
+                continue
+            }
+
+            let label = argument.label?.text
+
+            if label == "file" {
+                inWithList = false
+                continue
+            }
+
+            if inWithList {
+                // Continuation of variadic `with:` list — only unlabeled args belong here.
+                if label == nil {
+                    withArguments.append(buildLintArgument(label: nil, expression: argument.expression))
+                    continue
+                } else {
+                    inWithList = false
+                }
+            }
+
+            switch label ?? "" {
             case "default":
                 if let stringLiteral = argument.expression.as(StringLiteralExprSyntax.self),
-                   let segment = stringLiteral.segments.first?.as(StringSegmentSyntax.self) {
-                    defaultValue = segment.content.text
+                   let extracted = readStringLiteral(stringLiteral) {
+                    defaultValue = extracted
                 } else if let dictExpr = argument.expression.as(DictionaryExprSyntax.self) {
-                    // Handle plural dictionary
                     defaultPlural = parsePluralDictionary(dictExpr)
                 }
 
             case "comment":
                 if let stringLiteral = argument.expression.as(StringLiteralExprSyntax.self),
-                   let segment = stringLiteral.segments.first?.as(StringSegmentSyntax.self) {
-                    comment = segment.content.text
+                   let extracted = readStringLiteral(stringLiteral) {
+                    comment = extracted
                 }
 
             case "count":
-                count = argument.expression.description.trimmingCharacters(in: .whitespacesAndNewlines)
+                let location = converter.location(for: argument.expression.position)
+                let lookup = lookupLocation(for: argument.expression)
+                countArgument = LintCountArgument(
+                    text: argument.expression.description.trimmingCharacters(in: .whitespacesAndNewlines),
+                    resolvedType: LiteralTypeResolver.resolve(argument.expression),
+                    line: location.line,
+                    column: location.column,
+                    memberLookupLine: lookup?.line,
+                    memberLookupColumn: lookup?.column
+                )
 
             case "defaultPlural":
                 if let dictExpr = argument.expression.as(DictionaryExprSyntax.self) {
@@ -233,9 +267,8 @@ private final class LocalizationVisitor: SyntaxVisitor {
                 }
 
             case "with":
-                // Capture interpolation parameters
-                let paramDesc = argument.expression.description.trimmingCharacters(in: .whitespacesAndNewlines)
-                withParameters.append(paramDesc)
+                inWithList = true
+                withArguments.append(buildLintArgument(label: "with", expression: argument.expression))
 
             default:
                 break
@@ -252,8 +285,7 @@ private final class LocalizationVisitor: SyntaxVisitor {
             type = .simple
         }
 
-        // Get line number
-        let lineNumber = sourceCode.lineNumber(at: node.position)
+        let location = converter.location(for: node.position)
 
         return ExtractedString(
             key: key,
@@ -263,8 +295,126 @@ private final class LocalizationVisitor: SyntaxVisitor {
             type: type,
             pluralForms: defaultPlural,
             filePath: filePath,
-            lineNumber: lineNumber
+            lineNumber: location.line,
+            column: location.column,
+            arguments: withArguments,
+            countArgument: countArgument
         )
+    }
+
+    private func buildLintArgument(label: String?, expression: ExprSyntax) -> LintArgument {
+        let location = converter.location(for: expression.position)
+        let lookup = lookupLocation(for: expression)
+        return LintArgument(
+            label: label,
+            text: expression.description.trimmingCharacters(in: .whitespacesAndNewlines),
+            resolvedType: LiteralTypeResolver.resolve(expression),
+            line: location.line,
+            column: location.column,
+            memberLookupLine: lookup?.line,
+            memberLookupColumn: lookup?.column
+        )
+    }
+
+    /// Compute the source position (line + UTF-8 column) at which the semantic
+    /// resolver should query IndexStoreDB for the type of `expression`.
+    ///
+    /// For most expressions we want the position of the rightmost identifier
+    /// that names the value being passed:
+    ///   * `userName`               -> position of `userName`
+    ///   * `item.getItemQty()`      -> position of `getItemQty`
+    ///   * `viewModel.cart.items`   -> position of `items`
+    ///   * `item.getItemQty()!`     -> recurse through force-unwrap
+    ///   * Literal `42`             -> `nil` (no symbol to look up)
+    ///
+    /// The full position (not just the column) matters: a multi-line argument —
+    /// a ternary whose branch sits on a later line, or a member chain broken
+    /// across lines — has its symbol on a different line than the argument's start.
+    private func lookupLocation(for expression: ExprSyntax) -> (line: Int, column: Int)? {
+        let unwrapped = unwrapForLookup(expression)
+
+        if let declRef = unwrapped.as(DeclReferenceExprSyntax.self) {
+            return position(of: declRef.baseName)
+        }
+        if let memberAccess = unwrapped.as(MemberAccessExprSyntax.self) {
+            return position(of: memberAccess.declName.baseName)
+        }
+        if let call = unwrapped.as(FunctionCallExprSyntax.self) {
+            // For `foo.bar()` look up `bar`; for `Foo()` look up `Foo`.
+            return lookupLocation(for: call.calledExpression)
+        }
+        // Unfolded compound expressions (SwiftParser does not fold operators):
+        //   * `a ? b : c`  → resolve the `then` branch; a ternary's type is its
+        //                    (shared) branch type.
+        //   * `a + b`      → resolve the compiler-resolved operator overload's
+        //                    return type via the operator token (e.g. `Int.+ -> Int`).
+        // For >1 operator the result type depends on precedence we don't fold, so we
+        // decline rather than resolve the wrong slot.
+        if let sequence = unwrapped.as(SequenceExprSyntax.self) {
+            let elements = Array(sequence.elements)
+            if let ternary = elements.lazy.compactMap({ $0.as(UnresolvedTernaryExprSyntax.self) }).first {
+                return lookupLocation(for: ternary.thenExpression)
+            }
+            let operators = elements.compactMap { $0.as(BinaryOperatorExprSyntax.self) }
+            if operators.count == 1 {
+                return position(of: operators[0].operator)
+            }
+        }
+        return nil
+    }
+
+    /// Convert a token's source position to a `(line, column)` pair.
+    private func position(of token: TokenSyntax) -> (line: Int, column: Int) {
+        let location = converter.location(for: token.positionAfterSkippingLeadingTrivia)
+        return (location.line, location.column)
+    }
+
+    private func unwrapForLookup(_ expression: ExprSyntax) -> ExprSyntax {
+        if let force = expression.as(ForceUnwrapExprSyntax.self) {
+            return unwrapForLookup(force.expression)
+        }
+        if let chain = expression.as(OptionalChainingExprSyntax.self) {
+            return unwrapForLookup(chain.expression)
+        }
+        if let tryExpr = expression.as(TryExprSyntax.self) {
+            return unwrapForLookup(tryExpr.expression)
+        }
+        if let awaitExpr = expression.as(AwaitExprSyntax.self) {
+            return unwrapForLookup(awaitExpr.expression)
+        }
+        // Prefix operators (`-amount`, `!flag`, `~mask`) are type-preserving for the
+        // operand, so resolve the inner value's symbol. Without this the whole
+        // expression resolved to `.unknown` and its type went unchecked.
+        if let prefix = expression.as(PrefixOperatorExprSyntax.self) {
+            return unwrapForLookup(prefix.expression)
+        }
+        if let tuple = expression.as(TupleExprSyntax.self),
+           tuple.elements.count == 1,
+           let inner = tuple.elements.first {
+            return unwrapForLookup(inner.expression)
+        }
+        return expression
+    }
+
+    /// Read the full text of a string literal, joining every `StringSegmentSyntax`
+    /// the literal contains.
+    ///
+    /// SwiftSyntax can split a single string literal into multiple segments around
+    /// escape sequences (`\n`, `\t`, `\(...)`, etc.). Reading only the first segment
+    /// silently truncates the value at the first escape — which used to make the
+    /// extractor miss the trailing `%@` in strings like `"Open this:\n%@"`. We now
+    /// concatenate every plain segment; we ignore expression segments because
+    /// localized defaults must be compile-time constants for translators.
+    private func readStringLiteral(_ literal: StringLiteralExprSyntax) -> String? {
+        var result = ""
+        for segment in literal.segments {
+            guard let stringSegment = segment.as(StringSegmentSyntax.self) else {
+                // Interpolation segment encountered — refuse to extract.
+                return nil
+            }
+            result.append(stringSegment.content.text)
+        }
+        return result
     }
 
     private func parsePluralDictionary(_ dictExpr: DictionaryExprSyntax) -> [String: String] {
@@ -275,32 +425,16 @@ private final class LocalizationVisitor: SyntaxVisitor {
         }
 
         for element in elements {
-            // Key should be like .one, .other, etc.
             if let keyExpr = element.key.as(MemberAccessExprSyntax.self),
                let valueExpr = element.value.as(StringLiteralExprSyntax.self),
-               let valueSegment = valueExpr.segments.first?.as(StringSegmentSyntax.self) {
+               let value = readStringLiteral(valueExpr) {
 
                 let category = keyExpr.declName.baseName.text
-                let value = valueSegment.content.text
-
                 result[category] = value
             }
         }
 
         return result
-    }
-}
-
-// MARK: - Helper Extensions
-
-extension String {
-    /// Calculate line number for a given position in the source code
-    public func lineNumber(at position: AbsolutePosition) -> Int {
-        let offset = position.utf8Offset
-        let substring = self.prefix(offset)
-        return substring.reduce(1) { count, char in
-            count + (char == "\n" ? 1 : 0)
-        }
     }
 }
 

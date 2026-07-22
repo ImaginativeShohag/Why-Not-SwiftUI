@@ -649,6 +649,389 @@ final class LocalizeKitIntegrationTests: XCTestCase {
         }
     }
 
+    // MARK: - Lint Integration Tests
+
+    /// Helper: write a Swift file that contains a mix of clean and broken `.localize` call sites,
+    /// then run extractor + linter and return the issues.
+    ///
+    /// These tests run the linter WITHOUT a semantic (IndexStoreDB) resolver, so only
+    /// *literal* arguments are type-classified. Type-mismatch fixtures therefore pass
+    /// literal values (e.g. `with: "Alice"`); structural rules (count/missing/unused/
+    /// plural/percent) are type-independent and exercised with ordinary identifiers.
+    private func runLintOnSourceFile(_ source: String, fileName: String = "LintFixture.swift") throws -> [LintIssue] {
+        let modulePath = tempProjectDir.appendingPathComponent("Targets/Lint/Sources")
+        try FileManager.default.createDirectory(at: modulePath, withIntermediateDirectories: true)
+        let filePath = modulePath.appendingPathComponent(fileName)
+        try source.write(to: filePath, atomically: true, encoding: .utf8)
+
+        let extractor = StringExtractor(projectPath: tempProjectDir.path, verbose: false)
+        let extracted = try extractor.extract()
+            .filter { $0.filePath == filePath.path }
+
+        return FormatLinter().lint(extracted)
+    }
+
+    /// Extract a single fixture file and return its first call site's `with:` arguments.
+    private func extractArguments(_ source: String, fileName: String = "ArgFixture.swift") throws -> [LintArgument] {
+        let modulePath = tempProjectDir.appendingPathComponent("Targets/Lint/Sources")
+        try FileManager.default.createDirectory(at: modulePath, withIntermediateDirectories: true)
+        let filePath = modulePath.appendingPathComponent(fileName)
+        try source.write(to: filePath, atomically: true, encoding: .utf8)
+
+        let extractor = StringExtractor(projectPath: tempProjectDir.path, verbose: false)
+        let extracted = try extractor.extract().filter { $0.filePath == filePath.path }
+        return extracted.first?.arguments ?? []
+    }
+
+    func testExtract_prefixOperatorArgument_hasMemberLookupColumn() throws {
+        // `-amount` is type-preserving for `amount`; the extractor must point the
+        // semantic resolver at the `amount` symbol (non-nil memberLookupColumn) so
+        // its type is checkable. Before the fix this resolved to nil → `.unknown` →
+        // silently unchecked (the same false-negative class as the getter bug).
+        let source = """
+        struct PrefixScreen {
+            let amount: Int = 5
+            var label: String {
+                "delta".localize(default: "%@", comment: "", with: -amount)
+            }
+        }
+        """
+        let args = try extractArguments(source)
+        let arg = try XCTUnwrap(args.first)
+        XCTAssertEqual(arg.text, "-amount")
+        XCTAssertNotNil(arg.memberLookupColumn,
+                        "Prefix-operator argument must expose a member-lookup column for semantic resolution")
+    }
+
+    func testExtract_binaryOperatorArgument_pointsAtOperator() throws {
+        // `currentIndex + 1` has no single value symbol, but the compiler-resolved
+        // `+` operator overload does (`Swift.Int.+ -> Swift.Int`). The extractor must
+        // point the resolver at the operator so the result type is checkable. Before
+        // the fix this resolved to nil → `.unknown` → an unverified warning.
+        let source = """
+        struct BinScreen {
+            let currentIndex: Int = 0
+            var label: String {
+                "k".localize(default: "%d", comment: "", with: currentIndex + 1)
+            }
+        }
+        """
+        let args = try extractArguments(source)
+        let arg = try XCTUnwrap(args.first)
+        XCTAssertEqual(arg.text, "currentIndex + 1")
+        XCTAssertNotNil(arg.memberLookupColumn,
+                        "Binary-operator argument must expose the operator's lookup column")
+    }
+
+    func testExtract_ternaryArgument_resolvesViaBranch() throws {
+        // A ternary's type is its (shared) branch type. The extractor resolves the
+        // `then` branch's symbol so the slot can be type-checked.
+        let source = """
+        struct TernScreen {
+            let flag: Bool = true
+            let yes: String = "y"
+            let no: String = "n"
+            var label: String {
+                "k".localize(default: "%@", comment: "", with: flag ? yes : no)
+            }
+        }
+        """
+        let args = try extractArguments(source)
+        let arg = try XCTUnwrap(args.first)
+        XCTAssertNotNil(arg.memberLookupColumn,
+                        "Ternary argument must resolve via one of its branches")
+    }
+
+    func testExtract_multiOperatorArgument_staysUnresolved() throws {
+        // With more than one operator, the result type depends on precedence we
+        // don't fold — stay conservative (nil) rather than resolve the wrong slot.
+        let source = """
+        struct MultiScreen {
+            let a = 1
+            let b = 2
+            let c = 3
+            var label: String {
+                "k".localize(default: "%d", comment: "", with: a + b * c)
+            }
+        }
+        """
+        let args = try extractArguments(source)
+        let arg = try XCTUnwrap(args.first)
+        XCTAssertNil(arg.memberLookupColumn,
+                     "Multi-operator expressions must not be resolved to a single operator")
+    }
+
+    func testLint_cleanFile_emitsNoErrors() throws {
+        let source = """
+        import SwiftUI
+
+        struct CleanScreen: View {
+            let userName: String = "Alice"
+            let userScore: Int = 42
+            let priceTotal: Double = 19.99
+
+            var body: some View {
+                Text("ok_simple".localize(default: "Hello", comment: ""))
+                Text("ok_str".localize(default: "Hello, %@!", comment: "", with: userName))
+                Text("ok_int".localize(default: "Score: %d", comment: "", with: userScore))
+                Text("ok_double".localize(default: "Total: %.2f", comment: "", with: priceTotal))
+                Text("ok_two".localize(default: "%@ scored %d", comment: "", with: userName, userScore))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertFalse(
+            issues.contains { $0.severity == .error },
+            "Expected no errors for a clean file but got: \(issues.map(\.ruleID))"
+        )
+    }
+
+    func testLint_typeMismatch_reportsErrorWithCorrectFileAndLine() throws {
+        // A string literal passed to `%d` is classified by the literal resolver and
+        // must be flagged — no semantic index needed.
+        let source = """
+        import SwiftUI
+
+        struct BadScreen: View {
+            var body: some View {
+                Text("bad_str_for_int".localize(default: "Score: %d", comment: "", with: "Alice"))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        let mismatch = issues.first { $0.ruleID == "format_arg_type_mismatch" }
+        let issue = try XCTUnwrap(mismatch, "Expected format_arg_type_mismatch issue, got: \(issues.map(\.ruleID))")
+
+        XCTAssertEqual(issue.severity, .error)
+        XCTAssertTrue(issue.filePath.hasSuffix("LintFixture.swift"))
+        // The argument lives on the same line as the `.localize` call.
+        XCTAssertEqual(issue.line, 5)
+        XCTAssertGreaterThan(issue.column, 0)
+        XCTAssertTrue(issue.message.contains("Alice"))
+        XCTAssertTrue(issue.message.contains("%d"))
+    }
+
+    func testLint_countMismatch_reportsError() throws {
+        let source = """
+        import SwiftUI
+
+        struct CountMismatchScreen: View {
+            let userName: String = "Alice"
+            let userScore: Int = 42
+
+            var body: some View {
+                Text("bad_count".localize(default: "%@ %d %f", comment: "", with: userName, userScore))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertTrue(issues.contains {
+            $0.ruleID == "format_arg_count_mismatch" && $0.severity == .error
+        }, "Got: \(issues.map(\.ruleID))")
+    }
+
+    func testLint_missingWithArgument_reportsError() throws {
+        let source = """
+        import SwiftUI
+
+        struct MissingWithScreen: View {
+            var body: some View {
+                Text("no_with".localize(default: "Hello, %@!", comment: ""))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertTrue(issues.contains {
+            $0.ruleID == "format_missing_args" && $0.severity == .error
+        })
+    }
+
+    func testLint_unusedWithArgument_reportsError() throws {
+        let source = """
+        import SwiftUI
+
+        struct UnusedWithScreen: View {
+            let userName: String = "Alice"
+
+            var body: some View {
+                Text("unused".localize(default: "Hello", comment: "", with: userName))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertTrue(issues.contains {
+            $0.ruleID == "format_unused_args" && $0.severity == .error
+        })
+    }
+
+    func testLint_pluralWithMissingOther_reportsError() throws {
+        let source = """
+        import SwiftUI
+
+        struct PluralScreen: View {
+            let count: Int = 0
+
+            var body: some View {
+                Text("only_one".localize(
+                    defaultPlural: [.one: "1 item"],
+                    comment: "",
+                    count: count
+                ))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertTrue(issues.contains {
+            $0.ruleID == "plural_missing_other" && $0.severity == .error
+        })
+    }
+
+    func testLint_textLocalizedPattern_isAlsoLinted() throws {
+        let source = """
+        import SwiftUI
+
+        struct TextLocalizedScreen: View {
+            var body: some View {
+                Text.localized(
+                    "bad_text",
+                    default: "Score: %d",
+                    comment: "",
+                    with: "Alice"
+                )
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertTrue(issues.contains {
+            $0.ruleID == "format_arg_type_mismatch" && $0.severity == .error
+        }, "Text.localized must be linted too. Got: \(issues.map(\.ruleID))")
+    }
+
+    func testLint_unresolvedIdentifier_doesNotTriggerTypeMismatch() throws {
+        // Pessimistic linter: when a type cannot be resolved, no mismatch should be reported.
+        let source = """
+        import SwiftUI
+
+        struct UnknownScreen: View {
+            var body: some View {
+                Text("unknown_arg".localize(default: "Score: %d", comment: "", with: mysteryGlobal))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertFalse(
+            issues.contains { $0.ruleID == "format_arg_type_mismatch" },
+            "Unknown types must NOT trigger mismatch errors. Got: \(issues.map(\.ruleID))"
+        )
+    }
+
+    // MARK: - Lint Integration: Decorative percents and link prompts
+
+    func testLint_decorativePercentWithoutArgs_endToEnd_isClean() throws {
+        // User scenario 1: "%Compliance" — `%` is decoration; no `with:` args.
+        let source = """
+        import SwiftUI
+
+        struct ComplianceScreen: View {
+            var body: some View {
+                Text("compliance_label".localize(
+                    default: "%Compliance",
+                    comment: "Brand name with leading decorative percent"
+                ))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertTrue(
+            issues.isEmpty,
+            "Decorative '%' with no `with:` args must produce no issues. Got: \(issues.map(\.ruleID))"
+        )
+    }
+
+    func testLint_decorativePercentWithArgs_endToEnd_reportsUnescapedPercent() throws {
+        // Same string but now passing a `with:` argument — `String(format:)` will misinterpret `%C`.
+        let source = """
+        import SwiftUI
+
+        struct ComplianceScreen: View {
+            let userName: String = "Alice"
+
+            var body: some View {
+                Text("compliance_with_user".localize(
+                    default: "%Compliance: %@",
+                    comment: "",
+                    with: userName
+                ))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertTrue(
+            issues.contains { $0.ruleID == "unescaped_percent" && $0.severity == .error },
+            "Decorative '%' MUST be flagged when `with:` args are present. Got: \(issues.map(\.ruleID))"
+        )
+    }
+
+    func testLint_linkPromptWithNewlineEscapeAndStringArg_endToEnd_isClean() throws {
+        // User scenario 2: "Do you want to open this link:\\n%@" with a String arg.
+        let source = #"""
+        import SwiftUI
+
+        struct LinkPromptScreen: View {
+            let url: String = "https://example.com"
+
+            var body: some View {
+                Text("open_link_prompt".localize(
+                    default: "Do you want to open this link:\n%@",
+                    comment: "Confirmation before opening a URL",
+                    with: url
+                ))
+            }
+        }
+        """#
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertTrue(
+            issues.isEmpty,
+            "Newline + %@ + String arg must be clean. Got: \(issues.map(\.ruleID))"
+        )
+    }
+
+    func testLint_escapedDoublePercent_endToEnd_isClean() throws {
+        // The portable, standards-compliant way to write a literal `%`.
+        let source = """
+        import SwiftUI
+
+        struct ComplianceScreen: View {
+            let userName: String = "Alice"
+
+            var body: some View {
+                Text("compliance_with_user".localize(
+                    default: "%%Compliance: %@",
+                    comment: "",
+                    with: userName
+                ))
+            }
+        }
+        """
+
+        let issues = try runLintOnSourceFile(source)
+        XCTAssertFalse(
+            issues.contains { $0.ruleID == "unescaped_percent" },
+            "Properly-escaped `%%` must not be flagged. Got: \(issues.map(\.ruleID))"
+        )
+    }
+
     // MARK: - Performance Tests
 
     func testExtractPerformance() throws {

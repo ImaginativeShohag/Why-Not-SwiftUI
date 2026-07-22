@@ -16,7 +16,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.0"),
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0")
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
+        .package(url: "https://github.com/apple/indexstore-db.git", branch: "main")
     ],
     targets: [
         // Core library with all logic
@@ -24,7 +25,8 @@ let package = Package(
             name: "LocalizeKitCore",
             dependencies: [
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
-                .product(name: "SwiftParser", package: "swift-syntax")
+                .product(name: "SwiftParser", package: "swift-syntax"),
+                .product(name: "IndexStoreDB", package: "indexstore-db")
             ]
         ),
         // Executable CLI
@@ -41,7 +43,10 @@ let package = Package(
         // Test target
         .testTarget(
             name: "LocalizeKitTests",
-            dependencies: ["LocalizeKitCore"]
+            dependencies: [
+                "LocalizeKitCore",
+                .product(name: "IndexStoreDB", package: "indexstore-db")
+            ]
         )
     ]
 )

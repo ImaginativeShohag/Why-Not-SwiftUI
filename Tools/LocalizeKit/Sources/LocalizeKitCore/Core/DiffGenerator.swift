@@ -97,7 +97,7 @@ public final class DiffGenerator {
 
     /// Save diff file as Markdown
     public func saveDiffMarkdown(_ diffFile: DiffFile, to path: String) throws {
-        var markdown = generateMarkdown(from: diffFile)
+        let markdown = generateMarkdown(from: diffFile)
         try markdown.write(toFile: path, atomically: true, encoding: .utf8)
 
         if verbose {

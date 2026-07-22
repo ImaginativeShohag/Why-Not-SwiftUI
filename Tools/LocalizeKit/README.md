@@ -8,6 +8,7 @@ A powerful command-line tool for managing translations in SwiftUI projects with 
 - **Merge** translations with intelligent version-based synchronization
 - **Validate** translation files for completeness and correctness
 - **Preview Diff** between base and target languages (terminal output)
+- **Lint** `.localize` / `Text.localized` call sites for arg-count and arg-type mismatches (Xcode build-phase ready)
 - **Interactive Menu** for easy access to all commands
 - Supports both `String.localize()` and `Text.localized()` patterns
 - **Auto-managed versioning** - No manual version specification needed

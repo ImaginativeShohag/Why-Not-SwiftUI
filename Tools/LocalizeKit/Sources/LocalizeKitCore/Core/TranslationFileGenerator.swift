@@ -95,7 +95,7 @@ public final class TranslationFileGenerator {
         var pluralStrings = 0
         var interpolationStrings = 0
 
-        for (moduleName, strings) in translationFile.modules {
+        for (_, strings) in translationFile.modules {
             totalStrings += strings.count
 
             for (_, entry) in strings {

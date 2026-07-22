@@ -210,7 +210,6 @@ struct ValidateCommand: AsyncParsableCommand {
     }
 
     private func validateTargetFile(_ targetFile: TargetTranslationFile, language: String, against baseFile: BaseTranslationFile) -> Bool {
-        var errors: [String] = []
         var warnings: [String] = []
         var missingKeys: [String] = []
         var extraKeys: [String] = []

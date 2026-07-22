@@ -164,6 +164,43 @@ public struct ExtractedString {
     public let pluralForms: [String: String]?
     public let filePath: String
     public let lineNumber: Int
+
+    // MARK: Lint metadata (optional — populated by `StringExtractor` for lint use-cases)
+
+    /// 1-based column of the call expression in the source file.
+    public let column: Int
+
+    /// `with:` arguments captured from the call site (variadic flattened).
+    public let arguments: [LintArgument]
+
+    /// `count:` argument captured from plural overloads.
+    public let countArgument: LintCountArgument?
+
+    public init(
+        key: String,
+        moduleName: String,
+        defaultValue: String,
+        comment: String,
+        type: TranslationType,
+        pluralForms: [String: String]?,
+        filePath: String,
+        lineNumber: Int,
+        column: Int = 1,
+        arguments: [LintArgument] = [],
+        countArgument: LintCountArgument? = nil
+    ) {
+        self.key = key
+        self.moduleName = moduleName
+        self.defaultValue = defaultValue
+        self.comment = comment
+        self.type = type
+        self.pluralForms = pluralForms
+        self.filePath = filePath
+        self.lineNumber = lineNumber
+        self.column = column
+        self.arguments = arguments
+        self.countArgument = countArgument
+    }
 }
 
 // MARK: - Diff Models

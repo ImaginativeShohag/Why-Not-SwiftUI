@@ -16,6 +16,7 @@ struct LocalizeKit: AsyncParsableCommand {
             MergeCommand.self,
             ValidateCommand.self,
             DiffCommand.self,
+            LintCommand.self,
             MenuCommand.self
         ],
         defaultSubcommand: MenuCommand.self

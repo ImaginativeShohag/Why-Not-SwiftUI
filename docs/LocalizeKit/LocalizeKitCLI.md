@@ -15,6 +15,7 @@ A comprehensive guide to using the LocalizeKit command-line tool for managing lo
   - [Merge](#merge-command)
   - [Validate](#validate-command)
   - [Diff](#diff-command)
+  - [Lint](#lint-command)
   - [Interactive Menu](#interactive-menu)
 - [Translation File Format](#translation-file-format)
 - [Workflow Guide](#workflow-guide)
@@ -35,6 +36,7 @@ LocalizeKit CLI is a Swift-based command-line tool that automates the extraction
 | **Version Management** | Auto-increment versions and track per-key changes |
 | **Multi-Language Support** | Manage unlimited target languages from a single base file |
 | **Validation** | Check for missing translations, format mismatches, and plural issues |
+| **Code Lint** | Static check of `.localize` / `Text.localized` call sites for arg-count and arg-type mismatches (runs as Xcode build phase) |
 | **Diff Reports** | Generate change reports for translators |
 | **Interactive Mode** | Guided menu for all operations |
 
@@ -369,6 +371,143 @@ Summary:
 
 ---
 
+### Lint Command
+
+Statically analyses every `.localize(...)` and `Text.localized(...)` call site in the project and validates that the format specifiers in the default value match the number and type of `with:` arguments supplied.
+
+The linter parses Swift files directly with SwiftSyntax to find call sites and classify *literal* arguments, and resolves the type of every other argument against Xcode's IndexStoreDB — the same symbol index Xcode's compiler produces. It therefore requires a recent Xcode build of the project (open in Xcode and build with ⌘B); when the index is missing or unreadable, lint fails loudly with a remediation message.
+
+**Syntax:**
+```bash
+swift run LocalizeKit lint [options]
+```
+
+**Options:**
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--project-path <path>` | Root directory of the project | Current directory |
+| `--reporter <style>` | `pretty`, `xcode`, or `auto` (Xcode auto-detected via `XCODE_PRODUCT_BUILD_VERSION` env var) | `auto` |
+| `--strict` | Treat warnings as errors and exit non-zero on any issue | `false` |
+| `--verbose` | Verbose extraction output | `false` |
+| `--index-store-path <path>` | Override the Xcode index store path. Defaults to auto-discovery from `~/Library/Developer/Xcode/DerivedData`. | auto |
+
+**Examples:**
+
+```bash
+# Run lint with the pretty reporter from a terminal
+swift run LocalizeKit lint --project-path .
+
+# Force the Xcode-parsable reporter
+swift run LocalizeKit lint --reporter xcode --project-path .
+
+# Treat warnings as errors (CI mode)
+swift run LocalizeKit lint --strict --project-path .
+```
+
+**Pretty Reporter Output:**
+```
+🔎 Linting localization call sites...
+
+Project:  /path/to/project
+Reporter: pretty
+Strict:   no
+
+📦 Scanned 68 localized call site(s)
+
+📄 Targets/Store/Sources/UI/Cart/CartScreen.swift
+   ❌ 42:18  [format_arg_type_mismatch] Argument 'userName' is String, but format specifier '%d' for key 'cart_score' expects Int.
+   ⚠️  56:9   [plural_form_inconsistent] Plural form '.one' for 'cart_items' has 0 format specifier(s); '.other' has 1.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Summary
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Call sites: 68
+Errors:     1
+Warnings:   1
+
+❌ Lint failed.
+```
+
+**Xcode Reporter Output:**
+```
+/path/to/file.swift:42:18: error: [LocalizeKit:format_arg_type_mismatch] Argument 'userName' is String, but format specifier '%d' for key 'cart_score' expects Int.
+/path/to/file.swift:56:9: warning: [LocalizeKit:plural_form_inconsistent] …
+```
+
+Xcode parses these lines automatically and surfaces them in the issue navigator on the correct file/line.
+
+**Rules:**
+
+| Rule ID | Severity | Triggered when |
+|---------|----------|----------------|
+| `empty_key` | error | The localization key is an empty string. |
+| `format_arg_count_mismatch` | error | Number of format specifiers in default ≠ number of `with:` arguments (non-positional formats only). |
+| `format_missing_args` | error | Default contains specifiers but no `with:` was supplied. |
+| `format_unused_args` | error | Default has no specifiers but `with:` arguments were supplied. |
+| `format_arg_type_mismatch` | error / warning | Argument's resolved type is incompatible with the format specifier. Demoted to warning when the mismatch is non-fatal (e.g., `Bool` for `%d`). |
+| `unescaped_percent` | error | Default contains an unescaped `%X` (non-specifier letter) AND the call passes `with:` arguments through `String(format:)`. Suggests `%%X` as the fix. Without `with:` args, decorative `%` like `"%Compliance"` is allowed silently because the default is returned verbatim. |
+| `plural_empty` | error | `defaultPlural` dictionary is empty. |
+| `plural_missing_other` | error | `defaultPlural` is missing the `.other` form (CLDR requires it). |
+| `plural_form_inconsistent` | warning | Plural forms have differing specifier counts. Often legitimate (e.g., `.one: "1 item"` with no `%d`), but worth surfacing for translators. |
+| `plural_count_type` | error | `count:` argument cannot resolve to an integer type. |
+
+**Type Compatibility Matrix:**
+
+| Specifier | Accepts |
+|-----------|---------|
+| `%@` | `String` (auto-bridges to `NSString`) and types conforming to `NSObject`. Does **not** accept Swift `Int` / `Double` / `Bool` — those don't auto-bridge through `CVarArg` and produce garbage or crashes at runtime. Use `%d` / `%lld` / `%f` instead, or wrap the value with `String(value)`. |
+| `%d` / `%i` / `%ld` / `%lld` | Int / UInt only (Bool / Double → warning or error) |
+| `%u` / `%x` / `%X` / `%o` | Int / UInt only |
+| `%f` / `%.2f` / `%g` / `%e` | Double / Float / Int (auto-promoted) |
+| `%s` | String only (rare in Swift — almost always a mistake) |
+
+When a `with:` argument cannot be type-resolved (e.g., a method call returning a generic type, or a method defined in an external module), the linter remains silent for that slot rather than emitting a false-positive.
+
+**Type resolution:** argument types come from two complementary sources:
+
+* **Literal classification** (SwiftSyntax) — literal arguments are typed directly from the AST: `"x"` → String, `42` → Int, `3.14` → Double, `true` → Bool, `nil` → nil, array/dictionary literals → object (parentheses and a leading unary sign are peeled first). The IndexStoreDB only records *symbol references*, so it cannot see literals — this fills that gap.
+* **Semantic resolution** (Xcode's IndexStoreDB) — for every non-literal `with:` / `count:` argument, the linter reads Xcode's index at `~/Library/Developer/Xcode/DerivedData/<project>/Index.noindex/DataStore`. Each argument's source position is queried; the matched symbol's USR is demangled via `xcrun swift-demangle` to recover its full signature (e.g. `Core.ItemInfo.getItemQty() -> Swift.Int`); the return / value type is extracted and mapped to `ResolvedType`. This is the **authoritative** answer because the data was produced by Swift's actual type checker. Files whose source is newer than the indexed unit are detected and skipped (and listed under "stale index" warnings) — only their literal arguments are checked until you rebuild in Xcode. When the index is missing entirely, lint fails loudly with a clear remediation message.
+
+Arguments that neither source can classify resolve to `.unknown`, and the linter stays silent for that slot rather than emitting a false positive.
+
+**Use Cases:**
+- Catch `String(format:)` crashes before they reach production (e.g., `%d` with a `String`).
+- Verify that translated plural forms have consistent interpolation shapes.
+- Block CI on lint errors via `--strict`.
+- Run as an Xcode build phase for inline IDE feedback.
+
+#### Adding the Lint to an Xcode Build Phase
+
+In your project, select the target → Build Phases → "+" → New Run Script Phase, then paste:
+
+```bash
+# Run only on debug builds to keep release fast.
+if [ "${CONFIGURATION}" = "Debug" ]; then
+    cd "${SRCROOT}/Tools/LocalizeKit"
+    swift run --package-path . LocalizeKit lint --project-path "${SRCROOT}"
+fi
+```
+
+Place the phase **before** "Compile Sources" so issues surface before build failures, or after to gate the build only when localization is broken.
+
+The `--reporter auto` default sees the Xcode environment variables and emits the `file:line:col: severity: message` format Xcode parses into the issue navigator.
+
+For faster CI/build-phase runs, build a release binary once and check it in:
+
+```bash
+cd Tools/LocalizeKit
+swift build -c release
+```
+
+Then use the prebuilt binary in the build phase:
+
+```bash
+"${SRCROOT}/Tools/LocalizeKit/.build/release/LocalizeKit" lint --project-path "${SRCROOT}"
+```
+
+---
+
 ### Interactive Menu
 
 Launch an interactive guided menu for all operations.
@@ -390,11 +529,12 @@ swift run LocalizeKit menu
 │  2. Merge translations                          │
 │  3. Validate translations                       │
 │  4. Preview diff                                │
-│  5. Exit                                        │
+│  5. Lint .localize call sites                   │
+│  6. Exit                                        │
 │                                                 │
 ╰─────────────────────────────────────────────────╯
 
-Enter your choice (1-5):
+Enter your choice (1-6):
 ```
 
 Each option guides you through the operation with prompts for required inputs.
@@ -713,6 +853,9 @@ swift run LocalizeKit validate --language <code> [--all] [--check-missing] [--ch
 
 # Diff
 swift run LocalizeKit diff --language <code> [--all] [--verbose]
+
+# Lint
+swift run LocalizeKit lint [--reporter pretty|xcode|auto] [--strict] [--project-path <path>] [--verbose]
 
 # Interactive
 swift run LocalizeKit menu

@@ -26,15 +26,16 @@ struct MenuCommand: AsyncParsableCommand {
         2. Merge translations → Sync target languages with base
         3. Validate translations → Check for issues
         4. Preview diff → See what needs translation
-        5. Exit
+        5. Lint code → Check .localize calls for arg/format mismatches
+        6. Exit
 
         """)
 
-        print("Enter your choice (1-5): ", terminator: "")
+        print("Enter your choice (1-6): ", terminator: "")
 
         guard let input = readLine(),
               let choice = Int(input) else {
-            print("❌ Invalid input. Please enter a number between 1 and 5.")
+            print("❌ Invalid input. Please enter a number between 1 and 6.")
             throw ExitCode.failure
         }
 
@@ -48,10 +49,12 @@ struct MenuCommand: AsyncParsableCommand {
         case 4:
             try await runDiffWizard()
         case 5:
+            try await runLintWizard()
+        case 6:
             print("👋 Goodbye!")
             throw ExitCode.success
         default:
-            print("❌ Invalid choice. Please select a number between 1 and 5.")
+            print("❌ Invalid choice. Please select a number between 1 and 6.")
             throw ExitCode.failure
         }
     }
@@ -139,6 +142,25 @@ struct MenuCommand: AsyncParsableCommand {
         command.checkMissing = true
         command.checkFormat = true
         command.checkPlurals = true
+        command.verbose = false
+
+        try await command.run()
+    }
+
+    private func runLintWizard() async throws {
+        print("\n🔎 Lint Localization Call Sites Wizard\n")
+
+        print("Enter project path (press Enter for current directory): ", terminator: "")
+        let projectPath = readLine() ?? FileManager.default.currentDirectoryPath
+        let finalProjectPath = projectPath.isEmpty ? FileManager.default.currentDirectoryPath : projectPath
+
+        print("Treat warnings as errors? (y/N): ", terminator: "")
+        let strict = readLine()?.lowercased() ?? "n"
+
+        var command = LintCommand()
+        command.projectPath = finalProjectPath
+        command.reporter = "pretty"
+        command.strict = (strict == "y" || strict == "yes")
         command.verbose = false
 
         try await command.run()
