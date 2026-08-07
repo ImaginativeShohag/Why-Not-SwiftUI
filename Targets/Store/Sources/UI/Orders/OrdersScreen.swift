@@ -4,6 +4,7 @@
 
 import Core
 import Kingfisher
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -48,13 +49,14 @@ struct OrdersScreen: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .navigationBarTitle("Orders")
+        .navigationBarTitle("orders_title".localize(default: "Orders", comment: "Orders screen title"))
         .refreshable {
             await viewModel.loadOrders(forced: true)
         }
         .task {
             await viewModel.loadOrders()
         }
+        .onLanguageChange()
     }
 }
 
@@ -80,7 +82,15 @@ private struct OrderItem: View {
                 }
             } label: {
                 HStack {
-                    Text("Total ^[\(order.products.count) product](inflect: true)")
+                    Text("orders_product_count".localize(
+                        defaultPlural: [
+                            .one: "Total 1 product",
+                            .other: "Total %d products"
+                        ],
+                        comment: "Total product count in order",
+                        count: order.products.count,
+                        with: order.products.count
+                    ))
 
                     Spacer()
 

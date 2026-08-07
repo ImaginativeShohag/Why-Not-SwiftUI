@@ -46,7 +46,31 @@ tuist edit
 # Run all tests except NetworkProdTests
 tuist test 'WhyNotSwiftUI Development' \
     --skip-test-targets NetworkKitTests/NetworkProdTests
+
+# Run Store module UI tests
+tuist test 'WhyNotSwiftUI Development' \
+    --test-targets StoreUITests
 ```
+
+**UI Testing Infrastructure:**
+- `TestUtils` module provides shared UI testing utilities:
+  - `XCUIApplication+` extensions for common operations
+  - `XCUIElement+` extensions with `tabBarButton(withLabel:)` for reliable tab selection
+  - `MockResponse` system for API stubbing in UI tests
+  - `launchApp(with:userData:)` for launching with mock data
+- **Store Module UI Tests** (37 tests across 4 suites):
+  - `StoreHomeUITests`: Home screen, products, categories, profile navigation
+  - `StoreCartUITests`: Cart operations, quantity management, checkout flow
+  - `StoreProductsUITests`: Product listing, details, error handling
+  - `StoreLanguageUITests`: Language settings and country selection
+- **UI Test Best Practices:**
+  - Use `tabBarButton(withLabel:)` for tab selection (more reliable than accessibility IDs for SwiftUI TabView)
+  - Splash screen delays are automatically skipped in UI test mode for faster execution
+  - TabView uses `.automatic` style for better test behavior across devices
+- **Accessibility Identifiers:** All interactive elements have identifiers for reliable UI testing
+- **Mock User Data:** Tests can inject mock user data via `uiTestEnvKeyUserData` environment variable
+- **API Mocking:** Both `StoreAPI` and `LocalizationAPI` support error status codes in UI test mode
+- See `Docs/StoreUITestsReport.md` for comprehensive test results and known issues
 
 ## Architecture
 
@@ -60,12 +84,19 @@ The project is organized into modular frameworks defined in `Project.swift`:
 - `SuperLog`: Logging framework
 - `NetworkKit`: Network layer with Alamofire/Moya integration
 - `NavigationKit`: Navigation wrapper on top of NavigationStack
+- `LocalizeKit`: **Fully independent** runtime localization system with plural support, caching, and language management (zero external dependencies)
 
 **Feature Modules:**
 - `Home`: Main home screen with navigation to all examples
 - `Todo`: Todo app with SwiftData and CoreData implementations
 - `News`: News module with mock data for UI testing
-- `Store`: Store/shop example module
+- `Store`: Store/shop example module with runtime localization (Bengali, Arabic) and comprehensive UI test coverage (37 tests)
+
+**Translation Management:**
+- `Tools/LocalizeKit`: CLI tool for extracting, merging, validating, diffing, and linting translations
+
+**Testing Modules:**
+- `TestUtils`: Shared utilities for UI tests including API mocking, app launch helpers, and XCUIApplication extensions
 
 **Main Target:**
 - `WhyNotSwiftUI`: Main app target that depends on all modules
@@ -99,12 +130,47 @@ Targets/
 - Generic components: Can end with `View` (e.g., `CustomTextFieldView`, `RingChartView`)
 - ViewModels: Located in same directory as their screen (e.g., `HomeScreen.swift` + `HomeViewModel.swift`)
 
+### Toolbar Button Conventions
+
+**Important:** Use semantic button roles and placements for toolbar items:
+
+**Dismissal/Close Buttons (for Sheets and Modals):**
+```swift
+.toolbar {
+    ToolbarItem(placement: .cancellationAction) {
+        Button("Done", role: .close) {
+            dismiss()
+        }
+    }
+}
+```
+- Use `placement: .cancellationAction` for dismiss/close buttons
+- Use `role: .close` to indicate cancellation action
+- Automatically positions left (LTR) or right (RTL)
+- VoiceOver announces as cancellation, Escape key support
+
+**Confirmation/Apply Buttons:**
+```swift
+.toolbar {
+    ToolbarItem(placement: .confirmationAction) {
+        Button("Apply", role: .confirm) {
+            applyChanges()
+        }
+    }
+}
+```
+- Use `role: .confirm` for confirm/apply/save buttons
+- Automatically positions right (LTR) or left (RTL)
+- Follows iOS HIG for primary actions
+
 ### Key Architectural Patterns
 
 **Repository Pattern:**
 - Used in Todo module with abstraction over CoreData and SwiftData
+- Used in Store module for translation network operations (TranslationRepository)
 - Repositories handle data source switching transparently
 - ViewModels depend on repository interfaces, not concrete implementations
+- LocalizeKit is a pure localization engine; Store module owns translation fetching
 
 **Navigation:**
 - Uses `NavigationKit` module with `NavController` and `Destination` pattern
@@ -116,9 +182,141 @@ Targets/
 - Never pass ViewModels to components
 - Pass only required data and callbacks
 
+**ViewModel Patterns:**
+- **IMPORTANT:** Always follow existing code patterns when creating or modifying ViewModels
+- Use `UIState<T>` from Core module for state management (never create custom state enums)
+- Structure pattern (see `ProfileViewModel.swift` or `HomeViewModel.swift` as reference):
+  ```swift
+  @MainActor
+  @Observable
+  final class MyViewModel {
+      var state: UIState<MyDataType> = .loading
+
+      private var isPreview: Bool = false
+      private let repository: MyRepository
+
+      init(repository: MyRepository = MyRepository()) {
+          self.repository = repository
+      }
+
+      func loadData() async {
+          guard !isPreview else { return }
+          state = .loading
+          // ... fetch data logic
+      }
+  }
+
+  #if DEBUG
+  extension MyViewModel {
+      convenience init(forPreview: Bool, isLoading: Bool, isError: Bool) {
+          self.init()
+          isPreview = true
+          // ... set preview state
+      }
+  }
+  #endif
+  ```
+- Preview initializers must be `convenience init` in a separate extension under `#if DEBUG`
+- Always guard against `isPreview` in methods that perform network/data operations
+- Use `state.isLoading`, `state.isError`, `state.hasData`, `state.getData()` for state checks
+
 **Localization:**
-- Uses `Localizable.xcstrings` for string resources
-- Access with `NSLocalizedString("key", bundle: .module, comment: "")`
+- **Home module:** Uses `Localizable.xcstrings` for string resources with `NSLocalizedString("key", bundle: .module, comment: "")`
+- **Store module:** Uses runtime localization system (LocalizeKit) with full Bengali and Arabic translations
+- **Runtime system architecture:**
+  - TranslationRepository (Store module) fetches translations from server (currently stubbed in NetworkKit)
+  - LocalizationManager (LocalizeKit) handles version-aware caching, lookup, and language activation
+  - LocalizeKit has no NetworkKit dependency - pure localization logic
+  - LanguageSettingsViewModel coordinates language changes with cache-first strategy
+  - **Cache-First Flow:** Check cache version → If valid, use cache (instant) → If stale/missing, fetch from API
+  - **Permanent storage:** `Library/Application Support/LocalizeKit/Translations/`
+  - **Per-language versioning:** Each language tracks its own version (e.g., bn_BD: v12, ar_AE: v2)
+  - **Version comparison:** Cached file version vs server version → only fetch if mismatch
+  - **Cache states:** valid (instant load), stale (re-fetch), missing (fetch), corrupted (delete + re-fetch)
+  - CLDR-compliant plural support (all 6 categories)
+  - Custom plural rules (Vue-i18n style)
+  - Three-tier fallback: Server → Cache → English default in code
+  - **Crash-safe interpolation:** All `.localize(with:)` / `Text.localized(with:)` interpolation routes through `SafeFormat` (`Utils/SafeFormat.swift`), which parses the resolved format string (`Utils/FormatSpecifierParser.swift`, ported from the CLI linter) and validates each `CVarArg`'s runtime type against its specifier *before* calling `String(format:)`. On any mismatch (e.g. `%d` with a `Double`, `%@` with an `Int`, wrong argument count, `%s`, dynamic width, ambiguous `%C`) it logs via `LocalizeKitLogger.e` (DEBUG only) and returns the unformatted format string verbatim instead of trapping with `EXC_BAD_ACCESS`. This guards against broken server-pushed translations, not just code-side mistakes the CLI lint catches.
+  - Observable language changes with `.onLanguageChange()` modifier
+  - Language selection UI in ProfileSheet
+- **Translation files:** Located in `Translations/` directory (base.json for English source, bn.json, ar.json for target languages)
+  - **base.json** (source): Contains `version` (int), `language`, `generatedAt`, `modules`, and per-key `metadata` with version tracking
+  - **Target files** (bn.json, ar.json, etc.): Simplified format with only `version` (int) and `modules` - NO `language`, `generatedAt`, or `metadata` fields
+  - Target files are auto-generated by CLI merge command and should match `TargetTranslationFile` model structure
+- **CLI tool:** `Tools/LocalizeKit` - CLI for extracting, merging, validating, diffing, and linting translations
+- **CLI features:** Auto-versioning, per-key change tracking, multi-language batch operations, static lint of `.localize` call sites with literal classification via SwiftSyntax plus authoritative type resolution backed by Xcode's IndexStoreDB (requires a recent Xcode build; `--index-store-path` overrides auto-discovery)
+- **Usage:** See [LocalizeKit Runtime Guide](docs/LocalizeKit/LocalizeKitRuntime.md) and [LocalizeKit CLI Guide](docs/LocalizeKit/LocalizeKitCLI.md)
+
+**String Localization API:**
+```swift
+// Simple string
+"cart_title".localize(default: "Cart", comment: "Cart screen title")
+
+// With interpolation
+"greeting".localize(default: "Hello, %@!", comment: "Greeting", with: name)
+
+// With plurals
+"items_count".localize(
+    defaultPlural: [.one: "1 item", .other: "%d items"],
+    comment: "Item count",
+    count: itemCount,
+    with: itemCount
+)
+```
+
+**Module Detection:**
+- LocalizeKit automatically detects module name using Swift's `#fileID` compile-time literal
+- Keys are clean without module prefix (e.g., `"cart_title"` not `"store_cart_title"`)
+- Module extracted from file path: `Store/Sources/UI/CartScreen.swift` → `"Store"`
+- Zero runtime overhead, privacy-safe (no full paths exposed)
+
+**Translation Management Workflow:**
+1. Add `.localize()` calls in code with English defaults
+2. Lint call sites: `localizekit lint --project-path .` (catches arg-count/type mismatches before runtime)
+3. Extract strings: `localizekit extract --project-path .` (auto-increments version, creates/updates base.json)
+4. Create target languages: `localizekit merge --language bn --language ar` or `--all`
+5. Translate values in target JSON files (bn.json, ar.json)
+6. Validate: `localizekit validate --all`
+7. Preview changes: `localizekit diff --all`
+8. Upload JSON files to server or update stub data in `LocalizationAPI.swift`
+
+**LocalizeKit Source Organization:**
+```
+Targets/LocalizeKit/Sources/
+  ├── Core/           # LocalizationManager, LocalizationObserver
+  ├── Extensions/     # String+Localization, Text+Localization
+  ├── Models/         # PluralCategory, TranslationModels
+  ├── Storage/        # LocalizeKitStorage, TranslationStorage
+  └── Utils/          # Constants, LocalizeKitLogger
+```
+
+**LocalizeKit Key Features:**
+- **Fully Independent Module**: Zero dependencies on Core, SuperLog, or any other project modules
+- **Internal Utilities**:
+  - `Constants`: Centralized configuration for all default values (in `Utils/`)
+  - `LocalizeKitStorage`: Minimal UserDefaults accessor for language preferences (in `Storage/`)
+  - `LocalizeKitLogger`: DEBUG-only logging using OSLog (in `Utils/`)
+- No manual version specification (auto-managed integer versions)
+- `base.json` instead of `en.json` for source language
+- Per-key version tracking (tracks which keys changed)
+- Simplified target files (includes comments for translator context, no version metadata)
+- Smart merge based on version comparison
+- Comprehensive Swift unit tests using XCTest framework
+- Built-in test suite: `swift test --package-path Tools/LocalizeKit --disable-sandbox`
+- **Portable**: Can be copied to any Swift/iOS project or extracted as a standalone Swift Package
+
+**RTL (Right-to-Left) Support:**
+- **Automatic RTL Detection**: Detects RTL languages (Arabic, Hebrew, Urdu, Persian) based on configurable language prefixes
+- **Default RTL Languages**: `ar` (Arabic), `he` (Hebrew), `ur` (Urdu), `fa` (Persian/Farsi)
+- **Configurable RTL Languages**: Use `LocalizationManager.shared.configure(rtlLanguages:)` to customize which languages use RTL
+- **SwiftUI Integration**: Automatic `.environment(\.layoutDirection, ...)` applied via `.onLanguageChange()` modifier
+- **UIKit Integration**: Automatic `semanticContentAttribute` applied to all UIKit components (navigation bars, buttons, text fields, etc.)
+- **Persistent Storage**: Layout direction persisted to UserDefaults and automatically restored on app launch
+- **Properties Available**:
+  - `LocalizationManager.shared.isRightToLeft` - Boolean indicating if current language is RTL
+  - `LocalizationManager.shared.layoutDirection` - SwiftUI LayoutDirection (.leftToRight or .rightToLeft)
+  - `LocalizationManager.shared.rtlLanguages` - Configurable array of RTL language prefixes
+- **Usage**: Simply call `.onLanguageChange()` in your root view and RTL/LTR will be applied automatically when language changes
 
 ## Build Configuration
 

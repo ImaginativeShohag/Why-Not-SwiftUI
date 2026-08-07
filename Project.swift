@@ -5,7 +5,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-private let deploymentTargetVersion = "18.0"
+private let deploymentTargetVersion = "26.0"
 
 let project = Project.app(
     name: Constants.projectName,
@@ -112,7 +112,8 @@ let project = Project.app(
             hasResources: true,
             hasUnitTest: true,
             hasUITest: true,
-            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "Todo"), .target(name: "News"), .target(name: "Store")]
+            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "Todo"), .target(name: "News"), .target(name: "Store")],
+            uiTestDependencies: [.target(name: "TestUtils")]
         ),
         Module(
             name: "Todo",
@@ -130,12 +131,19 @@ let project = Project.app(
         ),
         Module(
             name: "Store",
-            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "NetworkKit"), .target(name: "NavigationKit")]
+            hasResources: true,
+            hasUITest: true,
+            dependencies: [.target(name: "Core"), .target(name: "CommonUI"), .target(name: "SuperLog"), .target(name: "NetworkKit"), .target(name: "NavigationKit"), .target(name: "LocalizeKit")],
+            uiTestDependencies: [.target(name: "TestUtils")]
         ),
         Module(
             name: "TestUtils",
             dependencies: [.target(name: "Core"), .target(name: "SuperLog"), .target(name: "NetworkKit"), .xctest],
             onlyForTestTarget: true
+        ),
+        Module(
+            name: "LocalizeKit",
+            hasUnitTest: true
         )
     ],
     externalDependencies: [

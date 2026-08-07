@@ -113,6 +113,14 @@ A beginner example for Maps in SwiftUI.
 
 Check out the "News" module to get an example of how to run a UI test using mock data.
 
+### LocalizeKit: Runtime Localization
+
+A fully independent runtime localization system with CLDR-compliant plurals, per-language version-aware caching, automatic RTL support, and crash-safe format interpolation. It ships with a companion CLI (`localizekit`) for extracting, merging, validating, diffing, and **linting** translation call sites. The `Store` module uses it for full Bengali and Arabic translations.
+
+- [LocalizeKit CLI (`Tools/LocalizeKit`)](Tools/LocalizeKit/README.md)
+- [LocalizeKit CLI Guide](docs/LocalizeKit/LocalizeKitCLI.md)
+- [LocalizeKit Runtime Guide](docs/LocalizeKit/LocalizeKitRuntime.md)
+
 ## Playground Books
 
 Check `Playgrounds` directory for the books.
@@ -226,6 +234,35 @@ tuist test 'WhyNotSwiftUI Development' \
     --skip-test-targets NetworkKitTests/NetworkProdTests
 ```
 
+## TODO
+
+```
+1. Inconsistent default text for same key (Bug)
+                                                                                                                                                                                                            
+  The key survey_answer_alert_answer_save_failed_title has two different default values used in the same file:                                                                                              
+                                                                                                                                                                                                            
+  - Line ~2228: default: "Failed to save the answer!"                                                                                                                                                       
+  - Line ~2577: default: "Answer save failed!"                                 
+                                                                                                                                                                                                            
+  Similarly, survey_answer_alert_error_title has:                                                                                                                                                           
+  - default: "Something went wrong!" in one place                                                                                                                                                           
+  - default: "Error" in another                                                                                                                                                                             
+                                                                               
+  Risk: If translations are missing, users will see inconsistent fallback text for the same scenario.                                                                                                       
+                                                                                                                                                                                                            
+  2. "OK" vs "Ok" inconsistency                                                                                                                                                                             
+                                                                                                                                                                                                            
+  survey_answer_button_ok uses default: "OK" in most places but default: "Ok" in two places (around lines 2531, 2630). Pick one casing and use it everywhere.   
+
+3. Duplicate localization keys for same concept
+
+  - survey_answer_button_cancel is used many times with identical text. This is fine for LocalizeKit's per-module approach but consider whether a shared key at a higher level (common_button_cancel) would
+  reduce translation effort.
+  - Same for survey_answer_button_ok, survey_answer_button_go_back, etc.
+
+4. `.onLanguageChange()` for sheets
+```
+
 ## Project Map
 
 ![Project Map](graph.png)
@@ -315,6 +352,7 @@ let image: UIImage = CoreAsset.exampleImage.image // Access from any target :)
 - [x] Add map example with current location access
 - [ ] Add example for FakeStoreAPI (https://fakestoreapi.com/)
 - [ ] Custom top appbar example
+- [ ] Add example from: [iOS 26 by Examples](https://github.com/artemnovichkov/iOS-26-by-Examples)
 
 ## Extensions
 

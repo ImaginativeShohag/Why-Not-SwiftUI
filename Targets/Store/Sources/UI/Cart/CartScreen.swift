@@ -4,6 +4,7 @@
 
 import Core
 import Kingfisher
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -19,11 +20,23 @@ struct CartScreen: View {
         NavigationViewStack {
             VStack(spacing: 0) {
                 if viewModel.cartManager.items.isEmpty {
-                    ContentUnavailableView(
-                        "Your Cart is Empty.",
-                        systemImage: "shippingbox",
-                        description: Text("Add some products to continue.")
-                    )
+                    ContentUnavailableView {
+                        Text.localized(
+                            "cart_empty_title",
+                            default: "Your Cart is Empty.",
+                            comment: "Title shown when cart has no items"
+                        )
+                        .accessibilityIdentifier("cart_empty_title")
+                    } description: {
+                        Text.localized(
+                            "cart_empty_description",
+                            default: "Add some products to continue.",
+                            comment: "Description for empty cart state"
+                        )
+                        .accessibilityIdentifier("cart_empty_description")
+                    } actions: {
+                        EmptyView()
+                    }
                 } else {
                     ScrollView {
                         VStack(spacing: 16) {
@@ -46,17 +59,22 @@ struct CartScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.systemGroupedBackground)
-            .navigationTitle("Cart")
+            .navigationTitle("cart_title".localize(default: "Cart", comment: "Cart screen title"))
             .safeAreaInset(edge: .bottom) {
                 VStack {
                     Divider()
 
                     HStack {
-                        Text("Total")
+                        Text.localized(
+                            "cart_total",
+                            default: "Total",
+                            comment: "Label for total price in cart"
+                        )
 
                         Spacer()
 
                         Text("$\(String(format: "%.2f", viewModel.totalPrice()))")
+                            .accessibilityIdentifier("cart_total_price")
                     }
                     .font(.title3.bold())
                     .padding(.horizontal)
@@ -66,10 +84,15 @@ struct CartScreen: View {
                         NavController.shared
                             .navigateTo(Destination.PlaceOrder())
                     } label: {
-                        Text("Check Out")
+                        Text.localized(
+                            "cart_checkout",
+                            default: "Check Out",
+                            comment: "Button to proceed to checkout"
+                        )
                             .font(.title3)
                             .frame(maxWidth: .infinity)
                     }
+                    .accessibilityIdentifier("checkout_button")
                     .buttonStyle(.borderedProminent)
                     .disabled(viewModel.cartManager.items.isEmpty)
                     .padding(.horizontal)
@@ -80,16 +103,19 @@ struct CartScreen: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Menu {
-                        Button("Orders") {
+                        Button("cart_menu_orders".localize(default: "Orders", comment: "Menu item to view orders")) {
                             NavController.shared.navigateTo(Destination.Orders())
                         }
+                        .accessibilityIdentifier("orders_menu_item")
                     } label: {
                         Image(systemName: "ellipsis.circle")
                             .font(.title2)
                             .foregroundColor(.primary)
                     }
+                    .accessibilityIdentifier("cart_menu_button")
                 }
             }
+            .onLanguageChange()
         }
     }
 }

@@ -3,6 +3,7 @@
 //
 
 import Kingfisher
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -26,11 +27,12 @@ struct CategoriesScreen: View {
                                 Label(message, systemImage: "exclamationmark.triangle")
                             },
                             actions: {
-                                Button("Retry") {
+                                Button("retry".localize(default: "Retry", comment: "Retry button text")) {
                                     Task {
                                         await viewModel.loadProducts(forced: true)
                                     }
                                 }
+                                .accessibilityIdentifier("retry_button")
                                 .buttonStyle(.borderedProminent)
                                 .padding(.top)
                             }
@@ -90,6 +92,7 @@ struct CategoriesScreen: View {
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
                                     }
                                     .buttonStyle(.plain)
+                                    .accessibilityIdentifier(category)
                                 }
                             }
                             .padding()
@@ -99,13 +102,14 @@ struct CategoriesScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.systemGroupedBackground)
-            .navigationTitle("Categories")
+            .navigationTitle("categories_title".localize(default: "Categories", comment: "Categories screen title"))
             .refreshable {
                 await viewModel.loadProducts(forced: true)
             }
             .task {
                 await viewModel.loadProducts()
             }
+            .onLanguageChange()
         }
     }
 }

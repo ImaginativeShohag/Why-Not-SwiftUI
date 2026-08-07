@@ -40,7 +40,7 @@ let package = Package(
         .package(url: "https://github.com/danielgindi/Charts", from: "5.0.0"),
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.3.0"),
         .package(url: "https://github.com/markiv/SwiftUI-Shimmer", from: "1.4.2"),
-        .package(url: "https://github.com/realm/realm-swift", from: "10.52.3"),
+        .package(url: "https://github.com/realm/realm-swift", from: "20.0.0"),
         .package(url: "https://github.com/gonzalezreal/swift-markdown-ui", from: "2.4.0"),
         .package(url: "https://github.com/siteline/swiftui-introspect", from: "1.1.2"),
     ]
