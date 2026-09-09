@@ -998,7 +998,7 @@ LocalizationManager.shared.activateLanguage(
 let manager = LocalizationManager.shared
 
 // Current language code
-let code = manager.currentLanguage  // e.g., "bn_BD"
+let code = manager.currentLanguageCode  // e.g., "bn_BD"
 
 // Current language name (in native locale)
 let name = manager.currentLanguageName  // e.g., "বাংলা"
@@ -1733,7 +1733,7 @@ public final class LocalizationManager {
     public static let shared: LocalizationManager
 
     // Observable Properties
-    public private(set) var currentLanguage: String
+    public private(set) var currentLanguageCode: String
     public private(set) var currentLanguageName: String
     public private(set) var currentCountry: String
     public private(set) var currentLanguageVersion: Int?

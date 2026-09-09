@@ -78,12 +78,7 @@ public actor TranslationStorage {
             }
         } catch {
             // File exists but couldn't be loaded (corrupted)
-            let fileURL = cacheDirectory.appendingPathComponent("\(language.code).json")
-            if fileManager.fileExists(atPath: fileURL.path) {
-                return .corrupted
-            } else {
-                return .missing
-            }
+            return .corrupted
         }
     }
 

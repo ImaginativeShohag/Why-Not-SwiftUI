@@ -224,7 +224,7 @@ extension Text {
         file: String = #fileID
     ) -> Text {
         // Resolve the plural format string first, then interpolate so the collected `arguments`
-        // array is applied via `String(format:arguments:)` rather than forwarded into a variadic.
+        // array is applied via `SafeFormat.string(format:arguments:)` rather than forwarded into a variadic.
         let format = key.localize(
             defaultPlural: defaultPlural,
             comment: comment,

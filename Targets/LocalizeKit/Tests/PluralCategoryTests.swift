@@ -62,7 +62,7 @@ final class PluralCategoryTests: XCTestCase {
     //   many: 11~26, 111, 1011, …
     //   other: 100~102, 200~202, 300~302, …
 
-    func testArabic_categories() {
+    func testArabic_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .zero),
             (1, .one),
@@ -81,7 +81,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "ar")
     }
 
-    func testArabic_boundaries() {
+    func testArabic_withBoundaryCounts_shouldReturnCorrectCategories() {
         // few ↔ many boundary
         assertCategory(.other, for: 102, language: "ar")   // n%100=2, not in 3..10
         assertCategory(.few, for: 103, language: "ar")     // n%100=3, start of few
@@ -95,13 +95,13 @@ final class PluralCategoryTests: XCTestCase {
         assertCategory(.other, for: 100, language: "ar")   // n%100=0 → other
     }
 
-    func testArabic_largeNumbers() {
+    func testArabic_withLargeCounts_shouldReturnCorrectCategories() {
         assertCategory(.other, for: 1_000_000, language: "ar")  // n%100=0 → other
         assertCategory(.many, for: 1_000_011, language: "ar")   // n%100=11 → many
         assertCategory(.few, for: 1_000_003, language: "ar")    // n%100=3 → few
     }
 
-    func testArabic_negativeNumbers() {
+    func testArabic_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "ar")
         assertCategory(.two, for: -2, language: "ar")
         assertCategory(.few, for: -3, language: "ar")
@@ -124,7 +124,7 @@ final class PluralCategoryTests: XCTestCase {
     //   few: 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …
     //   many: 0, 5~19, 100, 1000, …
 
-    func testBelarusian_categories() {
+    func testBelarusian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (1, .one), (21, .one), (31, .one), (101, .one), (1001, .one),
             (2, .few), (3, .few), (4, .few), (22, .few), (23, .few),
@@ -132,7 +132,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "be")
     }
 
-    func testBelarusian_negativeNumbers() {
+    func testBelarusian_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "be")
         assertCategory(.few, for: -2, language: "be")
         assertCategory(.many, for: -5, language: "be")
@@ -146,13 +146,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 0 or n = 1
     // Integer samples: one: 0, 1 | other: 2~17, 100, 1000, …
 
-    func testBengali_categories() {
+    func testBengali_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .one), (1, .one), (2, .other), (5, .other), (100, .other),
         ], language: "bn")
     }
 
-    func testBengali_negativeNumbers() {
+    func testBengali_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "bn")
         assertCategory(.other, for: -2, language: "bn")
         assertCategory(.other, for: -100, language: "bn")
@@ -165,7 +165,7 @@ final class PluralCategoryTests: XCTestCase {
     //        many → e = 0 and i ≠ 0 and i % 1000000 = 0 and v = 0
     // Integer samples: one: 1 | many: 1000000, … | other: 0, 2~16, 100, …
 
-    func testCatalan_categories() {
+    func testCatalan_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other),
             (1_000_000, .many), (5_000_000, .many),
@@ -173,7 +173,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "ca")
     }
 
-    func testCatalan_negativeNumbers() {
+    func testCatalan_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "ca")
         assertCategory(.other, for: -2, language: "ca")
         assertCategory(.many, for: -1_000_000, language: "ca")
@@ -185,13 +185,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: other (always — no plural distinction)
     // Integer samples: other: 0~15, 100, 1000, …
 
-    func testChinese_categories() {
+    func testChinese_withRepresentativeCounts_shouldReturnCorrectCategories() {
         for count in [0, 1, 2, 5, 10, 100, 1000] {
             assertCategory(.other, for: count, language: "zh")
         }
     }
 
-    func testChinese_negativeNumbers() {
+    func testChinese_withNegativeCounts_shouldReturnCorrectCategories() {
         for count in [-1, -5, -100] {
             assertCategory(.other, for: count, language: "zh")
         }
@@ -203,7 +203,7 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0; few → i = 2..4 and v = 0; other
     // Integer samples: one: 1 | few: 2~4 | other: 0, 5~19, 100, 1000, …
 
-    func testCzech_categories() {
+    func testCzech_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one),
             (2, .few), (3, .few), (4, .few),
@@ -211,14 +211,14 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "cs")
     }
 
-    func testCzech_boundaries() {
+    func testCzech_withBoundaryCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: 1, language: "cs")
         assertCategory(.few, for: 2, language: "cs")     // start of few
         assertCategory(.few, for: 4, language: "cs")     // end of few
         assertCategory(.other, for: 5, language: "cs")   // outside few
     }
 
-    func testCzech_negativeNumbers() {
+    func testCzech_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "cs")
         assertCategory(.few, for: -2, language: "cs")
         assertCategory(.few, for: -4, language: "cs")
@@ -233,13 +233,13 @@ final class PluralCategoryTests: XCTestCase {
     // For integers (t=0): effectively one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testDanish_categories() {
+    func testDanish_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (10, .other), (100, .other),
         ], language: "da")
     }
 
-    func testDanish_negativeNumbers() {
+    func testDanish_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "da")
         assertCategory(.other, for: -2, language: "da")
     }
@@ -250,13 +250,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testDutch_categories() {
+    func testDutch_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (50, .other),
         ], language: "nl")
     }
 
-    func testDutch_negativeNumbers() {
+    func testDutch_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "nl")
         assertCategory(.other, for: -2, language: "nl")
     }
@@ -267,7 +267,7 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0
     // Integer samples: one: 1 | other: 0, 2~16, 100, 1000, …
 
-    func testEnglish_categories() {
+    func testEnglish_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (5, .other),
             (10, .other), (16, .other), (21, .other),
@@ -275,7 +275,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "en")
     }
 
-    func testEnglish_negativeNumbers() {
+    func testEnglish_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "en")
         assertCategory(.other, for: -2, language: "en")
         assertCategory(.other, for: -5, language: "en")
@@ -288,13 +288,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testEstonian_categories() {
+    func testEstonian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (10, .other),
         ], language: "et")
     }
 
-    func testEstonian_negativeNumbers() {
+    func testEstonian_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "et")
         assertCategory(.other, for: -2, language: "et")
     }
@@ -305,13 +305,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testFaroese_categories() {
+    func testFaroese_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (100, .other),
         ], language: "fo")
     }
 
-    func testFaroese_negativeNumbers() {
+    func testFaroese_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "fo")
         assertCategory(.other, for: -2, language: "fo")
     }
@@ -322,13 +322,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testFinnish_categories() {
+    func testFinnish_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (15, .other),
         ], language: "fi")
     }
 
-    func testFinnish_negativeNumbers() {
+    func testFinnish_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "fi")
         assertCategory(.other, for: -2, language: "fi")
     }
@@ -340,7 +340,7 @@ final class PluralCategoryTests: XCTestCase {
     //        many → e = 0 and i ≠ 0 and i % 1000000 = 0 and v = 0
     // Integer samples: one: 0, 1 | many: 1000000, … | other: 2~17, 100, …
 
-    func testFrench_categories() {
+    func testFrench_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .one),
             (1, .one),
@@ -354,7 +354,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "fr")
     }
 
-    func testFrench_negativeNumbers() {
+    func testFrench_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "fr")
         assertCategory(.other, for: -2, language: "fr")
         assertCategory(.other, for: -5, language: "fr")
@@ -367,13 +367,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testGalician_categories() {
+    func testGalician_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (7, .other),
         ], language: "gl")
     }
 
-    func testGalician_negativeNumbers() {
+    func testGalician_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "gl")
         assertCategory(.other, for: -2, language: "gl")
     }
@@ -384,13 +384,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testGerman_categories() {
+    func testGerman_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (11, .other), (100, .other),
         ], language: "de")
     }
 
-    func testGerman_negativeNumbers() {
+    func testGerman_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "de")
         assertCategory(.other, for: -2, language: "de")
     }
@@ -401,13 +401,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 0 or n = 1
     // Integer samples: one: 0, 1 | other: 2~17, 100, …
 
-    func testGujarati_categories() {
+    func testGujarati_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .one), (1, .one), (2, .other), (50, .other),
         ], language: "gu")
     }
 
-    func testGujarati_negativeNumbers() {
+    func testGujarati_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "gu")
         assertCategory(.other, for: -2, language: "gu")
     }
@@ -418,13 +418,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 0 or n = 1
     // Integer samples: one: 0, 1 | other: 2~17, 100, 1000, …
 
-    func testHindi_categories() {
+    func testHindi_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .one), (1, .one), (2, .other), (10, .other), (1000, .other),
         ], language: "hi")
     }
 
-    func testHindi_negativeNumbers() {
+    func testHindi_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "hi")
         assertCategory(.other, for: -2, language: "hi")
     }
@@ -435,13 +435,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, 1000, …
 
-    func testHungarian_categories() {
+    func testHungarian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (1000, .other),
         ], language: "hu")
     }
 
-    func testHungarian_negativeNumbers() {
+    func testHungarian_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "hu")
         assertCategory(.other, for: -2, language: "hu")
     }
@@ -454,7 +454,7 @@ final class PluralCategoryTests: XCTestCase {
     // Integer samples: one: 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …
     //                  other: 0, 2~16, 100, 1000, …
 
-    func testIcelandic_categories() {
+    func testIcelandic_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other),
             (1, .one),       // i%10=1, i%100=1 ≠ 11
@@ -480,7 +480,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "is")
     }
 
-    func testIcelandic_negativeNumbers() {
+    func testIcelandic_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "is")
         assertCategory(.other, for: -2, language: "is")
         assertCategory(.other, for: -11, language: "is")
@@ -495,13 +495,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: other (always — no plural distinction)
     // Integer samples: other: 0~15, 100, 1000, …
 
-    func testIndonesian_categories() {
+    func testIndonesian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         for count in [0, 1, 2, 10, 100] {
             assertCategory(.other, for: count, language: "id")
         }
     }
 
-    func testIndonesian_negativeNumbers() {
+    func testIndonesian_withNegativeCounts_shouldReturnCorrectCategories() {
         for count in [-1, -5, -100] {
             assertCategory(.other, for: count, language: "id")
         }
@@ -516,7 +516,7 @@ final class PluralCategoryTests: XCTestCase {
     //   one: 1 | two: 2 | few: 3~6 | many: 7~10
     //   other: 0, 11~25, 100, 1000, …
 
-    func testIrish_categories() {
+    func testIrish_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other),
             (1, .one), (2, .two),
@@ -526,7 +526,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "ga")
     }
 
-    func testIrish_boundaries() {
+    func testIrish_withBoundaryCounts_shouldReturnCorrectCategories() {
         assertCategory(.two, for: 2, language: "ga")
         assertCategory(.few, for: 3, language: "ga")       // start of few
         assertCategory(.few, for: 6, language: "ga")       // end of few
@@ -535,7 +535,7 @@ final class PluralCategoryTests: XCTestCase {
         assertCategory(.other, for: 11, language: "ga")    // outside many
     }
 
-    func testIrish_negativeNumbers() {
+    func testIrish_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "ga")
         assertCategory(.two, for: -2, language: "ga")
         assertCategory(.few, for: -3, language: "ga")
@@ -552,7 +552,7 @@ final class PluralCategoryTests: XCTestCase {
     //        many → e = 0 and i ≠ 0 and i % 1000000 = 0 and v = 0
     // Integer samples: one: 1 | many: 1000000, … | other: 0, 2~16, 100, …
 
-    func testItalian_categories() {
+    func testItalian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other),
             (1, .one),
@@ -569,7 +569,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "it")
     }
 
-    func testItalian_negativeNumbers() {
+    func testItalian_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "it")
         assertCategory(.other, for: -2, language: "it")
         assertCategory(.many, for: -1_000_000, language: "it")
@@ -582,13 +582,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: other (always — no plural distinction)
     // Integer samples: other: 0~15, 100, 1000, …
 
-    func testJapanese_categories() {
+    func testJapanese_withRepresentativeCounts_shouldReturnCorrectCategories() {
         for count in [0, 1, 2, 5, 10, 100, 1000] {
             assertCategory(.other, for: count, language: "ja")
         }
     }
 
-    func testJapanese_negativeNumbers() {
+    func testJapanese_withNegativeCounts_shouldReturnCorrectCategories() {
         for count in [-1, -5, -100] {
             assertCategory(.other, for: count, language: "ja")
         }
@@ -600,13 +600,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: other (always — no plural distinction)
     // Integer samples: other: 0~15, 100, 1000, …
 
-    func testKorean_categories() {
+    func testKorean_withRepresentativeCounts_shouldReturnCorrectCategories() {
         for count in [0, 1, 2, 5, 10, 100, 1000] {
             assertCategory(.other, for: count, language: "ko")
         }
     }
 
-    func testKorean_negativeNumbers() {
+    func testKorean_withNegativeCounts_shouldReturnCorrectCategories() {
         for count in [-1, -5, -100] {
             assertCategory(.other, for: count, language: "ko")
         }
@@ -618,13 +618,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testLuxembourgish_categories() {
+    func testLuxembourgish_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (50, .other),
         ], language: "lb")
     }
 
-    func testLuxembourgish_negativeNumbers() {
+    func testLuxembourgish_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "lb")
         assertCategory(.other, for: -2, language: "lb")
     }
@@ -635,13 +635,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: other (always — no plural distinction)
     // Integer samples: other: 0~15, 100, 1000, …
 
-    func testMalay_categories() {
+    func testMalay_withRepresentativeCounts_shouldReturnCorrectCategories() {
         for count in [0, 1, 2, 10, 100] {
             assertCategory(.other, for: count, language: "ms")
         }
     }
 
-    func testMalay_negativeNumbers() {
+    func testMalay_withNegativeCounts_shouldReturnCorrectCategories() {
         for count in [-1, -5, -100] {
             assertCategory(.other, for: count, language: "ms")
         }
@@ -653,13 +653,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testMalayalam_categories() {
+    func testMalayalam_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (25, .other),
         ], language: "ml")
     }
 
-    func testMalayalam_negativeNumbers() {
+    func testMalayalam_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "ml")
         assertCategory(.other, for: -2, language: "ml")
     }
@@ -671,7 +671,7 @@ final class PluralCategoryTests: XCTestCase {
     // Same CLDR group as fo, hu, lb, ml, ta, te, tr
     // Integer samples: one: 1 | other: 0, 2~16, 100, 1000, …
 
-    func testMarathi_categories() {
+    func testMarathi_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other),
             (1, .one),
@@ -682,7 +682,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "mr")
     }
 
-    func testMarathi_negativeNumbers() {
+    func testMarathi_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "mr")
         assertCategory(.other, for: -2, language: "mr")
         assertCategory(.other, for: -100, language: "mr")
@@ -697,7 +697,7 @@ final class PluralCategoryTests: XCTestCase {
     // For integers: few → n = 0 or (n ≠ 1 and n % 100 = 1..19)
     // Integer samples: one: 1 | few: 0, 2~16, 101, 1001, … | other: 20~35, 100, …
 
-    func testMoldovan_categories() {
+    func testMoldovan_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .few), (1, .one),
             (2, .few), (19, .few),
@@ -708,7 +708,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "mo")
     }
 
-    func testMoldovan_negativeNumbers() {
+    func testMoldovan_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "mo")
         assertCategory(.few, for: -2, language: "mo")
         assertCategory(.other, for: -20, language: "mo")
@@ -721,13 +721,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testNorwegian_categories() {
+    func testNorwegian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (100, .other),
         ], language: "no")
     }
 
-    func testNorwegian_negativeNumbers() {
+    func testNorwegian_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "no")
         assertCategory(.other, for: -2, language: "no")
     }
@@ -738,13 +738,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testNorwegianBokmal_categories() {
+    func testNorwegianBokmal_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (100, .other),
         ], language: "nb")
     }
 
-    func testNorwegianBokmal_negativeNumbers() {
+    func testNorwegianBokmal_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "nb")
         assertCategory(.other, for: -2, language: "nb")
     }
@@ -755,13 +755,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testNorwegianNynorsk_categories() {
+    func testNorwegianNynorsk_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (100, .other),
         ], language: "nn")
     }
 
-    func testNorwegianNynorsk_negativeNumbers() {
+    func testNorwegianNynorsk_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "nn")
         assertCategory(.other, for: -2, language: "nn")
     }
@@ -772,13 +772,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 0 or n = 1
     // Integer samples: one: 0, 1 | other: 2~17, 100, …
 
-    func testPersian_categories() {
+    func testPersian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .one), (1, .one), (2, .other), (10, .other), (100, .other),
         ], language: "fa")
     }
 
-    func testPersian_negativeNumbers() {
+    func testPersian_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "fa")
         assertCategory(.other, for: -2, language: "fa")
         assertCategory(.other, for: -100, language: "fa")
@@ -794,7 +794,7 @@ final class PluralCategoryTests: XCTestCase {
     // Integer samples:
     //   one: 1 | few: 2~4, 22~24, 32~34, … | many: 0, 5~19, 100, 1000, …
 
-    func testPolish_categories() {
+    func testPolish_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (1, .one),
             // few: i%10=2..4, i%100≠12..14
@@ -812,7 +812,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "pl")
     }
 
-    func testPolish_boundaries() {
+    func testPolish_withBoundaryCounts_shouldReturnCorrectCategories() {
         // 12-14 override mod10 rules
         assertCategory(.many, for: 12, language: "pl")
         assertCategory(.many, for: 13, language: "pl")
@@ -826,14 +826,14 @@ final class PluralCategoryTests: XCTestCase {
         assertCategory(.few, for: 24, language: "pl")
     }
 
-    func testPolish_largeNumbers() {
+    func testPolish_withLargeCounts_shouldReturnCorrectCategories() {
         assertCategory(.many, for: 1_000_001, language: "pl")   // i≠1, i%10=1 → many
         assertCategory(.few, for: 1_000_002, language: "pl")    // i%10=2, i%100=2 → few
         assertCategory(.many, for: 1_000_000, language: "pl")   // i%10=0 → many
         assertCategory(.many, for: 1_000_012, language: "pl")   // i%100=12 → many
     }
 
-    func testPolish_negativeNumbers() {
+    func testPolish_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "pl")
         assertCategory(.few, for: -2, language: "pl")
         assertCategory(.few, for: -3, language: "pl")
@@ -849,7 +849,7 @@ final class PluralCategoryTests: XCTestCase {
     //        many → e = 0 and i ≠ 0 and i % 1000000 = 0 and v = 0
     // Integer samples: one: 0, 1 | many: 1000000, … | other: 2~17, 100, …
 
-    func testPortuguese_categories() {
+    func testPortuguese_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .one),
             (1, .one),
@@ -863,7 +863,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "pt")
     }
 
-    func testPortuguese_negativeNumbers() {
+    func testPortuguese_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "pt")
         assertCategory(.other, for: -2, language: "pt")
         assertCategory(.many, for: -1_000_000, language: "pt")
@@ -875,13 +875,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 0..1
     // Integer samples: one: 0, 1 | other: 2~17, 100, …
 
-    func testPunjabi_categories() {
+    func testPunjabi_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .one), (1, .one), (2, .other), (99, .other),
         ], language: "pa")
     }
 
-    func testPunjabi_negativeNumbers() {
+    func testPunjabi_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "pa")
         assertCategory(.other, for: -2, language: "pa")
     }
@@ -903,7 +903,7 @@ final class PluralCategoryTests: XCTestCase {
     //       So 101 (n%100=1) is "few", NOT "other".
     //       Only n%100=0 and n%100=20..99 map to "other".
 
-    func testRomanian_categories() {
+    func testRomanian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .few),              // n=0 → few
             (1, .one),              // i=1 → one
@@ -925,7 +925,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "ro")
     }
 
-    func testRomanian_boundaries() {
+    func testRomanian_withBoundaryCounts_shouldReturnCorrectCategories() {
         assertCategory(.few, for: 0, language: "ro")      // n=0 → few
         assertCategory(.one, for: 1, language: "ro")      // i=1 → one
         assertCategory(.few, for: 2, language: "ro")      // n%100=2, in 1..19
@@ -936,7 +936,7 @@ final class PluralCategoryTests: XCTestCase {
         assertCategory(.few, for: 102, language: "ro")    // n%100=2 → few
     }
 
-    func testRomanian_negativeNumbers() {
+    func testRomanian_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "ro")
         assertCategory(.few, for: -2, language: "ro")
         assertCategory(.few, for: -19, language: "ro")
@@ -957,7 +957,7 @@ final class PluralCategoryTests: XCTestCase {
     //   few: 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …
     //   many: 0, 5~19, 100, 1000, 10000, …
 
-    func testRussian_categories() {
+    func testRussian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             // one: i%10=1, i%100≠11
             (1, .one), (21, .one), (31, .one), (41, .one), (51, .one),
@@ -974,7 +974,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "ru")
     }
 
-    func testRussian_boundaries() {
+    func testRussian_withBoundaryCounts_shouldReturnCorrectCategories() {
         // 11-14 override the mod10 rules
         // i%10=1 but i%100=11 → many (not one)
         assertCategory(.many, for: 11, language: "ru")
@@ -995,14 +995,14 @@ final class PluralCategoryTests: XCTestCase {
         assertCategory(.few, for: 124, language: "ru")
     }
 
-    func testRussian_largeNumbers() {
+    func testRussian_withLargeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: 1_000_001, language: "ru")    // i%10=1, i%100=1 → one
         assertCategory(.few, for: 1_000_002, language: "ru")    // i%10=2, i%100=2 → few
         assertCategory(.many, for: 1_000_000, language: "ru")   // i%10=0 → many
         assertCategory(.many, for: 1_000_011, language: "ru")   // i%100=11 → many
     }
 
-    func testRussian_negativeNumbers() {
+    func testRussian_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "ru")
         assertCategory(.few, for: -2, language: "ru")
         assertCategory(.few, for: -3, language: "ru")
@@ -1020,7 +1020,7 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0; few → i = 2..4 and v = 0; other
     // Integer samples: one: 1 | few: 2~4 | other: 0, 5~19, 100, …
 
-    func testSlovak_categories() {
+    func testSlovak_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one),
             (2, .few), (3, .few), (4, .few),
@@ -1028,7 +1028,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "sk")
     }
 
-    func testSlovak_negativeNumbers() {
+    func testSlovak_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "sk")
         assertCategory(.few, for: -2, language: "sk")
         assertCategory(.few, for: -4, language: "sk")
@@ -1042,7 +1042,7 @@ final class PluralCategoryTests: XCTestCase {
     //        many → e = 0 and i ≠ 0 and i % 1000000 = 0 and v = 0
     // Integer samples: one: 1 | many: 1000000, … | other: 0, 2~16, 100, …
 
-    func testSpanish_categories() {
+    func testSpanish_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other),
             (1_000_000, .many), (2_000_000, .many),
@@ -1050,7 +1050,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "es")
     }
 
-    func testSpanish_negativeNumbers() {
+    func testSpanish_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "es")
         assertCategory(.other, for: -2, language: "es")
         assertCategory(.many, for: -1_000_000, language: "es")
@@ -1062,13 +1062,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testSwahili_categories() {
+    func testSwahili_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (99, .other),
         ], language: "sw")
     }
 
-    func testSwahili_negativeNumbers() {
+    func testSwahili_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "sw")
         assertCategory(.other, for: -2, language: "sw")
     }
@@ -1079,13 +1079,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testSwedish_categories() {
+    func testSwedish_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (99, .other),
         ], language: "sv")
     }
 
-    func testSwedish_negativeNumbers() {
+    func testSwedish_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "sv")
         assertCategory(.other, for: -2, language: "sv")
     }
@@ -1096,13 +1096,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testTamil_categories() {
+    func testTamil_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (33, .other),
         ], language: "ta")
     }
 
-    func testTamil_negativeNumbers() {
+    func testTamil_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "ta")
         assertCategory(.other, for: -2, language: "ta")
     }
@@ -1113,13 +1113,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testTelugu_categories() {
+    func testTelugu_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (44, .other),
         ], language: "te")
     }
 
-    func testTelugu_negativeNumbers() {
+    func testTelugu_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "te")
         assertCategory(.other, for: -2, language: "te")
     }
@@ -1130,13 +1130,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: other (always — no plural distinction)
     // Integer samples: other: 0~15, 100, 1000, …
 
-    func testThai_categories() {
+    func testThai_withRepresentativeCounts_shouldReturnCorrectCategories() {
         for count in [0, 1, 2, 10, 100] {
             assertCategory(.other, for: count, language: "th")
         }
     }
 
-    func testThai_negativeNumbers() {
+    func testThai_withNegativeCounts_shouldReturnCorrectCategories() {
         for count in [-1, -5, -100] {
             assertCategory(.other, for: count, language: "th")
         }
@@ -1148,13 +1148,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → n = 1
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testTurkish_categories() {
+    func testTurkish_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (5, .other), (100, .other),
         ], language: "tr")
     }
 
-    func testTurkish_negativeNumbers() {
+    func testTurkish_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "tr")
         assertCategory(.other, for: -2, language: "tr")
     }
@@ -1169,7 +1169,7 @@ final class PluralCategoryTests: XCTestCase {
     // Integer samples:
     //   one: 1, 21, 31, … | few: 2~4, 22~24, … | many: 0, 5~19, 100, …
 
-    func testUkrainian_categories() {
+    func testUkrainian_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (1, .one), (21, .one), (101, .one),
             (2, .few), (3, .few), (4, .few), (22, .few),
@@ -1177,7 +1177,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "uk")
     }
 
-    func testUkrainian_negativeNumbers() {
+    func testUkrainian_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "uk")
         assertCategory(.few, for: -2, language: "uk")
         assertCategory(.many, for: -5, language: "uk")
@@ -1191,13 +1191,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 1 and v = 0
     // Integer samples: one: 1 | other: 0, 2~16, 100, …
 
-    func testUrdu_categories() {
+    func testUrdu_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (50, .other),
         ], language: "ur")
     }
 
-    func testUrdu_negativeNumbers() {
+    func testUrdu_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "ur")
         assertCategory(.other, for: -2, language: "ur")
     }
@@ -1208,13 +1208,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: other (always — no plural distinction)
     // Integer samples: other: 0~15, 100, 1000, …
 
-    func testVietnamese_categories() {
+    func testVietnamese_withRepresentativeCounts_shouldReturnCorrectCategories() {
         for count in [0, 1, 2, 10, 100] {
             assertCategory(.other, for: count, language: "vi")
         }
     }
 
-    func testVietnamese_negativeNumbers() {
+    func testVietnamese_withNegativeCounts_shouldReturnCorrectCategories() {
         for count in [-1, -5, -100] {
             assertCategory(.other, for: count, language: "vi")
         }
@@ -1229,7 +1229,7 @@ final class PluralCategoryTests: XCTestCase {
     //   zero: 0 | one: 1 | two: 2 | few: 3 | many: 6
     //   other: 4, 5, 7~20, 100, 1000, …
 
-    func testWelsh_categories() {
+    func testWelsh_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .zero), (1, .one), (2, .two), (3, .few),
             (4, .other), (5, .other), (6, .many),
@@ -1238,7 +1238,7 @@ final class PluralCategoryTests: XCTestCase {
         ], language: "cy")
     }
 
-    func testWelsh_negativeNumbers() {
+    func testWelsh_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "cy")
         assertCategory(.two, for: -2, language: "cy")
         assertCategory(.few, for: -3, language: "cy")
@@ -1253,13 +1253,13 @@ final class PluralCategoryTests: XCTestCase {
     // CLDR: one → i = 0 or n = 1
     // Integer samples: one: 0, 1 | other: 2~17, 100, …
 
-    func testZulu_categories() {
+    func testZulu_withRepresentativeCounts_shouldReturnCorrectCategories() {
         assertCategories([
             (0, .one), (1, .one), (2, .other), (20, .other),
         ], language: "zu")
     }
 
-    func testZulu_negativeNumbers() {
+    func testZulu_withNegativeCounts_shouldReturnCorrectCategories() {
         assertCategory(.one, for: -1, language: "zu")
         assertCategory(.other, for: -2, language: "zu")
     }
@@ -1269,19 +1269,19 @@ final class PluralCategoryTests: XCTestCase {
     // ==========================================
     // Unknown languages should fall back to CLDR default: one (n=1), other.
 
-    func testDefaultFallback_unknownLanguage() {
+    func testDefaultFallback_withUnknownLanguage_shouldReturnDefaultCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other), (10, .other), (100, .other),
         ], language: "xx")
     }
 
-    func testDefaultFallback_anotherUnknownLanguage() {
+    func testDefaultFallback_withAnotherUnknownLanguage_shouldReturnDefaultCategories() {
         assertCategories([
             (0, .other), (1, .one), (2, .other),
         ], language: "zzz")
     }
 
-    func testDefaultFallback_negativeNumbers() {
+    func testDefaultFallback_withNegativeCounts_shouldReturnDefaultCategories() {
         assertCategory(.one, for: -1, language: "xx")
         assertCategory(.other, for: -2, language: "xx")
     }
@@ -1290,25 +1290,25 @@ final class PluralCategoryTests: XCTestCase {
     // MARK: - Custom Plural Rules
     // ==========================================
 
-    func testCustomRule_overridesBuiltIn() {
+    func testCustomRule_withCustomRuleForLanguage_shouldOverrideBuiltIn() {
         let customRule: PluralRule = { _, _ in 0 }
         let result = PluralCategory.category(for: 5, locale: locale("en"), customRules: ["en": customRule])
         XCTAssertEqual(result, .zero)
     }
 
-    func testCustomRule_indexClamping_tooHigh() {
+    func testCustomRule_withIndexAboveValidRange_shouldClampToOther() {
         let customRule: PluralRule = { _, _ in 999 }
         let result = PluralCategory.category(for: 1, locale: locale("en"), customRules: ["en": customRule])
         XCTAssertEqual(result, .other) // clamped to index 5
     }
 
-    func testCustomRule_indexClamping_negative() {
+    func testCustomRule_withNegativeIndex_shouldClampToZero() {
         let customRule: PluralRule = { _, _ in -5 }
         let result = PluralCategory.category(for: 1, locale: locale("en"), customRules: ["en": customRule])
         XCTAssertEqual(result, .zero) // clamped to index 0
     }
 
-    func testCustomRule_onlyAffectsTargetLanguage() {
+    func testCustomRule_withRuleForSingleLanguage_shouldNotAffectOtherLanguages() {
         let customRule: PluralRule = { _, _ in 0 }
         let rules = ["fr": customRule]
 
@@ -1319,7 +1319,7 @@ final class PluralCategoryTests: XCTestCase {
         XCTAssertEqual(frResult, .zero, "French should use custom rule")
     }
 
-    func testCustomRule_receivesCorrectParameters() {
+    func testCustomRule_whenInvoked_shouldReceiveCountAndCategoryCount() {
         var capturedChoice: Int?
         var capturedLength: Int?
         let customRule: PluralRule = { choice, length in
@@ -1337,13 +1337,13 @@ final class PluralCategoryTests: XCTestCase {
     // MARK: - PluralCategory Type Tests
     // ==========================================
 
-    func testCaseIterable_allCases() {
+    func testCaseIterable_whenAccessed_shouldReturnAllSixCategoriesInOrder() {
         let allCases = PluralCategory.allCases
         XCTAssertEqual(allCases.count, 6)
         XCTAssertEqual(allCases, [.zero, .one, .two, .few, .many, .other])
     }
 
-    func testCodable_roundTrip() throws {
+    func testCodable_whenEncodedAndDecoded_shouldReturnEqualValue() throws {
         for category in PluralCategory.allCases {
             let data = try JSONEncoder().encode(category)
             let decoded = try JSONDecoder().decode(PluralCategory.self, from: data)
@@ -1351,12 +1351,57 @@ final class PluralCategoryTests: XCTestCase {
         }
     }
 
-    func testRawValue_strings() {
+    func testRawValue_whenAccessed_shouldReturnLowercasedCategoryName() {
         XCTAssertEqual(PluralCategory.zero.rawValue, "zero")
         XCTAssertEqual(PluralCategory.one.rawValue, "one")
         XCTAssertEqual(PluralCategory.two.rawValue, "two")
         XCTAssertEqual(PluralCategory.few.rawValue, "few")
         XCTAssertEqual(PluralCategory.many.rawValue, "many")
         XCTAssertEqual(PluralCategory.other.rawValue, "other")
+    }
+
+    // ==========================================
+    // MARK: - Extreme Values (Int.min / Int.max)
+    // ==========================================
+    // Guards the overflow when normalizing negatives: `abs(Int.min)` traps
+    // because |Int.min| > Int.max, so `builtInCategory` uses `count.magnitude`.
+    // Int.max   = 9223372036854775807 → n%100 = 7, n%10 = 7
+    // |Int.min| = 9223372036854775808 → n%100 = 8, n%10 = 8
+
+    func testCategory_withIntMax_shouldReturnCorrectCategoryPerLanguage() {
+        assertCategory(.other, for: Int.max, language: "en")  // n ≠ 1 → other
+        assertCategory(.few, for: Int.max, language: "ar")    // n%100 = 7 → few
+        assertCategory(.many, for: Int.max, language: "ru")   // n%10 = 7 → many
+        assertCategory(.many, for: Int.max, language: "pl")   // n%10 = 7 → many
+        assertCategory(.other, for: Int.max, language: "ja")  // no plural distinction
+    }
+
+    func testCategory_withIntMin_shouldNotTrapAndReturnCorrectCategoryPerLanguage() {
+        // Regression: `abs(Int.min)` would trap; `count.magnitude` must not.
+        assertCategory(.other, for: Int.min, language: "en")  // |n| ≠ 1 → other
+        assertCategory(.few, for: Int.min, language: "ar")    // |n|%100 = 8 → few
+        assertCategory(.many, for: Int.min, language: "ru")   // |n|%10 = 8 → many
+        assertCategory(.many, for: Int.min, language: "pl")   // |n|%10 = 8 → many
+        assertCategory(.other, for: Int.min, language: "ja")  // no plural distinction
+    }
+
+    // ==========================================
+    // MARK: - Regional Locale Identifiers
+    // ==========================================
+    // LocalizationManager activates languages with regional codes ("ar_AE", "en_US"),
+    // but `category(for:locale:)` extracts `locale.language.languageCode?.identifier`,
+    // which must resolve the base language ("ar") so regional variants apply the same
+    // CLDR rules as their bare code. Arabic is used because its categories (zero/two/
+    // few/many) are the most distinctive — a failure to strip the region would fall
+    // through to the default English-style rules and be caught here. Expected values
+    // mirror the bare-code Arabic section.
+
+    func testArabicRegional_withRegionalIdentifier_shouldUseArabicRules() {
+        assertCategories([
+            (0, .zero), (1, .one), (2, .two),
+            (3, .few), (10, .few),
+            (11, .many), (99, .many),
+            (100, .other),
+        ], language: "ar_AE")
     }
 }
