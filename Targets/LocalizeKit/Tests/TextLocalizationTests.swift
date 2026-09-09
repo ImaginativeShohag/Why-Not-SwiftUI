@@ -23,6 +23,17 @@ final class TextLocalizationTests: XCTestCase {
         await LocalizationManager.shared.clearCache()
         // Reset custom plural rules so built-in CLDR rules are used.
         LocalizationManager.shared.configure(pluralRules: [:])
+        // Reset the active language to an English baseline. LocalizationManager is a
+        // shared singleton, so a test that activates another language (e.g. Spanish) would
+        // otherwise leak into later tests. Plural resolution follows currentLanguageCode,
+        // so tests asserting English CLDR forms depend on this deterministic reset.
+        LocalizationManager.shared.activateLanguage(
+            languageCode: Constants.defaultLanguageCode,
+            languageName: Constants.defaultLanguageName,
+            country: Constants.defaultCountry,
+            version: 0,
+            translationFile: TranslationFile(modules: [:])
+        )
     }
 
     override func tearDown() async throws {
@@ -134,7 +145,7 @@ final class TextLocalizationTests: XCTestCase {
 
     // MARK: - Single Interpolation Tests
 
-    func testLocalizedWithSingleArg_StringPlaceholder() {
+    func testLocalizedWithSingleArg_WhenTranslationExists_InterpolatesStringArgument() {
         // Given.
         setupMockTranslations()
 
@@ -145,7 +156,7 @@ final class TextLocalizationTests: XCTestCase {
         XCTAssertEqual(result, expectedText("Hello, John! Welcome."))
     }
 
-    func testLocalizedWithSingleArg_IntPlaceholder() {
+    func testLocalizedWithSingleArg_WhenUsingDefault_InterpolatesIntArgument() {
         // Given - no translations, uses default.
         // When.
         let result = Text.localized("count", default: "You have %d messages", with: 42, file: storeModuleFile)
@@ -165,7 +176,7 @@ final class TextLocalizationTests: XCTestCase {
 
     // MARK: - Multiple Interpolation Tests
 
-    func testLocalizedWithMultipleArgs_ReplacesAllPlaceholders() {
+    func testLocalizedWithMultipleArgs_WhenTranslationExists_ReplacesAllPlaceholders() {
         // Given.
         setupMockTranslations()
 
@@ -181,7 +192,7 @@ final class TextLocalizationTests: XCTestCase {
         XCTAssertEqual(result, expectedText("Order #ABC123 has 5 items"))
     }
 
-    func testLocalizedWithMultipleArgs_MixedTypes() {
+    func testLocalizedWithMultipleArgs_WhenUsingDefaultWithMixedTypes_ReplacesAllPlaceholders() {
         // Given - no translations, uses default.
         // When.
         let result = Text.localized(
@@ -207,6 +218,21 @@ final class TextLocalizationTests: XCTestCase {
 
         // Then.
         XCTAssertEqual(result, expectedText("Hello Charlie, you have 10 new messages"))
+    }
+
+    func testLocalizedWithMultipleArgs_WhenArgumentTypeMismatched_FallsBackToVerbatimFormat() {
+        // Given - the %d specifier expects a fixed-width integer, but a String is supplied.
+        // SafeFormat must degrade to the unformatted format string rather than crash.
+        // When.
+        let result = Text.localized(
+            "order_summary",
+            default: "Order #%@ has %d items",
+            with: "ABC123", "not a number",
+            file: storeModuleFile
+        )
+
+        // Then.
+        XCTAssertEqual(result, expectedText("Order #%@ has %d items"))
     }
 
     // MARK: - Plural Localization Tests
@@ -241,6 +267,23 @@ final class TextLocalizationTests: XCTestCase {
         XCTAssertEqual(result, expectedText("Multiple items"))
     }
 
+    func testPluralLocalized_ZeroCount_ReturnsOtherFormUnderDefaultEnglishRule() {
+        // Given - English's built-in CLDR rule has no dedicated zero form: count == 0 resolves
+        // to .other, not .zero (see PluralCategory.builtInCategory). The .zero entry below is
+        // present only to prove it is NOT the one selected.
+        let defaultPlural: [PluralCategory: String] = [
+            .zero: "Cart is empty",
+            .one: "One item",
+            .other: "Multiple items"
+        ]
+
+        // When.
+        let result = Text.localized("items", defaultPlural: defaultPlural, count: 0, file: storeModuleFile)
+
+        // Then.
+        XCTAssertEqual(result, expectedText("Multiple items"))
+    }
+
     func testPluralLocalized_TranslationExists_OneForm() {
         // Given.
         setupMockTranslations()
@@ -259,7 +302,7 @@ final class TextLocalizationTests: XCTestCase {
 
     // MARK: - Plural with Single Interpolation Tests
 
-    func testPluralLocalizedWithSingleArg_OneCount() {
+    func testPluralLocalizedWithSingleArg_WhenCountIsOne_ReturnsOneForm() {
         // Given - using default plurals.
         let defaultPlural: [PluralCategory: String] = [
             .zero: "No apples",
@@ -280,7 +323,7 @@ final class TextLocalizationTests: XCTestCase {
         XCTAssertEqual(result, expectedText("1 apple"))
     }
 
-    func testPluralLocalizedWithSingleArg_MultipleCount() {
+    func testPluralLocalizedWithSingleArg_WhenCountIsMany_ReturnsOtherForm() {
         // Given - using default plurals.
         let defaultPlural: [PluralCategory: String] = [
             .zero: "No apples",
@@ -301,7 +344,7 @@ final class TextLocalizationTests: XCTestCase {
         XCTAssertEqual(result, expectedText("10 apples"))
     }
 
-    func testPluralLocalizedWithSingleArg_TranslationExists() {
+    func testPluralLocalizedWithSingleArg_WhenTranslationExists_ReturnsOtherForm() {
         // Given.
         setupMockTranslations()
         let defaultPlural: [PluralCategory: String] = [
@@ -325,7 +368,7 @@ final class TextLocalizationTests: XCTestCase {
 
     // MARK: - Plural with Multiple Interpolation Tests
 
-    func testPluralLocalizedWithMultipleArgs_OneCount() {
+    func testPluralLocalizedWithMultipleArgs_WhenCountIsOne_ReturnsOneForm() {
         // Given - using default plurals.
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Your cart is empty",
@@ -346,7 +389,7 @@ final class TextLocalizationTests: XCTestCase {
         XCTAssertEqual(result, expectedText("You have 1 item worth $25.00"))
     }
 
-    func testPluralLocalizedWithMultipleArgs_MultipleCount() {
+    func testPluralLocalizedWithMultipleArgs_WhenCountIsMany_ReturnsOtherForm() {
         // Given - using default plurals.
         let defaultPlural: [PluralCategory: String] = [
             .zero: "Your cart is empty",
@@ -367,7 +410,7 @@ final class TextLocalizationTests: XCTestCase {
         XCTAssertEqual(result, expectedText("3 items costing $99.99"))
     }
 
-    func testPluralLocalizedWithMultipleArgs_TranslationExists() {
+    func testPluralLocalizedWithMultipleArgs_WhenTranslationExists_ReturnsOtherForm() {
         // Given.
         setupMockTranslations()
         let defaultPlural: [PluralCategory: String] = [
