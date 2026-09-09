@@ -133,7 +133,14 @@ enum FormatSpecifierParser {
             // Start of a possible specifier.
             let start = i
             i += 1
-            guard i < scalars.count else { break }
+            guard i < scalars.count else {
+                // A lone `%` at end-of-string cannot form a specifier. Record it as ambiguous so
+                // SafeFormat degrades to the verbatim string instead of letting `String(format:)`
+                // silently drop it — e.g. `"Battery at %d%"` + `[80]` must not become
+                // `"Battery at 80"`.
+                ambiguous.append(AmbiguousPercent(raw: String(String.UnicodeScalarView(scalars[start..<i]))))
+                break
+            }
 
             // Step 2: `%%` literal — an escaped percent contributes no specifier.
             if scalars[i] == "%" {
@@ -150,8 +157,20 @@ enum FormatSpecifierParser {
             }
             if i < scalars.count, scalars[i] == "$", i > positionStart {
                 let digits = String(String.UnicodeScalarView(scalars[positionStart..<i]))
-                position = Int(digits)
                 i += 1 // consume '$'
+                guard let parsedPosition = Int(digits) else {
+                    // The digit run is all ASCII `0`–`9`, so the only way `Int(_:)` fails is
+                    // overflow — a positional index too large to fit in `Int` (e.g. a corrupt
+                    // server translation like `%99999999999999999999$@`). We cannot validate such
+                    // an index against the argument list, and silently treating it as sequential
+                    // would let SafeFormat forward it to `String(format:)`, whose positional parser
+                    // reads the huge index and disagrees with our analysis. Surface the consumed
+                    // `%<digits>$` span as ambiguous so SafeFormat bails to the verbatim string.
+                    let raw = String(String.UnicodeScalarView(scalars[start..<i]))
+                    ambiguous.append(AmbiguousPercent(raw: raw))
+                    continue
+                }
+                position = parsedPosition
             } else {
                 // Not positional — rewind so digits are treated as width.
                 i = positionStart
@@ -213,7 +232,13 @@ enum FormatSpecifierParser {
             }
 
             // Step 8: Conversion character — the terminating letter; `raw` is sliced as `start..<i`.
-            guard i < scalars.count else { break }
+            guard i < scalars.count else {
+                // The specifier was truncated before its conversion character (e.g. `"%5"` at
+                // end-of-string). Record the consumed span as ambiguous so SafeFormat degrades to
+                // the verbatim string rather than silently dropping it.
+                ambiguous.append(AmbiguousPercent(raw: String(String.UnicodeScalarView(scalars[start..<i]))))
+                break
+            }
             let conversionScalar = scalars[i]
             let conversion = Character(conversionScalar)
             i += 1
