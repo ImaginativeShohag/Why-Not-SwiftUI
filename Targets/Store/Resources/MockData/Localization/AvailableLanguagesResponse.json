@@ -1,0 +1,56 @@
+{
+    "success": true,
+    "message": "Request processed successfully",
+    "data": {
+        "Bangladesh": [
+            {
+                "code": "bn_BD",
+                "name_en": "Bengali",
+                "name_locale": "বাংলা",
+                "version": 1
+            },
+            {
+                "code": "en_US",
+                "name_en": "English",
+                "name_locale": "English",
+                "version": 4
+            }
+        ],
+        "United Arab Emirates": [
+            {
+                "code": "ar_AE",
+                "name_en": "Arabic (U.A.E.)",
+                "name_locale": "العربية",
+                "version": 2
+            },
+            {
+                "code": "en_US",
+                "name_en": "English",
+                "name_locale": "English",
+                "version": 4
+            }
+        ],
+        "United States": [
+            {
+                "code": "en_US",
+                "name_en": "English",
+                "name_locale": "English",
+                "version": 4
+            }
+        ],
+        "China": [
+            {
+                "code": "zh_CN",
+                "name_en": "Chinese (China)",
+                "name_locale": "中文",
+                "version": 1
+            },
+            {
+                "code": "en_US",
+                "name_en": "English",
+                "name_locale": "English",
+                "version": 4
+            }
+        ]
+    }
+}
