@@ -10,7 +10,7 @@ final class LocalizeKitStorage: @unchecked Sendable {
 
     // MARK: - Keys
 
-    private enum StorageKey: String {
+    private enum StorageKey: String, CaseIterable {
         case selectedLanguage
         case selectedCountry
         case selectedLanguageVersion
@@ -122,10 +122,8 @@ final class LocalizeKitStorage: @unchecked Sendable {
 
     /// Clear all LocalizeKit storage
     func clearAll() {
-        selectedLanguage = nil
-        selectedCountry = nil
-        selectedLanguageVersion = nil
-        selectedLanguageName = nil
-        layoutDirection = nil
+        for key in StorageKey.allCases {
+            userDefaults.removeObject(forKey: key.rawValue)
+        }
     }
 }
