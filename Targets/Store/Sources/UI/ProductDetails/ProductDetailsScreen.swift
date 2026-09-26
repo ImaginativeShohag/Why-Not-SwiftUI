@@ -4,6 +4,7 @@
 
 import Core
 import Kingfisher
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -116,7 +117,7 @@ struct ProductDetailsScreen: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .navigationBarTitle("Product Details")
+        .navigationBarTitle("product_details_title".localize(default: "Product Details", comment: "Product details screen title"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if let product = viewModel.productState.getData() {
@@ -147,7 +148,8 @@ struct ProductDetailsScreen: View {
                         }
                         .frame(maxWidth: 150)
                     }
-                    .buttonStyle(.borderedProminent)
+                    .padding(.horizontal)
+                    .padding(.vertical, 4)
                     .frame(maxWidth: .infinity)
                 }
             }
@@ -158,6 +160,7 @@ struct ProductDetailsScreen: View {
         .task {
             await viewModel.loadProduct()
         }
+        .onLanguageChange()
     }
 }
 

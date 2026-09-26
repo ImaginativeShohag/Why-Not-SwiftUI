@@ -4,14 +4,15 @@ import XCTest
 
 // Macro implementations build for the host, so the corresponding module is not available when cross-compiling. Cross-compiled tests may still make use of the macro itself in end-to-end tests.
 #if canImport(CustomMacros)
-import URLMacroMacros
+import CustomMacros
 
 let testMacros: [String: Macro.Type] = [
     "stringify": StringifyMacro.self,
+    "URL": URLMacro.self,
 ]
 #endif
 
-final class URLMacroTests: XCTestCase {
+final class SwiftMacrosTests: XCTestCase {
     func testMacro() throws {
         #if canImport(CustomMacros)
         assertMacroExpansion(

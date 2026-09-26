@@ -4,6 +4,7 @@
 
 import Core
 import Foundation
+import NetworkKit
 
 /// This `enum` is contains the keys for the `Preferences`.
 extension Key {
@@ -30,14 +31,34 @@ extension Key {
 /// ```
 extension Preferences {
     @CodableUserDefault(key: .user)
-    static var user: StoreUser?
-    
+    private static var _user: StoreUser?
+
+    /// Returns the stored user, or mock user from environment when running in UI test mode
+    static var user: StoreUser? {
+        get {
+            #if DEBUG
+            if isUITestEnvironment {
+                // Check if user data was passed through launch environment
+                if let userJSON = ProcessInfo.processInfo.environment[uiTestEnvKeyUserData],
+                   let jsonData = userJSON.data(using: .utf8),
+                   let user = try? JSONDecoder().decode(StoreUser.self, from: jsonData) {
+                    return user
+                }
+            }
+            #endif
+            return _user
+        }
+        set {
+            _user = newValue
+        }
+    }
+
     @UserDefault(key: .name)
     static var name: String?
-    
+
     @UserDefault(key: .phoneNumber)
     static var phoneNumber: String?
-    
+
     @UserDefault(key: .address)
     static var address: String?
 
@@ -45,7 +66,7 @@ extension Preferences {
 
     static func reset() {
         // TODO: Try with `Mirror(reflection:)`.
-        user = $user.defaultValue
+        _user = $_user.defaultValue
         name = $name.defaultValue
         phoneNumber = $phoneNumber.defaultValue
         address = $address.defaultValue

@@ -59,4 +59,23 @@ public extension XCUIElement {
     ) -> Bool {
         return descendants(matching: .any)[identifier].waitForExistence(timeout: timeout)
     }
+
+    /// Finds a tab bar button by its label text.
+    ///
+    /// This is more reliable than using accessibility identifiers for SwiftUI TabView,
+    /// as tab bar buttons don't always expose custom identifiers properly.
+    ///
+    /// - Parameter label: The visible label text of the tab (e.g., "Home", "Bag", "Categories")
+    /// - Returns: The XCUIElement representing the tab bar button
+    ///
+    /// ## Example Usage:
+    ///
+    /// ```swift
+    /// let app = XCUIApplication()
+    /// let cartTab = app.tabBarButton(withLabel: "Bag")
+    /// cartTab.tap()
+    /// ```
+    func tabBarButton(withLabel label: String) -> XCUIElement {
+        return tabBars.buttons[label]
+    }
 }

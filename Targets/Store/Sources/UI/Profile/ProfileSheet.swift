@@ -3,6 +3,7 @@
 //
 
 import Kingfisher
+import LocalizeKit
 import SwiftUI
 import NavigationKit
 
@@ -11,6 +12,12 @@ struct ProfileSheet: View {
 
     @State private var viewModel: ProfileViewModel
     @State private var showSignOutAlert: Bool = false
+    @State private var showLanguageSettings: Bool = false
+    private let localizationManager = LocalizationManager.shared
+
+    private var currentLanguageDisplay: String {
+        return "\(localizationManager.currentCountry) - \(localizationManager.currentLanguageName)"
+    }
 
     init(viewModel: ProfileViewModel = ProfileViewModel()) {
         self.viewModel = viewModel
@@ -29,11 +36,15 @@ struct ProfileSheet: View {
                             Label(message, systemImage: "exclamationmark.triangle")
                         },
                         actions: {
-                            Button("Retry") {
+                            Button("retry".localize(
+                                default: "Retry",
+                                comment: "Retry button text"
+                            )) {
                                 Task {
                                     await viewModel.getUserDetails()
                                 }
                             }
+                            .accessibilityIdentifier("retry_button")
                             .buttonStyle(.borderedProminent)
                             .padding(.top)
                         }
@@ -57,41 +68,102 @@ struct ProfileSheet: View {
                             }
                             .frame(maxWidth: .infinity)
 
-                            Section("Details") {
+                            Section("details".localize(
+                                default: "Details",
+                                comment: "Profile details section header"
+                            )) {
                                 LabeledContent(
-                                    "Name",
+                                    "name".localize(
+                                        default: "Name",
+                                        comment: "User name label"
+                                    ),
                                     value: user.name.getFullName()
                                 )
-                                LabeledContent("Username", value: user.username)
-                                LabeledContent("Email", value: user.email)
-                                LabeledContent("Phone", value: user.phone)
+                                .accessibilityIdentifier("profile_name_\(user.name.getFullName())")
+
                                 LabeledContent(
-                                    "Address",
+                                    "username".localize(
+                                        default: "Username",
+                                        comment: "Username label"
+                                    ),
+                                    value: user.username
+                                )
+                                .accessibilityIdentifier("profile_username_\(user.username)")
+
+                                LabeledContent(
+                                    "email".localize(
+                                        default: "Email",
+                                        comment: "Email address label"
+                                    ),
+                                    value: user.email
+                                )
+                                .accessibilityIdentifier("profile_email_\(user.email)")
+
+                                LabeledContent(
+                                    "phone".localize(
+                                        default: "Phone",
+                                        comment: "Phone number label"
+                                    ),
+                                    value: user.phone
+                                )
+                                .accessibilityIdentifier("profile_phone_\(user.phone)")
+
+                                LabeledContent(
+                                    "address".localize(
+                                        default: "Address",
+                                        comment: "Address label"
+                                    ),
                                     value: user.address?.getAddress() ?? "-"
                                 )
                             }
-                            
+
                             Section {
-                                Button("Orders") {
+                                Button("orders".localize(
+                                    default: "Orders",
+                                    comment: "Orders button text"
+                                )) {
                                     dismiss()
-                                    
+
                                     NavController.shared.navigateTo(
                                         Destination.Orders()
                                     )
                                 }
+                                .accessibilityIdentifier("orders_button")
+
+                                Button {
+                                    showLanguageSettings.toggle()
+                                } label: {
+                                    HStack {
+                                        Text("language_settings".localize(
+                                            default: "Language Settings",
+                                            comment: "Language settings button text"
+                                        ))
+                                        Spacer()
+                                        Text(currentLanguageDisplay)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                                .accessibilityIdentifier("language_settings_button")
                             }
-                            
+
                             Section {
-                                Button("Sign Out") {
+                                Button("sign_out".localize(
+                                    default: "Sign Out",
+                                    comment: "Sign out button text"
+                                )) {
                                     showSignOutAlert.toggle()
                                 }
+                                .accessibilityIdentifier("sign_out_button")
                                 .tint(.red)
                             }
                         }
                     }
                 }
             }
-            .navigationTitle("Profile")
+            .navigationTitle("profile".localize(
+                default: "Profile",
+                comment: "Profile screen title"
+            ))
             .navigationBarTitleDisplayMode(.inline)
             .background(Color.systemGroupedBackground)
             .toolbar {
@@ -99,7 +171,10 @@ struct ProfileSheet: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("Done")
+                        Text("done".localize(
+                            default: "Done",
+                            comment: "Done button text"
+                        ))
                     }
                 }
             }
@@ -110,11 +185,17 @@ struct ProfileSheet: View {
                 await viewModel.getUserDetails()
             }
             .alert(
-                "Signout from Store?",
+                "sign_out_alert_title".localize(
+                    default: "Sign out from Store?",
+                    comment: "Alert title for sign out confirmation"
+                ),
                 isPresented: $showSignOutAlert) {
-                    Button("Sign Out", role: .destructive) {
+                    Button("sign_out".localize(
+                        default: "Sign Out",
+                        comment: "Sign out confirmation button"
+                    ), role: .destructive) {
                         viewModel.signOut()
-                        
+
                         NavController.shared.navigateTo(
                             Destination.Login(),
                             popUpTo: Destination.Main.self,
@@ -123,6 +204,10 @@ struct ProfileSheet: View {
                     }
                     .tint(.red)
                 }
+            .sheet(isPresented: $showLanguageSettings) {
+                LanguageSettingsSheet()
+            }
+            .onLanguageChange()
         }
     }
 }

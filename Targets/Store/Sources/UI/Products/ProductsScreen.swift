@@ -2,6 +2,7 @@
 //  Copyright © 2025 Md. Mahmudul Hasan Shohag. All rights reserved.
 //
 
+import LocalizeKit
 import NavigationKit
 import SwiftUI
 
@@ -44,12 +45,13 @@ struct ProductsScreen: View {
                             Label(message, systemImage: "exclamationmark.triangle")
                         },
                         actions: {
-                            Button("Retry") {
+                            Button("retry".localize(default: "Retry", comment: "Retry button text")) {
                                 Task {
                                     await viewModel.loadProducts(forced: true)
                                 }
                             }
                             .buttonStyle(.borderedProminent)
+                            .accessibilityIdentifier("retry_button")
                             .padding(.top)
                         }
                     )
@@ -92,13 +94,21 @@ struct ProductsScreen: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.systemGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Category: \(viewModel.categoryId.capitalized)")
+        .navigationTitle(
+            Text.localized(
+                "products_category_title",
+                default: "Category: %@",
+                comment: "Title showing the current category name",
+                with: viewModel.categoryId.capitalized
+            )
+        )
         .refreshable {
             await viewModel.loadProducts(forced: true)
         }
         .task {
             await viewModel.loadProducts()
         }
+        .onLanguageChange()
     }
 }
 

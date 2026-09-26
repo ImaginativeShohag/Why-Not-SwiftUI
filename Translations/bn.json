@@ -1,0 +1,225 @@
+{
+  "modules" : {
+    "Store" : {
+      "address" : {
+        "comment" : "Address label",
+        "value" : "ঠিকানা"
+      },
+      "app_name" : {
+        "comment" : "Navigation title",
+        "value" : "Store Overflow"
+      },
+      "apply" : {
+        "comment" : "Apply button text to confirm language change",
+        "value" : "প্রয়োগ করুন"
+      },
+      "cart_checkout" : {
+        "comment" : "Button to proceed to checkout",
+        "value" : "চেকআউট করুন"
+      },
+      "cart_empty_description" : {
+        "comment" : "Description for empty cart state",
+        "value" : "কিছু পণ্য যোগ করুন চালিয়ে যেতে।"
+      },
+      "cart_empty_title" : {
+        "comment" : "Title shown when cart has no items",
+        "value" : "আপনার কার্ট খালি।"
+      },
+      "cart_menu_orders" : {
+        "comment" : "Menu item to view orders",
+        "value" : "অর্ডার"
+      },
+      "cart_title" : {
+        "comment" : "Cart screen title",
+        "value" : "কার্ট"
+      },
+      "cart_total" : {
+        "comment" : "Label for total price in cart",
+        "value" : "মোট"
+      },
+      "categories_title" : {
+        "comment" : "Categories screen title",
+        "value" : "ক্যাটাগরি"
+      },
+      "checkout_address_placeholder" : {
+        "comment" : "Address TextField placeholder",
+        "value" : "ঠিকানা..."
+      },
+      "checkout_completed_description" : {
+        "comment" : "Description for completed checkout",
+        "value" : "আবার চালিয়ে যেতে কিছু পণ্য যোগ করুন।"
+      },
+      "checkout_completed_title" : {
+        "comment" : "Title shown when checkout is complete",
+        "value" : "চেকআউট সম্পন্ন হয়েছে।"
+      },
+      "checkout_name_placeholder" : {
+        "comment" : "Name TextField placeholder",
+        "value" : "আপনার নাম..."
+      },
+      "checkout_phone_placeholder" : {
+        "comment" : "Phone TextField placeholder",
+        "value" : "ফোন নম্বর..."
+      },
+      "checkout_place_order" : {
+        "comment" : "Button to place order",
+        "value" : "অর্ডার করুন"
+      },
+      "checkout_placing_order" : {
+        "comment" : "Button text while placing order",
+        "value" : "অর্ডার করা হচ্ছে..."
+      },
+      "checkout_product_count" : {
+        "comment" : "Product count in checkout",
+        "value" : {
+          "one" : "১টি পণ্য",
+          "other" : "%d টি পণ্য"
+        }
+      },
+      "checkout_shipping_address" : {
+        "comment" : "Label for shipping address section",
+        "value" : "ডেলিভারি ঠিকানা"
+      },
+      "checkout_success_title" : {
+        "comment" : "Success alert title",
+        "value" : "অর্ডার সফলভাবে সম্পন্ন হয়েছে!"
+      },
+      "checkout_title" : {
+        "comment" : "Checkout screen title",
+        "value" : "চেকআউট"
+      },
+      "checkout_total" : {
+        "comment" : "Label for total price in checkout",
+        "value" : "মোট"
+      },
+      "country_select_footer" : {
+        "comment" : "Footer explaining country selection",
+        "value" : "উপলব্ধ ভাষা দেখতে একটি দেশ নির্বাচন করুন।"
+      },
+      "country_select_header" : {
+        "comment" : "Header for country selection list",
+        "value" : "দেশ নির্বাচন করুন"
+      },
+      "details" : {
+        "comment" : "Profile details section header",
+        "value" : "বিস্তারিত"
+      },
+      "done" : {
+        "comment" : "Done button text",
+        "value" : "সম্পন্ন"
+      },
+      "email" : {
+        "comment" : "Email address label",
+        "value" : "ইমেইল"
+      },
+      "language_changing" : {
+        "comment" : "Progress message while changing language",
+        "value" : "ভাষা পরিবর্তন করা হচ্ছে..."
+      },
+      "language_loading" : {
+        "comment" : "Loading text while fetching languages",
+        "value" : "ভাষা লোড হচ্ছে..."
+      },
+      "language_select_footer" : {
+        "comment" : "Footer explaining language selection",
+        "value" : "আপনার পছন্দের ভাষা নির্বাচন করুন। ইন্টারফেস তৎক্ষণাৎ অনুবাদ করা হবে।"
+      },
+      "language_select_header" : {
+        "comment" : "Header for language selection list",
+        "value" : "ভাষা নির্বাচন করুন"
+      },
+      "language_settings" : {
+        "comment" : "Language settings button text",
+        "value" : "ভাষা সেটিংস"
+      },
+      "language_title" : {
+        "comment" : "Language settings screen title",
+        "value" : "ভাষা"
+      },
+      "login" : {
+        "comment" : "Login button text",
+        "value" : "লগইন"
+      },
+      "name" : {
+        "comment" : "User name label",
+        "value" : "নাম"
+      },
+      "ok" : {
+        "comment" : "OK button text",
+        "value" : "ঠিক আছে"
+      },
+      "orders" : {
+        "comment" : "Orders button text",
+        "value" : "অর্ডার"
+      },
+      "orders_product_count" : {
+        "comment" : "Total product count in order",
+        "value" : {
+          "one" : "মোট ১টি পণ্য",
+          "other" : "মোট %d টি পণ্য"
+        }
+      },
+      "orders_title" : {
+        "comment" : "Orders screen title",
+        "value" : "অর্ডার"
+      },
+      "password" : {
+        "comment" : "Password field placeholder",
+        "value" : "পাসওয়ার্ড"
+      },
+      "phone" : {
+        "comment" : "Phone number label",
+        "value" : "ফোন"
+      },
+      "product_details_title" : {
+        "comment" : "Product details screen title",
+        "value" : "পণ্যের বিবরণ"
+      },
+      "products_category_title" : {
+        "comment" : "Title showing the current category name",
+        "value" : "ক্যাটাগরি: %@"
+      },
+      "profile" : {
+        "comment" : "Profile screen title",
+        "value" : "প্রোফাইল"
+      },
+      "retry" : {
+        "comment" : "Retry button text",
+        "value" : "পুনরায় চেষ্টা করুন"
+      },
+      "sign_out" : {
+        "comment" : "Sign out confirmation button",
+        "value" : "সাইন আউট"
+      },
+      "sign_out_alert_title" : {
+        "comment" : "Alert title for sign out confirmation",
+        "value" : "Store থেকে সাইন আউট করবেন?"
+      },
+      "tab_bag" : {
+        "comment" : "Tab bar label for shopping bag",
+        "value" : "ব্যাগ"
+      },
+      "tab_categories" : {
+        "comment" : "Tab bar label for categories",
+        "value" : "ক্যাটাগরি"
+      },
+      "tab_home" : {
+        "comment" : "Tab bar label for home",
+        "value" : "হোম"
+      },
+      "username" : {
+        "comment" : "Username field placeholder",
+        "value" : "ইউজারনেম"
+      },
+      "welcome" : {
+        "comment" : "Welcome message with user's full name on home screen",
+        "value" : "স্বাগতম, **%@**!"
+      },
+      "welcome_to" : {
+        "comment" : "Login screen welcome text",
+        "value" : "স্বাগতম"
+      }
+    }
+  },
+  "version" : 4
+}

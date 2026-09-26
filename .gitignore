@@ -53,9 +53,9 @@ playground.xcworkspace
 # We recommend against adding the Pods directory to your .gitignore. However
 # you should judge for yourself, the pros and cons are mentioned at:
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-#
-# Pods/
-#
+
+Pods/
+
 # Add this line if you want to avoid checking in source code from the Xcode workspace
 # *.xcworkspace
 
@@ -88,19 +88,6 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
-
-### Projects ###
-*.xcodeproj
-*.xcworkspace
-
-### Tuist derived files ###
-graph.dot
-Derived/
-
-### Tuist managed dependencies ###
-Tuist/Dependencies/graph.json
-Tuist/Dependencies/Carthage
-Tuist/Dependencies/SwiftPackageManager
 
 # --------------------------------
 # https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
@@ -164,6 +151,23 @@ fabric.properties
 # We do not need anything from the .idea folder.
 .idea
 
-# We do not need anything from the .vscode folder.
-.vscode
-buildServer.json
+# --------------------------------
+# Tuist
+# --------------------------------
+### Projects ###
+*.xcodeproj
+*.xcworkspace
+
+### Tuist derived files ###
+graph.dot
+Derived/
+
+### Tuist managed dependencies ###
+Tuist/Dependencies/graph.json
+Tuist/Dependencies/Carthage
+Tuist/Dependencies/SwiftPackageManager
+
+# AI
+.claude/*
+!.claude/skills/
+!.claude/skills/**

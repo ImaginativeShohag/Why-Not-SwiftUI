@@ -1,0 +1,225 @@
+{
+  "modules" : {
+    "Store" : {
+      "address" : {
+        "comment" : "Address label",
+        "value" : "العنوان"
+      },
+      "app_name" : {
+        "comment" : "Navigation title",
+        "value" : "Store Overflow"
+      },
+      "apply" : {
+        "comment" : "Apply button text to confirm language change",
+        "value" : "تطبيق"
+      },
+      "cart_checkout" : {
+        "comment" : "Button to proceed to checkout",
+        "value" : "الدفع"
+      },
+      "cart_empty_description" : {
+        "comment" : "Description for empty cart state",
+        "value" : "أضف بعض المنتجات للمتابعة."
+      },
+      "cart_empty_title" : {
+        "comment" : "Title shown when cart has no items",
+        "value" : "سلة التسوق فارغة."
+      },
+      "cart_menu_orders" : {
+        "comment" : "Menu item to view orders",
+        "value" : "الطلبات"
+      },
+      "cart_title" : {
+        "comment" : "Cart screen title",
+        "value" : "السلة"
+      },
+      "cart_total" : {
+        "comment" : "Label for total price in cart",
+        "value" : "المجموع"
+      },
+      "categories_title" : {
+        "comment" : "Categories screen title",
+        "value" : "الفئات"
+      },
+      "checkout_address_placeholder" : {
+        "comment" : "Address TextField placeholder",
+        "value" : "العنوان..."
+      },
+      "checkout_completed_description" : {
+        "comment" : "Description for completed checkout",
+        "value" : "أضف بعض المنتجات للمتابعة مرة أخرى."
+      },
+      "checkout_completed_title" : {
+        "comment" : "Title shown when checkout is complete",
+        "value" : "اكتمل الدفع."
+      },
+      "checkout_name_placeholder" : {
+        "comment" : "Name TextField placeholder",
+        "value" : "اسمك..."
+      },
+      "checkout_phone_placeholder" : {
+        "comment" : "Phone TextField placeholder",
+        "value" : "رقم الهاتف..."
+      },
+      "checkout_place_order" : {
+        "comment" : "Button to place order",
+        "value" : "تأكيد الطلب"
+      },
+      "checkout_placing_order" : {
+        "comment" : "Button text while placing order",
+        "value" : "جاري تقديم الطلب..."
+      },
+      "checkout_product_count" : {
+        "comment" : "Product count in checkout",
+        "value" : {
+          "one" : "منتج واحد",
+          "other" : "%d منتجات"
+        }
+      },
+      "checkout_shipping_address" : {
+        "comment" : "Label for shipping address section",
+        "value" : "عنوان الشحن"
+      },
+      "checkout_success_title" : {
+        "comment" : "Success alert title",
+        "value" : "تم تقديم الطلب بنجاح!"
+      },
+      "checkout_title" : {
+        "comment" : "Checkout screen title",
+        "value" : "الدفع"
+      },
+      "checkout_total" : {
+        "comment" : "Label for total price in checkout",
+        "value" : "المجموع"
+      },
+      "country_select_footer" : {
+        "comment" : "Footer explaining country selection",
+        "value" : "اختر دولة لرؤية اللغات المتاحة."
+      },
+      "country_select_header" : {
+        "comment" : "Header for country selection list",
+        "value" : "اختر الدولة"
+      },
+      "details" : {
+        "comment" : "Profile details section header",
+        "value" : "التفاصيل"
+      },
+      "done" : {
+        "comment" : "Done button text",
+        "value" : "تم"
+      },
+      "email" : {
+        "comment" : "Email address label",
+        "value" : "البريد الإلكتروني"
+      },
+      "language_changing" : {
+        "comment" : "Progress message while changing language",
+        "value" : "جاري تغيير اللغة..."
+      },
+      "language_loading" : {
+        "comment" : "Loading text while fetching languages",
+        "value" : "جاري تحميل اللغات..."
+      },
+      "language_select_footer" : {
+        "comment" : "Footer explaining language selection",
+        "value" : "اختر لغتك المفضلة للتطبيق. سيتم ترجمة الواجهة فورًا."
+      },
+      "language_select_header" : {
+        "comment" : "Header for language selection list",
+        "value" : "اختر اللغة"
+      },
+      "language_settings" : {
+        "comment" : "Language settings button text",
+        "value" : "إعدادات اللغة"
+      },
+      "language_title" : {
+        "comment" : "Language settings screen title",
+        "value" : "اللغة"
+      },
+      "login" : {
+        "comment" : "Login button text",
+        "value" : "تسجيل الدخول"
+      },
+      "name" : {
+        "comment" : "User name label",
+        "value" : "الاسم"
+      },
+      "ok" : {
+        "comment" : "OK button text",
+        "value" : "موافق"
+      },
+      "orders" : {
+        "comment" : "Orders button text",
+        "value" : "الطلبات"
+      },
+      "orders_product_count" : {
+        "comment" : "Total product count in order",
+        "value" : {
+          "one" : "منتج واحد إجمالي",
+          "other" : "إجمالي %d منتجات"
+        }
+      },
+      "orders_title" : {
+        "comment" : "Orders screen title",
+        "value" : "الطلبات"
+      },
+      "password" : {
+        "comment" : "Password field placeholder",
+        "value" : "كلمة المرور"
+      },
+      "phone" : {
+        "comment" : "Phone number label",
+        "value" : "الهاتف"
+      },
+      "product_details_title" : {
+        "comment" : "Product details screen title",
+        "value" : "تفاصيل المنتج"
+      },
+      "products_category_title" : {
+        "comment" : "Title showing the current category name",
+        "value" : "الفئة: %@"
+      },
+      "profile" : {
+        "comment" : "Profile screen title",
+        "value" : "الملف الشخصي"
+      },
+      "retry" : {
+        "comment" : "Retry button text",
+        "value" : "إعادة المحاولة"
+      },
+      "sign_out" : {
+        "comment" : "Sign out confirmation button",
+        "value" : "تسجيل الخروج"
+      },
+      "sign_out_alert_title" : {
+        "comment" : "Alert title for sign out confirmation",
+        "value" : "تسجيل الخروج من Store؟"
+      },
+      "tab_bag" : {
+        "comment" : "Tab bar label for shopping bag",
+        "value" : "الحقيبة"
+      },
+      "tab_categories" : {
+        "comment" : "Tab bar label for categories",
+        "value" : "الفئات"
+      },
+      "tab_home" : {
+        "comment" : "Tab bar label for home",
+        "value" : "الرئيسية"
+      },
+      "username" : {
+        "comment" : "Username field placeholder",
+        "value" : "اسم المستخدم"
+      },
+      "welcome" : {
+        "comment" : "Welcome message with user's full name on home screen",
+        "value" : "مرحبًا، **%@**!"
+      },
+      "welcome_to" : {
+        "comment" : "Login screen welcome text",
+        "value" : "مرحبًا بك في"
+      }
+    }
+  },
+  "version" : 4
+}

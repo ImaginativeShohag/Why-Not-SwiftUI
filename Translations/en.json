@@ -1,0 +1,225 @@
+{
+  "modules" : {
+    "Store" : {
+      "address" : {
+        "comment" : "Address label",
+        "value" : "Address"
+      },
+      "app_name" : {
+        "comment" : "Navigation title",
+        "value" : "Store Overflow"
+      },
+      "apply" : {
+        "comment" : "Apply button text to confirm language change",
+        "value" : "Apply"
+      },
+      "cart_checkout" : {
+        "comment" : "Button to proceed to checkout",
+        "value" : "Check Out"
+      },
+      "cart_empty_description" : {
+        "comment" : "Description for empty cart state",
+        "value" : "Add some products to continue."
+      },
+      "cart_empty_title" : {
+        "comment" : "Title shown when cart has no items",
+        "value" : "Your Cart is Empty."
+      },
+      "cart_menu_orders" : {
+        "comment" : "Menu item to view orders",
+        "value" : "Orders"
+      },
+      "cart_title" : {
+        "comment" : "Cart screen title",
+        "value" : "Cart"
+      },
+      "cart_total" : {
+        "comment" : "Label for total price in cart",
+        "value" : "Total"
+      },
+      "categories_title" : {
+        "comment" : "Categories screen title",
+        "value" : "Categories"
+      },
+      "checkout_address_placeholder" : {
+        "comment" : "Address TextField placeholder",
+        "value" : "Address..."
+      },
+      "checkout_completed_description" : {
+        "comment" : "Description for completed checkout",
+        "value" : "Add some products to continue again."
+      },
+      "checkout_completed_title" : {
+        "comment" : "Title shown when checkout is complete",
+        "value" : "Checkout is completed."
+      },
+      "checkout_name_placeholder" : {
+        "comment" : "Name TextField placeholder",
+        "value" : "Your name..."
+      },
+      "checkout_phone_placeholder" : {
+        "comment" : "Phone TextField placeholder",
+        "value" : "Phone number..."
+      },
+      "checkout_place_order" : {
+        "comment" : "Button to place order",
+        "value" : "Place Order"
+      },
+      "checkout_placing_order" : {
+        "comment" : "Button text while placing order",
+        "value" : "Placing Order..."
+      },
+      "checkout_product_count" : {
+        "comment" : "Product count in checkout",
+        "value" : {
+          "one" : "1 Product",
+          "other" : "%d Products"
+        }
+      },
+      "checkout_shipping_address" : {
+        "comment" : "Label for shipping address section",
+        "value" : "Shipping Address"
+      },
+      "checkout_success_title" : {
+        "comment" : "Success alert title",
+        "value" : "Order placed successfully!"
+      },
+      "checkout_title" : {
+        "comment" : "Checkout screen title",
+        "value" : "Checkout"
+      },
+      "checkout_total" : {
+        "comment" : "Label for total price in checkout",
+        "value" : "Total"
+      },
+      "country_select_footer" : {
+        "comment" : "Footer explaining country selection",
+        "value" : "Choose a country to see available languages."
+      },
+      "country_select_header" : {
+        "comment" : "Header for country selection list",
+        "value" : "Select Country"
+      },
+      "details" : {
+        "comment" : "Profile details section header",
+        "value" : "Details"
+      },
+      "done" : {
+        "comment" : "Done button text",
+        "value" : "Done"
+      },
+      "email" : {
+        "comment" : "Email address label",
+        "value" : "Email"
+      },
+      "language_changing" : {
+        "comment" : "Progress message while changing language",
+        "value" : "Changing language..."
+      },
+      "language_loading" : {
+        "comment" : "Loading text while fetching languages",
+        "value" : "Loading languages..."
+      },
+      "language_select_footer" : {
+        "comment" : "Footer explaining language selection",
+        "value" : "Choose your preferred language for the app. The interface will be translated immediately."
+      },
+      "language_select_header" : {
+        "comment" : "Header for language selection list",
+        "value" : "Select Language"
+      },
+      "language_settings" : {
+        "comment" : "Language settings button text",
+        "value" : "Language Settings"
+      },
+      "language_title" : {
+        "comment" : "Language settings screen title",
+        "value" : "Language"
+      },
+      "login" : {
+        "comment" : "Login button text",
+        "value" : "Login"
+      },
+      "name" : {
+        "comment" : "User name label",
+        "value" : "Name"
+      },
+      "ok" : {
+        "comment" : "OK button text",
+        "value" : "Ok"
+      },
+      "orders" : {
+        "comment" : "Orders button text",
+        "value" : "Orders"
+      },
+      "orders_product_count" : {
+        "comment" : "Total product count in order",
+        "value" : {
+          "one" : "Total 1 product",
+          "other" : "Total %d products"
+        }
+      },
+      "orders_title" : {
+        "comment" : "Orders screen title",
+        "value" : "Orders"
+      },
+      "password" : {
+        "comment" : "Password field placeholder",
+        "value" : "Password"
+      },
+      "phone" : {
+        "comment" : "Phone number label",
+        "value" : "Phone"
+      },
+      "product_details_title" : {
+        "comment" : "Product details screen title",
+        "value" : "Product Details"
+      },
+      "products_category_title" : {
+        "comment" : "Title showing the current category name",
+        "value" : "Category: %@"
+      },
+      "profile" : {
+        "comment" : "Profile screen title",
+        "value" : "Profile"
+      },
+      "retry" : {
+        "comment" : "Retry button text",
+        "value" : "Retry"
+      },
+      "sign_out" : {
+        "comment" : "Sign out confirmation button",
+        "value" : "Sign Out"
+      },
+      "sign_out_alert_title" : {
+        "comment" : "Alert title for sign out confirmation",
+        "value" : "Sign out from Store?"
+      },
+      "tab_bag" : {
+        "comment" : "Tab bar label for shopping bag",
+        "value" : "Bag"
+      },
+      "tab_categories" : {
+        "comment" : "Tab bar label for categories",
+        "value" : "Categories"
+      },
+      "tab_home" : {
+        "comment" : "Tab bar label for home",
+        "value" : "Home"
+      },
+      "username" : {
+        "comment" : "Username field placeholder",
+        "value" : "Username"
+      },
+      "welcome" : {
+        "comment" : "Welcome message with user's full name on home screen",
+        "value" : "Welcome, **%@**!"
+      },
+      "welcome_to" : {
+        "comment" : "Login screen welcome text",
+        "value" : "Welcome to"
+      }
+    }
+  },
+  "version" : 4
+}
