@@ -22,16 +22,16 @@ final class LocalizeKitStorageTests: XCTestCase {
 
     // MARK: - Selected Language
 
-    func testSelectedLanguage_InitiallyNil() {
+    func testSelectedLanguage_withNoValueSet_shouldReturnNil() {
         XCTAssertNil(storage.selectedLanguage)
     }
 
-    func testSelectedLanguage_SetAndGet() {
+    func testSelectedLanguage_withValueSet_shouldReturnSameValue() {
         storage.selectedLanguage = "bn"
         XCTAssertEqual(storage.selectedLanguage, "bn")
     }
 
-    func testSelectedLanguage_SetToNil() {
+    func testSelectedLanguage_withValueSetThenNil_shouldReturnNil() {
         storage.selectedLanguage = "en"
         storage.selectedLanguage = nil
         XCTAssertNil(storage.selectedLanguage)
@@ -39,16 +39,16 @@ final class LocalizeKitStorageTests: XCTestCase {
 
     // MARK: - Selected Country
 
-    func testSelectedCountry_InitiallyNil() {
+    func testSelectedCountry_withNoValueSet_shouldReturnNil() {
         XCTAssertNil(storage.selectedCountry)
     }
 
-    func testSelectedCountry_SetAndGet() {
+    func testSelectedCountry_withValueSet_shouldReturnSameValue() {
         storage.selectedCountry = "Bangladesh"
         XCTAssertEqual(storage.selectedCountry, "Bangladesh")
     }
 
-    func testSelectedCountry_SetToNil() {
+    func testSelectedCountry_withValueSetThenNil_shouldReturnNil() {
         storage.selectedCountry = "United States"
         storage.selectedCountry = nil
         XCTAssertNil(storage.selectedCountry)
@@ -56,16 +56,16 @@ final class LocalizeKitStorageTests: XCTestCase {
 
     // MARK: - Selected Language Version
 
-    func testSelectedLanguageVersion_InitiallyNil() {
+    func testSelectedLanguageVersion_withNoValueSet_shouldReturnNil() {
         XCTAssertNil(storage.selectedLanguageVersion)
     }
 
-    func testSelectedLanguageVersion_SetAndGet() {
+    func testSelectedLanguageVersion_withValueSet_shouldReturnSameValue() {
         storage.selectedLanguageVersion = 42
         XCTAssertEqual(storage.selectedLanguageVersion, 42)
     }
 
-    func testSelectedLanguageVersion_SetToNil() {
+    func testSelectedLanguageVersion_withValueSetThenNil_shouldReturnNil() {
         storage.selectedLanguageVersion = 10
         storage.selectedLanguageVersion = nil
         XCTAssertNil(storage.selectedLanguageVersion)
@@ -73,16 +73,16 @@ final class LocalizeKitStorageTests: XCTestCase {
 
     // MARK: - Selected Language Name
 
-    func testSelectedLanguageName_InitiallyNil() {
+    func testSelectedLanguageName_withNoValueSet_shouldReturnNil() {
         XCTAssertNil(storage.selectedLanguageName)
     }
 
-    func testSelectedLanguageName_SetAndGet() {
+    func testSelectedLanguageName_withValueSet_shouldReturnSameValue() {
         storage.selectedLanguageName = "বাংলা"
         XCTAssertEqual(storage.selectedLanguageName, "বাংলা")
     }
 
-    func testSelectedLanguageName_SetToNil() {
+    func testSelectedLanguageName_withValueSetThenNil_shouldReturnNil() {
         storage.selectedLanguageName = "English"
         storage.selectedLanguageName = nil
         XCTAssertNil(storage.selectedLanguageName)
@@ -90,7 +90,7 @@ final class LocalizeKitStorageTests: XCTestCase {
 
     // MARK: - Clear All
 
-    func testClearAll() {
+    func testClearAll_withAllValuesSet_shouldResetAllToNil() {
         storage.selectedLanguage = "ar"
         storage.selectedCountry = "United Arab Emirates"
         storage.selectedLanguageVersion = 5
@@ -106,7 +106,7 @@ final class LocalizeKitStorageTests: XCTestCase {
 
     // MARK: - UserDefaults Integration
 
-    func testStorageKeysAreWrittenToUserDefaults() {
+    func testStorage_withValuesSet_shouldWriteKeysToUserDefaults() {
         storage.selectedLanguage = "bn"
         storage.selectedCountry = "Bangladesh"
         storage.selectedLanguageVersion = 12
@@ -120,7 +120,7 @@ final class LocalizeKitStorageTests: XCTestCase {
 
     // MARK: - Default Init
 
-    func testDefaultInitUsesCustomSuite() {
+    func testDefaultInit_withValueSet_shouldUseCustomSuiteAndNotStandard() {
         let key = "selectedLanguage"
         let sentinel = "test_sentinel"
 

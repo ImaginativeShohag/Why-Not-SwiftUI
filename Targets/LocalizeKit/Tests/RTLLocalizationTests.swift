@@ -344,7 +344,7 @@ final class RTLLocalizationTests: XCTestCase {
     func testStoragePersistence_MultipleLanguages_UpdatesDirection() {
         // Given: Start with Bengali (LTR).
         activateMockLanguage("bn")
-        
+
         // Then: Direction updated to "ltr".
         assertLayoutDirectionInStorage("ltr")
 
@@ -449,7 +449,7 @@ final class RTLLocalizationTests: XCTestCase {
         // Then: RTL properties updated, storage persisted.
         assertRTLProperties(isRTL: true, direction: .rightToLeft)
         assertLayoutDirectionInStorage("rtl")
-        XCTAssertEqual(LocalizationManager.shared.currentLanguage, "ar")
+        XCTAssertEqual(LocalizationManager.shared.currentLanguageCode, "ar")
         XCTAssertEqual(LocalizationManager.shared.currentCountry, "United Arab Emirates")
     }
 
@@ -465,7 +465,7 @@ final class RTLLocalizationTests: XCTestCase {
         // Then: LTR properties updated, storage persisted.
         assertRTLProperties(isRTL: false, direction: .leftToRight)
         assertLayoutDirectionInStorage("ltr")
-        XCTAssertEqual(LocalizationManager.shared.currentLanguage, "en")
+        XCTAssertEqual(LocalizationManager.shared.currentLanguageCode, "en")
     }
 
     func testLanguageSwitching_RTLToRTL() {

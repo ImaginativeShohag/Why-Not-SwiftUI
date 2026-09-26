@@ -147,8 +147,13 @@ extension String {
         }
 
         // Fallback to default plurals.
+        // Use the app's selected language for plural rules, not the device locale,
+        // otherwise a French device running the app in English would pick French
+        // plural forms (e.g. count 0 → "one") for the English default strings.
+        let locale = Locale(identifier: LocalizationManager.shared.currentLanguageCode)
         let category = PluralCategory.category(
             for: count,
+            locale: locale,
             customRules: LocalizationManager.shared.pluralRules
         )
 
@@ -220,7 +225,7 @@ extension String {
     /// Text("item_summary".localize(
     ///     defaultPlural: [
     ///         .zero: "Your cart is empty",
-    ///         .one: "You have 1 item worth %@",
+    ///         .one: "You have %d item worth %@",
     ///         .other: "You have %d items worth %@"
     ///     ],
     ///     comment: "Cart summary with count and total price",

@@ -49,14 +49,17 @@ public enum PluralCategory: String, Codable, CaseIterable, Sendable {
     /// use the `customRules` parameter in `category(for:locale:customRules:)`.
     ///
     /// CLDR defines `n` as "absolute value of the source number",
-    /// so negative counts are normalized via `abs()` before applying rules.
+    /// so negative counts are normalized via `magnitude` before applying rules.
+    /// `magnitude` is used instead of `abs()` because `abs(Int.min)` traps
+    /// (|Int.min| is one greater than `Int.max` and cannot be represented as `Int`).
     ///
     /// Reference: https://www.unicode.org/cldr/charts/48/supplemental/language_plural_rules.html
     private static func builtInCategory(for count: Int, languageCode: String) -> PluralCategory {
         // CLDR operand `n` is the absolute value of the source number.
-        let count = abs(count)
+        // Use `magnitude` (not `abs`) to avoid trapping on `Int.min`.
+        let count = count.magnitude
         switch languageCode {
-        case "en", "de", "nl", "sv", "da", "no", "nn", "nb", "et", "fi", "gl", "hu", "lb", "ml", "mr", "sw", "ta", "te", "ur", "fo":
+        case "en", "de", "nl", "sv", "da", "no", "nn", "nb", "et", "fi", "gl", "hu", "lb", "ml", "mr", "sw", "ta", "te", "ur", "fo", "tr":
             // one (n=1), other
             if count == 1 { return .one }
             return .other
@@ -70,33 +73,6 @@ public enum PluralCategory: String, Codable, CaseIterable, Sendable {
             // Romance: one (n=1), many (exact millions), other
             if count == 1 { return .one }
             if count != 0 && count % 1_000_000 == 0 { return .many }
-            return .other
-
-        case "pt":
-            // Portuguese: one (n=0..1), many (exact millions), other
-            if count == 0 || count == 1 { return .one }
-            if count != 0 && count % 1_000_000 == 0 { return .many }
-            return .other
-
-        case "fr":
-            // French: one (n=0..1), many (exact millions), other
-            if count == 0 || count == 1 { return .one }
-            if count != 0 && count % 1_000_000 == 0 { return .many }
-            return .other
-
-        case "bn", "hi", "gu", "pa", "zu":
-            // South Asian: one (n=0..1), other
-            if count == 0 || count == 1 { return .one }
-            return .other
-
-        case "fa":
-            // Persian: one (n=0..1), other
-            if count == 0 || count == 1 { return .one }
-            return .other
-
-        case "tr":
-            // Turkish: one (n=1), other
-            if count == 1 { return .one }
             return .other
 
         case "ar":
@@ -137,6 +113,17 @@ public enum PluralCategory: String, Codable, CaseIterable, Sendable {
             if count == 1 { return .one }
             let mod100 = count % 100
             if count == 0 || (mod100 >= 1 && mod100 <= 19) { return .few }
+            return .other
+
+        case "bn", "hi", "gu", "pa", "zu", "fa":
+            // South Asian: one (n=0..1), other
+            if count == 0 || count == 1 { return .one }
+            return .other
+
+        case "fr", "pt":
+            // one (i=0..1), many (exact millions), other
+            if count == 0 || count == 1 { return .one }
+            if count != 0 && count % 1_000_000 == 0 { return .many }
             return .other
 
         case "cy":

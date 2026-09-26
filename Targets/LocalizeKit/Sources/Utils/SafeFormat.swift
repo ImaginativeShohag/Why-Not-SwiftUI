@@ -155,6 +155,15 @@ enum SafeFormat {
     /// Conservative by design: when in doubt it returns `false` so the caller falls back to the
     /// verbatim string rather than risk a crash.
     private static func matches(argument: CVarArg, expected: FormatArgumentType) -> Bool {
+        // A genuine NSNumber (not a bridged Swift Int/Double/Bool) is encoded into the va_list as
+        // an object pointer, so it is ONLY safe for `%@`. It deceptively satisfies `is Int`/`is
+        // Double`, so `%d`/`%f` would read the pointer bits and print garbage. `type(of:) is
+        // NSNumber.Type` matches real NSNumbers (incl. NSDecimalNumber) while letting Swift scalars
+        // fall through unchanged.
+        if type(of: argument) is NSNumber.Type {
+            return expected == .object
+        }
+
         switch expected {
         case .integer, .unsignedInteger:
             // `%d`/`%u`/`%x` read an integer. Any fixed-width integer is safe; `Bool` bridges to

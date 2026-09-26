@@ -40,50 +40,64 @@ final class SafeFormatTests: XCTestCase {
 
     // MARK: - Happy Path (output must equal native String(format:))
 
-    func testNoArguments_ReturnsFormatVerbatim() {
+    func testFormat_withNoArguments_shouldReturnVerbatim() {
         XCTAssertEqual(format("Plain text", []), "Plain text")
     }
 
-    func testObjectSpecifier_WithString() {
+    func testObjectSpecifier_withString_shouldInterpolate() {
         XCTAssertEqual(format("Hello, %@!", ["World"]), "Hello, World!")
     }
 
-    func testIntegerSpecifier_WithInt() {
+    func testIntegerSpecifier_withInt_shouldInterpolate() {
         XCTAssertEqual(format("%d items", [5]), "5 items")
     }
 
-    func testFloatSpecifier_WithDouble() {
+    func testFloatSpecifier_withDouble_shouldInterpolate() {
         XCTAssertEqual(format("Total: %.2f", [9.5]), "Total: 9.50")
     }
 
-    func testFloatSpecifier_WithFloatAndCGFloat() {
+    func testFloatSpecifier_withFloatAndCGFloat_shouldInterpolate() {
         XCTAssertEqual(format("%.1f", [Float(2.5)]), "2.5")
         XCTAssertEqual(format("%.1f", [CGFloat(3.5)]), "3.5")
     }
 
-    func testCharacterSpecifier_WithIntCodePoint() {
+    func testCharacterSpecifier_withIntCodePoint_shouldPrintScalar() {
         // %c reads an int code point and prints its Unicode scalar (65 -> "A").
         XCTAssertEqual(format("Grade %c", [65]), "Grade A")
     }
 
-    func testMultipleArguments_MatchingTypes() {
+    func testMultipleArguments_withMatchingTypes_shouldInterpolateAll() {
         XCTAssertEqual(format("Order #%@ has %d items", ["A1", 3]), "Order #A1 has 3 items")
     }
 
-    func testPositionalSpecifiers_Reordered() {
+    func testPositionalSpecifiers_whenReordered_shouldRespectPositions() {
         XCTAssertEqual(format("%2$@ before %1$@", ["second", "first"]), "first before second")
     }
 
-    func testExtraArguments_AreIgnoredNotCrashed() {
+    func testRepeatedPositionalSameType_whenSlotReusedTwice_shouldInterpolateBoth() {
+        // %1$d used twice referencing the same argument is legal printf — both must resolve.
+        XCTAssertEqual(format("%1$d and %1$d again", [7]), "7 and 7 again")
+    }
+
+    func testLengthModifiers_whenPresent_shouldStillValidateAndInterpolate() {
+        // Length modifiers (l, ll, h, hh, z) are parsed for diagnostics but must not block
+        // validation or formatting of an otherwise-correct specifier.
+        XCTAssertEqual(format("%ld", [Int64(42)]), "42")
+        XCTAssertEqual(format("%lld", [Int64(43)]), "43")
+        XCTAssertEqual(format("%hhd", [Int8(5)]), "5")
+        XCTAssertEqual(format("%zu", [UInt(9)]), "9")
+    }
+
+    func testExtraArguments_whenMoreThanSpecifiers_shouldIgnoreExtras() {
         // More args than specifiers is safe for String(format:) — extras are ignored.
         XCTAssertEqual(format("%d", [7, 8, 9]), "7")
     }
 
-    func testLiteralPercent_IsNotASpecifier() {
+    func testLiteralPercent_withArgument_shouldNotTreatAsSpecifier() {
         XCTAssertEqual(format("50%% off %@", ["today"]), "50% off today")
     }
 
-    func testLiteralPercent_WithNoArguments_IsCollapsed() {
+    func testLiteralPercent_withNoArguments_shouldCollapse() {
         // Escaped `%%` must collapse to `%` even when no interpolation args are supplied.
         // Regression: the empty-args fast path used to return the format verbatim, leaving
         // the literal `%%` in the output.
@@ -93,14 +107,14 @@ final class SafeFormatTests: XCTestCase {
 
     // MARK: - Type Coverage: Integer / Unsigned Accept Paths
 
-    func testIntegerSpecifier_AcceptsBool() {
+    func testIntegerSpecifier_withBool_shouldAccept() {
         // `matches` treats `Bool` as an integer (it bridges to an int). This is the accept-side
-        // counterpart to `testCharacterSpecifier_WithBool_FallsBack`, where `%c` rejects `Bool`.
+        // counterpart to `testCharacterSpecifier_withBool_shouldFallBack`, where `%c` rejects `Bool`.
         XCTAssertEqual(format("%d", [true]), "1")
         XCTAssertEqual(format("%d", [false]), "0")
     }
 
-    func testIntegerSpecifier_AcceptsAllSignedFixedWidthTypes() {
+    func testIntegerSpecifier_withSignedFixedWidthTypes_shouldAcceptAll() {
         XCTAssertEqual(format("%d", [Int(1)]), "1")
         XCTAssertEqual(format("%d", [Int8(2)]), "2")
         XCTAssertEqual(format("%d", [Int16(3)]), "3")
@@ -108,7 +122,7 @@ final class SafeFormatTests: XCTestCase {
         XCTAssertEqual(format("%d", [Int64(5)]), "5")
     }
 
-    func testIntegerSpecifier_AcceptsAllUnsignedFixedWidthTypes() {
+    func testIntegerSpecifier_withUnsignedFixedWidthTypes_shouldAcceptAll() {
         XCTAssertEqual(format("%d", [UInt(6)]), "6")
         XCTAssertEqual(format("%d", [UInt8(7)]), "7")
         XCTAssertEqual(format("%d", [UInt16(8)]), "8")
@@ -116,11 +130,11 @@ final class SafeFormatTests: XCTestCase {
         XCTAssertEqual(format("%d", [UInt64(10)]), "10")
     }
 
-    func testUnsignedIntegerSpecifier_AcceptsInteger() {
+    func testUnsignedIntegerSpecifier_withInteger_shouldAccept() {
         XCTAssertEqual(format("%u apples", [5]), "5 apples")
     }
 
-    func testUnsignedHexAndOctalSpecifiers_AcceptInteger() {
+    func testUnsignedHexAndOctalSpecifiers_withInteger_shouldAccept() {
         // `%x`/`%X`/`%o` all resolve to `.unsignedInteger` and accept fixed-width integers.
         XCTAssertEqual(format("%x", [255]), "ff")
         XCTAssertEqual(format("%X", [255]), "FF")
@@ -129,7 +143,7 @@ final class SafeFormatTests: XCTestCase {
 
     // MARK: - Type Coverage: Character Accept Paths
 
-    func testCharacterSpecifier_AcceptsFixedWidthIntegers() {
+    func testCharacterSpecifier_withFixedWidthIntegers_shouldAccept() {
         // `%c` reads any fixed-width integer as an `int` code point and prints its Unicode scalar.
         XCTAssertEqual(format("%c", [65]), "A")
         XCTAssertEqual(format("%c", [Int8(66)]), "B")
@@ -139,11 +153,11 @@ final class SafeFormatTests: XCTestCase {
 
     // MARK: - Type Coverage: Object Accept Paths
 
-    func testObjectSpecifier_AcceptsNSString() {
+    func testObjectSpecifier_withNSString_shouldAccept() {
         XCTAssertEqual(format("Hello, %@!", [NSString(string: "hi")]), "Hello, hi!")
     }
 
-    func testObjectSpecifier_AcceptsReferenceType() {
+    func testObjectSpecifier_withReferenceType_shouldAccept() {
         // A genuine class instance is accepted via the `type(of:) is AnyClass` branch, distinct
         // from value types (Int/Double) which bridge to NSNumber and must be rejected — see the
         // matching mismatch tests below.
@@ -152,7 +166,7 @@ final class SafeFormatTests: XCTestCase {
 
     // MARK: - Type Coverage: Pointer (unknown) Accept Path
 
-    func testPointerSpecifier_IsAccepted() {
+    func testPointerSpecifier_withInteger_shouldAccept() {
         // `%p` maps to `.unknown`, which is always accepted and forwarded to `String(format:)`
         // (it cannot mismatch in a crashing way). Output is an address, so compare to native.
         assertMatchesNative("%p", [255])
@@ -160,121 +174,192 @@ final class SafeFormatTests: XCTestCase {
 
     // MARK: - Mismatch (must fall back to verbatim format, never crash)
 
-    func testIntegerSpecifier_WithDouble_FallsBack() {
+    func testIntegerSpecifier_withDouble_shouldFallBack() {
         // The original crash: %d paired with a floating-point value.
         XCTAssertEqual(format("%d items", [3.7]), "%d items")
     }
 
-    func testIntegerSpecifier_WithString_FallsBack() {
+    func testIntegerSpecifier_withString_shouldFallBack() {
         XCTAssertEqual(format("%d items", ["oops"]), "%d items")
     }
 
-    func testObjectSpecifier_WithInt_FallsBack() {
+    func testObjectSpecifier_withInt_shouldFallBack() {
         // %@ with a raw Int would dereference it as a pointer.
         XCTAssertEqual(format("Hello, %@!", [5]), "Hello, %@!")
     }
 
-    func testFloatSpecifier_WithInt_FallsBack() {
+    func testFloatSpecifier_withInt_shouldFallBack() {
         XCTAssertEqual(format("Total: %.2f", [9]), "Total: %.2f")
     }
 
-    func testTooFewArguments_FallsBack() {
+    func testTooFewArguments_whenSlotUnfilled_shouldFallBack() {
         XCTAssertEqual(format("%@ and %@", ["only one"]), "%@ and %@")
     }
 
-    func testSpecifierWithNoArguments_FallsBack() {
+    func testSpecifier_withNoArguments_shouldFallBack() {
         // A format that references an argument slot but supplies none must degrade to verbatim,
         // not read past the empty argument list. Guards the narrowed empty-args fast path.
         XCTAssertEqual(format("%d items", []), "%d items")
         XCTAssertEqual(format("Hello, %@!", []), "Hello, %@!")
     }
 
-    func testMismatchedTypeAmongMany_FallsBack() {
+    // MARK: - NSNumber (bridges to Swift scalars but is encoded as an object pointer)
+
+    func testIntegerSpecifier_withNSNumber_shouldFallBack() {
+        // A real NSNumber satisfies `is Int`, but `%d` would read its pointer bits as an int and
+        // print garbage — it must fall back to verbatim instead.
+        XCTAssertEqual(format("%d items", [NSNumber(value: 5)]), "%d items")
+    }
+
+    func testFloatSpecifier_withNSNumber_shouldFallBack() {
+        // Same hazard for `%f`: NSNumber satisfies `is Double` but is not a scalar in the va_list.
+        XCTAssertEqual(format("Total: %.2f", [NSNumber(value: 5.5)]), "Total: %.2f")
+    }
+
+    func testObjectSpecifier_withNSNumber_shouldInterpolate() {
+        // `%@` is the one specifier an NSNumber is safe for (it IS an object pointer).
+        XCTAssertEqual(format("Value: %@", [NSNumber(value: 5)]), "Value: 5")
+    }
+
+    func testIntegerSpecifier_withSwiftInt_isNotRejectedAsNSNumber() {
+        // Regression guard: the NSNumber screen must not catch bridged Swift Ints (`Int is NSNumber`
+        // is also true), otherwise every `%d` interpolation would break.
+        XCTAssertEqual(format("%d items", [5]), "5 items")
+    }
+
+    func testMismatchedTypeAmongMany_whenOneWrong_shouldFallBack() {
         // Second argument is wrong (Double for %d) — whole call degrades safely.
         XCTAssertEqual(format("Order #%@ has %d items", ["A1", 3.0]), "Order #%@ has %d items")
     }
 
-    func testCStringSpecifier_AlwaysFallsBack() {
+    func testCStringSpecifier_withString_shouldFallBack() {
         // %s expects a C string pointer; a Swift String is not safe to pass.
         XCTAssertEqual(format("Name: %s", ["Shohag"]), "Name: %s")
     }
 
-    func testCharacterSpecifier_WithBool_FallsBack() {
+    func testCharacterSpecifier_withBool_shouldFallBack() {
         // %c + Bool would render an unprintable control glyph — degrade to verbatim instead.
         XCTAssertEqual(format("%c", [true]), "%c")
     }
 
-    func testCharacterSpecifier_WithString_FallsBack() {
+    func testCharacterSpecifier_withString_shouldFallBack() {
         // A Character/String is encoded as an object pointer; %c would misread it as an int.
         XCTAssertEqual(format("Grade %c", ["A"]), "Grade %c")
     }
 
-    func testAmbiguousPercent_WithArguments_FallsBack() {
+    func testAmbiguousPercent_withArguments_shouldFallBack() {
         // %C is not a recognised conversion; interpolating with args would be a hazard.
         XCTAssertEqual(format("%C grade %@", ["A"]), "%C grade %@")
     }
 
-    func testDynamicWidth_FallsBack() {
+    func testTrailingBarePercent_withArgument_shouldFallBack() {
+        // A trailing bare `%` (e.g. "Battery at %d%") is not a valid specifier. It must degrade to
+        // the verbatim format rather than let String(format:) silently drop it — the historic bug
+        // turned "Battery at %d%" + [80] into "Battery at 80", losing the trailing percent.
+        XCTAssertEqual(format("Battery at %d%", [80]), "Battery at %d%")
+    }
+
+    func testTruncatedSpecifierBeforeConversion_withArgument_shouldFallBack() {
+        // "%5" ends before its conversion character, so it cannot be classified. Degrade to
+        // verbatim instead of dropping the dangling specifier.
+        XCTAssertEqual(format("discount %5", [10]), "discount %5")
+    }
+
+    func testDynamicWidth_withArguments_shouldFallBack() {
         // %*d consumes an extra integer argument the parser cannot account for.
         XCTAssertEqual(format("%*d", [5, 42]), "%*d")
     }
 
-    func testMixedPositionalAndSequential_FallsBack() {
+    func testMixedPositionalAndSequential_whenCombined_shouldFallBack() {
         // Undefined behaviour in printf — degrade safely.
         XCTAssertEqual(format("%1$@ and %@", ["a", "b"]), "%1$@ and %@")
     }
 
-    func testUnsignedIntegerSpecifier_WithDouble_FallsBack() {
+    func testConflictingPositionalTypes_whenSameSlotDiffers_shouldFallBack() {
+        // %1$d and %1$@ both reference slot 1 but disagree on type — one is guaranteed to
+        // misread the argument, so the whole call must degrade to verbatim.
+        XCTAssertEqual(format("%1$d and %1$@", ["5"]), "%1$d and %1$@")
+    }
+
+    func testPositionalSpecifier_withZeroPosition_shouldFallBack() {
+        // `%0$@` is not a valid 1-based position — SafeFormat conservatively rejects it.
+        XCTAssertEqual(format("%0$@", ["x"]), "%0$@")
+    }
+
+    func testOverflowingPositionalIndex_withArguments_shouldFallBack() {
+        // A positional index too large to fit in `Int` (corrupt server translation) is
+        // unclassifiable; interpolating with an argument must degrade to the verbatim format
+        // rather than forward a specifier `String(format:)` would parse differently.
+        XCTAssertEqual(format("%99999999999999999999$@", ["a"]), "%99999999999999999999$@")
+    }
+
+    func testUnsignedIntegerSpecifier_withDouble_shouldFallBack() {
         // `.unsignedInteger` shares the integer accept rules — a floating-point value is rejected.
         XCTAssertEqual(format("%u apples", [3.7]), "%u apples")
     }
 
-    func testFloatSpecifier_WithString_FallsBack() {
+    func testFloatSpecifier_withString_shouldFallBack() {
         XCTAssertEqual(format("Total: %.2f", ["oops"]), "Total: %.2f")
     }
 
-    func testObjectSpecifier_WithDouble_FallsBack() {
+    func testObjectSpecifier_withDouble_shouldFallBack() {
         // Value types bridge to NSNumber (so `is NSObject` is true) but are encoded as scalars;
         // `%@` would dereference the raw value as a pointer, so they must fall back.
         XCTAssertEqual(format("Value: %@", [3.14]), "Value: %@")
     }
 
-    func testObjectSpecifier_WithBool_FallsBack() {
+    func testObjectSpecifier_withBool_shouldFallBack() {
         // `Bool` is a value type, not a class — `%@` must reject it even though it bridges.
         XCTAssertEqual(format("Value: %@", [true]), "Value: %@")
     }
 
-    func testCStringSpecifier_WithInt_FallsBack() {
+    func testCStringSpecifier_withInt_shouldFallBack() {
         // `%s` (`.string`) is never satisfiable by any Swift value — always falls back.
         XCTAssertEqual(format("Name: %s", [5]), "Name: %s")
     }
 
     // MARK: - Parser Unit Tests
 
-    func testParser_RecognisesStandardSpecifiers() {
+    func testParser_withStandardSpecifiers_shouldRecogniseAll() {
         let result = FormatSpecifierParser.scan("Order #%@ has %d items at %.2f")
         XCTAssertEqual(result.specifiers.map(\.conversion), ["@", "d", "f"])
         XCTAssertTrue(result.ambiguousPercents.isEmpty)
     }
 
-    func testParser_PositionalSpecifiers() {
+    func testParser_withPositionalSpecifiers_shouldCapturePositions() {
         let result = FormatSpecifierParser.scan("%2$@ %1$d")
         XCTAssertEqual(result.specifiers.map(\.position), [2, 1])
     }
 
-    func testParser_LiteralPercentIgnored() {
+    func testParser_withLiteralPercent_shouldIgnore() {
         let result = FormatSpecifierParser.scan("100%% sure")
         XCTAssertTrue(result.specifiers.isEmpty)
         XCTAssertTrue(result.ambiguousPercents.isEmpty)
     }
 
-    func testParser_AmbiguousPercentCaptured() {
+    func testParser_withUnknownConversion_shouldCaptureAmbiguous() {
         let result = FormatSpecifierParser.scan("%Compliance report")
         XCTAssertTrue(result.specifiers.isEmpty)
         XCTAssertEqual(result.ambiguousPercents.first?.raw, "%C")
     }
 
-    func testParser_ExpectedTypes() {
+    func testParser_withTrailingBarePercent_shouldCaptureAmbiguous() {
+        // A lone `%` at end-of-string is not a specifier; it must be surfaced as ambiguous so
+        // SafeFormat degrades to verbatim rather than dropping it.
+        let result = FormatSpecifierParser.scan("Battery at %d%")
+        XCTAssertEqual(result.specifiers.map(\.conversion), ["d"])
+        XCTAssertEqual(result.ambiguousPercents.map(\.raw), ["%"])
+    }
+
+    func testParser_withTruncatedSpecifier_shouldCaptureAmbiguous() {
+        // A specifier consumed up to width but truncated before its conversion character
+        // (e.g. "%5" at end-of-string) is captured as its consumed span.
+        let result = FormatSpecifierParser.scan("discount %5")
+        XCTAssertTrue(result.specifiers.isEmpty)
+        XCTAssertEqual(result.ambiguousPercents.map(\.raw), ["%5"])
+    }
+
+    func testParser_withMixedSpecifiers_shouldMapExpectedTypes() {
         let result = FormatSpecifierParser.scan("%@ %d %u %f %s %c %p")
         XCTAssertEqual(
             result.specifiers.map(\.expectedType),
@@ -282,7 +367,7 @@ final class SafeFormatTests: XCTestCase {
         )
     }
 
-    func testParser_ConversionTypes_EveryEntryParsesToItsMappedType() {
+    func testParser_withEveryConversionType_shouldParseToMappedType() {
         // Guards the single source of truth `FormatSpecifier.conversionTypes`: every recognised
         // conversion character (including aliases like `i`/`D`, hex `x`/`X`, octal `o`/`O`, and
         // the uppercase floating-point variants) must scan to exactly one specifier whose
@@ -310,7 +395,7 @@ final class SafeFormatTests: XCTestCase {
         }
     }
 
-    func testParser_RecognizedConversions_MatchConversionTypesKeys() {
+    func testParser_recognizedConversions_shouldMatchConversionTypesKeys() {
         // `recognizedConversions` is derived from `conversionTypes`; assert they stay in lockstep.
         XCTAssertEqual(
             FormatSpecifier.recognizedConversions,
@@ -320,7 +405,7 @@ final class SafeFormatTests: XCTestCase {
 
     // MARK: - Parser Flags (step 5: `-+#0` consumed, space flag excluded)
 
-    func testParser_MinusFlag_ConsumedAndSpecifierRecognised() {
+    func testParser_withMinusFlag_shouldConsumeAndRecogniseSpecifier() {
         // Left-justify flag before a width — the `d` must still be picked up as the conversion.
         let result = FormatSpecifierParser.scan("%-10d")
         XCTAssertEqual(result.specifiers.map(\.conversion), ["d"])
@@ -328,20 +413,20 @@ final class SafeFormatTests: XCTestCase {
         XCTAssertTrue(result.ambiguousPercents.isEmpty)
     }
 
-    func testParser_PlusFlag_Consumed() {
+    func testParser_withPlusFlag_shouldConsume() {
         let result = FormatSpecifierParser.scan("%+d")
         XCTAssertEqual(result.specifiers.map(\.conversion), ["d"])
         XCTAssertTrue(result.ambiguousPercents.isEmpty)
     }
 
-    func testParser_HashFlag_Consumed() {
+    func testParser_withHashFlag_shouldConsume() {
         let result = FormatSpecifierParser.scan("%#x")
         XCTAssertEqual(result.specifiers.map(\.conversion), ["x"])
         XCTAssertEqual(result.specifiers.first?.expectedType, .unsignedInteger)
         XCTAssertTrue(result.ambiguousPercents.isEmpty)
     }
 
-    func testParser_ZeroFlag_Consumed() {
+    func testParser_withZeroFlag_shouldConsume() {
         // Zero-pad flag combined with width and precision.
         let result = FormatSpecifierParser.scan("%08.2f")
         XCTAssertEqual(result.specifiers.map(\.conversion), ["f"])
@@ -349,7 +434,7 @@ final class SafeFormatTests: XCTestCase {
         XCTAssertTrue(result.ambiguousPercents.isEmpty)
     }
 
-    func testParser_AllRecognisedFlagsStacked() {
+    func testParser_withAllFlagsStacked_shouldConsumeAll() {
         // Every recognised flag (`-`, `+`, `#`, `0`) stacked before width/precision on one
         // specifier — the flags loop must consume them all and still land on `f`.
         let result = FormatSpecifierParser.scan("%-+#08.2f")
@@ -357,7 +442,7 @@ final class SafeFormatTests: XCTestCase {
         XCTAssertTrue(result.ambiguousPercents.isEmpty)
     }
 
-    func testParser_FlagsFollowPositionalPrefix() {
+    func testParser_withFlagsAfterPositionalPrefix_shouldCaptureBoth() {
         // Flags come after the positional `N$` prefix; both must be captured.
         let result = FormatSpecifierParser.scan("%1$+d")
         XCTAssertEqual(result.specifiers.first?.position, 1)
@@ -365,7 +450,7 @@ final class SafeFormatTests: XCTestCase {
         XCTAssertTrue(result.ambiguousPercents.isEmpty)
     }
 
-    func testParser_SpaceFlag_NotConsumed_BecomesAmbiguous() {
+    func testParser_withSpaceFlag_shouldBecomeAmbiguous() {
         // The space flag is deliberately unsupported: `% d` must NOT parse as a specifier,
         // otherwise decorative strings like "5% off" get misread as malformed formats. The
         // bare `% ` is captured as an ambiguous percent and `d` stays literal text.
@@ -374,9 +459,19 @@ final class SafeFormatTests: XCTestCase {
         XCTAssertEqual(result.ambiguousPercents.map(\.raw), ["% "])
     }
 
+    func testParser_withOverflowingPositionalIndex_shouldBecomeAmbiguous() {
+        // The positional index digits are valid ASCII digits but overflow `Int`, so `Int(_:)`
+        // returns nil. The consumed `%<digits>$` span must surface as ambiguous rather than
+        // silently degrading to a sequential specifier — otherwise SafeFormat would forward it to
+        // `String(format:)`, whose positional parser reads the huge index and disagrees.
+        let result = FormatSpecifierParser.scan("%99999999999999999999$@")
+        XCTAssertTrue(result.specifiers.isEmpty)
+        XCTAssertEqual(result.ambiguousPercents.map(\.raw), ["%99999999999999999999$"])
+    }
+
     // MARK: - Flags Round-Trip Through SafeFormat (output must equal native String(format:))
 
-    func testFlaggedSpecifiers_RoundTripThroughSafeFormat() {
+    func testFlaggedSpecifiers_whenRoundTripped_shouldMatchNative() {
         // Recognised flags must not break specifier recognition or argument validation; each
         // output must match what native `String(format:)` produces.
         XCTAssertEqual(format("%+d", [5]), "+5")
@@ -385,7 +480,7 @@ final class SafeFormatTests: XCTestCase {
         XCTAssertEqual(format("[%-5d]", [42]), "[42   ]")
     }
 
-    func testSpaceFlag_FallsBack_EvenWithArguments() {
+    func testSpaceFlag_withArguments_shouldFallBack() {
         // Because `% ` is unclassifiable, interpolating with an argument degrades to the
         // verbatim format rather than crashing.
         XCTAssertEqual(format("% d", [5]), "% d")

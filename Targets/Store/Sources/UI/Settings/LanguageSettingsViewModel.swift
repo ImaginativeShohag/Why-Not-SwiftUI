@@ -31,7 +31,7 @@ final class LanguageSettingsViewModel {
 
         Task { @MainActor in
             selectedCountry = localizationManager.currentCountry
-            selectedLanguage = localizationManager.currentLanguage
+            selectedLanguage = localizationManager.currentLanguageCode
         }
     }
 
@@ -78,7 +78,7 @@ final class LanguageSettingsViewModel {
             localizationManager.setAvailableLanguages(languages.allLanguages)
             state = .data(data: languages)
             selectedCountry = localizationManager.currentCountry
-            selectedLanguage = localizationManager.currentLanguage
+            selectedLanguage = localizationManager.currentLanguageCode
             SuperLog.d("LanguageChangeViewModel: Loaded languages from \(languages.countries.count) countries")
 
         case .failure(let error):
@@ -108,7 +108,13 @@ final class LanguageSettingsViewModel {
             SuperLog.d("LanguageChangeViewModel: Using default English (no API call needed)")
             // Create empty translation file - localize() will use default values
             let emptyTranslation = TranslationFile(modules: [:])
-            localizationManager.activateLanguage(languageCode: languageCode, languageName: "English", country: country, version: 0, translationFile: emptyTranslation)
+            localizationManager.activateLanguage(
+                languageCode: languageCode,
+                languageName: "English",
+                country: country,
+                version: 0,
+                translationFile: emptyTranslation
+            )
             selectedLanguage = languageCode
             selectedCountry = "United States"
             isChangingLanguage = false
@@ -122,24 +128,45 @@ final class LanguageSettingsViewModel {
         case .valid(let cachedFile):
             // Cache is valid and version matches - use it directly (instant, no API call)
             SuperLog.d("LanguageChangeViewModel: Using cached translation (v\(cachedFile.version))")
-            localizationManager.activateLanguage(languageCode: languageCode, languageName: language.nameLocale, country: country, version: language.version, translationFile: cachedFile.translationFile)
+            localizationManager.activateLanguage(
+                languageCode: languageCode,
+                languageName: language.nameLocale,
+                country: country,
+                version: language.version,
+                translationFile: cachedFile.translationFile
+            )
             selectedLanguage = languageCode
 
         case .stale(let cachedVersion):
             // Cache exists but version is outdated - fetch fresh from network
             SuperLog.d("LanguageChangeViewModel: Cache stale (v\(cachedVersion)), fetching v\(language.version)")
-            await fetchAndCache(languageCode: languageCode, version: language.version, languageName: language.nameLocale, country: country)
+            await fetchAndCache(
+                languageCode: languageCode,
+                version: language.version,
+                languageName: language.nameLocale,
+                country: country
+            )
 
         case .missing:
             // No cache exists - fetch from network
             SuperLog.d("LanguageChangeViewModel: No cache found, fetching from network")
-            await fetchAndCache(languageCode: languageCode, version: language.version, languageName: language.nameLocale, country: country)
+            await fetchAndCache(
+                languageCode: languageCode,
+                version: language.version,
+                languageName: language.nameLocale,
+                country: country
+            )
 
         case .corrupted:
             // Cache file is corrupted - delete and fetch fresh
             SuperLog.w("LanguageChangeViewModel: Cache corrupted, deleting and re-fetching")
             try? await localizationManager.deleteCacheFile(for: languageCode)
-            await fetchAndCache(languageCode: languageCode, version: language.version, languageName: language.nameLocale, country: country)
+            await fetchAndCache(
+                languageCode: languageCode,
+                version: language.version,
+                languageName: language.nameLocale,
+                country: country
+            )
         }
 
         isChangingLanguage = false
@@ -153,8 +180,18 @@ final class LanguageSettingsViewModel {
         switch result {
         case .success(let translationFile):
             // Cache and activate
-            await localizationManager.setTranslations(translationFile, for: languageCode, version: version)
-            localizationManager.activateLanguage(languageCode: languageCode, languageName: languageName, country: country, version: version, translationFile: translationFile)
+            await localizationManager.setTranslations(
+                translationFile,
+                for: languageCode,
+                version: version
+            )
+            localizationManager.activateLanguage(
+                languageCode: languageCode,
+                languageName: languageName,
+                country: country,
+                version: version,
+                translationFile: translationFile
+            )
 
             selectedLanguage = languageCode
             SuperLog.d("LanguageChangeViewModel: Language changed to \(selectedLanguage ?? "nil"), version: \(version)")

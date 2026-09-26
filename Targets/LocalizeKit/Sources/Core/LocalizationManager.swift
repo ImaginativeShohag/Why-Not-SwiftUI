@@ -18,7 +18,7 @@ public final class LocalizationManager {
     public private(set) var currentCountry: String = Constants.defaultCountry
 
     /// Current selected language code.
-    public private(set) var currentLanguage: String = Constants.defaultLanguageCode
+    public private(set) var currentLanguageCode: String = Constants.defaultLanguageCode
 
     /// Current language name in its native locale (from nameLocale field in API).
     public private(set) var currentLanguageName: String = Constants.defaultLanguageName
@@ -34,7 +34,7 @@ public final class LocalizationManager {
 
     /// Whether the current language uses right-to-left layout direction.
     ///
-    /// This computed property checks if the `currentLanguage` starts with any
+    /// This computed property checks if the `currentLanguageCode` starts with any
     /// of the prefixes in the `rtlLanguages` array. Matching is case-insensitive.
     ///
     /// **Prefix Matching Examples:**
@@ -53,7 +53,7 @@ public final class LocalizationManager {
     ///
     /// - SeeAlso: `rtlLanguages`, `layoutDirection`, `configure(rtlLanguages:)`
     public var isRightToLeft: Bool {
-        let lowercased = currentLanguage.lowercased()
+        let lowercased = currentLanguageCode.lowercased()
         return rtlLanguages.contains { lowercased.hasPrefix($0) }
     }
 
@@ -146,7 +146,7 @@ public final class LocalizationManager {
 
         // Load saved language preference.
         if let savedLanguage = LocalizeKitStorage.shared.selectedLanguage {
-            self.currentLanguage = savedLanguage
+            self.currentLanguageCode = savedLanguage
         }
 
         // Load saved country preference (default to "United States").
@@ -163,7 +163,7 @@ public final class LocalizationManager {
         self.currentLanguageVersion = LocalizeKitStorage.shared.selectedLanguageVersion
 
         // Validate stored layout direction matches current language.
-        let expectedDirection = isLanguageRTL(currentLanguage) ? "rtl" : "ltr"
+        let expectedDirection = isLanguageRTL(currentLanguageCode) ? "rtl" : "ltr"
         if LocalizeKitStorage.shared.layoutDirection != expectedDirection {
             LocalizeKitStorage.shared.layoutDirection = expectedDirection
             LocalizeKitLogger.d("LocalizationManager: Corrected layout direction to \(expectedDirection)")
@@ -255,12 +255,16 @@ public final class LocalizationManager {
     ///   - translationFile: Translation file from server.
     ///   - languageCode: Language code for the translations.
     ///   - version: Version from Language.version in available languages API.
-    public func setTranslations(_ translationFile: TranslationFile, for languageCode: String, version: Int) async {
+    public func setTranslations(
+        _ translationFile: TranslationFile,
+        for languageCode: String,
+        version: Int
+    ) async {
         // Cache the translations with version from Language API
         await cacheTranslations(translationFile, for: languageCode, version: version)
 
         // If this is the current language, set it as active
-        if languageCode == currentLanguage {
+        if languageCode == currentLanguageCode {
             currentTranslations = translationFile
             LocalizeKitLogger.d("LocalizationManager: Set and activated translations for \(languageCode)")
         } else {
@@ -287,9 +291,15 @@ public final class LocalizationManager {
     ///   - country: Country name.
     ///   - version: Language version from available languages API.
     ///   - translationFile: Translation file to activate.
-    public func activateLanguage(languageCode: String, languageName: String, country: String, version: Int, translationFile: TranslationFile) {
+    public func activateLanguage(
+        languageCode: String,
+        languageName: String,
+        country: String,
+        version: Int,
+        translationFile: TranslationFile
+    ) {
         currentTranslations = translationFile
-        currentLanguage = languageCode
+        currentLanguageCode = languageCode
         currentCountry = country
         currentLanguageVersion = version
         currentLanguageName = languageName
@@ -332,7 +342,10 @@ public final class LocalizationManager {
     ///   - key: Translation key (e.g., "cart_title").
     ///   - moduleName: Module name (e.g., "Store").
     /// - Returns: Translated string or `nil` if not found.
-    public func string(for key: String, in moduleName: String) -> String? {
+    public func string(
+        for key: String,
+        in moduleName: String
+    ) -> String? {
         guard let translations = currentTranslations else {
             return nil
         }
@@ -359,7 +372,11 @@ public final class LocalizationManager {
     ///   - moduleName: Module name (e.g., "Store").
     ///   - count: Count to determine plural form.
     /// - Returns: Translated plural string or `nil` if not found.
-    public func pluralString(for key: String, in moduleName: String, count: Int) -> String? {
+    public func pluralString(
+        for key: String,
+        in moduleName: String,
+        count: Int
+    ) -> String? {
         guard let translations = currentTranslations else {
             return nil
         }
@@ -377,7 +394,7 @@ public final class LocalizationManager {
         }
 
         // Determine plural category.
-        let locale = Locale(identifier: currentLanguage)
+        let locale = Locale(identifier: currentLanguageCode)
         let category = PluralCategory.category(
             for: count,
             locale: locale,

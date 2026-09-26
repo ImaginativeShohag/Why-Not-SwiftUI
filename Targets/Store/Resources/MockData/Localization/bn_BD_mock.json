@@ -1,0 +1,247 @@
+{
+    "version": 1,
+    "modules": {
+        "Store": {
+            "welcome": {
+                "value": "স্বাগতম, **%@**!",
+                "type": "interpolation",
+                "comment": "Welcome message with user's full name on home screen"
+            },
+            "welcome_to": {
+                "value": "স্বাগতম",
+                "type": "simple",
+                "comment": "Splash screen welcome text"
+            },
+            "app_name": {
+                "value": "স্টোর ওভারফ্লো",
+                "type": "simple",
+                "comment": "Application name"
+            },
+            "login": {
+                "value": "লগইন",
+                "type": "simple",
+                "comment": "Login button text"
+            },
+            "username": {
+                "value": "ব্যবহারকারীর নাম",
+                "type": "simple",
+                "comment": "Username field placeholder"
+            },
+            "password": {
+                "value": "পাসওয়ার্ড",
+                "type": "simple",
+                "comment": "Password field placeholder"
+            },
+            "tab_home": {
+                "value": "হোম",
+                "type": "simple",
+                "comment": "Tab bar label for home"
+            },
+            "tab_categories": {
+                "value": "ক্যাটাগরি",
+                "type": "simple",
+                "comment": "Tab bar label for categories"
+            },
+            "tab_bag": {
+                "value": "ব্যাগ",
+                "type": "simple",
+                "comment": "Tab bar label for shopping bag"
+            },
+            "cart_empty_title": {
+                "value": "আপনার কার্ট খালি।",
+                "type": "simple",
+                "comment": "Title shown when cart has no items"
+            },
+            "cart_empty_description": {
+                "value": "চালিয়ে যেতে কিছু পণ্য যোগ করুন।",
+                "type": "simple",
+                "comment": "Description for empty cart state"
+            },
+            "cart_total": {
+                "value": "মোট",
+                "type": "simple",
+                "comment": "Label for total price in cart"
+            },
+            "cart_checkout": {
+                "value": "চেকআউট",
+                "type": "simple",
+                "comment": "Button to proceed to checkout"
+            },
+            "cart_title": {
+                "value": "কার্ট",
+                "type": "simple",
+                "comment": "Cart screen title"
+            },
+            "cart_menu_orders": {
+                "value": "অর্ডার",
+                "type": "simple",
+                "comment": "Menu item to view orders"
+            },
+            "product_details_title": {
+                "value": "পণ্যের বিবরণ",
+                "type": "simple",
+                "comment": "Product details screen title"
+            },
+            "retry": {
+                "value": "পুনরায় চেষ্টা করুন",
+                "type": "simple",
+                "comment": "Retry button text"
+            },
+            "products_category_title": {
+                "value": "ক্যাটাগরি: %@",
+                "type": "interpolation",
+                "comment": "Title showing the current category name"
+            },
+            "categories_title": {
+                "value": "ক্যাটাগরি",
+                "type": "simple",
+                "comment": "Categories screen title"
+            },
+            "checkout_completed_title": {
+                "value": "চেকআউট সম্পন্ন হয়েছে।",
+                "type": "simple",
+                "comment": "Title shown when checkout is complete"
+            },
+            "checkout_completed_description": {
+                "value": "আবার চালিয়ে যেতে কিছু পণ্য যোগ করুন।",
+                "type": "simple",
+                "comment": "Description for completed checkout"
+            },
+            "checkout_title": {
+                "value": "চেকআউট",
+                "type": "simple",
+                "comment": "Checkout screen title"
+            },
+            "checkout_shipping_address": {
+                "value": "শিপিং ঠিকানা",
+                "type": "simple",
+                "comment": "Label for shipping address section"
+            },
+            "checkout_name_placeholder": {
+                "value": "আপনার নাম...",
+                "type": "simple",
+                "comment": "Name TextField placeholder"
+            },
+            "checkout_phone_placeholder": {
+                "value": "ফোন নম্বর...",
+                "type": "simple",
+                "comment": "Phone TextField placeholder"
+            },
+            "checkout_address_placeholder": {
+                "value": "ঠিকানা...",
+                "type": "simple",
+                "comment": "Address TextField placeholder"
+            },
+            "checkout_total": {
+                "value": "মোট",
+                "type": "simple",
+                "comment": "Label for total price in checkout"
+            },
+            "checkout_placing_order": {
+                "value": "অর্ডার করা হচ্ছে...",
+                "type": "simple",
+                "comment": "Button text while placing order"
+            },
+            "checkout_place_order": {
+                "value": "অর্ডার করুন",
+                "type": "simple",
+                "comment": "Button to place order"
+            },
+            "checkout_success_title": {
+                "value": "অর্ডার সফলভাবে সম্পন্ন হয়েছে!",
+                "type": "simple",
+                "comment": "Success alert title"
+            },
+            "ok": {
+                "value": "ঠিক আছে",
+                "type": "simple",
+                "comment": "OK button text"
+            },
+            "orders_title": {
+                "value": "অর্ডার",
+                "type": "simple",
+                "comment": "Orders screen title"
+            },
+            "language_loading": {
+                "value": "ভাষা লোড হচ্ছে...",
+                "type": "simple",
+                "comment": "Loading text while fetching languages"
+            },
+            "language_title": {
+                "value": "ভাষা",
+                "type": "simple",
+                "comment": "Language settings screen title"
+            },
+            "done": {
+                "value": "সম্পন্ন",
+                "type": "simple",
+                "comment": "Done button text"
+            },
+            "language_changing": {
+                "value": "ভাষা পরিবর্তন করা হচ্ছে...",
+                "type": "simple",
+                "comment": "Progress message while changing language"
+            },
+            "language_select_header": {
+                "value": "ভাষা নির্বাচন করুন",
+                "type": "simple",
+                "comment": "Header for language selection list"
+            },
+            "language_select_footer": {
+                "value": "অ্যাপের জন্য আপনার পছন্দের ভাষা চয়ন করুন। ইন্টারফেস অবিলম্বে অনুবাদ করা হবে।",
+                "type": "simple",
+                "comment": "Footer explaining language selection"
+            },
+            "profile": {
+                "value": "প্রোফাইল",
+                "type": "simple",
+                "comment": "Profile screen title"
+            },
+            "details": {
+                "value": "বিস্তারিত",
+                "type": "simple",
+                "comment": "Profile details section header"
+            },
+            "name": {
+                "value": "নাম",
+                "type": "simple",
+                "comment": "User name label"
+            },
+            "email": {
+                "value": "ইমেইল",
+                "type": "simple",
+                "comment": "Email address label"
+            },
+            "phone": {
+                "value": "ফোন",
+                "type": "simple",
+                "comment": "Phone number label"
+            },
+            "address": {
+                "value": "ঠিকানা",
+                "type": "simple",
+                "comment": "Address label"
+            },
+            "orders": {
+                "value": "অর্ডার",
+                "type": "simple",
+                "comment": "Orders button text"
+            },
+            "language_settings": {
+                "value": "ভাষা সেটিংস",
+                "type": "simple",
+                "comment": "Language settings button text"
+            },
+            "sign_out": {
+                "value": "সাইন আউট",
+                "type": "simple",
+                "comment": "Sign out button text"
+            },
+            "sign_out_alert_title": {
+                "value": "স্টোর থেকে সাইন আউট করবেন?",
+                "type": "simple",
+                "comment": "Alert title for sign out confirmation"
+            }
+        }
+    }
+}

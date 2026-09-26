@@ -109,6 +109,16 @@ public struct AvailableLanguages: Codable, Sendable {
         data[country] ?? []
     }
 
+    /// Find a language by code within a specific country's list.
+    ///
+    /// Country-scoped on purpose: the same code can appear under multiple countries with
+    /// different `version` values, so resolving against the flattened `allLanguages` would pick an
+    /// arbitrary entry (Swift `Dictionary` iteration order is not stable across launches) and yield
+    /// a nondeterministic version. Always resolve within the country the user actually selected.
+    public func language(code: String, in country: String) -> Language? {
+        languages(for: country).first { $0.code == code }
+    }
+
     /// Get all languages (flattened from all countries).
     public var allLanguages: [Language] {
         data.values.flatMap { $0 }
